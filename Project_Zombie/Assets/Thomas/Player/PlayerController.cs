@@ -1,0 +1,145 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    PlayerHandler handler;
+    public BlockClass block { get; private set; }
+    KeyClass key;
+    private void Awake()
+    {
+        handler = GetComponent<PlayerHandler>();
+
+        block = new BlockClass();
+        key = new KeyClass();   
+    }
+
+
+    private void Update()
+    {
+        if (block.HasBlock(BlockClass.BlockType.Complete)) return;
+
+        InputMovement();
+        InputRotation();
+        InputShoot();
+        InputReload();
+        InputSwap();
+        InputInteract();
+    }
+
+
+    void InputMovement()
+    {
+        Vector3 dir = Vector3.zero;
+
+        if (Input.GetKey(key.GetKey(KeyType.MoveLeft)))
+        {
+            dir += Vector3.left;
+        }
+        if (Input.GetKey(key.GetKey(KeyType.MoveRight)))
+        {
+            dir += Vector3.right;
+        }
+        if (Input.GetKey(key.GetKey(KeyType.MoveDown)))
+        {
+            dir += Vector3.down;
+        }
+        if (Input.GetKey(key.GetKey(KeyType.MoveUp)))
+        {
+            dir += Vector3.up;
+        }
+
+        handler._playerMovement.MovePlayer(dir);
+    }
+
+
+    Vector3 mouseDir;
+
+
+    [SerializeField] Vector3 debugMousePos;
+    [SerializeField] Vector3 debugDir;
+    [SerializeField] GameObject debugGrpahic;
+    void InputRotation()
+    {
+        /* FOR ORTOGRAPHIC VIEW
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        debugMousePos = mousePos;
+        Vector3 dir = (mousePos - transform.position).normalized;
+        debugDir = dir;
+        handler._playerMovement.RotatePlayer(dir);
+        mouseDir = dir;
+        */
+
+
+        Vector3 targetDirection = getMouseDirection();
+
+        if (targetDirection != Vector3.zero)
+        {
+            handler._playerMovement.RotatePlayer(targetDirection);
+        }
+
+
+    }
+
+
+    void InputShoot()
+    {
+        if (Input.GetKey(key.GetKey(KeyType.Shoot)))
+        {
+            Vector3 shootDir = getMouseDirection();
+
+            if(shootDir != Vector3.zero)
+            {
+                handler._playerCombat.Shoot(shootDir);
+            }
+           
+        }
+
+    }
+
+    void InputReload()
+    {
+        if (Input.GetKeyDown(key.GetKey(KeyType.Reload)))
+        {
+            handler._playerCombat.Reload();
+        }
+    }
+    void InputSwap()
+    {
+        if (Input.GetKeyDown(key.GetKey(KeyType.SwapWeapon)))
+        {
+            handler._playerCombat.OrderSwapGun();
+        }
+    }
+
+    void InputInteract()
+    {
+        if (Input.GetKeyDown(key.GetKey(KeyType.Interact)))
+        {
+            //handler.playerInventory.InteractWithCurrentInteractable();
+        }
+    }
+
+
+    Vector3 getMouseDirection()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            // Calculate direction to rotate character
+            Vector3 targetDirection = (hit.point - transform.position).normalized;
+            targetDirection.y = 0f; // Ignore vertical component (if needed)
+
+            // Rotate character towards mouse position
+            
+
+            return targetDirection;
+        }
+
+
+        return Vector3.zero;
+    }
+}
