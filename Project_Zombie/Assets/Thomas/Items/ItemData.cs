@@ -8,10 +8,21 @@ public class ItemData : ScriptableObject
 
     public string itemName;
     public Sprite itemIcon;
+    public TierType tierType;
 
+
+
+    public virtual ItemGunData GetGun() {  return null; }
 
 }
 
+public enum TierType
+{
+    Tier1,
+    Tier2,
+    Tier3,
+    Tier4
+}
 
 
 

@@ -28,11 +28,13 @@ public class PlayerCombat : MonoBehaviour
     private void Awake()
     {
         handler = GetComponent<PlayerHandler>();
-        SetUp();
+
     }
 
     private void Start()
     {
+
+        SetUp();
         _gunUI = UIHandler.instance.gunUI;
     }
 
@@ -79,6 +81,10 @@ public class PlayerCombat : MonoBehaviour
         {
             ReceiveTempGunIfEmptySlot(debugGunDataTemp1);
         }
+        if(debugGunDataTemp2 != null)
+        {
+            ReceiveTempGunIfEmptySlot(debugGunDataTemp2);
+        }
     }
 
     #region RECEIVE
@@ -98,10 +104,14 @@ public class PlayerCombat : MonoBehaviour
 
 
         //either we willl put the data.
+
         GameObject spawnedModel = CreateGunModel(gun);
 
-        gunList[0] = new GunClass(gun, spawnedModel);
+        gunList[0] = new GunClass(handler,gun, spawnedModel);       
         gunList[0].MakeAmmoInfinite();
+
+        UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[0], 0);
+        UIHandler.instance.gunUI.ChangeOwnedGunShowUnit(0);
 
         if(currentGunIndex == 0)
         {
@@ -128,9 +138,10 @@ public class PlayerCombat : MonoBehaviour
 
 
         GameObject spawnedModel = CreateGunModel(gun);
-        gunList[emptyIndex] = new GunClass(gun, spawnedModel);    
+        gunList[emptyIndex] = new GunClass(handler, gun, spawnedModel);
+        UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[emptyIndex], emptyIndex);
 
-        if(emptyIndex == currentGunIndex)
+        if (emptyIndex == currentGunIndex)
         {
             SwapGunModel();
         }
@@ -138,6 +149,9 @@ public class PlayerCombat : MonoBehaviour
     }
     public void ReceiveTempGunToReplace(ItemGunData data, int index)
     {
+
+
+
         if (gunList.Length <= 0)
         {
             Debug.Log("FOUND NOTHING");
@@ -149,8 +163,16 @@ public class PlayerCombat : MonoBehaviour
             Destroy(gunList[index].gunModel);
         }
 
+
+        //Debug.Log("received wepaon " + data.itemName);
+        //Debug.Log("to replace " + gunList[index].data.itemName);
+
         GameObject spawnedModel = CreateGunModel(data);
-        gunList[index] = new GunClass(data, spawnedModel);
+        spawnedModel.transform.rotation = Quaternion.Euler(0,-90,0);
+
+
+        gunList[index] = new GunClass(handler, data, spawnedModel);
+        UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[index], index);
 
         if (index == currentGunIndex)
         {
@@ -161,7 +183,8 @@ public class PlayerCombat : MonoBehaviour
 
     GameObject CreateGunModel(ItemGunData data)
     {
-        GameObject newObject = Instantiate(data.gunModel, gunSpawnPos.transform.position, data.gunModel.transform.rotation);
+        GameObject newObject = Instantiate(data.gunModel, gunSpawnPos.transform.position, data.gunModel.transform.localRotation);
+        
         newObject.SetActive(false);
         newObject.transform.SetParent(gunSpawnPos);
 
@@ -180,6 +203,11 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
+    public GunClass[] GetTempGuns()
+    {
+        GunClass[] tempGuns = new GunClass[] { gunList[1], gunList[2] };
+        return tempGuns;
+    }
 
     #endregion
 
@@ -227,8 +255,8 @@ public class PlayerCombat : MonoBehaviour
             done = true;
         }
 
-        
-         
+
+        _gunUI.ChangeOwnedGunShowUnit(currentGunIndex);
         SwapGunModel();
         
 
@@ -315,10 +343,11 @@ public class PlayerCombat : MonoBehaviour
         isReloading = true;
 
         float current = 0;
-        float total = gunList[currentGunIndex].data.reloadSpeed;
-        //float reloadModifier = handler.playerStats.GetStatTotalValue(StatType.ReloadSpeed) * total;
-        //total -= reloadModifier;
-
+        float valueRef = gunList[currentGunIndex].data.GetValue(StatType.ReloadSpeed);
+        float total = valueRef;
+        float reloadModifier = handler._entityStat.GetTotalValue(StatType.ReloadSpeed) * total;
+        total -= reloadModifier;
+        total = Mathf.Clamp(total, valueRef/ 2, valueRef);
 
         while (total > current)
         {
@@ -381,7 +410,7 @@ public class PlayerCombat : MonoBehaviour
 
         gunList[currentGunIndex].Shoot(shootDir);
         _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
-
+        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
 
     }
 

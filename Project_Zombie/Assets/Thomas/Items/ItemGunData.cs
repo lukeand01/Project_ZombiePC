@@ -10,13 +10,27 @@ public class ItemGunData : ItemData
 
     public float damagePerBullet;
     [Range(1, 20)] public int bulletPerShot = 1;
-    public float bulletOffset; 
-    public float fireRate;
-    public int bulletsInMaganzine;
-    public float reloadSpeed;
+    public float bulletOffset;
+    [SerializeField] StatClass[] gunBaseStat;
     public GameObject gunModel;
     public BulletScript bulletTemplate;
     public List<BulletBehavior> bulletBehaviorList = new(); //the amount of stuff that a single bullet from this will do. like setting people on fire and dealing damage.
+
+    private void OnEnable()
+    {
+
+
+        if (gunBaseStat.Length <= 0)
+        {
+            gunBaseStat = new StatClass[] {new StatClass(StatType.Damage, 0),
+            new StatClass(StatType.Pen, 0),
+            new StatClass(StatType.CritChance, 0),
+            new StatClass(StatType.CritDamage, 0),
+            new StatClass(StatType.ReloadSpeed, 0),
+            new StatClass(StatType.Magazine, 0),
+            new StatClass(StatType.FireRate, 0)};
+        }
+    }
 
 
 
@@ -40,7 +54,15 @@ public class ItemGunData : ItemData
 
             BulletScript newBullet = Instantiate(bulletTemplate, gunPointPosition.position, Quaternion.identity);
             newBullet.SetUp(ownerId, direction);
-            newBullet.MakeDamage(new DamageClass(), 0, 0);
+
+            //need toi tell the basedamage.
+            //need to tell pen
+            //
+
+            //the damage should come from the gunclass.
+
+
+            newBullet.MakeDamage(gun._DamageClass, 0, 0);
             newBullet.MakeSpeed(25f, 0, 0);
 
             newBullet.MakeBulletBehavior(bulletBehaviorList);
@@ -51,5 +73,19 @@ public class ItemGunData : ItemData
         //i need to receive
     }
 
+    public float GetValue(StatType stat)
+    {
+        foreach (var item in gunBaseStat)
+        {
+            if(item.stat == stat)
+            {
+                return item.value;  
+            }
+        }
 
+        return 0;
+    }
+
+    public override ItemGunData GetGun() { return this; }
 }
+

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     PlayerHandler handler;
-
+    EntityStat stat;
     [SerializeField] GameObject graphic;
 
 
@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         handler = GetComponent<PlayerHandler>();
+        stat = GetComponent<EntityStat>();
     }
 
     private void Start()
@@ -28,19 +29,19 @@ public class PlayerMovement : MonoBehaviour
         HandleActualRotation();
     }
 
-    public void SetSpeed(float newValue)
-    {
-        speed = newValue;
-    }
+   
 
     #region MOVEMENT
-    [Separator("MOVEMENT")]
-    float speed;  //for now we will be using this. but later it will e the stathandler.
+
     public void MovePlayer(Vector3 dirVector)
     {
+        float currentSpeed = stat.GetTotalValue(StatType.Speed);
+
+
+
         float moveModifier = 1;
 
-        Vector3 movement = new Vector3(dirVector.x, 0, dirVector.y) * speed * moveModifier;
+        Vector3 movement = new Vector3(dirVector.x, 0, dirVector.y) * currentSpeed * moveModifier;
 
         handler._rb.velocity = movement;
     }

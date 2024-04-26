@@ -44,6 +44,8 @@ public class KeyClass
         keyDictionary.Add(KeyType.Ability3, KeyCode.Alpha3);
 
         keyDictionary.Add(KeyType.Shoot, KeyCode.Mouse0);
+
+        keyDictionary.Add(KeyType.Pause, KeyCode.Escape);
     }
 
 
@@ -62,6 +64,7 @@ public enum KeyType
     Ability1,
     Ability2,
     Ability3,
-    Shoot
+    Shoot,
+    Pause
 
 }

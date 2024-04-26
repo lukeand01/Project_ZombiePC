@@ -21,6 +21,7 @@ public class MyGrid : LayoutGroup
 
     [Separator("DIFFERENT TYPES")]
     [SerializeField] bool stackFromCenter;
+    [SerializeField] bool stackReverse;
 
     [Separator("Limit")]
     public int limitPerLine = 3 ;
@@ -34,13 +35,23 @@ public class MyGrid : LayoutGroup
 
         container = GetComponent<RectTransform>();
 
+        if (stackReverse)
+        {
+            HandleGridReverse();
+            return;
+        }
+
         if (stackFromCenter)
         {
             HandleGridStackFromCenter();
         }
         else
         {
-            HandleGrid();
+
+            
+
+             HandleGrid();
+
         }
 
 
@@ -76,14 +87,55 @@ public class MyGrid : LayoutGroup
                 item.localScale = size;
             }
 
-
-            
-
             SetChildAlongAxis(item, 0, posX + padding.left + padding.right);
             SetChildAlongAxis(item, 1, posY + padding.top + padding.bottom); //placing in the y axis.
             posX += (int)(itemWidth + spacing);
         }
     }
+
+    void HandleGridReverse()
+    {
+        float width = container.sizeDelta.x;
+        float height = container.sizeDelta.y;
+
+        int currentLimit = 0;
+
+        int posX = 0;
+        int posY = 0;
+
+
+
+        for (int i = rectChildren.Count - 1; i >= 0; i--)
+        {
+
+            var item = rectChildren[i];
+            float itemWidth = item.sizeDelta.x;
+            currentLimit++;
+
+            if (currentLimit > limitPerLine)
+            {
+                currentLimit = 1;
+                posY += (int)(height + spacingY - 100);
+                posX = 0;
+            }
+
+            if (canControlSize)
+            {
+                item.localScale = size;
+            }
+
+
+
+
+            SetChildAlongAxis(item, 0, posX + padding.left + padding.right);
+            SetChildAlongAxis(item, 1, posY + padding.top + padding.bottom); //placing in the y axis.
+            posX += (int)(itemWidth + spacing);
+
+
+        }
+
+    }
+
 
     void HandleGridStackFromCenter()
     {

@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     PlayerHandler handler;
     public BlockClass block { get; private set; }
-    KeyClass key;
+    public KeyClass key { get; private set; }
     private void Awake()
     {
         handler = GetComponent<PlayerHandler>();
@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
         InputReload();
         InputSwap();
         InputInteract();
+        InputPause();
+        InputAbilityActive();
     }
 
 
@@ -117,11 +119,37 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(key.GetKey(KeyType.Interact)))
         {
-            //handler.playerInventory.InteractWithCurrentInteractable();
+            handler._playerInventory.InteractWithCurrentInteractable();
         }
     }
 
+    void InputPause()
+    {
+        if (Input.GetKeyDown(key.GetKey(KeyType.Pause)))
+        {
+           if(UIHandler.instance != null)
+            {
+                UIHandler.instance.PauseUI.CallPause();
+            }
+        }
+    }
 
+    void InputAbilityActive()
+    {
+        if (Input.GetKeyDown(key.GetKey(KeyType.Ability1)))
+        {
+            handler._playerAbility.UseAbilityActive(0);
+        }
+        if (Input.GetKeyDown(key.GetKey(KeyType.Ability2)))
+        {
+            handler._playerAbility.UseAbilityActive(1);
+        }
+        if (Input.GetKeyDown(key.GetKey(KeyType.Ability3)))
+        {
+            handler._playerAbility.UseAbilityActive(2);
+        }
+
+    }
     Vector3 getMouseDirection()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

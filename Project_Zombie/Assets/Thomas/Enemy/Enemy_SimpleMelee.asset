@@ -12,6 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 586ed45482a7b49459c4a4d56809d9fa, type: 3}
   m_Name: Enemy_SimpleMelee
   m_EditorClassIdentifier: 
-  enemyName: 
-  initialStatList: []
-  scaleStatList: []
+  enemyName: Scratcher
+  initialStatList:
+  - stat: 0
+    initialValue: 100
+  - stat: 1
+    initialValue: 3
+  - stat: 3
+    initialValue: 50
+  scaleStatList:
+  - stat: 0
+    initialValue: 5

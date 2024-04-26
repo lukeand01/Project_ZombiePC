@@ -54,4 +54,32 @@ public class GunUI : MonoBehaviour
         reloadFillImage.gameObject.SetActive(total > 0);
         reloadFillImage.fillAmount = current / total;
     }
+
+
+    [SerializeField] OwnedGunShowUnit[] ownedGunShowUnits;
+    OwnedGunShowUnit currentOwnedGunShowUnit;
+
+    public void SetOwnedGunUnit(GunClass gun, int index)
+    {
+        ownedGunShowUnits[index].SetUp(gun);
+    }
+
+    public void ChangeOwnedGunShowUnit(int index)
+    {
+
+        if(currentOwnedGunShowUnit != null)
+        {
+            currentOwnedGunShowUnit.Unselect();
+        }
+
+        currentOwnedGunShowUnit = ownedGunShowUnits[index];
+        currentOwnedGunShowUnit.Select();
+
+    }
+
+    public void UpdateAmmoInOwnedGunShowUnit(int index, int ammo)
+    {
+        ownedGunShowUnits[index].UpdateAmmo(ammo);
+    }
+
 }
