@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586ed45482a7b49459c4a4d56809d9fa, type: 3}
+  m_Name: Enemy_Bomber
+  m_EditorClassIdentifier: 
+  enemyName: Bomber
+  enemyModel: {fileID: 3437534248162931273, guid: 05fd108f8dd8c3f4382b37670f391545, type: 3}
+  attackRange: 5
+  attackSpeed: 3
+  initialStatList:
+  - stat: 0
+    initialValue: 250
+  - stat: 1
+    initialValue: 3
+  - stat: 2
+    initialValue: 100
+  - stat: 5
+    initialValue: 30
+  scaleStatList:
+  - stat: 0
+    initialValue: 30
+  - stat: 2
+    initialValue: 30

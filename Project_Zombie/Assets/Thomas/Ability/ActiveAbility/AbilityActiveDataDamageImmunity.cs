@@ -10,7 +10,7 @@ public class AbilityActiveDataDamageImmunity : AbilityActiveData
     {
         base.Call(ability);
 
-        Debug.Log("called damage immunity");
+
 
     }
 

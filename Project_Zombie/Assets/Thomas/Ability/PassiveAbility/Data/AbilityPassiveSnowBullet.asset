@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f19aa3586ed42146b34e56cf2c21c83, type: 3}
+  m_Name: AbilityPassiveSnowBullet
+  m_EditorClassIdentifier: 
+  abilityName: Snow Bullet
+  abilityDescription: Your shots slow the enemies. at 3 it has a chance to stun the
+    player.
+  abilityIcon: {fileID: 21300000, guid: 21df9195ed43b004394e6d7913b03149, type: 3}
+  abilityStackMax: 5
+  abilityTier: 0

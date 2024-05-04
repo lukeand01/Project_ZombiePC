@@ -52,6 +52,11 @@ public class ChestUI : MonoBehaviour
         PlayerHandler.instance._playerController.block.RemoveBlock("AbilityChest");
     }
 
+    ChestBase currentChest;
+    public void SetChest(ChestBase currentChest)
+    {
+        this.currentChest = currentChest;
+    }
 
     #region GUN
     [Separator("GUN")]
@@ -67,15 +72,12 @@ public class ChestUI : MonoBehaviour
     [SerializeField] GunSwapUnit[] gunSwapUnits;
     ItemGunData currentChosenGun;
 
-    ChestGun chestGun;
+
 
     bool canSkipGun;
 
 
-    public void SetChest(ChestGun chestGun)
-    {
-        this.chestGun = chestGun;
-    }
+  
 
     public void CallChestGun(List<ItemData> gunListForSpinning, ItemData chosenGun)
     {
@@ -90,7 +92,7 @@ public class ChestUI : MonoBehaviour
         gunStatDescriptionHolder.SetActive(false);
 
 
-        PlayerHandler.instance._playerController.block.AddBlock("GunChest", BlockClass.BlockType.Complete);
+        PlayerHandler.instance._playerController.block.AddBlock("GunChest", BlockClass.BlockType.Partial);
         GameHandler.instance.PauseGame();
 
         currentChosenGun = chosenGun.GetGun();
@@ -235,9 +237,9 @@ public class ChestUI : MonoBehaviour
 
         Leave();
 
-        if (chestGun != null)
+        if (currentChest != null)
         {
-            chestGun.ProgressChest();
+            currentChest.ProgressChest();
         }
     }
 
@@ -308,11 +310,53 @@ public class ChestUI : MonoBehaviour
 
     #endregion
 
+    #region ABILITY
     [Separator("ABILITY")]
     [SerializeField] GameObject abilityHolder;
+    [SerializeField] GameObject abilityButtonHolder;
+    [SerializeField] ChestAbilityUnit[] chestAbilityUnitArray;
+
+
+    public void CallChestAbility(List<AbilityPassiveData> passiveAbilities)
+    {
+        //we dont need to create the images as we will always have them.
+        holder.SetActive(true);
+        abilityHolder.SetActive(true);
+        gunHolder.SetActive(false);
+
+        GameHandler.instance.PauseGame();
+
+        titleText.text = "Choose an Ability!";
+
+
+        PlayerHandler.instance._playerController.block.AddBlock("AbilityChest", BlockClass.BlockType.Partial);
+
+
+        for (int i = 0; i < passiveAbilities.Count; i++)
+        {
+
+
+            chestAbilityUnitArray[i].SetUp(passiveAbilities[i], this);
+        }
+
+
+    }
+
+    public void ChooseAbility(AbilityPassiveData data)
+    {
+        //we pass tot he player siomple as that.
+        Leave();
+        PlayerHandler.instance._playerController.block.RemoveBlock("AbilityChest");
+        PlayerHandler.instance._playerAbility.AddAbility(data);
+    }
+
+    public void AbilityReroll()
+    {
+        List<AbilityPassiveData> passiveListForReroll = PlayerHandler.instance.GetPassiveList();
+        CallChestAbility(passiveListForReroll);
+    }
 
 
 
-
-
+    #endregion
 }

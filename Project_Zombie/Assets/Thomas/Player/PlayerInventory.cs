@@ -9,7 +9,7 @@ public class PlayerInventory : MonoBehaviour
     private void Start()
     {
         interactMask |= (1 << 7);
-
+        SetCityInventoryList();
     }
     private void Update()
     {
@@ -18,12 +18,39 @@ public class PlayerInventory : MonoBehaviour
 
 
     #region INVENTORY
+    //i need ref to all fellas.
 
-
-
-    [SerializeField] List<ItemClass> inventoryList = new();
+    [Separator("RESOURCE ITEMS")]
+    [SerializeField] List<ItemResourceData> refItemList = new();
+    [SerializeField] List<ItemClass> stageInventoryList = new();
     [SerializeField]List<ItemClass> inventoryListForUI = new();
-    public void AddItem(ItemClass item, bool appearInUI = true)
+    [SerializeField] List<ItemClass> cityInventoryList = new();
+    //i need an inventory for the stage and an inventory for city
+
+    void SetCityInventoryList()
+    {
+
+        if(cityInventoryList.Count > 0)
+        {
+            Debug.Log("city inventory list is already set");
+            return;
+        }
+
+        cityInventoryList.Clear();
+        //we set the inventory.
+        //
+
+
+        foreach (var item in refItemList)
+        {
+            ItemClass newItem = new ItemClass(item, 0);
+            UIHandler.instance.CityUI.CreateResourceUnitForItem(newItem);
+            cityInventoryList.Add(newItem);
+        }
+
+    }
+
+    public void AddItemForStage(ItemClass item, bool appearInUI = true)
     {
         //no slots no nothing. just stack it.
 
@@ -36,17 +63,58 @@ public class PlayerInventory : MonoBehaviour
         }
 
 
-        int index = GetListIndex(item.data);
+        int index = GetListIndex(item.data, stageInventoryList);
 
         if(index == -1)
         {
-            inventoryList.Add(new ItemClass(item.data, item.quantity));
+            stageInventoryList.Add(new ItemClass(item.data, item.quantity));
         }
         else
         {
-            inventoryList[index].AddQuantity(item.quantity);
+            stageInventoryList[index].AddQuantity(item.quantity);
         }
 
+
+    }
+
+    public void AddItemForCity(ItemClass item, bool appearInUI = true)
+    {
+        if (appearInUI)
+        {
+            //wthen we infomr the ui to show that it just received this thing.
+            CheckItemInUI(item.data);
+        }
+
+
+        int index = GetListIndex(item.data, cityInventoryList);
+
+        if (index == -1)
+        {
+            cityInventoryList.Add(new ItemClass(item.data, item.quantity));
+        }
+        else
+        {
+            cityInventoryList[index].AddQuantity(item.quantity);
+        }
+    }
+
+    public void RemoveItemForCity(ItemClass _itemClass)
+    {
+        int index = GetListIndex(_itemClass.data, cityInventoryList);
+
+        if(index != -1)
+        {
+            cityInventoryList[index].RemoveQuantity(_itemClass.quantity);
+        }
+    }
+
+    public bool HasEnoughItemForCity(ItemClass _itemClass)
+    {
+        int index = GetListIndex(_itemClass.data, cityInventoryList);
+
+        if (index == -1) return false;
+
+        return cityInventoryList[index].quantity >= _itemClass.quantity;
 
     }
 
@@ -70,12 +138,11 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-
-    int GetListIndex(ItemData data)
+    int GetListIndex(ItemData data, List<ItemClass> targetList)
     {
-        for (int i = 0; i < inventoryList.Count; i++)
+        for (int i = 0; i < targetList.Count; i++)
         {
-            if (inventoryList[i].data == data)
+            if (stageInventoryList[i].data == data)
             {
                 return i;   
             }
@@ -83,6 +150,28 @@ public class PlayerInventory : MonoBehaviour
 
         return -1;
     }
+
+
+    public void PassStageInventoryToCityInventory()
+    {
+        //we do that when we go to city.
+
+        foreach (var item in stageInventoryList)
+        {
+            AddItemForCity(item, false);
+        }
+
+        stageInventoryList.Clear();
+    }
+
+    void UpdateCityInventory()
+    {
+        //iu dont need to update this because i will do everything in the other thing
+
+
+        
+    }
+
 
     #endregion
 

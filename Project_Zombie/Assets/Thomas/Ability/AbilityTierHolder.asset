@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cae5ed08de5fc0847863e87183e08cad, type: 3}
+  m_Name: AbilityTierHolder
+  m_EditorClassIdentifier: 
+  passiveDataRefList:
+  - {fileID: 11400000, guid: 385ce600010ea174db241b0f45e58783, type: 2}
+  - {fileID: 11400000, guid: 0de5fdae2fcc6864ca1264754152a598, type: 2}
+  - {fileID: 11400000, guid: d31147661b6d64f428cdc36eed5336df, type: 2}
+  - {fileID: 11400000, guid: 977a40cda55429143adac0b57a22137f, type: 2}
+  - {fileID: 11400000, guid: 958f978de04d66641b78a361ff76cfe2, type: 2}
+  - {fileID: 11400000, guid: 864f0c6b826e6034eaf947f81340d8b3, type: 2}
+  activeDataRefList:
+  - {fileID: 11400000, guid: 772f29228f01cf94ab0f438ca47aba43, type: 2}

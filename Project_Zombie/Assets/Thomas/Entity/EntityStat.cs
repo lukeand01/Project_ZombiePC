@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EntityStat : MonoBehaviour
@@ -12,7 +13,7 @@ public class EntityStat : MonoBehaviour
     //i am doing the calculation there in the moment.
 
     [SerializeField] List<StatClass> debugInitialList = new();
-
+    [SerializeField] EntityStatCanvas _entityCanvas;
     EntityEvents _entityEvents;
 
     private void Awake()
@@ -37,14 +38,23 @@ public class EntityStat : MonoBehaviour
         
     }
 
+    private void FixedUpdate()
+    {
+        HandleBD();
+    }
+
 
     #region STAT
     [SerializeField] List<StatClass> debugStatList;
     protected Dictionary<StatType, float> statBaseDictionary = new Dictionary<StatType, float>();
     protected Dictionary<StatType, float> statAlteredDictionary = new Dictionary<StatType, float>();
 
+
+
     public void SetUp(List<StatClass> initialStatList)
     {
+
+
         List<StatType> refList = MyUtils.GetStatListRef();
 
 
@@ -75,10 +85,19 @@ public class EntityStat : MonoBehaviour
 
         foreach (var item in refList)
         {
-            float value = GetValueFromList(item, round, initialStatList, scalingStatList);
+            if (!statBaseDictionary.ContainsKey(item))
+            {
+                float value = GetValueFromList(item, round, initialStatList, scalingStatList);
+                statBaseDictionary.Add(item, value);
+                debugStatList.Add(new StatClass(item, value));
+            }
+            else
+            {
+                //Debug.Log("key already present in " + gameObject.name + " " + item.ToString());
 
-            statBaseDictionary.Add(item, value);
-            debugStatList.Add(new StatClass(item, value));
+            }
+
+           
         }
 
         SetUpEmptyAlteredDictionary(refList);
@@ -124,19 +143,47 @@ public class EntityStat : MonoBehaviour
     #endregion
 
     #region BD
-    public bool isStunned { get; private set; }
+    [field:SerializeField]public bool isStunned { get; private set; }
+    [field: SerializeField] public bool IsImmune {  get; private set; }
 
     [SerializeField] List<BDClass> tempList = new();
     [SerializeField] List<BDClass> permaList = new();
     [SerializeField] List<BDClass> tickList = new();
     Dictionary<string, BDClass> dictionaryForStacking = new Dictionary<string, BDClass>();
+    //Dictionary<BDType,>
+    
+
 
     void HandleBD()
     {
 
+        for (int i = 0; i < tempList.Count; i++)
+        {
+            var item = tempList[i];
+
+            item.HandleTemp();
+
+            if (item.IsTempDone())
+            {
+                RemoveBDWithIndex(i, tempList);
+            }
+
+        }
+
+        for (int i = 0; i < tickList.Count; i++)
+        {
+            var item = tickList[i];
+
+            item.HandleTick();
+
+            if (item.IsTickDone())
+            {
+                RemoveBDWithIndex(i, tickList);
+            }
+        }
     }
 
-    public void AdBD(BDClass bd)
+    public void AddBD(BDClass bd)
     {
         //we should call an event to inform whoever is coonect to this 
         //also when we remove it we do stuff;
@@ -158,16 +205,24 @@ public class EntityStat : MonoBehaviour
 
             case BDType.Damage:
                 //we dont call it now but we add and everytime it wants to do its thing it does.
-                AddBDDamage(bd);
-
+                             
                 break;
 
             case BDType.Stun:
-                AddBDStun(bd);
+                AddBDStun();
+                break;
+
+            case BDType.Immune:
+                AddBDImmune();
                 break;
         }
 
-
+        if (bd.IsTick())
+        {
+            //we add to the ticklist.
+            tickList.Add(bd);
+            return;
+        }
 
         if (bd.IsTemp())
         {
@@ -177,6 +232,10 @@ public class EntityStat : MonoBehaviour
         {
             permaList.Add(bd);
         }
+
+        //the bd will have a permission.
+        //we always ask the bd to build.
+
 
     }
     void AddBDStat(BDClass bd)
@@ -193,12 +252,22 @@ public class EntityStat : MonoBehaviour
     }
     void AddBDDamage(BDClass bd)
     {
-
+        //we add the damage. but there is nothing to do.
     }
-    void AddBDStun(BDClass bd)
+    void AddBDStun()
     {
-        //
+        isStunned = true;
+
+        if(_entityCanvas != null) 
+        {
+            _entityCanvas.ControlStunned(true);
+        }
     }
+    void AddBDImmune()
+    {
+        IsImmune = true;
+    }
+
 
 
     public void RemoveBdWithID(string id)
@@ -210,7 +279,7 @@ public class EntityStat : MonoBehaviour
             if (item.id == id)
             {
                 //if its the same then we must remove this fella.
-                RemoveBDWithIndex(i);
+                RemoveBDWithIndex(i, tempList);
                 break;
             }
         }
@@ -220,23 +289,39 @@ public class EntityStat : MonoBehaviour
             if (item.id == id)
             {
                 //if its the same then we must remove this fella.
-                RemoveBDWithIndex(i);
+                RemoveBDWithIndex(i, permaList);
                 break;
             }
         }
     }
 
-    public void RemoveBDWithIndex(int index)
+    public void RemoveBDWithIndex(int index, List<BDClass> targetList)
     {
+        BDClass bd = targetList[index];
+        targetList.RemoveAt(index);
 
 
-        BDClass bd = permaList[index];
-        permaList.RemoveAt(index);
-
-        if(bd.bdType == BDType.Stat)
+        switch (bd.bdType)
         {
-            RemoveStat(bd);
+            case BDType.Stat:
+                RemoveStat(bd);
+                break;
+
+            case BDType.Damage:
+                //we dont call it now but we add and everytime it wants to do its thing it does.
+                //AddBDDamage(bd);
+
+                break;
+
+            case BDType.Stun:
+                RemoveStun();
+                break;
+
+            case BDType.Immune:
+                if (!HasAnotherOfType(BDType.Immune)) IsImmune = false;
+                break;
         }
+
     }
 
     void RemoveStat(BDClass bd)
@@ -249,9 +334,30 @@ public class EntityStat : MonoBehaviour
 
         _entityEvents.OnUpdateStat(bd.statType, GetTotalValue(bd.statType));
     }
+    
+    void RemoveStun()
+    {
+        if (HasAnotherOfType(BDType.Stun)) return;
+        
+        isStunned = false;
+        if (_entityCanvas != null)
+        {
+            _entityCanvas.ControlStunned(false);
+        }
+    }
 
-
-
+    bool HasAnotherOfType(BDType bd)
+    {
+        foreach (var item in tempList)
+        {
+            if (item.bdType == bd) return true;
+        }
+        foreach (var item in permaList)
+        {
+            if (item.bdType == bd) return true;
+        }
+        return false;
+    }
 
     public List<ModifierClass> GetModifierOfCertainStat(StatType stat)
     {
@@ -271,6 +377,22 @@ public class EntityStat : MonoBehaviour
     }
 
     #endregion
+
+    [ContextMenu("DEBUG STUN")]
+    public void DebugStun()
+    {
+        BDClass bd = new BDClass("DebugStun", BDType.Stun, 3.5f);
+        AddBD(bd);
+    }
+
+    public void DebugBleed()
+    {
+        DamageClass damage = new DamageClass(5);
+        IDamageable damageable = GetComponent<IDamageable>();   
+        BDClass bd = new BDClass("DebugBleed", BDDamageType.Bleed, damageable, damage, 5, 1.5f);
+        bd.MakeStack(50, true);
+        AddBD(bd);
+    }
 
 
     #region GETTING VALUES
@@ -310,6 +432,8 @@ public class EntityStat : MonoBehaviour
 
 }
 
+//it can rece
+
 [System.Serializable]
 public class StatClass
 {
@@ -342,6 +466,7 @@ public enum StatType
     SkillDamage,
     Luck,
     Vampirism,
+    DamageBack
 
 
 }

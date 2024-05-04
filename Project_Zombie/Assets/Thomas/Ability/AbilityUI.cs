@@ -1,9 +1,25 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AbilityUI : MonoBehaviour
 {
+
+    GameObject holder;
+
+    private void Awake()
+    {
+        holder = transform.GetChild(0).gameObject;
+    }
+
+    public void ControlUI(bool isVisible)
+    {
+        holder.SetActive(isVisible);
+    }
+
+
     [SerializeField] AbilityUnit abilityUnitTemplate;
     [SerializeField] Transform container;
     [SerializeField]List<AbilityUnit> abilityActiveUnitList = new();
@@ -36,7 +52,14 @@ public class AbilityUI : MonoBehaviour
         }
     }
 
-    
+    [Separator("DASH")]
+    [SerializeField] GameObject dashHolder;
+    [SerializeField] Image dashFill;
+
+    public void UpdateDashFill(float current, float total)
+    {
+        dashFill.fillAmount = current / total;
+    }
 
 
     void ClearUI(Transform targetContainer)

@@ -18,16 +18,34 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (handler == null) return;
+    
         if (block.HasBlock(BlockClass.BlockType.Complete)) return;
+
+        InputPause();
+
+        if (block.HasBlock(BlockClass.BlockType.Partial)) return;
+
+        if (handler._entityStat.isStunned)
+        {
+            Debug.Log("is stunned");
+            return;
+        }
+
+        if (!block.HasBlock(BlockClass.BlockType.Combat))
+        {
+            InputShoot();
+            InputReload();
+            InputSwap();
+            InputAbilityActive();
+        }
 
         InputMovement();
         InputRotation();
-        InputShoot();
-        InputReload();
-        InputSwap();
+        InputDash();
         InputInteract();
-        InputPause();
-        InputAbilityActive();
+        
+        
     }
 
 
@@ -37,20 +55,21 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(key.GetKey(KeyType.MoveLeft)))
         {
-            dir += Vector3.left;
+            dir += Vector3.right;
         }
         if (Input.GetKey(key.GetKey(KeyType.MoveRight)))
         {
-            dir += Vector3.right;
+            dir += Vector3.left;
         }
         if (Input.GetKey(key.GetKey(KeyType.MoveDown)))
         {
-            dir += Vector3.down;
+            dir += Vector3.up;
         }
         if (Input.GetKey(key.GetKey(KeyType.MoveUp)))
         {
-            dir += Vector3.up;
+            dir += Vector3.down;
         }
+
 
         handler._playerMovement.MovePlayer(dir);
     }
@@ -169,5 +188,13 @@ public class PlayerController : MonoBehaviour
 
 
         return Vector3.zero;
+    }
+
+    void InputDash()
+    {
+        if (Input.GetKeyDown(key.GetKey(KeyType.Dash)))
+        {
+            handler._playerMovement.Dash();
+        }
     }
 }

@@ -28,8 +28,6 @@ public class ChestGun : ChestBase
     //for a list 
 
 
-    [SerializeField] int amountAllowed;
-    int amountUsed;
 
     public override void Interact()
     {
@@ -45,14 +43,16 @@ public class ChestGun : ChestBase
 
     }
 
-
-    public void ProgressChest()
+    public override void ProgressChest()
     {
-        amountUsed++;
-
-        if(amountUsed >= amountAllowed)
+        if(LocalHandler.instance != null)
+        {
+            LocalHandler.instance.ChestGunUse();
+        }
+        else
         {
             Destroy(gameObject);
         }
     }
+
 }

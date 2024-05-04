@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586ed45482a7b49459c4a4d56809d9fa, type: 3}
+  m_Name: Enemy_Giant
+  m_EditorClassIdentifier: 
+  enemyName: Giant
+  enemyModel: {fileID: 4825173832297872710, guid: 1aa0ca1f4928fd94ab3595953bb91366, type: 3}
+  attackRange: 5
+  attackSpeed: 1.5
+  initialStatList:
+  - stat: 0
+    initialValue: 750
+  - stat: 1
+    initialValue: 0
+  - stat: 2
+    initialValue: 30
+  scaleStatList:
+  - stat: 0
+    initialValue: 150

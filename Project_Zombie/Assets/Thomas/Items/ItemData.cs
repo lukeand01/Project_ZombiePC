@@ -7,6 +7,7 @@ public class ItemData : ScriptableObject
     ///BASE OF ALL ITEMS
 
     public string itemName;
+    [TextArea] public string itemDescription;
     public Sprite itemIcon;
     public TierType tierType;
 

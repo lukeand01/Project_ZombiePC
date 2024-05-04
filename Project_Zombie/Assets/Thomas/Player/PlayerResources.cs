@@ -14,6 +14,8 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     string id;
     bool isDead;
+    
+
     private void Awake()
     {
         id  =Guid.NewGuid().ToString();
@@ -23,7 +25,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
     {
         healthTotal = handler._entityStat.GetTotalValue(StatType.Health);
         healthCurrent = healthTotal;
-        SetPoints(0);
+        SetPoints(startingPoints);
 
         UIHandler.instance._playerUI.ForceUpdateHealth(healthCurrent, healthTotal);
     }
@@ -40,6 +42,12 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageClass damage)
     {
+        if(handler._entityStat.IsImmune)
+        {
+            Debug.Log("its immune to damage");
+            return;
+        }
+
         bool isCrit = damage.CheckForCrit();
 
         float reduction = handler._entityStat.GetTotalValue(StatType.DamageReduction);
@@ -49,7 +57,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
         float damageValue = damage.GetDamage(reduction, totalHealth, isCrit);
 
         healthCurrent -= damageValue;
-
+        UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal);
 
         if (healthCurrent <= 0)
         {
@@ -61,13 +69,13 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     public void ApplyBD(BDClass bd)
     {
-        handler._entityStat.AdBD(bd);
+        handler._entityStat.AddBD(bd);
     }
 
 
     #region POINTS
-    public int points { get; private set; } 
-
+    public int points { get; private set; }
+    [SerializeField] int startingPoints;
     public void SetPoints(int value)
     {
         points = value;

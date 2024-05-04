@@ -24,9 +24,27 @@ public static class MyUtils
             StatType.SkillDamage,
             StatType.Luck,
             StatType.Vampirism,
+            StatType.DamageBack
 
         };
     }
+
+    public static List<ItemResourceType> GetResourceListRef()
+    {
+        return new List<ItemResourceType>()
+        {
+            ItemResourceType.Food,
+            ItemResourceType.Iron,
+            ItemResourceType.Copper,
+            ItemResourceType.Eletrical_Components,
+            ItemResourceType.Uranium,
+            ItemResourceType.Rare_Cristals,
+            ItemResourceType.Zyo,
+            ItemResourceType.Anti_Matter
+        };
+    }
+
+
 
     public static List<StatType> GetStatForGunListRef()
     {

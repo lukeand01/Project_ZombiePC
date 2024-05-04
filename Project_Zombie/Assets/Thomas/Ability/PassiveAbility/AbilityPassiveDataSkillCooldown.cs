@@ -21,18 +21,17 @@ public class AbilityPassiveDataSkillCooldown : AbilityPassiveData
         int secondSkillModifier = MyUtils.GetSecondPassiveModifier(level);
         float secondSkillValue = secondSkillModifier * secondValue;
 
-
-
+       
         //this reduces cooldown indefinetly till it is removed.
         
         BDClass bd = new BDClass("AbilitySkillCooldown", StatType.SkillCooldown, value,0 ,0);       
-        PlayerHandler.instance._entityStat.AdBD(bd);
+        PlayerHandler.instance._entityStat.AddBD(bd);
 
         if (secondSkillModifier > 0)
         {
             //Debug.Log("supposed to add skill damage");
             BDClass bd2 = new BDClass("AbilitySkillDamage", StatType.SkillDamage, secondSkillValue, 0, 0);
-            PlayerHandler.instance._entityStat.AdBD(bd2);
+            PlayerHandler.instance._entityStat.AddBD(bd2);
         }
 
         //we need to replace this ability at playerskill

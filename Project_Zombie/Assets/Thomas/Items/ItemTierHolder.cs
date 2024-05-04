@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "TierHolder / Item")]
 public class ItemTierHolder : ScriptableObject
 {
     //we use this to hold the refenreces of weapons and most especifaicly to divided them into different groups for better access.
@@ -103,10 +103,10 @@ public class ItemTierHolder : ScriptableObject
         return chosenItem;
     }
 
+
+
+
     //what i can do is that i build this fella everytime i change level. that way i dont need to worry about building it over and over again.
-
-
-
     public void GenerateNewChanceListBasedInLevel(int level)
     {
         currentChanceListBasedInLevel.Clear();
@@ -227,6 +227,10 @@ class ItemChanceClass
 {
     public ItemData data;
     public int chance;
+
+    [Range(1, 50)]public int minAmount = 1;
+    [Range(1,50)]public int maxAmount = 1;
+
 
     public ItemChanceClass(ItemData data, int chance)
     {

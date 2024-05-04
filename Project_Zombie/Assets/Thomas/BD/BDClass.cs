@@ -103,18 +103,20 @@ public class BDClass
 
     public void CreateTick(int tickTotal, float tickTimerTotal)
     {
-
         this.tickTotal = tickTotal;
-
         tickTimerCurrent = 0;
         this.tickTimerTotal = tickTimerTotal;
+        MakeShowInUI();
     }
 
+
+    //the stack refresh the tick. and also the stacks only affect it.
     public void HandleTick()
     {
         if (tickTimerCurrent > tickTimerTotal)
         {
             //we proc the damage here.
+            //but it needs to be influenced bystacks.
 
             if (bdType == BDType.Damage)
             {
@@ -127,12 +129,15 @@ public class BDClass
         }
         else
         {
-            tickTimerCurrent += 0.01f;
+            tickTimerCurrent += Time.fixedDeltaTime;
         }
 
     }
 
-
+    void ResetTick()
+    {
+        tickCurrent = 0;
+    }
 
     public bool IsTick() => tickTotal > 0;
 
@@ -156,7 +161,7 @@ public class BDClass
     {
         tempCurrent = 0;
         tempTotal = total;
-
+        MakeShowInUI();
         debugName += "IsTemp: " + total.ToString() + ";";
     }
 
@@ -164,7 +169,7 @@ public class BDClass
     {
         if (tempTotal > tempCurrent)
         {
-            tempCurrent += Time.deltaTime;
+            tempCurrent += Time.fixedDeltaTime;
         }
         else
         {
@@ -188,12 +193,14 @@ public class BDClass
     #endregion
 
     #region STUN
-    public BDClass(string id, float duration)
+    public BDClass(string id, BDType _bdType, float duration)
     {
         //this means its the stun.
         this.id = id;
-        MakeTemp(duration);
-        bdType = BDType.Stun;
+        bdType = _bdType;
+
+        if(duration != 0) MakeTemp(duration);
+        
     }
 
     #endregion
@@ -202,7 +209,7 @@ public class BDClass
 
     bool doesStackingRefreshTimer;
     int stackTotal;
-    int stackCurrent;
+    public int stackCurrent { get; private set; }
 
     public void MakeStack(int stackTotal, bool doesStackingRefreshTimer)
     {
@@ -217,6 +224,7 @@ public class BDClass
         if (doesStackingRefreshTimer)
         {
             ResetTemp();
+            ResetTick();
         }
 
         if (stackCurrent >= stackTotal)
@@ -226,7 +234,7 @@ public class BDClass
         }
 
         stackCurrent += 1;
-
+        UpdateBDUnitStack();
         ReapplyBD();
 
 
@@ -263,18 +271,27 @@ public class BDClass
 
     #region UI
     BDUnit bd;
-
+    bool showInUI; //no perma i want to show. only temp
+    //we can another 
 
     public void CreateBDUnit()
     {
+        if (!showInUI) return;
         bd = UIHandler.instance.bdUI.CreateBDUnit(this);
     }
 
-    void UpdateBDUnit()
+    void UpdateBDUnitStack()
     {
-
+        if(bd != null)
+        {
+            bd.UpdateStack();
+        }
     }
 
+    public void MakeShowInUI()
+    {
+        showInUI = true;
+    }
     #endregion
 
 
@@ -286,7 +303,8 @@ public enum BDType
     Stat, //change stats by flat or percent
     Passive, //a passive that can be triggered while the bd is active
     Damage, //damage over a duration of time while the bd is active.
-    Stun //it used to be a boolean but now itsd the stun.
+    Stun, //it used to be a boolean but now itsd the stun.
+    Immune
 }
 
 public enum BDDamageType 

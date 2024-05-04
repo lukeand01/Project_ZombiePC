@@ -236,7 +236,7 @@ public class PlayerCombat : MonoBehaviour
 
             currentGunIndex++;
 
-            Debug.Log("call this");
+
 
 
             if (currentGunIndex >= gunList.Length)

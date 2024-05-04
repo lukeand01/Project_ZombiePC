@@ -53,7 +53,7 @@ public class ItemFollowTillEnd : MonoBehaviour
     void Act()
     {
         target = null;
-        PlayerHandler.instance._playerInventory.AddItem(item);
+        PlayerHandler.instance._playerInventory.AddItemForStage(item);
 
         transform.DOScale(0, 0.15f);
         Invoke(nameof(CallDestroy), 0.2f);

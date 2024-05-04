@@ -9,11 +9,11 @@ public class PlayerAbility : MonoBehaviour
 
     [SerializeField] List<AbilityActiveData> debugAbilityActiveStartingList = new();
     [SerializeField] List<AbilityPassiveData> debugPassiveStartingList = new();
-    private void Awake()
+
+    private void Start()
     {
         SetAbility();
     }
-
     private void FixedUpdate()
     {
         HandleAbilityActiveCooldown();
@@ -84,7 +84,7 @@ public class PlayerAbility : MonoBehaviour
     {
         //we simply add
         //but we have to check if there is already one and if we need to add.
-        int index = GetTargetAbility(data, abilityPassiveList);
+        int index = GetTargetAbilityIndex(data, abilityPassiveList);
 
 
         if(index != -1)
@@ -118,7 +118,7 @@ public class PlayerAbility : MonoBehaviour
         return -1;
     }
 
-    int GetTargetAbility(AbilityBaseData target, List<AbilityClass> abilityList)
+    int GetTargetAbilityIndex(AbilityBaseData target, List<AbilityClass> abilityList)
     {
         for (int i = 0; i < abilityList.Count; i++)
         {
@@ -193,6 +193,18 @@ public class PlayerAbility : MonoBehaviour
             abilityPassiveList[0].IncreaseLevel();
         }
     }
+
+    public AbilityClass GetTargetAbilityClass(AbilityPassiveData data)
+    {
+        foreach(var item in abilityPassiveList)
+        {
+            if (item.IsEmpty()) continue;
+            if (item.dataPassive == data) return item;
+        }
+
+        return new AbilityClass();
+    }
+
 
     #endregion
 

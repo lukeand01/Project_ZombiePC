@@ -15,6 +15,10 @@ public class UIHandler : MonoBehaviour
     [SerializeField] ChestUI chestUIRef;
     [SerializeField] PauseUI pauseUIRef;
     [SerializeField] AbilityUI abilityUIRef;
+    [SerializeField] CityUI cityUIRef;
+
+
+
     #region GETTERS 
     public PlayerUI _playerUI { get {  return playerUIRef; } }
 
@@ -28,7 +32,33 @@ public class UIHandler : MonoBehaviour
 
     public PauseUI PauseUI { get { return pauseUIRef; } }
     public AbilityUI AbilityUI { get { return abilityUIRef; } }
+
+    public CityUI CityUI { get { return cityUIRef; } }
     #endregion
+
+    
+    
+
+    public void ControlUI(bool isCityUI)
+    {
+        ControlCityUI(isCityUI);
+        ControlStageUI(!isCityUI);
+    }
+
+
+    void ControlCityUI(bool isVisible)
+    {
+        CityUI.ControlUI(isVisible);
+    }
+    void ControlStageUI(bool isVisible)
+    {
+        //stage ui is gun, playerui, abilityu
+        gunUI.ControlUI(isVisible);
+        _playerUI.ControlUI(isVisible);
+        AbilityUI.ControlUI(isVisible);
+
+    }
+
 
     private void Awake()
     {
@@ -40,5 +70,11 @@ public class UIHandler : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        
+    }
+    private void Start()
+    {
+       
     }
 }

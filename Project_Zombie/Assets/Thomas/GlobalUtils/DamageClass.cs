@@ -14,6 +14,11 @@ public class DamageClass
         this.baseDamage = baseDamage;
     }
 
+    public DamageClass(float baseDamage, float basePen)
+    {
+        MakeDamage(baseDamage);
+        MakePen(basePen);
+    }
 
     public string damageableID {  get; private set; }
 

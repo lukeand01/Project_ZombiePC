@@ -9,12 +9,15 @@ public class InteractCanvas : MonoBehaviour
 
     [SerializeField] GameObject interatButtonHolder;
     [SerializeField] TextMeshProUGUI interactButtonText;
-
+    [SerializeField] GameObject priceHolder;
+    [SerializeField] TextMeshProUGUI priceText;
 
 
     private void Awake()
     {
         mainCam = Camera.main;
+
+        if(priceHolder != null ) priceHolder.SetActive(false);
     }
 
     private void Update()
@@ -35,6 +38,12 @@ public class InteractCanvas : MonoBehaviour
 
     }
 
+    public void ControlPriceHolder(int price)
+    {
+        if (isDestroyed) return;
+        priceHolder.SetActive(true);
+        priceText.text = "Price: " + price.ToString();
+    }
 
     bool isDestroyed;
 

@@ -29,9 +29,16 @@ public class PauseUI : MonoBehaviour
         else
         {
             GameHandler.instance.PauseGame();
-            PlayerHandler.instance._playerController.block.AddBlock("Pause", BlockClass.BlockType.Complete);
+            PlayerHandler.instance._playerController.block.AddBlock("Pause", BlockClass.BlockType.Partial);
             holder.SetActive(true);
         }
+    }
+
+    [SerializeField] Settings _settings;
+
+    public void OpenSettings()
+    {
+        _settings.OpenSetting();
     }
 
 }

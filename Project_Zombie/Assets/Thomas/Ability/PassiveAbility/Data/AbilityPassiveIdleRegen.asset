@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d85e7fd42f9b4c04db1690cef4849134, type: 3}
+  m_Name: AbilityPassiveIdleRegen
+  m_EditorClassIdentifier: 
+  abilityName: Idle Regen
+  abilityDescription: If you are out of combat for long enough you regen 1% of your
+    max health per second. in 3 stacks if you stand idle for long enough your increase
+    your base health regen by 30%.
+  abilityIcon: {fileID: 21300000, guid: eac3e2cd2f3070a4cb2521c534e1964f, type: 3}
+  abilityStackMax: 10
+  abilityTier: 0

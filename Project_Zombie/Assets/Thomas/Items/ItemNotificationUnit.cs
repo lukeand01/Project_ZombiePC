@@ -76,7 +76,6 @@ public class ItemNotificationUnit : MonoBehaviour
     IEnumerator EndProcess()
     {
 
-        Debug.Log("end process");
         float duration = 0.3f;
 
         background.DOFade(0, duration);
@@ -93,7 +92,6 @@ public class ItemNotificationUnit : MonoBehaviour
         Destroy(gameObject);
 
 
-        Debug.Log("end of this");
 
     }
 

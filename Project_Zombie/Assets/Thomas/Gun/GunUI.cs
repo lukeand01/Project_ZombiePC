@@ -6,6 +6,19 @@ using UnityEngine.UI;
 
 public class GunUI : MonoBehaviour
 {
+    GameObject holder;
+
+    private void Awake()
+    {
+        holder = transform.GetChild(0).gameObject;
+    }
+
+    public void ControlUI(bool isVisible)
+    {
+        holder.SetActive(isVisible);
+    }
+
+
     [SerializeField] TextMeshProUGUI currentAmmoText;
     [SerializeField] TextMeshProUGUI reserveAmmoText;
     [SerializeField] Image reloadFillImage;

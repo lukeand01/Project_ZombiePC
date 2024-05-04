@@ -53,12 +53,14 @@ public class BlockClass
 
     public enum BlockType
     {
-        Complete,        
-        Partial,
+        Partial,        
+        Complete,
         Movement,
+        Combat,
         MouseSkill,
         KeySkill,
-        Silence
+        Silence,
+        Pause
 
 
     }

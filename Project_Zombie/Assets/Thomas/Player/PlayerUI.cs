@@ -9,12 +9,19 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
+    GameObject holder;
+
     [SerializeField] Image mouseIcon;
 
     private void Awake()
     {
-        pointSpeed = 100;
+        pointSpeed = 150;
         speed = 100;
+        holder = transform.GetChild(0).gameObject;
+    }
+    public void ControlUI(bool isVisible)
+    {
+        holder.SetActive(isVisible);
     }
 
     private void Update()

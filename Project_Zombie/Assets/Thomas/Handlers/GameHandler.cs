@@ -38,7 +38,7 @@ public class GameHandler : MonoBehaviour
 
     public void PauseGame()
     {
-        Time.timeScale = 0.01f;
+        Time.timeScale = 0f;
         timeModifier = 10000;
     }
     public void ResumeGame()

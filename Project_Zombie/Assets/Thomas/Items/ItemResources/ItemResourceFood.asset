@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: ItemResourceFood
   m_EditorClassIdentifier: 
   itemName: Food
-  itemIcon: {fileID: 0}
+  itemDescription: Food Description
+  itemIcon: {fileID: 21300000, guid: ef9ba620c9e9604438f10369334feead, type: 3}
+  tierType: 0
   resourceType: 1

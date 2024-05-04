@@ -9,6 +9,26 @@ public class ChestResource : ChestBase
     [SerializeField] ItemClass item;
     [SerializeField] ItemFollowTillEnd itemFollowTillEndTemplate;
 
+    int index;
+
+    private void Awake()
+    {
+        
+    }
+
+    public void SetUp(ItemClass item, int index)
+    {
+        //we need to decided. and we can just decide it here instead of receiving something.
+        if(item != null)
+        {
+            //there is already an item so its for testing
+            return;
+        }
+
+        this.item = new ItemClass(item.data, item.quantity);
+        this.index = index;
+    }
+
     public override void Interact()
     {
         base.Interact();
@@ -18,6 +38,12 @@ public class ChestResource : ChestBase
         isLocked = true;
         
         CreateItem();
+        if(LocalHandler.instance != null)
+        {
+            LocalHandler.instance.ChestResourceDestroy(index);
+        }
+
+        Destroy(gameObject);
     }
 
     //every 10 it gives the stuff

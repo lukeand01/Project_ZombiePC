@@ -27,9 +27,16 @@ public class PlayerHandler : MonoBehaviour
     public int playerAbilityRollLevel {  get; private set; }
 
 
-    [Separator("ITEM HOLDERS")]
+    [Separator("REF HOLDERS")]
     [SerializeField] ItemTierHolder itemHolderGun;
     [SerializeField] ItemTierHolder itemHolderResource;
+    [SerializeField] AbilityTierHolder abilityHolder;
+
+    [Separator("REF HOLDER FOR CITY")]
+    [SerializeField] CityData hqHolder; //what if i require more than just level. such as quests or other places in certain levels
+    [SerializeField] CityDataLab labHolder;
+    [SerializeField] CityDataArmory armoryHolder;
+    
 
 
     private void Update()
@@ -56,7 +63,7 @@ public class PlayerHandler : MonoBehaviour
         {
             BDClass bd = new BDClass("Debug", StatType.Damage, 0.5f, 0, 0);
             bd.MakeTemp(15);
-            _entityStat.AdBD(bd);
+            _entityStat.AddBD(bd);
 
         }
 
@@ -64,7 +71,7 @@ public class PlayerHandler : MonoBehaviour
         {
             BDClass bd = new BDClass("DebugSpeeed", StatType.Speed, 0f, -0.5f, 0);
             bd.MakeTemp(15);
-            _entityStat.AdBD(bd);
+            _entityStat.AddBD(bd);
 
         }
 
@@ -87,8 +94,8 @@ public class PlayerHandler : MonoBehaviour
         }
 
         itemHolderGun.ResetAllDivisions();
-        itemHolderResource.ResetAllDivisions(); 
-
+        itemHolderResource.ResetAllDivisions();
+        abilityHolder.SetHolder();
 
         _playerController = GetComponent<PlayerController>();
         _playerMovement = GetComponent<PlayerMovement>();
@@ -114,6 +121,7 @@ public class PlayerHandler : MonoBehaviour
     public void SetPlayerAbilityRollLevel(int newValue)
     {
         playerAbilityRollLevel = newValue;
+        abilityHolder.GenerateNewChanceListBasedInLevel(newValue);
         
     }
     public void SetPlayerGunRollLevel(int newValue)
@@ -130,6 +138,13 @@ public class PlayerHandler : MonoBehaviour
     {
         return itemHolderGun.GetChosenItem(playerGunRollLevel);
     }
+
+    public List<AbilityPassiveData> GetPassiveList()
+    {
+        return abilityHolder.GetPassiveChosenList(3);
+    }
+
+
 
     #endregion
 

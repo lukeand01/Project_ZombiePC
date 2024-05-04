@@ -46,6 +46,8 @@ public class KeyClass
         keyDictionary.Add(KeyType.Shoot, KeyCode.Mouse0);
 
         keyDictionary.Add(KeyType.Pause, KeyCode.Escape);
+
+        keyDictionary.Add(KeyType.Dash, KeyCode.LeftShift);
     }
 
 
@@ -65,6 +67,7 @@ public enum KeyType
     Ability2,
     Ability3,
     Shoot,
-    Pause
+    Pause,
+    Dash
 
 }

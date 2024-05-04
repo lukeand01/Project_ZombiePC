@@ -44,6 +44,16 @@ public class ChestBase : MonoBehaviour, IInteractable
     }
 
 
+    [SerializeField] int amountAllowed;
+    int amountUsed;
 
+    public virtual void ProgressChest()
+    {
+        amountUsed++;
 
+        if (amountUsed >= amountAllowed)
+        {
+            Destroy(gameObject);
+        }
+    }
 }
