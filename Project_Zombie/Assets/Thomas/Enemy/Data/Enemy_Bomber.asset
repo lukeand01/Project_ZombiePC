@@ -25,6 +25,8 @@ MonoBehaviour:
     initialValue: 100
   - stat: 5
     initialValue: 30
+  - stat: 4
+    initialValue: 100
   scaleStatList:
   - stat: 0
     initialValue: 30

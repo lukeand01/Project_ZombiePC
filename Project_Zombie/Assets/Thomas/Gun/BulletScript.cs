@@ -104,6 +104,9 @@ public class BulletScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
+
+
         //then we apply everything and check if this fella can continue.
         if (other.gameObject.tag == "Wall")
         {
@@ -113,6 +116,7 @@ public class BulletScript : MonoBehaviour
         }
 
         if (isEnemy && other.gameObject.tag == "Enemy") return;
+        if (!isEnemy && other.gameObject.tag == "Player") return;
 
         IDamageable damageable = other.GetComponent<IDamageable>();
 

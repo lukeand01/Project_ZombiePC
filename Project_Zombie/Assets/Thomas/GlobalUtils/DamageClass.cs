@@ -11,7 +11,7 @@ public class DamageClass
 
     public DamageClass(float baseDamage)
     {
-        this.baseDamage = baseDamage;
+        MakeDamage(baseDamage);
     }
 
     public DamageClass(float baseDamage, float basePen)
@@ -24,13 +24,17 @@ public class DamageClass
 
 
     DamageType damageType;
-
+    public IDamageable attacker {  get; private set; }
 
     public float baseDamage { get; private set; }
+    public float currentDamage { get; private set; } 
     public float pen {  get; private set; }
+
     public float critChance;
     public float critDamage { get; private set; }
     public float damageBasedInHealth {  get; private set; }
+
+    public float additionalDamageBasedInBulletQuantity { get; private set; }
 
     bool alwaysCrit;
 
@@ -40,8 +44,8 @@ public class DamageClass
 
     public bool cannotFinishEntity { get; private set;}
 
-    
-   
+
+    public bool shoudNotShowPopUp;
     
 
     #region MAKE
@@ -63,10 +67,15 @@ public class DamageClass
         critChance = value;
     }
 
+    public void MakeStack(int stacks)
+    {
+        currentDamage = baseDamage * stacks;
+    }
 
     public void MakeDamage(float damage)
     {      
-        baseDamage = damage;    
+        baseDamage = damage;
+        currentDamage = damage;
     }
     public void MakePen(float pen)
     {
@@ -81,6 +90,20 @@ public class DamageClass
     public void MakeDamageType(DamageType damageType)
     {
         this.damageType = damageType;
+    }
+    public void MakeUIInvisible()
+    {
+        shoudNotShowPopUp = true;
+    }
+
+    public void MakeAttacker(IDamageable attacker)
+    {
+        this.attacker = attacker;
+    }
+
+    public void MakeBulletQuantityDamageModifier(float value)
+    {
+        additionalDamageBasedInBulletQuantity = value;
     }
 
     #endregion
@@ -107,7 +130,10 @@ public class DamageClass
     {
         //i need to know how strong he is. we roll for crit.
 
-        float totalDamage = baseDamage;
+        float totalDamage = currentDamage;
+
+
+        
 
         
         totalReducition -= pen;
@@ -122,13 +148,18 @@ public class DamageClass
         totalDamage += healthbasedDamageIncrement;
 
 
+       
         //the pen ignores an amount. its always flat. each value
-
 
         if (isCrit)
         {
             totalDamage *= 1.5f + critDamage;
         }
+
+
+
+        float BulletQuantityDamageModifier = additionalDamageBasedInBulletQuantity * totalDamage;
+        totalDamage += BulletQuantityDamageModifier;
 
 
 

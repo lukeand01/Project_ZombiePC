@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: ItemGunShotgunDebug
   m_EditorClassIdentifier: 
   itemName: ShotungDebug
+  itemDescription: 
   itemIcon: {fileID: 21300000, guid: 46e9142f1a016ee4c83d0e2f4cd80e4d, type: 3}
   tierType: 0
-  damagePerBullet: 3
-  bulletPerShot: 6
+  damagePerBullet: 50
+  bulletPerShot: 12
   bulletOffset: 10
   gunBaseStat:
   - stat: 2
@@ -28,7 +29,7 @@ MonoBehaviour:
   - stat: 7
     initialValue: 0
   - stat: 8
-    initialValue: 2
+    initialValue: 1
   - stat: 9
     initialValue: 2
   - stat: 10
@@ -37,3 +38,4 @@ MonoBehaviour:
   bulletTemplate: {fileID: 1912603505503571018, guid: 03c593b7051d78e41968b090993b4855, type: 3}
   bulletBehaviorList:
   - {fileID: 11400000, guid: 7de699dcd4418804fa47683b196830a0, type: 2}
+  canHoldDownButtonToKeepShooting: 0

@@ -23,7 +23,7 @@ public class FadeUI : MonoBehaviour
     float timeForHeight;
     float timeForHeightModifier = 1;
 
-
+    
 
     Vector3 origin;
     Vector3 originalScale;
@@ -36,7 +36,8 @@ public class FadeUI : MonoBehaviour
     private void Start()
     {
         transform.localScale = new Vector3(1,1,1);
-        origin = transform.position;
+        //origin = transform.position;
+        origin = transform.localPosition;
         originalScale = transform.localScale;
         cam = Camera.main;
 
@@ -50,7 +51,8 @@ public class FadeUI : MonoBehaviour
 
         text.color = new Color(text.color.r, text.color.g, text.color.b, alphaColorCurve.Evaluate(timeForColor));
         transform.localScale = originalScale * scaleCurve.Evaluate(timeForScale);
-        transform.position = origin + new Vector3(0, 0 + heightCurve.Evaluate(timeForHeight), 0);
+        //transform.position = origin + new Vector3(0, 0 + heightCurve.Evaluate(timeForHeight), 0);
+        transform.localPosition = origin + new Vector3(0, 0 + heightCurve.Evaluate(timeForHeight), 0);
 
 
         timeForColor += Time.deltaTime * timeForColorModifier;

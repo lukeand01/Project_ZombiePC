@@ -12,27 +12,52 @@ public class BDUnit : ButtonBase
     BDClass bd;
     [SerializeField] Image icon;
     [SerializeField] Image fillImage;
+    [SerializeField] GameObject stackHolder;
     [SerializeField] TextMeshProUGUI stackText;
+    [SerializeField] GameObject tickHolder;
+    [SerializeField] TextMeshProUGUI tickText;
+    [SerializeField] GameObject selected;
+
+    //
+
+    private void Update()
+    {
+        if(Time.timeScale > 0)
+        {
+            selected.SetActive(false);
+        }
+    }
 
     public void SetUp(BDClass bd)
     {
         this.bd = bd;
 
         UpdateStack();
-               
+        UpdateTick();
 
     }
     public void UpdateStack()
     {
-        if (bd.IsStackable())
+        if (bd.IsStackable() && bd.stackCurrent > 1)
         {
-            stackText.gameObject.SetActive(true);
+            stackHolder.gameObject.SetActive(true);
             stackText.text = bd.stackCurrent.ToString();
         }
         else
         {
-            stackText.gameObject.SetActive(false);
+            stackHolder.gameObject.SetActive(false);
         }
+    }
+
+    public void UpdateTick()
+    {
+        tickHolder.SetActive(bd.IsTick());
+        if (bd.IsTick())
+        {
+            //
+            tickText.text = bd.tickCurrent.ToString();
+        }
+       
     }
 
     public void UpdateFill(float current, float total)
@@ -42,12 +67,24 @@ public class BDUnit : ButtonBase
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        base.OnPointerEnter(eventData);
+        //only if its paused.
+        if(Time.timeScale == 0)
+        {
+            selected.SetActive(true);
+            UIHandler.instance._pauseUI.DescribeBD(bd, transform);
+        }
     }
     public override void OnPointerExit(PointerEventData eventData)
     {
-        base.OnPointerExit(eventData);
+       if(Time.timeScale == 0)
+        {
+            selected.SetActive(false);
+            UIHandler.instance._pauseUI.StopDescription();
+        }
     }
+
+
+
 
     public void OrderOwnDestruction()
     {

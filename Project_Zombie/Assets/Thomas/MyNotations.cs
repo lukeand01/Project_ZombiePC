@@ -154,11 +154,11 @@
 //create shielded. can only be attacked from behind. the front require a certain level of penetration.
 
 //NEXT GOAL
-//create spawn system
-//create system for gunboxes
-//create system for resource box
+///create spawn system
+///create system for gunboxes
+///create system for resource box
 //create system for ability box
-//create stunned system
+///create stunned system
 
 
 //GOAL
@@ -186,23 +186,99 @@
 ///create stunned system
 ///create immune system
 ///create dash system
-//create bleeding system.
-//now we create bdunits to show the player what he is suffering. the enemies can also have it but they disaply somewhere else.
-//you can see 
+///create bleeding system.
+///now we create bdunits to show the player what he is suffering. the enemies can also have it but they disaply somewhere else.
+///stun and bleeding apply to enemy
+///the bd in top of enemy´s head is not working because i think grid doesnt work in this utation.
+///you can see all your own bds and pause to check them better. can see the guns and can see the stats. we need a whole list by the right.
+///change it so the description appears as a window instead of staying in place. then i place the passive holder there.
+///create and update passive description
+///create and update stat description
+//create gun description
+
+//GOAL
+///create ability box. each enemy has a chance to carry a ability box that will be dropped once dead.
+///shotgun spread is not working.
+///fix the way damage pop up is working. the damage should stay after the nemey die. once the enemy die we remove the canvas, and then after there is no more damagepopup it is destroyed
+///should not damage itself.
+//BUG? after a while the fellas are just wondering around. 
+///the chest is not being destroyed for some reason. just some times.
+///fix the chest appearing stuck. we can use grtavity spawn the chest high and then let gravity adjust it.
+///the gun is shooting twice sometimes.
+///when swaping you block input till you release your hand
+///reloading must update teh gununit
+
 
 //GOAL
 //can summon a sentry.
-//can become invisible for a short duration
-//can become immune for a short duration
-//Pistol Speed: grants an amount of speed and less cooldown for dash
-//Pistol Sharp: 
-//SMG: has a chance of each shot to shoot one additioanl bullet.
-//swaed off shotgun: each additional pellet deals 1% damage.
+//enemies can attack turrets.
+///can become invisible for a short duration. meaning that enemies will ignore the target. no visual stuff, just a bd and make it invisible
+//the turret is losing aim of the enemy.
+//turrets can be damaged and destroyed.
+//turrets have a cooldown timer.
+///can become immune for a short duration
+///create system for a weapon to give the player passives.
+
+
+//GOAL
+///Pistol Speed: grants an amount of speed and less cooldown for dash
+///Pistol Sharp: Increases damageback per {}. and a chance to dodge.
+///fix the damage popup. its too far from head and doesnt follow the target. 
+///SMG: has a chance of each shot to shoot one additioanl bullet.
+///sawed off shotgun: deals more damage per additional pellet. 0.5 % per pellet.
+
+//GOAL
+///creates system for dodge. and when you dodge there is a popup
+///creates system for damageback
+///creates system for increasing the amount of shoots based in a modifier.
+
+//GOAL
+//shoot a fireaball at mouse
+//instantly reload the mag and deasl damage around based in the magsize.
+//for a short duration all your weapons shoot twice as many bullets.
+
+//GOAL
+//pasive algorithm needs to take in mind the following:
+//cannot give the player a passive that the player can no longer stack
+//should prio a passive that the player has. increase it by 40% chance
+//Passive Every hit applies bleeding
+//Passive slow enemies by 1% per stack in shoot. at 4 has a chance to stun
+//passive idle regen
+//passive reload speed
+//passive skillcooldown
+//passive increase maxhealth. at 5 get a shield that is based off maxhealth.
+//create shield mechanic.
+//passive if the player has this item then he will revive once dead. but only once. cannot stack.
+//passive deals 20% damage to bosses . at 3 deals 15% more damage to enemies with 80% health <= UNSURE
+//passive enemies that have a debuff receive 3% more damage. at 5 they explode when killed.
+//passive killing an enemy grants you 1 additional health. up to 100 per stack, can stack 5 times.
+//heal one by every enemy you damage. the value increase one by every stack. up to 5.
+//Does nothing till stack 3 - enemies that you hit that are below 15% of health instantly die.
+//passive enemies around you are randomly struck by lioghting. every stack grants an additional lighting and 1% to the damage. the damage is based off the player´s damage.
+//passive dashing deal damage. every stack increases the damage. at stack 4 you get a an additioanl dash ammo.
+//you are luckier with all chests.
 
 
 
-//and i need to show the stats.
-//the ability just show the descrioption.
+//there should be more to do in the base 
+//there should be quest and a story line.
+//there is a bit of citry managing
+//you can send people in missions. you can put people to work.
+//but they require something. they require resources, and you can expand and build in new places build new stuff.
+
+
+//the city data should tell what kind of ui it will open?
+//we can put that ai apart from playercanvas because there is no need to carry that everywhere.
+//also a singleton and its called baseCanvas.
+
+//GOAL
+//create base systems
+//can visit lab where you can get active abilities
+//can visit smith to get perma guns
+//in the right side you can click and a window will appear where you can equip all that stuff
+//can visit the launch pad where you start missions
+//can visit the HQ where you can get the quests.
+//
 //
 
 
@@ -222,12 +298,12 @@
 
 //ACTIVE
 //summon a sentry where the mouse is. need to find the closest placable area for the sentry.
-//become invisible
-//become immune to damage for a short duration
+///become invisible
+///become immune to damage for a short duration
 //shoot a fireaball at mouse
 //instantly reload the mag and deasl damage around based in the magsize.
 //for a short duration all your weapons shoot twice as many bullets.
-//
+
 
 //PASSIVE (6/ 12)
 //reduce skill cooldown. at 3 skills do more damage.

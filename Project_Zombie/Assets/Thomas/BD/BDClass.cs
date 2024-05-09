@@ -71,21 +71,34 @@ public class BDClass
     public BDDamageType damageType { get; private set; }
     DamageClass damage;
     IDamageable damageable;
-
-    public BDClass(string id, BDDamageType damageType, IDamageable damageable, DamageClass damage, int tickTotal, float tickTimeTotal)
+    float damageModifier;
+    public BDClass(string id, BDDamageType damageType, IDamageable damageable, float damageModifier, int tickTotal, float tickTimeTotal)
     {
-        this.id = id;
-        this.damageType = damageType;
-        this.damageable = damageable;
-        this.damage = damage;
+        bdType = BDType.Damage;
 
+        debugName = "Damage Tick " + damageType.ToString();
+
+        this.id = id;
+        this.damageable = damageable;
+        this.damageType = damageType;
+        this.damageModifier = damageModifier;
+
+        float damageValue = GetDamage();
+        damage = new DamageClass(damageValue);
+
+
+
+        MakeShowInUI();
+        //CreateBDUnit();
         CreateTick(tickTotal, tickTimeTotal);
+
     }
 
     void HandleDamageTick()
     {
-        if (damageType == BDDamageType.Burn)
+        if (damageType == BDDamageType.Bleed)
         {
+
             damageable.TakeDamage(damage);
         }
     }
@@ -95,8 +108,8 @@ public class BDClass
 
     #region TICK 
 
-    int tickTotal;
-    int tickCurrent;
+    public int tickTotal {  get; private set; }
+    public int tickCurrent {  get; private set; }
 
     float tickTimerTotal;
     float tickTimerCurrent;
@@ -104,8 +117,10 @@ public class BDClass
     public void CreateTick(int tickTotal, float tickTimerTotal)
     {
         this.tickTotal = tickTotal;
-        tickTimerCurrent = 0;
+        tickCurrent = tickTotal;
+
         this.tickTimerTotal = tickTimerTotal;
+        tickTimerCurrent = tickTimerTotal;
         MakeShowInUI();
     }
 
@@ -113,37 +128,41 @@ public class BDClass
     //the stack refresh the tick. and also the stacks only affect it.
     public void HandleTick()
     {
-        if (tickTimerCurrent > tickTimerTotal)
+        if (tickTimerCurrent <= 0)
         {
             //we proc the damage here.
             //but it needs to be influenced bystacks.
 
             if (bdType == BDType.Damage)
             {
+
                 HandleDamageTick();
             }
 
 
-            tickCurrent += 1;
-            tickTimerCurrent = 0;
+            tickCurrent -= 1;
+            UpdateBDUnitTick();
+            tickTimerCurrent = tickTimerTotal;
         }
         else
         {
-            tickTimerCurrent += Time.fixedDeltaTime;
+
+            tickTimerCurrent -= Time.fixedDeltaTime;
+            UpdateFill(tickTimerCurrent, tickTimerTotal);
         }
 
     }
 
     void ResetTick()
     {
-        tickCurrent = 0;
+        tickCurrent = tickTotal;
     }
 
     public bool IsTick() => tickTotal > 0;
 
     public bool IsTickDone()
     {
-        return tickCurrent >= tickTotal;
+        return tickCurrent <= 0;
     }
 
     //i need the original value for this otherwill we will increase the stack version.
@@ -159,40 +178,53 @@ public class BDClass
 
     public void MakeTemp(float total)
     {
-        tempCurrent = 0;
+        
         tempTotal = total;
+        tempCurrent = tempTotal;
         MakeShowInUI();
+        //CreateBDUnit();
         debugName += "IsTemp: " + total.ToString() + ";";
     }
 
     public void HandleTemp()
     {
-        if (tempTotal > tempCurrent)
+        if (tempCurrent > 0)
         {
-            tempCurrent += Time.fixedDeltaTime;
+            tempCurrent -= Time.fixedDeltaTime;
+            UpdateFill(tempCurrent, tempTotal); 
         }
-        else
-        {
-
-        }
+        
     }
 
     void ResetTemp()
     {
-        tempCurrent = 0;
+        tempCurrent = tempTotal;
 
     }
 
+    public float GetTempDurationForDescription()
+    {
+        if (IsTick())
+        {
+            //we will get the duration between tick, and put them together in a total.
+            return tickTotal * tickTimerTotal;
+        }
+        if (IsTemp())
+        {
+            return tempTotal;
+        }
+        return -1;
+    }
     public bool IsTemp() => tempTotal > 0;
 
     public bool IsTempDone()
     {
-        return tempCurrent >= tempTotal;
+        return tempCurrent <= 0;
     }
 
     #endregion
 
-    #region STUN
+    #region STUN, IMMUNE, INVISIBILITY
     public BDClass(string id, BDType _bdType, float duration)
     {
         //this means its the stun.
@@ -213,6 +245,7 @@ public class BDClass
 
     public void MakeStack(int stackTotal, bool doesStackingRefreshTimer)
     {
+        stackCurrent = 1;
         this.stackTotal = stackTotal;
         this.doesStackingRefreshTimer = doesStackingRefreshTimer;
     }
@@ -220,7 +253,7 @@ public class BDClass
     public void Stack(BDClass bd)
     {
         //we can stack more than just stat.
-        Debug.Log("stack");
+
         if (doesStackingRefreshTimer)
         {
             ResetTemp();
@@ -255,6 +288,16 @@ public class BDClass
         if (bdType == BDType.Damage)
         {
             //icnrease or not the damage.
+            //we need to get the damage and multiply it.
+
+            if(damage == null)
+            {
+                float damageValue = GetDamage();
+                damage = new DamageClass(damageValue);               
+            }
+
+            damage.MakeStack(stackCurrent);
+
             return;
         }
 
@@ -274,10 +317,30 @@ public class BDClass
     bool showInUI; //no perma i want to show. only temp
     //we can another 
 
-    public void CreateBDUnit()
+    public void CreateBDUnit(EntityStatCanvas canvas = null)
     {
         if (!showInUI) return;
-        bd = UIHandler.instance.bdUI.CreateBDUnit(this);
+        if (bd != null) return;
+
+        if(canvas == null)
+        {
+            bd = UIHandler.instance.bdUI.CreateBDUnit(this);
+        }
+        else
+        {
+            bd = canvas.CreateBDUnit(this);
+        }
+
+        
+    }
+
+
+    void UpdateFill(float current, float total)
+    {
+        if(bd != null)
+        {
+            bd.UpdateFill(current, total);
+        }
     }
 
     void UpdateBDUnitStack()
@@ -288,13 +351,139 @@ public class BDClass
         }
     }
 
+    void UpdateBDUnitTick()
+    {
+        if (bd != null)
+        {
+            bd.UpdateTick();
+        }
+    }
+
+    public void RemoveBDUnit()
+    {
+        if(bd != null)
+        {
+            bd.OrderOwnDestruction();
+        }
+    }
+
     public void MakeShowInUI()
     {
+        if (bdType == BDType.Stun) return;
         showInUI = true;
     }
+
+    public string GetFirstForStat()
+    {
+        if(statValueFlat > 0|| statValuePercentbasedOnBaseValue > 0 || statValuePercentbasedOnCurrentValue > 0)
+        {
+            return "Increase";
+        }
+        else
+        {
+            return "Decrease";
+        }
+    }
+
+    public string GetSecondForStat()
+    {
+        string result = "";
+
+        if(statValueFlat != 0)
+        {
+            result += "by " + statValueFlat.ToString();
+        }
+
+        if (statValuePercentbasedOnBaseValue != 0)
+        {
+            result += "by " + statValuePercentbasedOnBaseValue.ToString();
+        }
+
+        if (statValuePercentbasedOnCurrentValueOriginal != 0)
+        {
+            result += "by " + statValuePercentbasedOnCurrentValueOriginal.ToString();
+        }
+
+        return result;
+
+    }
+
     #endregion
 
 
+    bool IsPositive()
+    {
+        return statValueFlat > 0 || statValuePercentbasedOnBaseValue > 0 || statValuePercentbasedOnCurrentValue > 0;
+    }
+
+    public string GetTypeForDescription()
+    {
+        if(bdType == BDType.Stat)
+        {
+            if (IsPositive())
+            {
+                return "Buff";
+            }
+            else
+            {
+                return "Debuff";
+            }
+        }
+        if(bdType == BDType.Damage)
+        {
+            if(damageType == BDDamageType.Burn)
+            {
+                return "Damage Tick - Burn";
+            }
+            if (damageType == BDDamageType.Bleed)
+            {
+                return "Damage Tick - Bleed";
+            }
+        }
+
+        if(bdType == BDType.Immune)
+        {
+            return "Immunity";
+        }
+
+        if(bdType == BDType.Stun)
+        {
+            return "Stun";
+        }
+
+        return "Error";
+    }
+
+    public string GetDamageDescription()
+    {
+        if (bdType != BDType.Damage) return "";
+
+        float damage = GetDamage();
+        
+        if(damageType == BDDamageType.Bleed)
+        {
+            return $"5 base damage + 2% of target max health = {damage} physical damage per tick"; 
+        }
+        if (damageType == BDDamageType.Burn)
+        {
+            return $"5 base damage + 2% of target max health = {damage} pure damage per tick";
+        }
+
+        return "";
+    }
+
+    float GetDamage()
+    {
+        if(damageType == BDDamageType.Bleed)
+        {
+            float baseDamage = 5;
+            float percentDamage = damageable.GetTargetMaxHealth() * 0.02f;
+            return baseDamage + percentDamage;
+        }
+
+
+        return 0;
+    }
 }
 
 public enum BDType
@@ -304,7 +493,8 @@ public enum BDType
     Passive, //a passive that can be triggered while the bd is active
     Damage, //damage over a duration of time while the bd is active.
     Stun, //it used to be a boolean but now itsd the stun.
-    Immune
+    Immune,
+    Invisible
 }
 
 public enum BDDamageType 
@@ -312,3 +502,5 @@ public enum BDDamageType
     Burn,
     Bleed
 }
+
+//what is the bleed damage? percent? flat and percent. its all 5 + 5% of max health

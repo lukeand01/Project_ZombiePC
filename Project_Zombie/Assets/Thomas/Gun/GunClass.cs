@@ -41,8 +41,8 @@ public class GunClass
         _DamageClass = new DamageClass(0);
 
         //DAMAGE
-        float modifier = data.damagePerBullet * _stat.GetTotalValue(StatType.Damage);
-        _DamageClass.MakeDamage(data.damagePerBullet + modifier);
+        float modifier = data.GetValue(StatType.Damage) * _stat.GetTotalValue(StatType.Damage);
+        _DamageClass.MakeDamage(data.GetValue(StatType.Damage) + modifier);
 
         //PEN
         _DamageClass.MakePen(data.GetValue(StatType.Pen) + _stat.GetTotalValue(StatType.Pen));
@@ -225,9 +225,8 @@ public class GunClass
 
         if(stat == StatType.Damage)
         {
-            float modifier = data.damagePerBullet * value;
-            _DamageClass.MakeDamage(data.damagePerBullet + modifier);
-            return;
+            float modifier = data.GetValue(StatType.Damage) * value;
+            _DamageClass.MakeDamage(data.GetValue(StatType.Damage) + modifier);
         }
         if(stat == StatType.Pen)
         {
@@ -249,6 +248,44 @@ public class GunClass
     }
 
     #endregion
+
+
+    #region SECRET STATS
+    //i am puitting here variable that i dont where to put yet.
+
+    public int bulletPerShot { get; private set; } //this is the actual number.
+    public float bulletQuantityDamageModifier { get; private set; } //we are simply going to add this to the damage.
+
+
+    public float secretStatMultipleBulletFlat { get; private set; }
+
+    public float secretStatMultipleBulletPercent { get; private set; }
+
+    public float secretStatMultipleBulletDamageModifier { get; private set; }
+
+
+    public void MakeSecretStats(float multipleBulletFlat, float multipleBulletPercent, float multipleBulletDamage)
+    {
+        secretStatMultipleBulletFlat = multipleBulletFlat;
+        secretStatMultipleBulletPercent = multipleBulletPercent;
+        secretStatMultipleBulletDamageModifier = multipleBulletDamage;
+
+
+        bulletPerShot = data.bulletPerShot;
+        bulletPerShot += (int)secretStatMultipleBulletFlat;
+        float bulletPerShotModifier = bulletPerShot * secretStatMultipleBulletPercent;
+        bulletPerShot += (int)bulletPerShotModifier;
+
+
+
+        _DamageClass.MakeBulletQuantityDamageModifier(secretStatMultipleBulletDamageModifier * (bulletPerShot - 1));
+
+    }
+
+
+
+    #endregion
+
 
     //this can be changed only inside.
 

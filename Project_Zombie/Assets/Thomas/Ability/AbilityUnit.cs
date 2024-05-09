@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class AbilityUnit : MonoBehaviour
+public class AbilityUnit : ButtonBase
 {
     AbilityClass _abilityClass;
-
+    public AbilityPassiveData _abilityPassiveData {  get; private set; }
 
     [Separator("ABILITY UNIT")]
     [SerializeField] Image cooldownImage;
@@ -19,6 +20,15 @@ public class AbilityUnit : MonoBehaviour
     [SerializeField] Image icon;
     [SerializeField] TextMeshProUGUI keycodeText;
     [SerializeField] GameObject empty;
+
+    private void Update()
+    {
+        if(Time.timeScale > 0)
+        {
+            selected.SetActive(false);
+        }
+    }
+
 
     public void SetUpActive(AbilityClass ability, int index)
     {
@@ -39,8 +49,24 @@ public class AbilityUnit : MonoBehaviour
     }
     public void SetUpPassive(AbilityClass ability)
     {
-
         _abilityClass = ability;
+        _abilityPassiveData = ability.dataPassive;
+
+        ability.SetUI(this);
+        empty.SetActive(false);
+
+        icon.sprite = _abilityPassiveData.abilityIcon;
+
+        levelHolder.SetActive(true);
+        UpdatePassiveLevel();
+
+        cooldownImage.gameObject.SetActive(false);
+        keycodeText.gameObject.SetActive(false);
+    }
+
+    public void UpdatePassiveLevel()
+    {
+        levelText.text = _abilityClass.level.ToString();
     }
 
     void SetUpBase(AbilityBaseData data)
@@ -57,4 +83,40 @@ public class AbilityUnit : MonoBehaviour
         cooldownText.text = current.ToString("f1"); 
 
     }
+
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        if(_abilityClass == null)
+        {
+            Debug.Log("same");
+            return;
+        }
+
+        if (_abilityClass.IsEmpty())
+        {
+            Debug.Log("is empty");
+            return;
+        }
+
+        if(Time.timeScale == 0)
+        {
+            selected.SetActive(true);
+            UIHandler.instance._pauseUI.DescribeAbiliy(_abilityClass, transform);
+        }
+    }
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        if (Time.timeScale == 0)
+        {
+            selected.SetActive(false);
+            UIHandler.instance._pauseUI.StopDescription();
+        }
+    }
+
+    public void DestroyItself()
+    {
+        Destroy(gameObject);
+    }
+
 }

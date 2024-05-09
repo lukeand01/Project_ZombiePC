@@ -334,8 +334,6 @@ public class ChestUI : MonoBehaviour
 
         for (int i = 0; i < passiveAbilities.Count; i++)
         {
-
-
             chestAbilityUnitArray[i].SetUp(passiveAbilities[i], this);
         }
 

@@ -18,7 +18,7 @@ MonoBehaviour:
   attackSpeed: 0.6
   initialStatList:
   - stat: 0
-    initialValue: 150
+    initialValue: 300
   - stat: 1
     initialValue: 6
   - stat: 2

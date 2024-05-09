@@ -28,7 +28,6 @@ public class PlayerController : MonoBehaviour
 
         if (handler._entityStat.isStunned)
         {
-            Debug.Log("is stunned");
             return;
         }
 
@@ -114,8 +113,14 @@ public class PlayerController : MonoBehaviour
             {
                 handler._playerCombat.Shoot(shootDir);
             }
-           
+
         }
+        else
+        {
+            handler._playerCombat.ResetHoldShoot();
+        }
+
+        
 
     }
 
@@ -148,7 +153,7 @@ public class PlayerController : MonoBehaviour
         {
            if(UIHandler.instance != null)
             {
-                UIHandler.instance.PauseUI.CallPause();
+                UIHandler.instance._pauseUI.CallPause();
             }
         }
     }

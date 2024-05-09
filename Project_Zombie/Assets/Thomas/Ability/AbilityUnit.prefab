@@ -723,6 +723,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b65ae6c68f8c864da8c114266e88b42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  mouseHover: {fileID: 0}
+  mouseClick: {fileID: 0}
+  clickClip: {fileID: 0}
+  hoverClip: {fileID: 0}
+  clickTimerTotal: 0
   cooldownImage: {fileID: 5121337585373750149}
   cooldownText: {fileID: 8228036552364131537}
   levelHolder: {fileID: 5313259860588651577}
@@ -789,7 +795,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
+  m_Color: {r: 0, g: 0.7735849, b: 0.0062066745, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

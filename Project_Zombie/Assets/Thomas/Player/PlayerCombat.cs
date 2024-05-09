@@ -24,6 +24,8 @@ public class PlayerCombat : MonoBehaviour
     int currentGunIndex;
 
     GunUI _gunUI;
+    bool keepShootingIfCanHold;
+    bool trueBlockForShooting; //this is used to block to hold fire while swapping
 
     private void Awake()
     {
@@ -94,6 +96,7 @@ public class PlayerCombat : MonoBehaviour
         if (gunList[0].data != null)
         {
             //then we just adad the gun to the first
+            gunList[0].data.RemoveGunPassives();
             Destroy(gunList[0].gunModel);
         }
         if(gunList.Length <= 0)
@@ -102,16 +105,18 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
-
         //either we willl put the data.
-
         GameObject spawnedModel = CreateGunModel(gun);
 
-        gunList[0] = new GunClass(handler,gun, spawnedModel);       
+        gunList[0] = new GunClass(handler, gun, spawnedModel);       
         gunList[0].MakeAmmoInfinite();
+        gunList[0].data.AddGunPassives();
+
+        UpdateSecretValues();
 
         UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[0], 0);
         UIHandler.instance.gunUI.ChangeOwnedGunShowUnit(0);
+
 
         if(currentGunIndex == 0)
         {
@@ -140,6 +145,8 @@ public class PlayerCombat : MonoBehaviour
         GameObject spawnedModel = CreateGunModel(gun);
         gunList[emptyIndex] = new GunClass(handler, gun, spawnedModel);
         UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[emptyIndex], emptyIndex);
+
+        UpdateSecretValues();
 
         if (emptyIndex == currentGunIndex)
         {
@@ -173,6 +180,8 @@ public class PlayerCombat : MonoBehaviour
 
         gunList[index] = new GunClass(handler, data, spawnedModel);
         UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[index], index);
+
+        UpdateSecretValues();
 
         if (index == currentGunIndex)
         {
@@ -258,7 +267,8 @@ public class PlayerCombat : MonoBehaviour
 
         _gunUI.ChangeOwnedGunShowUnit(currentGunIndex);
         SwapGunModel();
-        
+        ResetHoldShoot();
+        MakeTrueBlock();
 
 
     }
@@ -361,6 +371,7 @@ public class PlayerCombat : MonoBehaviour
 
         _gunUI.UpdateReloadFill(0, 0);
         _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
+        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
 
         isReloading = false;
     }
@@ -406,6 +417,17 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
+        if (trueBlockForShooting)
+        {
+            return;
+        }
+
+        if (!gunList[currentGunIndex].data.canHoldDownButtonToKeepShooting && keepShootingIfCanHold)
+        {
+            return;
+        }
+
+        keepShootingIfCanHold = true;
 
 
         gunList[currentGunIndex].Shoot(shootDir);
@@ -414,5 +436,57 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
+    public void ResetHoldShoot()
+    {
+        keepShootingIfCanHold = false;
+        trueBlockForShooting = false;
+    }
+
+    public void MakeTrueBlock()
+    {
+        trueBlockForShooting = true;
+    }
+
+
+    #region SECRET STATS
+
+
+
+    public float secretStatMultipleBulletFlat {  get; private set; }
+
+    public float secretStatMultipleBulletPercent { get; private set; }
+
+    public float secretStatMultipleBulletDamageModifier {  get; private set; }
+
+
+    public void MakeSecretStatMultipleBulletFlat(float value)
+    {
+        secretStatMultipleBulletFlat = value;
+        UpdateSecretValues();
+
+    }
+    public void MakeSecretStatMultipleBulletPercent(float value)
+    {
+        secretStatMultipleBulletDamageModifier = value;
+        UpdateSecretValues();
+    }
+    public void MakeSecretStatMultipleBulletDamageModifier(float value)
+    {
+        secretStatMultipleBulletDamageModifier = value;
+        UpdateSecretValues();
+    }
+
+    void UpdateSecretValues()
+    {
+        foreach (var item in gunList)
+        {
+            if (item.data == null) continue;
+
+            item.MakeSecretStats(secretStatMultipleBulletFlat, secretStatMultipleBulletPercent, secretStatMultipleBulletDamageModifier); ;
+        }
+    }
+
+    #endregion
 
 }
+

@@ -16,5 +16,8 @@ public class ChestAbility : ChestBase
 
         _chestUI.SetChest(this);
         _chestUI.CallChestAbility(passiveList);
+
+
+        Destroy(gameObject);
     }
 }

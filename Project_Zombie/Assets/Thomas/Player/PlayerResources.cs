@@ -1,7 +1,5 @@
+using MyBox;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerResources : MonoBehaviour, IDamageable
@@ -48,6 +46,20 @@ public class PlayerResources : MonoBehaviour, IDamageable
             return;
         }
 
+        //we give damage back.
+        //we check for dodge. in dodge we also announce.
+
+        CheckDamageBack(damage);
+
+        if (CheckDodge())
+        {
+            //we ignore the damage and announce the dodge.
+            handler._entityStat.CallDodgeFade();
+            return;
+        }
+        
+
+
         bool isCrit = damage.CheckForCrit();
 
         float reduction = handler._entityStat.GetTotalValue(StatType.DamageReduction);
@@ -67,9 +79,40 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     }
 
+    public float GetTargetMaxHealth()
+    {
+        return handler._entityStat.GetTotalValue(StatType.Health);
+    }
     public void ApplyBD(BDClass bd)
     {
         handler._entityStat.AddBD(bd);
+    }
+
+    bool CheckDodge()
+    {
+        float dodgeChance = handler._entityStat.GetTotalValue(StatType.Dodge);
+        int roll = UnityEngine.Random.Range(0, 101);
+        dodgeChance = Math.Clamp(dodgeChance, 0, 70);
+
+        return dodgeChance > roll;
+    }
+
+    void CheckDamageBack(DamageClass damage)
+    {
+        float damageBackValue = handler._entityStat.GetTotalValue(StatType.DamageBack);
+        damageBackValue *= 0.01f;
+        damageBackValue = damageBackValue.Clamp(0, 0.9f);
+
+
+
+        if (damageBackValue <= 0) return;
+        if (damage.attacker == null) return;
+
+
+        float damageBack = damage.baseDamage * damageBackValue;
+        damage.attacker.TakeDamage(new DamageClass(damageBack));
+
+
     }
 
 

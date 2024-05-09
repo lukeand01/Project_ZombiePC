@@ -89,7 +89,6 @@ public class PlayerAbility : MonoBehaviour
 
         if(index != -1)
         {
-            //
             ReplaceSameAbilityByIndex(index);
         }
         else
@@ -98,9 +97,12 @@ public class PlayerAbility : MonoBehaviour
             AbilityClass passiveAbility = new AbilityClass(data);
             passiveAbility.AddPassive();
             abilityPassiveList.Add(passiveAbility);
+
+            UIHandler.instance._pauseUI.AddPassive(passiveAbility);
+
         }
         
-
+        //everytime we add this fella we send it to the 
 
 
     }
@@ -180,6 +182,7 @@ public class PlayerAbility : MonoBehaviour
         foreach (var item in abilityPassiveList)
         {
             item.RemovePassive();
+            item.DestroyUI();
         }
 
         abilityPassiveList.Clear();
@@ -225,6 +228,9 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
+    public void DebugAddPassive()
+    {
 
+    }
 
 }

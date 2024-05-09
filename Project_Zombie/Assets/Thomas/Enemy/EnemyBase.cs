@@ -13,22 +13,40 @@ public class EnemyBase : Tree, IDamageable
 
 
     [SerializeField] EnemyCanvas _enemyCanvas;
+    [SerializeField] GameObject head;
     EntityEvents _entityEvents; //these are just a bunch of events that might interest this entity.
     EntityStat _entityStat; //
 
+    ChestAbility _chestAbility; //if you have it
 
     float healthCurrent;
     float healthTotal;
+
+    
+
+
     private void Awake()
     {
 
         AwakeFunction();
-     
+
+    }
+
+    protected override void UpdateFunction()
+    {
+
+        if (_entityStat.isStunned)
+        {
+            StopAgent();
+            return;
+        }
+        base.UpdateFunction();
     }
 
     protected virtual void AwakeFunction()
     {
 
+        groundLayer |= (1 << 10);
 
         id = Guid.NewGuid().ToString();
 
@@ -41,11 +59,23 @@ public class EnemyBase : Tree, IDamageable
 
         healthTotal = _entityStat.GetTotalValue(StatType.Health);
         healthCurrent = healthTotal;
+
+        _enemyCanvas.UpdateHealth(healthCurrent, healthTotal);
+
+        gameObject.name = data.name + "; Unique_ID: " + id;
+
     }
 
     private void Start()
     {
         
+    }
+
+    
+
+    public void SetChest(ChestAbility chestAbilityTemplate)
+    {
+        _chestAbility = chestAbilityTemplate;
     }
 
     #region STAT ENTITY
@@ -85,6 +115,7 @@ public class EnemyBase : Tree, IDamageable
     #region  DAMAGEABLE
     string id;
     bool isDead;
+    LayerMask groundLayer;
 
     public void ApplyBD(BDClass bd)
     {
@@ -116,6 +147,9 @@ public class EnemyBase : Tree, IDamageable
         healthCurrent -= damageValue;
         _enemyCanvas.CreateDamagePopUp(damageValue, DamageType.Physical, isCrit);
 
+        _enemyCanvas.UpdateHealth(healthCurrent, healthTotal);
+
+
         if(healthCurrent <= 0)
         {
             //death
@@ -134,10 +168,37 @@ public class EnemyBase : Tree, IDamageable
         isDead = true;
         PlayerHandler.instance._playerResources.GainPoints(5);
 
+        if(_chestAbility != null)
+        {
+            //we spawn at the exact position
+            //we are goingt to raycast down to get the 
+          
+            RaycastHit hit;
+
+           bool success = Physics.Raycast(head.transform.position, Vector3.down , out hit, 250, groundLayer);
+
+
+            if(success && hit.collider != null)
+            {
+                Instantiate(_chestAbility, hit.point, Quaternion.identity);
+            }
+            else
+            {
+                Debug.Log("yo");
+            }
+
+        }
+
+        //when this fella dies we remove the the canvas 
+        _enemyCanvas.transform.SetParent(null); //no parent. but it should be ordered to destroy itself once there are no more childnre in the damagepopcontainer.
+        _enemyCanvas.MakeDestroyItself(transform);
         Destroy(gameObject);
     }
 
-
+    public float GetTargetMaxHealth()
+    {
+        return _entityStat.GetTotalValue(StatType.Health);
+    }
     #endregion
 
 
@@ -216,6 +277,7 @@ public class EnemyBase : Tree, IDamageable
         {
             //if the player is still in range then we attack.
             DamageClass damage = GetDamage();
+            damage.MakeAttacker(this);
             targetIdamageable.TakeDamage(damage);
         }
 
@@ -256,6 +318,7 @@ public class EnemyBase : Tree, IDamageable
         //Gizmos.DrawSphere(transform.position, 5);
     }
 
+    
 }
 
 //how should i go about doing this?

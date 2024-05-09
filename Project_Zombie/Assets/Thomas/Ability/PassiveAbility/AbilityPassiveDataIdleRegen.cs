@@ -8,6 +8,8 @@ public class AbilityPassiveDataIdleRegen : AbilityPassiveData
     //when outside of combat. not taking damage for long enough.
     //regen when idle for long enough.
 
+    [SerializeField] float healthRegenValue; //just increase the value.
+    [SerializeField] float idleRegenValue;
 
 
     public override void Add(AbilityClass ability)
@@ -22,4 +24,12 @@ public class AbilityPassiveDataIdleRegen : AbilityPassiveData
 
 
 
+    public override string GetDamageDescription(int level)
+    {
+        float value = healthRegenValue * level;
+        int secondSkillModifier = MyUtils.GetSecondPassiveModifier(level);
+        float secondSkillValue = secondSkillModifier * idleRegenValue;
+
+        return $"Health Regen increased by {value} and Idle regen is increased by {secondSkillValue}";
+    }
 }

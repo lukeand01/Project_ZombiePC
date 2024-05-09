@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EntityEvents : MonoBehaviour
 {
-
+    //playerhandler will also 
     public Action<StatType, float> eventUpdateStat;
     public void OnUpdateStat(StatType type, float value) => eventUpdateStat?.Invoke(type, value);
 

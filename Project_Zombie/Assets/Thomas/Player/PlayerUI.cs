@@ -167,4 +167,22 @@ public class PlayerUI : MonoBehaviour
         pointCurrent = current;
         pointTemporary = current;
     }
+
+    [Separator("DODGE")]
+    [SerializeField] Transform dodgePos;
+    public void CreateFadeUIForDodge()
+    {
+        FadeUI newObject = Instantiate(fadeTemplate);
+        newObject.transform.SetParent(dodgePos);
+
+        float amount = 20f;
+        float x = Random.Range(-amount * 3, amount * 3);
+        float z = Random.Range(-amount, amount);
+
+        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 35, 0) + new Vector3(x, z, 0);  
+
+        newObject.SetUp("Dodge!", Color.black);
+    }
+
+
 }

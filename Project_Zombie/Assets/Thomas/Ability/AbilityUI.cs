@@ -53,12 +53,11 @@ public class AbilityUI : MonoBehaviour
     }
 
     [Separator("DASH")]
-    [SerializeField] GameObject dashHolder;
-    [SerializeField] Image dashFill;
+    [SerializeField] DashUnit dashUnit;
 
     public void UpdateDashFill(float current, float total)
     {
-        dashFill.fillAmount = current / total;
+        dashUnit.UpdateCooldown(current, total); 
     }
 
 

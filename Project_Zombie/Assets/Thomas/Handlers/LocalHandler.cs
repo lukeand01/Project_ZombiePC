@@ -64,6 +64,7 @@ public class LocalHandler : MonoBehaviour
     {
         ChestGunHandle();
         ChestResourceHandle();
+        ChestAbilityHandle();
         SpawnHandle();
         HandleRound();
     }
@@ -71,7 +72,8 @@ public class LocalHandler : MonoBehaviour
     public void StartLocalHandler()
     {
         spawnTotal = 8; //a larger time before they start appearing.
-        spawnCurrent = spawnTotal;
+        //spawnCurrent = spawnTotal;
+        spawnCurrent = 0;
         round = 1;
         roundTotal = 25 * round;
 
@@ -80,6 +82,8 @@ public class LocalHandler : MonoBehaviour
 
         roomArray[0].OpenRoom();
         ChestGunSpawn(true);
+
+        ChestAbilitySet();
     }
 
 
@@ -131,6 +135,7 @@ public class LocalHandler : MonoBehaviour
         }
     }
     #endregion
+
     #region SPAWN SYSTEM
     //all we will do is decided how much should spawn in this instant. we are talking about a x amount every random time.
     //at first that will be just one fella.
@@ -163,7 +168,7 @@ public class LocalHandler : MonoBehaviour
         else
         {
             //then we spawn.
-            spawnTotal = Random.Range(5, 8);
+            spawnTotal = Random.Range(5, 8);         
             spawnCurrent = spawnTotal;
             ChooseEnemies();
         }
@@ -269,7 +274,6 @@ public class LocalHandler : MonoBehaviour
 
     #endregion
 
-
     #region CHEST GUN
     [Separator("CHEST GUN")]
     [SerializeField] ChestGun chestGun; //this is the only one we need. we will be teleporting this to the right places.
@@ -368,7 +372,6 @@ public class LocalHandler : MonoBehaviour
         //i cannot use a position that has already been used.
         //otherwise will have two chests in the same poalce.
 
-        Debug.Log("spawned this fella");
 
         if (_stageData == null) return;
 
@@ -425,6 +428,45 @@ public class LocalHandler : MonoBehaviour
     }
     #endregion
 
+    #region CHEST ABILITY
+
+    [Separator("CHEST ABILITY")]
+    [SerializeField] ChestAbility chestAbilityTemplate;
+
+    float chestAbilityTotal;
+    float chestAbilityCurrent;
+
+    void ChestAbilitySet()
+    {
+        chestAbilityTotal = 35;
+        chestAbilityCurrent = chestAbilityTotal;
+    }
+
+    void ChestAbilityHandle()
+    {
+        if(allowedPortal.Count <= 0)
+        {
+
+            return;
+        }
+
+        if(chestAbilityCurrent > 0)
+        {
+            chestAbilityCurrent -= Time.fixedDeltaTime;
+        }
+        else
+        {
+            Debug.Log("chose one");
+            int random = Random.Range(0, allowedPortal.Count);
+            allowedPortal[random].SetNextSpawnToCarryChest(chestAbilityTemplate);
+
+            chestAbilityCurrent = chestAbilityTotal;
+        }
+    }
+
+   //we get a random allowed
+
+    #endregion
 }
 public class SpawnWaveClass
 {

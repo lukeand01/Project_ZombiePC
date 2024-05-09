@@ -33,7 +33,7 @@ public class StatDescriptionGroupHolder : MonoBehaviour
 
         valueTotalForChoseGun = valueTotal;
 
-        chosenUnit.UpdateStat(info, modifiers);
+        chosenUnit.UpdateStat(info, modifiers, valueTotal);
 
 
         selectedGunDictionary.Clear();
@@ -140,7 +140,7 @@ public class StatDescriptionGroupHolder : MonoBehaviour
 
 
 
-        selectedUnit.UpdateStat(info, modifiers);
+        selectedUnit.UpdateStat(info, modifiers, valueTotal);
 
         //we rotate the 
         if(valueTotal < valueTotalForChoseGun)

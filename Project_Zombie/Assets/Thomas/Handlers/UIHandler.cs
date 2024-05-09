@@ -30,7 +30,7 @@ public class UIHandler : MonoBehaviour
 
     public ChestUI ChestUI { get { return chestUIRef; } }
 
-    public PauseUI PauseUI { get { return pauseUIRef; } }
+    public PauseUI _pauseUI { get { return pauseUIRef; } }
     public AbilityUI AbilityUI { get { return abilityUIRef; } }
 
     public CityUI CityUI { get { return cityUIRef; } }

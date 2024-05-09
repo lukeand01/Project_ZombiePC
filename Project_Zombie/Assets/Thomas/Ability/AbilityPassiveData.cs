@@ -5,6 +5,8 @@ using UnityEngine;
 public class AbilityPassiveData : AbilityBaseData
 {
 
+    //do i want to create a passive for each thing? 
+
     public virtual void Add(AbilityClass ability)
     {
 

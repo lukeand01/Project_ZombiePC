@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Enemy_Mage
   m_EditorClassIdentifier: 
   enemyName: Mage
+  enemyModel: {fileID: 0}
   attackRange: 20
   attackSpeed: 5
   initialStatList:
   - stat: 0
-    initialValue: 150
+    initialValue: 850
   - stat: 1
     initialValue: 3
   scaleStatList:

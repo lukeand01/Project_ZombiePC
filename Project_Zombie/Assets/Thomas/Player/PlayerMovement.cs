@@ -21,12 +21,12 @@ public class PlayerMovement : MonoBehaviour
 
         wallLayer |= (1 << 9);
 
-        SetDash();
+       
     }
 
     private void Start()
     {
-        
+        SetDash();
     }
 
     private void Update()
@@ -54,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
 
         float currentSpeed = stat.GetTotalValue(StatType.Speed);
         float giantModifier = currentSpeed * currentGiantPassiveEffect;
+
+
 
 
         float moveModifier = 1;
@@ -235,6 +237,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void AddDashCooldownReduction()
     {
+        Debug.Log("add dash cooldown");
         dashCooldownReduction = 0.4f;
     }
     public void RemoveDashCooldownReduction()

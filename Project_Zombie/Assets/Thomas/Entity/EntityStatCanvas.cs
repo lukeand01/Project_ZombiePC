@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,14 +9,32 @@ public class EntityStatCanvas : MonoBehaviour
 
     [SerializeField] GameObject stunnedImage;
 
+    Vector3 sameTarget;
+
     private void Awake()
     {
         mainCam = Camera.main;
     }
 
+    private void Start()
+    {
+        Vector3 direction = mainCam.transform.position - transform.position;
+        direction.y = 0f;
+
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        rotation.eulerAngles = new Vector3(0, rotation.eulerAngles.y, 0);
+        transform.rotation = rotation;
+
+
+        sameTarget = direction;
+    }
+
     private void Update()
     {
-        transform.LookAt(mainCam.transform.position);
+
+        Quaternion rotation = Quaternion.LookRotation(sameTarget);
+        rotation.eulerAngles = new Vector3(0, rotation.eulerAngles.y, 0);
+        transform.rotation = rotation;
 
 
         if (stunnedImage.activeInHierarchy)
@@ -40,6 +59,7 @@ public class EntityStatCanvas : MonoBehaviour
             return null;
         }
 
+        Debug.Log("entity stat canvas called to create new bd");
         //need to put this into container;
         BDUnit newObject = Instantiate(bdUnitTemplate);
         newObject.transform.SetParent(bdContainer);
@@ -47,4 +67,24 @@ public class EntityStatCanvas : MonoBehaviour
         return newObject;
     }
 
+
+
+    [Separator("DODGE")]
+    [SerializeField] FadeUI fadeTemplate;
+    [SerializeField] Transform dodgePos;
+    public void CreateFadeUIForDodge()
+    {
+        FadeUI newObject = Instantiate(fadeTemplate);
+        newObject.transform.SetParent(dodgePos);
+
+        
+
+        float amount = 20f;
+        float x = Random.Range(-amount * 3, amount * 3);
+        float z = Random.Range(-amount, amount);
+
+        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 35, 0) + new Vector3(x, z, 0);
+        newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        newObject.SetUp("Dodge!", Color.black);
+    }
 }

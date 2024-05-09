@@ -34,8 +34,20 @@ public class EntityStat : MonoBehaviour
 
     private void Update()
     {
+        //if (gameObject.tag == "Player") return;
 
-        
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            DebugBleed();
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            DebugStun();
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            DebugSpeed();
+        }
     }
 
     private void FixedUpdate()
@@ -146,14 +158,15 @@ public class EntityStat : MonoBehaviour
     [field:SerializeField]public bool isStunned { get; private set; }
     [field: SerializeField] public bool IsImmune {  get; private set; }
 
+    [field:SerializeField] public bool IsInvisible {  get; private set; }
+
+
     [SerializeField] List<BDClass> tempList = new();
     [SerializeField] List<BDClass> permaList = new();
     [SerializeField] List<BDClass> tickList = new();
     Dictionary<string, BDClass> dictionaryForStacking = new Dictionary<string, BDClass>();
-    //Dictionary<BDType,>
+
     
-
-
     void HandleBD()
     {
 
@@ -187,25 +200,35 @@ public class EntityStat : MonoBehaviour
     {
         //we should call an event to inform whoever is coonect to this 
         //also when we remove it we do stuff;
+
+
         if (dictionaryForStacking.ContainsKey(bd.id))
         {
             //then we stack
+
+            dictionaryForStacking[bd.id].Stack(bd);
             return;
         }
 
         //we need to check if we already have this fella. if yes then we 
+
+        if (bd.IsStackable())
+        {
+
+            dictionaryForStacking.Add(bd.id, bd);
+        }
+
+        
 
         //then we apply the thing.
         switch (bd.bdType)
         {
             case BDType.Stat:
                 AddBDStat(bd);
-
                 break;
 
             case BDType.Damage:
-                //we dont call it now but we add and everytime it wants to do its thing it does.
-                             
+                //we dont call it now but we add and everytime it wants to do its thing it does. 
                 break;
 
             case BDType.Stun:
@@ -215,7 +238,22 @@ public class EntityStat : MonoBehaviour
             case BDType.Immune:
                 AddBDImmune();
                 break;
+            case BDType.Invisible:
+                AddBDInvisibility();
+                break;
         }
+
+
+        if (gameObject.tag == "Player")
+        {
+            bd.CreateBDUnit();
+        }
+        else
+        {
+            Debug.Log("yo");
+            bd.CreateBDUnit(_entityCanvas);
+        }
+
 
         if (bd.IsTick())
         {
@@ -235,8 +273,7 @@ public class EntityStat : MonoBehaviour
 
         //the bd will have a permission.
         //we always ask the bd to build.
-
-
+       
     }
     void AddBDStat(BDClass bd)
     {
@@ -256,12 +293,18 @@ public class EntityStat : MonoBehaviour
     }
     void AddBDStun()
     {
+
         isStunned = true;
 
         if(_entityCanvas != null) 
         {
             _entityCanvas.ControlStunned(true);
         }
+    }
+
+    void AddBDInvisibility()
+    {
+        IsInvisible = true;
     }
     void AddBDImmune()
     {
@@ -299,7 +342,12 @@ public class EntityStat : MonoBehaviour
     {
         BDClass bd = targetList[index];
         targetList.RemoveAt(index);
+        bd.RemoveBDUnit();
 
+        if (dictionaryForStacking.ContainsKey(bd.id))
+        {
+            dictionaryForStacking.Remove(bd.id);
+        }
 
         switch (bd.bdType)
         {
@@ -320,6 +368,9 @@ public class EntityStat : MonoBehaviour
             case BDType.Immune:
                 if (!HasAnotherOfType(BDType.Immune)) IsImmune = false;
                 break;
+            case BDType.Invisible:
+                if(!HasAnotherOfType(BDType.Invisible)) IsInvisible = false;
+                break;
         }
 
     }
@@ -330,7 +381,7 @@ public class EntityStat : MonoBehaviour
         statAlteredDictionary[bd.statType] -= flatValue;
 
         float basePercentValue = statBaseDictionary[bd.statType] * bd.statValuePercentbasedOnBaseValue;
-        statAlteredDictionary[bd.statType] += basePercentValue;
+        statAlteredDictionary[bd.statType] -= basePercentValue;
 
         _entityEvents.OnUpdateStat(bd.statType, GetTotalValue(bd.statType));
     }
@@ -344,6 +395,10 @@ public class EntityStat : MonoBehaviour
         {
             _entityCanvas.ControlStunned(false);
         }
+    }
+    void RemoveInvisibility()
+    {
+
     }
 
     bool HasAnotherOfType(BDType bd)
@@ -378,6 +433,7 @@ public class EntityStat : MonoBehaviour
 
     #endregion
 
+    #region DEBUG
     [ContextMenu("DEBUG STUN")]
     public void DebugStun()
     {
@@ -385,15 +441,22 @@ public class EntityStat : MonoBehaviour
         AddBD(bd);
     }
 
+    [ContextMenu("DEBUG BLEED")]
     public void DebugBleed()
     {
-        DamageClass damage = new DamageClass(5);
         IDamageable damageable = GetComponent<IDamageable>();   
-        BDClass bd = new BDClass("DebugBleed", BDDamageType.Bleed, damageable, damage, 5, 1.5f);
+        BDClass bd = new BDClass("DebugBleed", BDDamageType.Bleed, damageable, 1, 5, 1.5f);
         bd.MakeStack(50, true);
         AddBD(bd);
     }
 
+    public void DebugSpeed()
+    {
+        BDClass bd = new BDClass("DebugSpeed", StatType.Speed, 0, 0.5f, 0);
+        bd.MakeTemp(5);
+        AddBD(bd);
+    }
+    #endregion
 
     #region GETTING VALUES
 
@@ -429,6 +492,13 @@ public class EntityStat : MonoBehaviour
     
 
     #endregion
+
+
+    public void CallDodgeFade()
+    {
+        if (_entityCanvas == null) return;
+        _entityCanvas.CreateFadeUIForDodge();
+    }
 
 }
 
@@ -466,7 +536,9 @@ public enum StatType
     SkillDamage,
     Luck,
     Vampirism,
-    DamageBack
+    DamageBack,
+    Dodge
+
 
 
 }

@@ -8,6 +8,7 @@ public class AbilityPassivateDataBleeding : AbilityPassiveData
 
     //we need an event when you deal damage to people.
     //this has only one stack.
+    [SerializeField] float bleedChanceIncrement;
 
     public override void Add(AbilityClass ability)
     {
@@ -25,6 +26,12 @@ public class AbilityPassivateDataBleeding : AbilityPassiveData
     {
         //we apply a bleeding. and this bleeding we calculate the intensite based in the player bleedingskill.
 
+
+    }
+
+    public override string GetDamageDescription(int level)
+    {
+        return $"Bleed chance increased by {bleedChanceIncrement * level}";
 
     }
 

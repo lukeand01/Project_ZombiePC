@@ -44,9 +44,18 @@ public class AbilityPassiveDataArmor : AbilityPassiveData
         stat.RemoveBdWithID("Armor");
         stat.RemoveBdWithID("Spike");
 
-
     }
 
+
+    public override string GetDamageDescription(int level)
+    {
+        float value = firstValue * level;
+        int secondSkillModifier = MyUtils.GetSecondPassiveModifier(level);
+        float secondSkillValue = secondSkillModifier * secondValue;
+
+        return $"Protection increased by {value} and damageback increased by {secondSkillValue}";
+
+    }
 
 
 }

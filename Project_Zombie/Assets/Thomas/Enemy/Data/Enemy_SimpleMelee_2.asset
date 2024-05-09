@@ -18,9 +18,9 @@ MonoBehaviour:
   attackSpeed: 1
   initialStatList:
   - stat: 0
-    initialValue: 500
+    initialValue: 750
   - stat: 1
     initialValue: 3
   scaleStatList:
   - stat: 0
-    initialValue: 30
+    initialValue: 40

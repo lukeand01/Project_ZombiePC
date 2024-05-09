@@ -19,6 +19,7 @@ public class Portal : MonoBehaviour
 
     List<EnemyData> spawnQueueList = new();
 
+    [SerializeField] ChestAbility chestAbilityTemplate;
 
     private void FixedUpdate()
     {
@@ -61,8 +62,8 @@ public class Portal : MonoBehaviour
         }
 
         EnemyBase newObject = Instantiate(enemy.enemyModel, transform.position + Vector3.forward , Quaternion.identity);
-
-
+        newObject.SetChest(chestAbilityTemplate);
+        chestAbilityTemplate = null;
 
         spawnTotal = Random.Range(5, 10);
         spawnCurrent = spawnTotal;
@@ -70,6 +71,12 @@ public class Portal : MonoBehaviour
         
 
 
+    }
+
+
+    public void SetNextSpawnToCarryChest(ChestAbility chestAbilityTemplate)
+    {
+        this.chestAbilityTemplate = chestAbilityTemplate;
     }
 
     public void OpenForSpawn()

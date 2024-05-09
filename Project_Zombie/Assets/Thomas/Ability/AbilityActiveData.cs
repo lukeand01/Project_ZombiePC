@@ -8,9 +8,9 @@ public class AbilityActiveData : AbilityBaseData
     [Separator("ACTIVE")]
     public float abilityCooldown;
 
-    public virtual void Call(AbilityClass ability)
+    public virtual bool Call(AbilityClass ability)
     {
-
+        return true;
     }
 
     public override AbilityActiveData GetActive() => this;

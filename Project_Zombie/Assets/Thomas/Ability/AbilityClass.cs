@@ -39,6 +39,7 @@ public class AbilityClass
             RemovePassive();
             level++;
             AddPassive();
+            UpdateLevel();
             return;
         }
 
@@ -66,11 +67,16 @@ public class AbilityClass
         //set new cooldown.
         if (activeCooldownCurrent > 0) return;
 
+        bool isSuccess = dataActive.Call(this);
+
+
+        if (!isSuccess) return;
+
         float reducer = GetCooldownReducer();
         activeCooldownTotal = dataActive.abilityCooldown - reducer;
         activeCooldownCurrent = activeCooldownTotal;
 
-        dataActive.Call(this);
+        
 
     }
 
@@ -125,6 +131,14 @@ public class AbilityClass
         this._abilityUnit = _abilityUnit;
     }
 
+    public void DestroyUI()
+    {
+        if (_abilityUnit != null)
+        {
+            _abilityUnit.DestroyItself();
+        }
+    }
+
     void UICooldown(float current, float total)
     {
         if(_abilityUnit != null)
@@ -133,7 +147,97 @@ public class AbilityClass
         }
     }
 
+    void UpdateLevel()
+    {
+        if(_abilityUnit != null)
+        {
+            _abilityUnit.UpdatePassiveLevel();
+        }
+    }
+
     #endregion
+
+    #region FOR DESCRIPTION
+
+    public string GetNameForDescription()
+    {
+        if(dataActive != null)
+        {
+            return dataActive.abilityName;
+        }
+        if (dataPassive != null)
+        {
+            return dataPassive.abilityName;
+        }
+        return "No Data";
+    }
+    public string GetTypeForDescription()
+    {
+        if (dataActive != null)
+        {
+            return "Active Ability";
+        }
+        if (dataPassive != null)
+        {
+            return "Passive Ability";
+        }
+        return "No Data";
+    }
+    public string GetTierForDescription()
+    {
+        if (dataActive != null)
+        {
+            return dataActive.abilityTier.ToString();
+        }
+        if (dataPassive != null)
+        {
+            return dataPassive.abilityTier.ToString();
+        }
+        return "No Data";
+    }
+    public string GetDescriptionForDescription()
+    {
+        if (dataActive != null)
+        {
+            return dataActive.abilityDescription;
+        }
+        if (dataPassive != null)
+        {
+            return dataPassive.abilityDescription;
+        }
+        return "No Data";
+    }
+    public string GetDamageForDescription()
+    {
+        //i will use the damage part for damage or stat.
+        if (dataActive != null)
+        {
+            return dataActive.GetDamageDescription(level);
+        }
+        if (dataPassive != null)
+        {
+            return dataPassive.GetDamageDescription(level);
+        }
+        return "No Data";
+    }
+    public string GetCooldownForDescription()
+    { 
+        //for active it shows cooldown
+        //for passive it shows stack
+
+
+        if (dataActive != null)
+        {
+            return "Cooldown: " + activeCooldownTotal;
+        }
+        if (dataPassive != null)
+        {
+            return "Stack: " + level;
+        }
+        return "No Data";
+    }
+    #endregion
+
 
     public bool IsEmpty()
     {

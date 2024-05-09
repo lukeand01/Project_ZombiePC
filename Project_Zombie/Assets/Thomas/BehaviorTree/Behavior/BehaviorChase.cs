@@ -25,9 +25,9 @@ public class BehaviorChase : Sequence2
 
         allyLayer |= (1 << 8);
 
-        wallAndPlayerLayer = (1 << 3);
-        wallAndPlayerLayer = (1 << 7);
-        wallAndPlayerLayer = (1 << 9);
+        wallAndPlayerLayer |= (1 << 3);
+        wallAndPlayerLayer |= (1 << 7);
+        wallAndPlayerLayer |= (1 << 9);
     }
 
 
@@ -44,12 +44,49 @@ public class BehaviorChase : Sequence2
         }
 
 
+        //in here we simply check around. if you find any other ally then we are target that.
+        //also if player is invisible 
+
 
 
         Transform currentTarget = playerTransform;
+        bool isTargettingAlly = false;
+        //we need to check the surrounding to see if we find allies.
+
+
+        if(Physics.SphereCast(enemy.transform.position, 15, Vector3.forward, out RaycastHit hit, 100, allyLayer))
+        {
+            Debug.Log("yo");
+
+            if(hit.collider != null)
+            {
+                float playerDistance = Vector3.Distance(currentTarget.transform.position, enemy.transform.position);
+                float targetDistance = Vector3.Distance(hit.collider.transform.position, enemy.transform.position);
+
+                if(playerDistance > targetDistance)
+                {
+                    Debug.Log("found ally");
+                    currentTarget = hit.collider.transform;
+                    isTargettingAlly = true;
+                }
+
+            }
+
+        }
+        else
+        {
+            //Debug.Log("found nothing");
+        }
+
+
+
         bool isPlayerDead = PlayerHandler.instance._playerResources.IsDead();
 
-        if (isPlayerDead) return NodeState.Failure;
+        if (isPlayerDead && !isTargettingAlly) return NodeState.Failure;
+
+        bool isPlayerInvisible = PlayerHandler.instance._entityStat.IsInvisible;
+
+        if (isPlayerInvisible && !isTargettingAlly) return NodeState.Failure;
 
         //we check if there are allies in range.
 

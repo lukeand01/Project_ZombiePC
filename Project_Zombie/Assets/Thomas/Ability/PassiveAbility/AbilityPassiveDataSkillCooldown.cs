@@ -51,5 +51,14 @@ public class AbilityPassiveDataSkillCooldown : AbilityPassiveData
     }
 
 
+    public override string GetDamageDescription(int level)
+    {
+        float value = firstValue * level;
+        int secondSkillModifier = MyUtils.GetSecondPassiveModifier(level);
+        float secondSkillValue = secondSkillModifier * secondValue;
+
+        return $"Skill Cooldown Reduction is increased by {value} and skill damage is increased by {secondSkillValue}%";
+    }
+
 
 }

@@ -90,6 +90,7 @@ public class MyGrid : LayoutGroup
             SetChildAlongAxis(item, 0, posX + padding.left + padding.right);
             SetChildAlongAxis(item, 1, posY + padding.top + padding.bottom); //placing in the y axis.
             posX += (int)(itemWidth + spacing);
+            item.transform.localPosition = new Vector3(item.transform.position.x, item.transform.position.y, 0);
         }
     }
 

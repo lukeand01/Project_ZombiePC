@@ -1,4 +1,5 @@
 
+using MyBox;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +25,8 @@ public static class MyUtils
             StatType.SkillDamage,
             StatType.Luck,
             StatType.Vampirism,
-            StatType.DamageBack
+            StatType.DamageBack,
+            StatType.Dodge
 
         };
     }
@@ -43,7 +45,6 @@ public static class MyUtils
             ItemResourceType.Anti_Matter
         };
     }
-
 
 
     public static List<StatType> GetStatForGunListRef()
@@ -226,7 +227,73 @@ public static class MyUtils
 
     }
 
-    
+    public static string GetDescriptionForBD(BDClass bd)
+    {
 
+        if(bd.bdType == BDType.Damage)
+        {
+            return $"Deals damage for {bd.tickTotal} ticks";
+        }
+
+        if(bd.bdType == BDType.Stat)
+        {
+            string first = bd.GetFirstForStat();
+            string second = bd.GetSecondForStat();
+            return $"{first} the stat {bd.statType} {second}";
+        }
+
+        if(bd.bdType == BDType.Immune)
+        {
+            return "The player is immune to any damage for the duration";
+        }
+
+        if (bd.bdType == BDType.Stun)
+        {
+            return "The player cannot do anything for the duration";
+        }
+
+        return "";
+
+    }
+
+    public static string GetStatDescription(StatType stat)
+    {
+        switch(stat)
+        {
+            case StatType.Health:
+                return "This represents how much damage you can take. once it reaches 0 the player dies";
+            case StatType.Damage:
+                return "This influences your damage done by weapons and certain abilities.";
+            case StatType.SkillDamage:
+                return "This influences all of your spells. it increases as a percent";
+            case StatType.CritDamage:
+                return "Influnces the additional damage you deal when you crit with spell or gun";
+            case StatType.DamageBack:
+                return "Every amount of damage dealt to the player, to the health or shield, is dealt back to the dealer.";
+            case StatType.CritChance:
+                return "Increases your chance to crit with guns or spells";
+            case StatType.DamageReduction:
+                return "Its a percent of how much damage is reduced. it goes up to 90%";
+            case StatType.FireRate:
+                return "Influences how fast you shoot guns and some spells";
+            case StatType.Luck:
+                return "Influences the chance to get items of higher tier, be them guns, abilities or resources";
+            case StatType.Magazine:
+                return "Influence the size of gun magazine";
+            case StatType.ReloadSpeed:
+                return "Influences how fast you reload";
+            case StatType.Speed:
+                return "Influences how fast you move";
+            case StatType.Tenacity:
+                return "Influences your resistance against Debuffs";
+            case StatType.Pen:
+                return "Influences how much you ignore of damage reduction";
+            case StatType.Vampirism:
+                return "Influences how much you heal from all the damage you deal";
+
+        }
+
+        return "";
+    }
 
 }

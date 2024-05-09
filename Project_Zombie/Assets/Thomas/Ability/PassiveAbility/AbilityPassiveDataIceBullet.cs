@@ -8,7 +8,8 @@ public class AbilityPassiveDataIceBullet : AbilityPassiveData
 
     //add a bullet behavior. this bullet behavior will slow based in the player abilityclass.
 
-    
+    [SerializeField] float slowModifier;
+    [SerializeField] float stunModifier;
 
     public override void Add(AbilityClass ability)
     {
@@ -20,5 +21,15 @@ public class AbilityPassiveDataIceBullet : AbilityPassiveData
     }
 
 
+    public override string GetDamageDescription(int level)
+    {
+        float value = slowModifier * level;
+        int secondSkillModifier = MyUtils.GetSecondPassiveModifier(level);
+        float secondSkillValue = secondSkillModifier * stunModifier;
+
+        return $"Slow in every shot increased by {value} and stun chance in every chance increased by {secondSkillValue}";
+
+
+    }
 
 }

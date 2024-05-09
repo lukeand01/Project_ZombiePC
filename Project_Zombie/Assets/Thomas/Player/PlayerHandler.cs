@@ -36,7 +36,10 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] CityData hqHolder; //what if i require more than just level. such as quests or other places in certain levels
     [SerializeField] CityDataLab labHolder;
     [SerializeField] CityDataArmory armoryHolder;
-    
+
+    LayerMask layerForBuilding;
+
+
 
 
     private void Update()
@@ -78,9 +81,16 @@ public class PlayerHandler : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        //but i need to 7update as the it happens.
+        _entityEvents.eventUpdateStat += UpdateStatUI;
+    }
 
-    
-
+    void UpdateStatUI(StatType stat, float value)
+    {
+        UIHandler.instance._pauseUI.UpdateStat(stat, value);
+    }
 
     private void Awake()
     {
@@ -114,8 +124,8 @@ public class PlayerHandler : MonoBehaviour
         SetPlayerAbilityRollLevel(1);
         SetPlayerGunRollLevel(1);
        
-
-    }
+        //layerForBuilding |= (1 << )
+            }
 
     #region GETTING ITENS AND CHANCE LISTS
     public void SetPlayerAbilityRollLevel(int newValue)
@@ -149,12 +159,16 @@ public class PlayerHandler : MonoBehaviour
     #endregion
 
 
-
-    private void Start()
+    public bool IsHoveringEmptySpace()
     {
-        //but i need to 7update as the it happens.
 
+        return false;
     }
+
+
+
+
+
 
 
 }
