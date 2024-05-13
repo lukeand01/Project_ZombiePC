@@ -96,11 +96,8 @@ public class BDClass
 
     void HandleDamageTick()
     {
-        if (damageType == BDDamageType.Bleed)
-        {
+        damageable.TakeDamage(damage);
 
-            damageable.TakeDamage(damage);
-        }
     }
 
 
@@ -224,7 +221,7 @@ public class BDClass
 
     #endregion
 
-    #region STUN, IMMUNE, INVISIBILITY
+    #region STUN, IMMUNE, INVISIBILITY, SECRET BULLETMULTIPLIER
     public BDClass(string id, BDType _bdType, float duration)
     {
         //this means its the stun.
@@ -480,6 +477,12 @@ public class BDClass
             float percentDamage = damageable.GetTargetMaxHealth() * 0.02f;
             return baseDamage + percentDamage;
         }
+        if(damageType == BDDamageType.Burn)
+        {
+            float baseDamage = 5;
+            float percentDamage = damageable.GetTargetMaxHealth() * 0.05f;
+            return baseDamage + percentDamage;
+        }
 
 
         return 0;
@@ -494,7 +497,8 @@ public enum BDType
     Damage, //damage over a duration of time while the bd is active.
     Stun, //it used to be a boolean but now itsd the stun.
     Immune,
-    Invisible
+    Invisible,
+    SecretBulletMultipler
 }
 
 public enum BDDamageType 

@@ -1,6 +1,8 @@
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CityStore : MonoBehaviour, IInteractable
@@ -21,15 +23,33 @@ public class CityStore : MonoBehaviour, IInteractable
     //City data. armory has cost of ugprading.
     //there should be a bar in the top showing that stuff,
 
-
-
     string id;
-
+    [SerializeField] protected CityCanvas _cityCanvas;
+    [SerializeField] InteractCanvas _interactCanvas;
+     
     private void Awake()
     {
         id = Guid.NewGuid().ToString();
     }
 
+    private void Update()
+    {
+        if (!_cityCanvas.IsTurnedOn()) return;
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            //if its on then we turn off.
+
+            _cityCanvas.CloseUI();
+        }
+    }
+
+    protected virtual void CallInteract()
+    {
+        _cityCanvas.OpenUI();
+    }
+
+    #region INTERACT
     public string GetInteractableID()
     {
         return id;
@@ -37,16 +57,17 @@ public class CityStore : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        
+        CallInteract(); 
     }
 
     public void InteractUI(bool isVisible)
     {
-        
+        _interactCanvas.ControlInteractButton(isVisible);
     }
 
     public bool IsInteractable()
     {
         return true;
     }
+    #endregion
 }

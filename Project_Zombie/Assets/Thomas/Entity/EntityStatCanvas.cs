@@ -59,7 +59,7 @@ public class EntityStatCanvas : MonoBehaviour
             return null;
         }
 
-        Debug.Log("entity stat canvas called to create new bd");
+
         //need to put this into container;
         BDUnit newObject = Instantiate(bdUnitTemplate);
         newObject.transform.SetParent(bdContainer);

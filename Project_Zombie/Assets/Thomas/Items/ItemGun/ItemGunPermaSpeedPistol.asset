@@ -30,7 +30,7 @@ MonoBehaviour:
   - stat: 8
     initialValue: 0.5
   - stat: 9
-    initialValue: 15
+    initialValue: 14
   - stat: 10
     initialValue: 0.08
   gunModel: {fileID: 758834203172537232, guid: 6edc56f095065bd4a9cf0b19b26922d2, type: 3}

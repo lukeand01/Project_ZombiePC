@@ -26,10 +26,13 @@ public class MyGrid : LayoutGroup
     [Separator("Limit")]
     public int limitPerLine = 3 ;
 
+    [SerializeField] bool isDebug;
     
 
     RectTransform container;
 
+
+    [ContextMenu("set layout horizontal")]
     public override void CalculateLayoutInputVertical()
     {
 
@@ -47,9 +50,6 @@ public class MyGrid : LayoutGroup
         }
         else
         {
-
-            
-
              HandleGrid();
 
         }
@@ -59,8 +59,14 @@ public class MyGrid : LayoutGroup
         
     }
 
-    void HandleGrid()
+
+
+    
+
+
+    public void HandleGrid()
     {
+
         float width = container.sizeDelta.x;
         float height = container.sizeDelta.y;
 
@@ -68,6 +74,8 @@ public class MyGrid : LayoutGroup
 
         int posX = 0;
         int posY = 0;
+
+
         for (int i = 0; i < rectChildren.Count; i++)
         {
             //ok so i need the height and the widht of the container.
@@ -92,6 +100,8 @@ public class MyGrid : LayoutGroup
             posX += (int)(itemWidth + spacing);
             item.transform.localPosition = new Vector3(item.transform.position.x, item.transform.position.y, 0);
         }
+
+        
     }
 
     void HandleGridReverse()
@@ -189,14 +199,30 @@ public class MyGrid : LayoutGroup
     //i want to create a logic that always tries to keep the objects in the middle.
 
 
-
     public override void SetLayoutHorizontal()
     {
-        
+
     }
 
     public override void SetLayoutVertical()
     {
-        
+
     }
+
+    [ContextMenu("FORCE")]
+    public void Force()
+    {
+        LayoutRebuilder.MarkLayoutForRebuild(GetComponent<RectTransform>());
+    }
+
+    public override void CalculateLayoutInputHorizontal()
+    {
+        //container = GetComponent<RectTransform>();
+        base.CalculateLayoutInputHorizontal();
+        //HandleGrid();
+    }
+
+
+
+
 }

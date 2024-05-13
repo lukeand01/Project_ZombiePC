@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class AbilityUnit : ButtonBase
 {
     AbilityClass _abilityClass;
+
     public AbilityPassiveData _abilityPassiveData {  get; private set; }
 
     [Separator("ABILITY UNIT")]
@@ -32,21 +33,26 @@ public class AbilityUnit : ButtonBase
 
     public void SetUpActive(AbilityClass ability, int index)
     {
+        ability.SetUI(this);
+        _abilityClass = ability;
+        keycodeText.text = (index + 1).ToString();
+
         if (ability.IsEmpty())
         {
             empty.SetActive(true);
             return;
         }
 
-        ability.SetUI(this);
+
         empty.SetActive(false);
         SetUpBase(ability.dataActive);      
-        _abilityClass = ability;
 
-        keycodeText.text = (index + 1).ToString();
+
+      
 
 
     }
+
     public void SetUpPassive(AbilityClass ability)
     {
         _abilityClass = ability;
@@ -84,18 +90,32 @@ public class AbilityUnit : ButtonBase
 
     }
 
+    public void UpdateActiveUI()
+    {
+        if (_abilityClass == null) return; 
+
+        if (_abilityClass.dataActive != null)
+        {
+            empty.SetActive(false);
+            icon.sprite = _abilityClass.dataActive.abilityIcon;
+        }
+        else
+        {
+            empty.SetActive(true);
+        }
+    }
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
         if(_abilityClass == null)
         {
-            Debug.Log("same");
+
             return;
         }
 
         if (_abilityClass.IsEmpty())
         {
-            Debug.Log("is empty");
+
             return;
         }
 

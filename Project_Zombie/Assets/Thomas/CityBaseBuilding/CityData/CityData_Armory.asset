@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e3eebfb483b07459ffad681e975672, type: 3}
+  m_Name: CityData_Armory
+  m_EditorClassIdentifier: 
+  <cityStoreLevel>k__BackingField: 0
+  cityArmoryList:
+  - GunName: Speed Pistol
+    <data>k__BackingField: {fileID: 11400000, guid: b5ce0634117da2145bff94c8137aff90, type: 2}
+    <requirementToUnluck>k__BackingField:
+      requiredResourceList:
+      - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+        <quantity>k__BackingField: 150
+      requiredCityStoreLevelList: []
+  - GunName: Duelist Pistol
+    <data>k__BackingField: {fileID: 11400000, guid: 13aa1538999aba942a2f1a5764b302b5, type: 2}
+    <requirementToUnluck>k__BackingField:
+      requiredResourceList:
+      - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+        <quantity>k__BackingField: 150
+      requiredCityStoreLevelList: []
+  - GunName: Sawed Off Shotgun
+    <data>k__BackingField: {fileID: 11400000, guid: 34eff2ce5ce97a6418e92af39813b2cb, type: 2}
+    <requirementToUnluck>k__BackingField:
+      requiredResourceList:
+      - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+        <quantity>k__BackingField: 150
+      requiredCityStoreLevelList: []
+  - GunName: Rampage SMG
+    <data>k__BackingField: {fileID: 11400000, guid: e4f36989caa466d448692e11cf5f651b, type: 2}
+    <requirementToUnluck>k__BackingField:
+      requiredResourceList:
+      - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+        <quantity>k__BackingField: 150
+      requiredCityStoreLevelList: []
+  requirementToIncreaseLevelList: []
+  ownedGunIndexList: 00000000

@@ -114,6 +114,13 @@ public class GunClass
 
 
     }
+
+    public void ReloadGunForFree()
+    {
+        ammoCurrent = ammoTotal;
+    }
+
+
     public bool HasReserveAmmo()
     {
         return ammoReserve == -1 || ammoReserve > 0;
@@ -286,7 +293,19 @@ public class GunClass
 
     #endregion
 
+    EquipWindowEquipUnit gunEquipUnit;
 
+    public void SetGunEquip(EquipWindowEquipUnit gunEquipUnit)
+    {
+        this.gunEquipUnit = gunEquipUnit;
+    }
+
+    public void ChangeGunbyEquipWindow(ItemGunData newGun)
+    {
+        //we are going tell player to change the model.
+
+
+    }
     //this can be changed only inside.
 
 }

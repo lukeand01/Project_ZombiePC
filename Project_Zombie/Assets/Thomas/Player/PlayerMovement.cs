@@ -237,7 +237,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void AddDashCooldownReduction()
     {
-        Debug.Log("add dash cooldown");
+
         dashCooldownReduction = 0.4f;
     }
     public void RemoveDashCooldownReduction()

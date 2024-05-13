@@ -48,6 +48,8 @@ public class KeyClass
         keyDictionary.Add(KeyType.Pause, KeyCode.Escape);
 
         keyDictionary.Add(KeyType.Dash, KeyCode.LeftShift);
+
+        keyDictionary.Add(KeyType.EquipWindow, KeyCode.Tab);
     }
 
 
@@ -68,6 +70,7 @@ public enum KeyType
     Ability3,
     Shoot,
     Pause,
-    Dash
+    Dash,
+    EquipWindow
 
 }

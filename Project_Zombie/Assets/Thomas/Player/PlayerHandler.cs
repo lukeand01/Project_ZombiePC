@@ -34,8 +34,7 @@ public class PlayerHandler : MonoBehaviour
 
     [Separator("REF HOLDER FOR CITY")]
     [SerializeField] CityData hqHolder; //what if i require more than just level. such as quests or other places in certain levels
-    [SerializeField] CityDataLab labHolder;
-    [SerializeField] CityDataArmory armoryHolder;
+
 
     LayerMask layerForBuilding;
 

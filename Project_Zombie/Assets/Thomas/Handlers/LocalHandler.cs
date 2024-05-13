@@ -25,7 +25,7 @@ public class LocalHandler : MonoBehaviour
 
     //can we make this simple?
     //we get all the spawns that are close and accessible to the player
-    //on cooldown we randomly send information to them and they store the selected fellas. 
+    //on cooldown we randomly send information to them and they store the hover fellas. 
     //they use that information when they can.
     //the choice of what kind of fella happens only here. 
 

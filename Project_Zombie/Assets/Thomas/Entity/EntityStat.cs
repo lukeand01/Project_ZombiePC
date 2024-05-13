@@ -202,6 +202,7 @@ public class EntityStat : MonoBehaviour
         //also when we remove it we do stuff;
 
 
+
         if (dictionaryForStacking.ContainsKey(bd.id))
         {
             //then we stack
@@ -241,6 +242,10 @@ public class EntityStat : MonoBehaviour
             case BDType.Invisible:
                 AddBDInvisibility();
                 break;
+
+            case BDType.SecretBulletMultipler:
+                PlayerHandler.instance._playerCombat.MakeSecretStatMultipleBulletPercent(1);
+                break;
         }
 
 
@@ -250,7 +255,7 @@ public class EntityStat : MonoBehaviour
         }
         else
         {
-            Debug.Log("yo");
+
             bd.CreateBDUnit(_entityCanvas);
         }
 
@@ -370,6 +375,9 @@ public class EntityStat : MonoBehaviour
                 break;
             case BDType.Invisible:
                 if(!HasAnotherOfType(BDType.Invisible)) IsInvisible = false;
+                break;
+            case BDType.SecretBulletMultipler:
+                PlayerHandler.instance._playerCombat.MakeSecretStatMultipleBulletPercent(0);
                 break;
         }
 

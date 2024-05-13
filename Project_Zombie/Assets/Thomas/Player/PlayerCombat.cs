@@ -87,7 +87,27 @@ public class PlayerCombat : MonoBehaviour
         {
             ReceiveTempGunIfEmptySlot(debugGunDataTemp2);
         }
+
+
+       UIHandler.instance.EquipWindowUI.GetEquipForPermaGun(gunList[0]);
+
+        if(CityHandler.instance != null)
+        {
+            CityHandler.instance.UpdateGunListUsingCurrentPermaGun(gunList[0].data);
+        }
+
     }
+
+
+
+
+    #region GETTER
+    public ItemGunData GetCurrentPermaGun()
+    {
+        return gunList[0].data;
+    }
+
+    #endregion
 
     #region RECEIVE
     public void ReceivePermaGun(ItemGunData gun)
@@ -122,6 +142,13 @@ public class PlayerCombat : MonoBehaviour
         {
             SwapGunModel();
         }
+
+        if (CityHandler.instance != null)
+        {
+            CityHandler.instance.UpdateGunListUsingCurrentPermaGun(gunList[0].data);
+        }
+
+
     }
 
     public void ReceiveTempGunIfEmptySlot(ItemGunData gun)
@@ -172,7 +199,7 @@ public class PlayerCombat : MonoBehaviour
 
 
         //Debug.Log("received wepaon " + data.itemName);
-        //Debug.Log("to replace " + gunList[index].data.itemName);
+        //Debug.Log("to replace " + ownedGunList[index].data.itemName);
 
         GameObject spawnedModel = CreateGunModel(data);
         spawnedModel.transform.rotation = Quaternion.Euler(0,-90,0);
@@ -311,12 +338,7 @@ public class PlayerCombat : MonoBehaviour
         gunList[currentGunIndex].gunModel.SetActive(true);
     }
 
-
-
-    void ReloadCurrentGun()
-    {
-
-    }
+    
 
     #endregion
 
@@ -382,6 +404,15 @@ public class PlayerCombat : MonoBehaviour
         StopCoroutine(reloadProcess);
         _gunUI.UpdateReloadFill(0, 0);
         isReloading = false;
+    }
+
+
+    public void FullInstantReload()
+    {
+        gunList[currentGunIndex].ReloadGunForFree();
+        _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
+        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
+
     }
 
     #endregion
@@ -454,7 +485,7 @@ public class PlayerCombat : MonoBehaviour
 
     public float secretStatMultipleBulletFlat {  get; private set; }
 
-    public float secretStatMultipleBulletPercent { get; private set; }
+    public float secretStatMultipleBulletMultiplier { get; private set; }
 
     public float secretStatMultipleBulletDamageModifier {  get; private set; }
 
@@ -467,7 +498,7 @@ public class PlayerCombat : MonoBehaviour
     }
     public void MakeSecretStatMultipleBulletPercent(float value)
     {
-        secretStatMultipleBulletDamageModifier = value;
+        secretStatMultipleBulletMultiplier = value;
         UpdateSecretValues();
     }
     public void MakeSecretStatMultipleBulletDamageModifier(float value)
@@ -482,11 +513,13 @@ public class PlayerCombat : MonoBehaviour
         {
             if (item.data == null) continue;
 
-            item.MakeSecretStats(secretStatMultipleBulletFlat, secretStatMultipleBulletPercent, secretStatMultipleBulletDamageModifier); ;
+            item.MakeSecretStats(secretStatMultipleBulletFlat, secretStatMultipleBulletMultiplier, secretStatMultipleBulletDamageModifier); ;
         }
     }
 
     #endregion
 
+
+   
 }
 

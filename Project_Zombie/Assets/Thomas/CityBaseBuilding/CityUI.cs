@@ -25,27 +25,14 @@ public class CityUI : MonoBehaviour
     [SerializeField] ItemResourceWindow itemResourceWindow;
     List<ResourceUnit> resourceUnitList = new();
     
-    public void UpdateCityInventory(List<ItemClass> itemList)
-    {
-        //THIS IS BAD WAY TO DO IT BUT 
-        foreach (var item in resourceUnitList)
-        {
-            Destroy(item.gameObject);
-        }
-
-        foreach (var item in itemList)
-        {
-            ResourceUnit newObject = Instantiate(resourceUnitTemplate);
-
-        }
-
-    }
-
+   
     public void CreateResourceUnitForItem(ItemClass item)
     {
         ResourceUnit newObject = Instantiate(resourceUnitTemplate);
-        newObject.SetUp(item, itemResourceWindow);
+        newObject.SetUp(item);
         newObject.transform.SetParent(resourceContainer);
+
+
     }
 
 

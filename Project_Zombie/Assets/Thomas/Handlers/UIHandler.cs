@@ -16,8 +16,8 @@ public class UIHandler : MonoBehaviour
     [SerializeField] PauseUI pauseUIRef;
     [SerializeField] AbilityUI abilityUIRef;
     [SerializeField] CityUI cityUIRef;
-
-
+    [SerializeField] EquipWindowUI equipUIRef;
+    [SerializeField] DescriptionWindow descriptionWindowRef;
 
     #region GETTERS 
     public PlayerUI _playerUI { get {  return playerUIRef; } }
@@ -34,6 +34,10 @@ public class UIHandler : MonoBehaviour
     public AbilityUI AbilityUI { get { return abilityUIRef; } }
 
     public CityUI CityUI { get { return cityUIRef; } }
+
+    public EquipWindowUI EquipWindowUI { get { return equipUIRef; } }
+
+    public DescriptionWindow DescriptionWindow { get { return descriptionWindowRef; } }
     #endregion
 
     

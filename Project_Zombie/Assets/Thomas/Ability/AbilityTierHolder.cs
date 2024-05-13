@@ -72,10 +72,16 @@ public class AbilityTierHolder : ScriptableObject
     {
         //tweaks to the logic
         //there should be a higher chance of getting something the player already has.
+        //also should not be be able to show the player something he can no longer stack.
+
         List<int> indexList = new();
         int safeBreak = 0;
         int roll = Random.Range(0, 101);
         List<AbilityPassiveData> newList = new();
+
+
+        List<AbilityClass> forbiddenAbilityList = new();
+        List<AbilityClass> higherChanceAbilityList = new();
 
 
         if(currentChanceListBasedInLevel.Count <= 0)
@@ -125,10 +131,10 @@ public class AbilityTierHolder : ScriptableObject
 
         return newList;
 
+    }
 
 
 
-                            }
 
     public void GenerateNewChanceListBasedInLevel(int level)
     {

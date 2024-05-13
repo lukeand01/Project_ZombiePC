@@ -23,7 +23,7 @@ public class AbilityUI : MonoBehaviour
     [SerializeField] AbilityUnit abilityUnitTemplate;
     [SerializeField] Transform container;
     [SerializeField]List<AbilityUnit> abilityActiveUnitList = new();
-    public void SetActiveAbility(List<AbilityClass> abilityList)
+    public void SetActiveAbilityUnits(List<AbilityClass> abilityList)
     {
         ClearUI(container);
         abilityActiveUnitList.Clear();

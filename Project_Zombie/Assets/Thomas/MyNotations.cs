@@ -44,7 +44,7 @@
 ///
 
 //GOAL
-///the effect of many guns appearing till one is selected.
+///the effect of many guns appearing till one is hover.
 ///i need to randomly select 
 //it shows the stats of that gun.
 //we can reroll
@@ -72,15 +72,11 @@
 
 //GOAL
 ///create bd system. create bd units that appear somewhere and that you can look at it.
-//create a pause menu.
-
-//GOAL
+///create a pause menu.
 
 
 
-//GOAL
-//create active ability system
-//create passive ability system. the perma guns should also be capable of carrying abilities.
+
 
 
 //GOAL
@@ -191,7 +187,7 @@
 ///stun and bleeding apply to enemy
 ///the bd in top of enemy´s head is not working because i think grid doesnt work in this utation.
 ///you can see all your own bds and pause to check them better. can see the guns and can see the stats. we need a whole list by the right.
-///change it so the description appears as a window instead of staying in place. then i place the passive holder there.
+///change it so the description appears as a window instead of staying in place. then i place the passive holderMain there.
 ///create and update passive description
 ///create and update stat description
 //create gun description
@@ -232,10 +228,46 @@
 ///creates system for damageback
 ///creates system for increasing the amount of shoots based in a modifier.
 
+
+//
+
+//FOR TODAY
+///shoot a fireaball at mouse
+///create burning tick
+///instantly reload the mag and deasl damage around based in the magsize.
+///for a short duration all your weapons shoot twice as many bullets.
+
+
+//FOR TODAY
+///your weapon slot is linked to your gunclass. any changes are made directly.
+///you can drag items.
+///create window description
+///if you release into a player slot and with the right type then we order the swap
+///weapons you are using or abilities do not show in your options
+///you cannot drag your weapon away because you must always have a weapon
+
+
 //GOAL
-//shoot a fireaball at mouse
-//instantly reload the mag and deasl damage around based in the magsize.
-//for a short duration all your weapons shoot twice as many bullets.
+///you can oepn the armory.
+///you can buy stuff in the armory and it will appear in the tab.
+///opening the tab always close citystore ui
+///you can drag away and remove your abilities.
+///you cannot move or do anything while the tab is open
+
+
+
+//FOR TOMORROW
+//passives stack properly when they are different levels. the basci will be influenced but the 3 stack is always the same.
+//improve the passive algorithm :
+//cannot give the player a passive that the player can no longer stack
+//should prio a passive that the player has. increase it by 40% chance
+///create lab
+///create smith
+
+//GOAL
+///shoot a fireaball at mouse
+///instantly reload the mag and deasl damage around based in the magsize.
+///for a short duration all your weapons shoot twice as many bullets.
 
 //GOAL
 //pasive algorithm needs to take in mind the following:
@@ -305,6 +337,8 @@
 //for a short duration all your weapons shoot twice as many bullets.
 
 
+
+
 //PASSIVE (6/ 12)
 //reduce skill cooldown. at 3 skills do more damage.
 //increase regen when outside of combat (not takig damage for a while). at 3 greatly increase regen while standing still for long enough
@@ -369,3 +403,15 @@
 //how will spawn work?
 //the spawn should be influenced by how many rooms are open. 
 //by what round it is
+
+
+
+
+//GOAL
+//create teh stage menu.
+//create the system for loading into teh stage.
+//create the system for loading outn of stage. remove all passives, all temp weapons, all bds
+//can leave at any time by interact with a door by the start of the mission
+
+
+//for now you will load into the stage and choose whenever you want to flee. 

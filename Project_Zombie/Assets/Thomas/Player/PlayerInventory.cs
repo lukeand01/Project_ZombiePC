@@ -10,6 +10,11 @@ public class PlayerInventory : MonoBehaviour
     {
         interactMask |= (1 << 7);
         SetCityInventoryList();
+
+        foreach (var item in initialCityInventoryList)
+        {
+            AddItemForCity(item);
+        }
     }
     private void Update()
     {
@@ -21,11 +26,16 @@ public class PlayerInventory : MonoBehaviour
     //i need ref to all fellas.
 
     [Separator("RESOURCE ITEMS")]
-    [SerializeField] List<ItemResourceData> refItemList = new();
+    [SerializeField]List<ItemResourceData> refItemList = new();
     [SerializeField] List<ItemClass> stageInventoryList = new();
-    [SerializeField]List<ItemClass> inventoryListForUI = new();
+    List<ItemClass> inventoryListForUI = new();
     [SerializeField] List<ItemClass> cityInventoryList = new();
+    Dictionary<ItemData, ItemClass> cityInventoryDictionary = new();
     //i need an inventory for the stage and an inventory for city
+
+    [Separator("ITENS FOR THE START")]
+    [SerializeField] List<ItemClass> initialCityInventoryList = new();
+
 
     void SetCityInventoryList()
     {
@@ -46,6 +56,7 @@ public class PlayerInventory : MonoBehaviour
             ItemClass newItem = new ItemClass(item, 0);
             UIHandler.instance.CityUI.CreateResourceUnitForItem(newItem);
             cityInventoryList.Add(newItem);
+            cityInventoryDictionary.Add(newItem.data, newItem); 
         }
 
     }
@@ -87,6 +98,8 @@ public class PlayerInventory : MonoBehaviour
 
 
         int index = GetListIndex(item.data, cityInventoryList);
+
+
 
         if (index == -1)
         {
@@ -140,9 +153,11 @@ public class PlayerInventory : MonoBehaviour
 
     int GetListIndex(ItemData data, List<ItemClass> targetList)
     {
+
+
         for (int i = 0; i < targetList.Count; i++)
         {
-            if (stageInventoryList[i].data == data)
+            if (targetList[i].data == data)
             {
                 return i;   
             }
@@ -173,6 +188,41 @@ public class PlayerInventory : MonoBehaviour
     }
 
 
+    public bool HasEnoughResourceToBuy(List<ResourceClass> resourceCostList)
+    {
+
+        foreach (var resource in resourceCostList)
+        {
+
+            ItemClass itemClass = resource.GetItem();
+
+            if (!cityInventoryDictionary.ContainsKey(itemClass.data))
+            {
+                Debug.Log("returned false because found nothing");
+                return false;
+            }
+
+            ItemClass rightClass = cityInventoryDictionary[itemClass.data];
+
+            if (itemClass.quantity > rightClass.quantity)
+            {
+                Debug.Log("not enough quantity ");
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    public void SpendResourceListForCity(List<ResourceClass> resourceCostList)
+    {
+        foreach (var item in resourceCostList)
+        {
+            RemoveItemForCity(item.GetItem());
+        }
+    }
+
     #endregion
 
     #region INTERACT
@@ -197,7 +247,7 @@ public class PlayerInventory : MonoBehaviour
 
     void CheckForInteractables()
     {
-        //we keep checking aruond for anyone in the right layer
+        //we keep checking aruond for anyone in the right enemyLayer
 
 
         RaycastHit[] interactList = Physics.SphereCastAll(transform.position, 3, Vector3.forward, 1, interactMask);

@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d22b204419d3c6347bd4351a6c2b418a, type: 3}
-  m_Name: CityDataHQ
+  m_Script: {fileID: 11500000, guid: ddfd8526df5355242aa20eaf774de5b4, type: 3}
+  m_Name: CityData_Stage
   m_EditorClassIdentifier: 
-  mainLevelCostList: []
-  secondLevelCostLis: []
+  <cityStoreLevel>k__BackingField: 0
+  cityStageClassList:
+  - stageData: {fileID: 11400000, guid: 8bf227e4a5ce3e34ab86b700f48b610a, type: 2}

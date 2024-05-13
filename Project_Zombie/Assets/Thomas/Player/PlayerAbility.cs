@@ -24,7 +24,7 @@ public class PlayerAbility : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
-            abilityActiveList.Add(new AbilityClass());
+            abilityActiveList.Add(new AbilityClass(i));
         }
 
         foreach (var item in debugAbilityActiveStartingList)
@@ -34,7 +34,7 @@ public class PlayerAbility : MonoBehaviour
 
         foreach(var item in abilityActiveList)
         {
-            UIHandler.instance.AbilityUI.SetActiveAbility(abilityActiveList);
+            UIHandler.instance.AbilityUI.SetActiveAbilityUnits(abilityActiveList);
         }
 
         foreach (var item in debugPassiveStartingList)
@@ -42,10 +42,22 @@ public class PlayerAbility : MonoBehaviour
             AddAbility(item);
         }
 
+
+        foreach (var item in abilityActiveList)
+        {
+            UIHandler.instance.EquipWindowUI.GetEquipForAbility(item);
+        }
+
+        if(CityHandler.instance != null)
+        {
+            CityHandler.instance.UpdateAbilityListUsingCurrentAbilities();
+        }
     }
 
     public void AddAbility(AbilityBaseData data)
     {
+
+        //should create them all but without data so i can use the ui
 
         AbilityActiveData dataActive = data.GetActive();
 
@@ -72,7 +84,13 @@ public class PlayerAbility : MonoBehaviour
 
         if(index != -1)
         {
-            abilityActiveList[index] = new AbilityClass(data);
+            //should not be new
+            abilityActiveList[index].SetActive(data);
+            
+            if(CityHandler.instance != null)
+            {
+                CityHandler.instance.UpdateAbilityListUsingCurrentAbilities();
+            }
         }
         else
         {
@@ -139,9 +157,13 @@ public class PlayerAbility : MonoBehaviour
     }
 
 
-    public void ReplaceAbility(AbilityBaseData data, int index)
+    public void ReplaceActiveAbility(AbilityActiveData data, int index)
     {
-
+        abilityActiveList[index].SetActive(data);
+        if (CityHandler.instance != null)
+        {
+            CityHandler.instance.UpdateAbilityListUsingCurrentAbilities();
+        }
     }
     public void ReplaceSameAbility(AbilityClass ability)
     {
@@ -205,7 +227,7 @@ public class PlayerAbility : MonoBehaviour
             if (item.dataPassive == data) return item;
         }
 
-        return new AbilityClass();
+        return new AbilityClass(0);
     }
 
 
@@ -233,4 +255,15 @@ public class PlayerAbility : MonoBehaviour
 
     }
 
+    //
+    public List<AbilityClass> GetAbiltiyList()
+    {
+
+
+        return abilityActiveList;
+    }
 }
+
+
+
+//

@@ -11,9 +11,11 @@ public class AbilityClass
     //in active we register cooldowns. 
     //actives also can contain level to detect how strong is a fella. we use this fella to communicate with data.
 
-    public AbilityClass() 
+    public int slotIndex {  get; private set; }
+
+    public AbilityClass(int slotIndex) 
     { 
-        
+        this.slotIndex = slotIndex;
     
     }
 
@@ -60,6 +62,24 @@ public class AbilityClass
         debugName = data.abilityName;
         activeCooldownTotal = data.abilityCooldown;
     }
+
+    public void SetActive(AbilityActiveData data)
+    {
+
+        dataActive = data;
+
+        UpdateActiveUI();
+
+        if (data == null)
+        {
+            debugName = "";
+            return;
+        }
+
+        debugName = data.abilityName;
+        activeCooldownTotal = data.abilityCooldown;
+    }
+
 
     public void UseActive()
     {
@@ -128,7 +148,18 @@ public class AbilityClass
     public AbilityUnit _abilityUnit {  get; private set; }
     public void SetUI(AbilityUnit _abilityUnit)
     {
+
         this._abilityUnit = _abilityUnit;
+    }
+
+    public void UpdateActiveUI()
+    {
+
+        if(_abilityUnit != null)
+        {
+
+            _abilityUnit.UpdateActiveUI();
+        }
     }
 
     public void DestroyUI()

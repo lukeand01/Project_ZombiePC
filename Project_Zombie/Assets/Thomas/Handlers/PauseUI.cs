@@ -24,14 +24,13 @@ public class PauseUI : MonoBehaviour
     private void Start()
     {
         CreateStatList();
+        descriptionWindow = UIHandler.instance.DescriptionWindow;
+
     }
 
     private void Update()
     {
-        if (!IsPauseOn())
-        {
-            descriptionHolder.SetActive(false);
-        }
+        
     }
 
     public void CallPause()
@@ -46,6 +45,7 @@ public class PauseUI : MonoBehaviour
         {
             GameHandler.instance.PauseGame();
             PlayerHandler.instance._playerController.block.AddBlock("Pause", BlockClass.BlockType.Partial);
+            descriptionWindow.StopDescription();
             holder.SetActive(true);
         }
     }
@@ -89,14 +89,8 @@ public class PauseUI : MonoBehaviour
     //bullet per shot
 
     [Separator("Description")]
-    [SerializeField] GameObject descriptionHolder;
-    [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] TextMeshProUGUI typeText;
-    [SerializeField] TextMeshProUGUI tierText;
-    [SerializeField] TextMeshProUGUI descriptionText;
-    [SerializeField] TextMeshProUGUI damageText;
-    [SerializeField] TextMeshProUGUI cooldownText;
-    
+     DescriptionWindow descriptionWindow;
+
     //i can just make everyone appear right at first. then we check.
     
 
@@ -104,75 +98,47 @@ public class PauseUI : MonoBehaviour
 
     public void StopDescription()
     {
-        descriptionHolder.SetActive(false);
+        descriptionWindow.StopDescription();
+
     }
 
     public void DescribeBD(BDClass bd, Transform posRef)
     {
         //we do the same thing but we also 
 
-        descriptionHolder.SetActive(true);
-        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
+        descriptionWindow.DescribeBD(bd, posRef);
 
-
-        nameText.text = bd.bdType.ToString();
-        typeText.text = bd.GetTypeForDescription();
-
-        tierText.text = "";
-
-
-        string bdDescription = MyUtils.GetDescriptionForBD(bd);
-        descriptionText.text = bdDescription;
-
-
-        damageText.text = bd.GetDamageDescription();
-
-
-        cooldownText.text = "Total Cooldown: " +  bd.GetTempDurationForDescription();
     }
 
     public void DescribeAbiliy(AbilityClass ability, Transform posRef)
     {
-        descriptionHolder.SetActive(true);
-        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
-
-        nameText.text = ability.GetNameForDescription();
-        typeText.text = ability.GetTypeForDescription();
-        tierText.text = ability.GetTierForDescription();
-        descriptionText.text = ability.GetDescriptionForDescription();
-        damageText.text = ability.GetDamageForDescription();
-        cooldownText.text = ability.GetCooldownForDescription();    
+        descriptionWindow.DescribeAbiliy(ability, posRef);
+ 
     }
 
     public void DescribeGun(GunClass gun)
     {
-        descriptionHolder.SetActive(true);
+        //descriptionHolder.SetActive(true);
+        descriptionWindow.DescribeGun(gun);
     }
 
     public void DescribeStat(StatClass stat, Transform posRef)
     {
-        descriptionHolder.SetActive(true);
-        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
+        descriptionWindow.DescribeStat(stat, posRef);
 
-        nameText.text = stat.stat.ToString();
-        typeText.text = "Stat";
-        tierText.text = "";
-        descriptionText.text = MyUtils.GetStatDescription(stat.stat);
-        damageText.text = "Value is: " + stat.value.ToString();
-        cooldownText.text = "";
+
+
     }
 
     public void DescribeDash(Transform posRef)
     {
-        descriptionHolder.SetActive(true);
-        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
 
-        nameText.text = "Dash";
-        typeText.text = "Unique Ability";
-        tierText.text = "";
-        descriptionText.text = "Once you dahs you become immune to all forms of damage for a short amount of time";
-        damageText.text = "";
-        cooldownText.text = "";
+        descriptionWindow.DescribeDash(posRef); 
+        return;
+        //descriptionHolder.SetActive(true);
+        //descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
+
+
     }
 
     

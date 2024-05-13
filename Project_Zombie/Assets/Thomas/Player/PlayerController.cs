@@ -20,9 +20,16 @@ public class PlayerController : MonoBehaviour
     {
         if (handler == null) return;
     
-        if (block.HasBlock(BlockClass.BlockType.Complete)) return;
+        if (block.HasBlock(BlockClass.BlockType.Complete))
+        {
+
+            return;
+        }
+
+
 
         InputPause();
+
 
         if (block.HasBlock(BlockClass.BlockType.Partial)) return;
 
@@ -43,8 +50,9 @@ public class PlayerController : MonoBehaviour
         InputRotation();
         InputDash();
         InputInteract();
-        
-        
+        InputEquipWindow();
+
+
     }
 
 
@@ -149,6 +157,7 @@ public class PlayerController : MonoBehaviour
 
     void InputPause()
     {
+        //
         if (Input.GetKeyDown(key.GetKey(KeyType.Pause)))
         {
            if(UIHandler.instance != null)
@@ -201,5 +210,19 @@ public class PlayerController : MonoBehaviour
         {
             handler._playerMovement.Dash();
         }
+    }
+
+    void InputEquipWindow()
+    {
+
+        if (CityHandler.instance == null) return;
+
+        if (Input.GetKeyDown(key.GetKey(KeyType.EquipWindow)))
+        {
+            UIHandler.instance.EquipWindowUI.CallUI();
+        }
+
+        
+
     }
 }
