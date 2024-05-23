@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: ItemHolderGun
   m_EditorClassIdentifier: 
   itemDataRefList:
-  - {fileID: 11400000, guid: 2aca18a27374bf442bf1da05176db7fc, type: 2}
-  - {fileID: 11400000, guid: c6955791b210ba34ea525cc70f104824, type: 2}
+  - {fileID: 11400000, guid: 175ac004bae164d4d94e189ba599b0fc, type: 2}
+  - {fileID: 11400000, guid: a03601f2da05203458d93520948ee0c7, type: 2}
+  - {fileID: 11400000, guid: dcf2f6a0e2ecb294795f5d7d84302122, type: 2}
+  - {fileID: 11400000, guid: aeec2fcead747d541b16c14375ab067f, type: 2}
+  - {fileID: 11400000, guid: 7b1a459b35bd35a40b2561aae96569cc, type: 2}
+  - {fileID: 11400000, guid: 4dbc885a69fc6b3499ecf29545399fb7, type: 2}
   currentChanceListBasedInLevel: []

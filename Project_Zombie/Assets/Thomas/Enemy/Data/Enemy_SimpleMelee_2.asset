@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Enemy_SimpleMelee_2
   m_EditorClassIdentifier: 
   enemyName: Fighter
-  enemyModel: {fileID: 7099369015076163779, guid: 318c50c56ab9dbb458cef7e546235184, type: 3}
+  enemyModel: {fileID: 2604708259153351174, guid: 715bce785190c5e49a4590dffe51270e, type: 3}
   attackRange: 3.5
   attackSpeed: 1
   initialStatList:
   - stat: 0
-    initialValue: 750
+    initialValue: 500
   - stat: 1
-    initialValue: 3
+    initialValue: 6
   scaleStatList:
   - stat: 0
-    initialValue: 40
+    initialValue: 50

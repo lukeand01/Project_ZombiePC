@@ -53,6 +53,8 @@ public class Portal : MonoBehaviour
 
     public void Spawn(EnemyData enemy)
     {
+
+        Debug.Log("called spawn");
         //put the fella in the world.
         if (spawnCurrent > 0 && spawnQueueList.Count < 4)
         {
@@ -60,8 +62,9 @@ public class Portal : MonoBehaviour
             spawnQueueList.Add(enemy);
             return;
         }
-
+        int round = LocalHandler.instance.round;
         EnemyBase newObject = Instantiate(enemy.enemyModel, transform.position + Vector3.forward , Quaternion.identity);
+        newObject.SetStats(round);
         newObject.SetChest(chestAbilityTemplate);
         chestAbilityTemplate = null;
 

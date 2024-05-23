@@ -62,7 +62,7 @@ public class CityCanvas : MonoBehaviour
     {
         holder.SetActive(true);
         PlayerHandler.instance._playerController.block.AddBlock("CityCanvas", BlockClass.BlockType.Complete);
-        UIHandler.instance.EquipWindowUI.ForceCloseUI();
+        UIHandler.instance._EquipWindowUI.ForceCloseUI();
     }
     public void CloseUI()
     {
@@ -73,7 +73,7 @@ public class CityCanvas : MonoBehaviour
         }
 
         holder.SetActive(false);
-        UIHandler.instance.DescriptionWindow.StopDescription();
+        UIHandler.instance._DescriptionWindow.StopDescription();
         Invoke(nameof(CallFreePlayer), 0.1f);
     }
 
@@ -127,7 +127,7 @@ public class CityCanvas : MonoBehaviour
     [SerializeField] Image buyPortrait;
     [SerializeField] TextMeshProUGUI buyNameText;
     [SerializeField] TextMeshProUGUI buyTypeText;
-
+    [SerializeField] TextMeshProUGUI buyCostText;
 
     //Cost holder
     //requirement holder
@@ -177,6 +177,8 @@ public class CityCanvas : MonoBehaviour
         CloseBuy();
     }
 
+
+
     void CloseBuy()
     {
         buyHolder.SetActive(false);
@@ -195,6 +197,36 @@ public class CityCanvas : MonoBehaviour
         buyPortrait.sprite = currentStoreUnit.gunData.itemIcon;
         buyNameText.text = currentStoreUnit.gunData.itemName;
         buyTypeText.text = "Gun";
+
+        CreateCostText();
+    }
+
+    void CreateCostText()
+    {
+        if(currentStoreUnit.gunData!= null)
+        {
+            List<string> stringList = currentStoreUnit.armoryClass.GetStringPriceList();
+            buyCostText.text = "Cost:";
+
+            foreach (var item in stringList)
+            {
+                buyCostText.text += item;
+            }
+
+        }
+
+        if(currentStoreUnit.abilityData!= null)
+        {
+            List<string> stringList = currentStoreUnit.labClass.GetStringPriceList();
+            buyCostText.text = "Cost:";
+
+            foreach (var item in stringList)
+            {
+                buyCostText.text += item;
+            }
+        }
+
+
     }
 
     void OpenBuyAbility()
@@ -203,20 +235,77 @@ public class CityCanvas : MonoBehaviour
 
         buyPortrait.sprite = currentStoreUnit.abilityData.abilityIcon;
         buyNameText.text = currentStoreUnit.abilityData.abilityName;
-        buyTypeText.text = "Gun";
+        buyTypeText.text = "Ability";
+
+        CreateCostText();
     }
 
     #endregion
 
-    #region HQ
+    #region STAGE
     //we will still spawn teh fella but with another type of unit.
+    [Separator("STAGE")]
+    [SerializeField] StageUnit stageUnitTemplate;
+    StageUnit currentStageUnit;
+
+    [Separator("STAGE DESCRIPTION")]
+    [SerializeField] GameObject stageDescription_Holder;
+    [SerializeField] TextMeshProUGUI stageDescription_NameText;
+    [SerializeField] Image stageDescription_Portrait;
+    [SerializeField] GameObject stageDescription_BuyButton;
+
+    //
+
+    void ResetStageDescription()
+    {
+        stageDescription_Holder.SetActive(false);
+
+        if(currentStageUnit != null)
+        {
+            currentStageUnit.Unselect();
+            currentStageUnit = null;
+        }
+    }
 
     public void SetStage(List<CityStageClass> cityStageClassList)
-    {
-
+    {      
+        foreach (var item in cityStageClassList)
+        {
+            StageUnit newObject = Instantiate(stageUnitTemplate);
+            newObject.SetUp(item, this);
+            newObject.transform.SetParent(containerForCityStoreUnit);
+        }
 
 
     }
+
+    public void DescribeStage(StageUnit stageUnit, CityStageClass cityStageClass)
+    {
+        stageDescription_Holder.SetActive(true);
+
+        if (currentStageUnit != null)
+        {
+            currentStageUnit.Unselect();
+        }
+
+        currentStageUnit = stageUnit;
+        currentStageUnit.Select();
+
+
+        stageDescription_NameText.text = cityStageClass.stageData.stageName;
+        stageDescription_Portrait.sprite = cityStageClass.stageData.stageSprite;
+    }
+
+    public void StartStage()
+    {
+        if (currentStageUnit == null) return;
+
+        //and if we are allowed to use this thing.
+        //then we are going to order the sceneloader to load the scene.
+        
+        GameHandler.instance._sceneLoader.LoadStage(currentStageUnit.stageData);
+    }
+
 
 
 

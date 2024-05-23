@@ -15,7 +15,7 @@ public class ItemTierHolder : ScriptableObject
 
     public Dictionary<TierType, List<ItemData>> dictionaryDividedByTier = new();
 
-    [SerializeField] List<ItemChanceClass> currentChanceListBasedInLevel = new();
+    [SerializeField] List<ItemChanceClass> currentChanceListBasedInLevel = new(); //this list we call everytime. 
 
 
     public void ResetAllDivisions()
@@ -122,7 +122,7 @@ public class ItemTierHolder : ScriptableObject
     {
         float[] GetChanceBasedInTier = MyUtils.GetChanceForTierBasedInLevel(level);
         List<ItemChanceClass> newList = new();
-
+        
 
         //Debug.Log(dictionaryDividedByTier.Count);
 

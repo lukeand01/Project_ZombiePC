@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -11,6 +12,13 @@ public class StageData : ScriptableObject
     //its always between 1 and 25.
     //we will use this thing also teo tell what resources we can get here.
     //this will also inform events.like events in certain levels. for example:> spawn a certain fella. spawn a boss. shower of meteors. gas.
+
+
+    [Separator("Description")]
+    public string stageName;
+    public Sprite stageSprite;
+    public int stageIndex;
+
 
     #region  ENEMIES
     [Separator("Enemy")]

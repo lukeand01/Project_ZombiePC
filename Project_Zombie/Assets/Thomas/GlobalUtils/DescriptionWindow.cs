@@ -70,15 +70,29 @@ public class DescriptionWindow : MonoBehaviour
         CloseStoreDescribe();
 
         nameText.text = ability.abilityName;
+        descriptionText.text = ability.abilityDescription;
         typeText.text = "Ability";
-        damageText.text = ability.GetDamageDescription(0);
+        damageText.text = ability.GetDamageDescription(new AbilityClass(ability));
         cooldownText.text = "Cooldown: " + ability.abilityCooldown.ToString();
     }
 
-    public void DescribeGun(GunClass gun)
+    public void DescribeGun(GunClass gun, Transform posRef)
     {
         descriptionHolder.SetActive(true);
+        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
         CloseStoreDescribe();
+
+        nameText.text = gun.data.itemName;
+        typeText.text = "Gun";
+        tierText.text = "";
+        descriptionText.text = gun.data.itemDescription;
+
+        float damagePerShot = gun.data.GetValue(StatType.Damage);
+        int bulletPerShot = gun.data.bulletPerShot;
+
+        damageText.text = $"Damage Per Bullet({damagePerShot} ; Bullet per shot ({bulletPerShot}))";
+        cooldownText.text = "Ammo: " + gun.ammoCurrent.ToString() + " / " + gun.ammoReserve.ToString();
+
     }
 
     public void DescribeGunData(ItemGunData gunData, Transform posRef)
@@ -128,6 +142,21 @@ public class DescriptionWindow : MonoBehaviour
         damageText.text = "";
         cooldownText.text = "";
     }
+
+    public void DescribeResource(ItemClass item, Transform posRef)
+    {
+        descriptionHolder.SetActive(true);
+        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
+        CloseStoreDescribe();
+
+        nameText.text = item.data.itemName;
+        typeText.text = "Resource";
+        tierText.text = item.data.tierType.ToString();
+        descriptionText.text = item.data.itemDescription;
+        damageText.text = "";
+        cooldownText.text = item.quantity.ToString();
+    }
+
 
     Vector3 GetScreenOffset(Vector3 posRef)
     {
@@ -184,6 +213,11 @@ public class DescriptionWindow : MonoBehaviour
 
     }
     public void StoreDescribeAbility()
+    {
+
+    }
+
+    public void StoreDescribeStage(CityStageClass stage)
     {
 
     }

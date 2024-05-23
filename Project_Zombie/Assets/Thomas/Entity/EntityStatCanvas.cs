@@ -68,7 +68,7 @@ public class EntityStatCanvas : MonoBehaviour
     }
 
 
-
+    #region DODGE
     [Separator("DODGE")]
     [SerializeField] FadeUI fadeTemplate;
     [SerializeField] Transform dodgePos;
@@ -87,4 +87,28 @@ public class EntityStatCanvas : MonoBehaviour
         newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
         newObject.SetUp("Dodge!", Color.black);
     }
+
+    #endregion
+
+    #region RECOVER HEALTH
+    [Separator("RECOVER HEALTH")]
+    [SerializeField] Transform recoverHealthPos;
+
+    public void CreateFadeUIForRecoverHealth(float value)
+    {
+        FadeUI newObject = Instantiate(fadeTemplate);
+        newObject.transform.SetParent(recoverHealthPos);
+
+
+        float amount = 20f;
+        float x = Random.Range(-amount * 3, amount * 3);
+        float z = Random.Range(-amount, amount);
+
+        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 35, 0) + new Vector3(x, z, 0);
+        newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        newObject.SetUp(value.ToString(), Color.green);
+    }
+
+    #endregion
+
 }

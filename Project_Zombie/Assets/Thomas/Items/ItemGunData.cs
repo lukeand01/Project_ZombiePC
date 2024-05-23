@@ -15,11 +15,17 @@ public class ItemGunData : ItemData
     [SerializeField] StatClass[] gunBaseStat;
     public GameObject gunModel;
     public BulletScript bulletTemplate;
-    public List<BulletBehavior> bulletBehaviorList = new(); //the amount of stuff that a single bullet from this will do. like setting people on fire and dealing damage.
+    [field:SerializeField] public List<BulletBehavior> bulletBehaviorList { get; private set; } = new(); //the amount of stuff that a single bullet from this will do. like setting people on fire and dealing damage.
     public bool canHoldDownButtonToKeepShooting;
 
 
     private void OnEnable()
+    {
+        FormStatList();
+    }
+
+    [ContextMenu("Form Stat List")]
+    public void FormStatList()
     {
         if (gunBaseStat.Length <= 0)
         {
@@ -33,6 +39,7 @@ public class ItemGunData : ItemData
             new StatClass(StatType.FireRate, 0)};
         }
     }
+
 
     //butllet per shot is modifier
     //also we should be able to get damage from it
@@ -48,6 +55,9 @@ public class ItemGunData : ItemData
         PlayerCombat combat = PlayerHandler.instance._playerCombat;
 
 
+
+
+        
 
         for (int i = 0; i < gun.bulletPerShot; i++)
         {
@@ -66,7 +76,10 @@ public class ItemGunData : ItemData
             newBullet.MakeDamage(gun._DamageClass, 0, 0);
             newBullet.MakeSpeed(25, 0, 0);
 
-            newBullet.MakeBulletBehavior(bulletBehaviorList);
+
+            
+
+            newBullet.MakeBulletBehavior(newBulletBehaviorList);
         }
 
 

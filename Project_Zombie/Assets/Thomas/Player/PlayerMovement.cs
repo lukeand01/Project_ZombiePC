@@ -154,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
 
         dashCooldownOriginal = 4;
         dashCooldownTotal = dashCooldownOriginal;
-        UIHandler.instance.AbilityUI.UpdateDashFill(dashCooldownCurrent, dashCooldownTotal);
+        UIHandler.instance._AbilityUI.UpdateDashFill(dashCooldownCurrent, dashCooldownTotal);
     }
 
 
@@ -196,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
         handler._entityStat.AddBD(bdClass);
 
         float startTime = Time.time;
-        float dashTime = 0.2f;
+        float dashTime = 0.12f;
         float dashSpeed = 45;
 
 
@@ -227,7 +227,7 @@ public class PlayerMovement : MonoBehaviour
         if(dashCooldownCurrent > 0)
         {
             dashCooldownCurrent -= Time.fixedDeltaTime;
-            UIHandler.instance.AbilityUI.UpdateDashFill(dashCooldownCurrent, dashCooldownTotal);
+            UIHandler.instance._AbilityUI.UpdateDashFill(dashCooldownCurrent, dashCooldownTotal);
         }
         else
         {

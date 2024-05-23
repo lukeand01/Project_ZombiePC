@@ -408,10 +408,264 @@
 
 
 //GOAL
-//create teh stage menu.
-//create the system for loading into teh stage.
-//create the system for loading outn of stage. remove all passives, all temp weapons, all bds
-//can leave at any time by interact with a door by the start of the mission
+///create teh stage menu.
+///can see the name of the store when interacting
+///create loading screen.
+///create the buttons for the pauseUI
+///button for resume game
+///button for settings
+///button for load city (DEBUG)
+///button for exit to deskptop.
+///create the system for loading into teh stage.
+///create the system for loading outn of stage. 
+///remove all passives, all temp weapons, all bds
+///fix the light. its too dark when you load the scene
+
+///for now you will load into the stage and choose whenever you want to flee. 
+///the ability unit is not working.
 
 
-//for now you will load into the stage and choose whenever you want to flee. 
+//GOAL
+///create victoryUI
+///create defeatUI
+///need to show the resource you grabbed. and the resource you gained.
+///i also want to show alll the passive abilities he got
+///need to show all the stats. How many you killed, how long you took, how many chests openedd, how much points gained and spent
+//
+
+//BUG
+//the enemies are getting stuck when they load
+
+//GOAL
+///the player can die
+///you can use the defeat buttons
+///those resources you get from the stage are carried to the city.
+
+
+//GOAL
+//create the round system. and create the periods of rest between rounds.
+//add a ranged enemy
+///add resources that take time to gather.
+//add a special stage resource for doing something.
+
+
+
+//GOAL FOR COMPLETION
+//complete the passives.
+//improve the spawn system.
+//fix the enemies being stuck on spawn.
+//create more temp guns
+
+
+//ABOUT GUNS
+//need to check if the tier is affecting how common the guns are.
+//add the ability for guns to shoot through enemies.
+
+
+
+
+//PASSIVE COMPLETION
+///can stacks of different levels.
+///improve passive random getter.
+///the stack in an ability unit always show the bigger stack. 
+///any damage you deal has a chance of causing bleed.
+///reload passive
+///skill cooldown
+///slow the enemy with bullet. every 3 stacks increase the chance of stunning the target with a bullet.
+///passive armor
+///when stackalbe bd runs out of time ti removes 1 stack.
+//being idle regens
+///crit damage. after 5 stacks you gain vampirism based in your crit damage everytime you do crit.
+///increase maxhealth. at 3 you gain a maxhealth shield. it fully regens after not taking damage for 5 seconds. 
+///increase chance to dodge. at 3 dodging grants a portion of health back.
+//increase your luck. at 3 stacks you get () from opening any chest. at 5 
+///increase critchance. at stack 3 enemies with 80% healt of more received 15% more damage. 
+//this item revives the player. cannot be stacked and cannot be found more than once. extremely rare as well.
+
+
+//MY GOAL TODAY
+///fix the bd stacking with additional stats each stack.
+///shield system
+///popup for health recover.
+///clamp all values directly in the entity stat.
+
+//MY GOAL TORDAY
+///can add bullet behavior to the guns.
+///certain debuffs cannot stack. so if the same appear the latter should be removed.
+///max health passive - the health is not being calculated properly.
+///shield mechanic based in maxhealth
+///shield recovers after a period of not taking damage.
+///dodge passive
+///recovering health creats a health popup
+///recover health from dodging
+///crit damage and crit vamparism passive
+///crit chance and damage for enemies over 80%
+///popup for health recover
+
+///clamp all values directly in the entity stat.
+
+
+//MY GOAL
+///the enemy for some reason is getting too close to attack. that is ahppening because he is too fast. need to force it to work either way.
+///fix the enemy not moving from spawn
+///the pause stat is weird. fix it
+///add that you can see your gun at the pause
+///you should not start with the shield on
+///the health stacking passive didnt work; the problem is that its not calling for update.
+//health bar in top of the enemy head is not working properly.
+///the armor passive also not working?
+///the portals are not working when you oepn teh area. they are not spawning enemies.
+///the ability unit should start without selected active.
+///didnt see the gun box
+///need the gun box to be rotated properly.
+///need to show title of gun in the gunui.
+///imrpveo gun algortinh. make sure the guns are found based in your roll chance.
+//if the resource box has two of the same items tey should be delivered as one. <= 0Will ignore this for now
+///the player is not touching the ground.
+///give something to distinguish between the types of enemy.
+
+
+//MY GOAL
+//need to make enemies more interesting to fight.
+//enemies can have a cap about how many there should be.
+//ranged enemy shouldnt just follow the player. he should always try to keep a distance
+//Hound just charge straight ahead. but asssassins try to flank.
+//artillery will station somewhere and will shoot at the player. the shoot is always accompanied by a sound that should be in the map to help the player find it.
+//Rooms might have traps at any moment. everytime the player gets inside we can check to see if there is a trap and close the door. then do something inside.
+//
+
+
+//MY GOAL
+///create round system
+//improve spawn system
+//
+
+//THINGS TO NOTE
+//not showing the price for the things you can buy
+//dash should go less far.
+//the timer is going too slow at the start.
+//the spawn is too slow.
+//the map is too small. it wont work in maps like this
+//the round is going faster per thing now. should be slower per turn.
+//its spawning too much? how to fix it
+//the giants are not working. they are getting stuck in the walls?
+//The hound should be way faster.
+//enemies are getting strong too fast.
+//bullets are not being destroy by wall.
+//the aim should be more free. it should only attack if you hover an enemy. or maybe we should have a false arm but the bullet should go to the object.
+
+
+//maybe round should be slow. it always charge at the same time. the difference is that killing advances it further.
+
+//MY GOAL
+//the player is falling through the floor.
+///show the price of itens when buying in the store
+//fix the round. make it progress normally.
+//create a timer every 5 turns of rest. there will be no further spawns.
+//rework the spawner. something that feels more right.
+//create a limit for enemies in the stage.
+//bullets are not being destroy by wall.
+//the aim should be more free. it should only attack if you hover an enemy. or maybe we should have a false arm but the bullet should go to the object.
+
+
+
+//THINGS TO PUT IN THE ROOM
+//there is a place to tune your temp weapon but its locked behind a requirement.
+//there is a place that always hold the same resource depending on the stage.
+//place for the stage quests like: survive in teh area for a timer
+//random traps.
+//boss arena where you can do some additional challenges. there is a cost behind as well.
+//there should be secrets around the map. likes gates that can only be opened with things.
+//the pause is triggered by the player.
+//there are shrines that you need to do something to get them. they give you random possibilities.
+//like destroy all current enemies, next turn will be a pause turn. the prayer it requires a test of honor, which would be the challenge.
+//
+
+//SPAWN BEHAVIOR
+//at the start should go a bit faster. 
+//it should spike way faster.
+//need a way to force the player into leaving the first area.
+//
+
+
+//how to imrpove spawn system?
+//
+
+
+//ENEMIES
+//simple - just walk forward.
+//bomber - explode
+//Hound - goes fast.
+//Giant - slow walk and force the player away
+//
+//
+
+
+//MYGOAl TOMORROW
+//create console command system? need to be the type of system that i can easily comppletely removed from the game
+//can spawn enemy.
+//can kill all enemies
+//can get a passive with id
+//can get gun with id
+//can buy all items in the store.
+
+
+
+//NOTES FROM GAMEPLAY
+//should deal more damage to enemies at the start. 
+//the first area should definelty be bigger.
+//there should be an introduction in the beggining to offset the nothing at the strat.
+//more enemies but weaker enemies
+//there should be something to force the player out of the inital room.
+//i think the healthbar should not show;
+
+//MY GOAL TOMORROW
+//improve turret.
+
+
+//MY GOAL TOMORROW
+//finish the turret.
+///fix the enemy not moving from spawn
+//improve spawn system
+//check ability and gun systems.
+
+
+
+//SYSTEM
+//every passsive has a type out of three. getting 3 of one type allows gives you a slot to get another buff.
+
+//GOAL
+//create save system
+//create main menu. you can have multiple save slots.
+
+
+
+//WHAT TO ADD IN THIS VERSION?
+//shield enemy that only takes damage behind. or if you have enough penetration
+//enemies that are ranged and they shoot at you, so the player can never just stand still. 
+//enemies that sit still, but if you damage them they will go after them.
+
+
+
+//how else the player evolves?
+//increasing raw stats.
+//increase ability slots from 1 - 3
+//powerful new active new abilities - 
+//powerful perma guns - 
+//trinkets - which will grant additional passives.
+//New enemies and challenges.
+
+
+
+
+//GAMEPLAY IDEAS
+//enemies that take damage from just a place. like only in the back.
+//certain rules are applied at certain times. like all chesta have bombs for a periord; 
+//quests - your mission and you gain a bonus for it.
+//challenges - do something really hard to get a reward.
+//things you can do in the stage.
+//you can improve your perma weapon by going to the forge and using a resource.
+//you can mine for extremely rare minerals that are used in the base.
+//you can do a secondary quest for a stage currency.
+//they are random: stay in the circle for long enough, kill a quantity in a short duration, do a simple puzzle, deliver a heavy object to another place. 
+

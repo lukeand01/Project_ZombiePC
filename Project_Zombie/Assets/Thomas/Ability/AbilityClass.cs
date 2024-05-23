@@ -30,7 +30,7 @@ public class AbilityClass
     public int level;
     public string debugName;
 
-    public void IncreaseLevel()
+    public void IncreaseLevel(AbilityPassiveData newDataForStacking)
     {
         //if its a passive then we need to remove and add again.
         //if its active we do nothing.
@@ -39,7 +39,21 @@ public class AbilityClass
         {
             //so we need to remove this fella. increase level and add.
             RemovePassive();
+
+            if(newDataForStacking == null)
+            {
+                AddStack(dataPassive);
+            }
+            else
+            {
+                AddStack(newDataForStacking);
+            }
+
+
             level++;
+
+
+
             AddPassive();
             UpdateLevel();
             return;
@@ -124,12 +138,17 @@ public class AbilityClass
 
     #region PASSIVE
     public AbilityPassiveData dataPassive { get; private set; }
+
+    [field:SerializeField]public List<AbilityPassiveData> stackList { get; private set; } = new();
+
+
     public AbilityClass(AbilityPassiveData data, int level = 1)
     {
         dataPassive = data;
         this.level = level;
         debugName = data.abilityName;
-        
+
+        AddStack(data);
     }
 
     public void AddPassive()
@@ -139,6 +158,17 @@ public class AbilityClass
     public void RemovePassive()
     {
         dataPassive.Remove(this);
+    }
+
+    public void AddStack(AbilityPassiveData passive)
+    {
+
+        stackList.Add(passive);
+    }
+
+    public bool CanStackMore()
+    {
+        return dataPassive.abilityStackMax > level;
     }
 
     #endregion
@@ -222,7 +252,20 @@ public class AbilityClass
         }
         if (dataPassive != null)
         {
-            return dataPassive.abilityTier.ToString();
+            string tierDescription = "Tier 1";
+            TierType lastTier = TierType.Tier1;
+
+            foreach (var item in stackList)
+            {
+                if(item.abilityTier > lastTier)
+                {
+                    lastTier = item.abilityTier;
+                    tierDescription = item.abilityTier.ToString();
+                }
+            }
+
+
+            return tierDescription;
         }
         return "No Data";
     }
@@ -233,7 +276,7 @@ public class AbilityClass
             return dataActive.abilityDescription;
         }
         if (dataPassive != null)
-        {
+        {          
             return dataPassive.abilityDescription;
         }
         return "No Data";
@@ -243,11 +286,11 @@ public class AbilityClass
         //i will use the damage part for damage or stat.
         if (dataActive != null)
         {
-            return dataActive.GetDamageDescription(level);
+            return dataActive.GetDamageDescription(this);
         }
         if (dataPassive != null)
         {
-            return dataPassive.GetDamageDescription(level);
+            return dataPassive.GetDamageDescription(this);
         }
         return "No Data";
     }

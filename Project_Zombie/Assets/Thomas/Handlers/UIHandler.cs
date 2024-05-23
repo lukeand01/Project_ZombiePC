@@ -18,6 +18,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] CityUI cityUIRef;
     [SerializeField] EquipWindowUI equipUIRef;
     [SerializeField] DescriptionWindow descriptionWindowRef;
+    [SerializeField] EndUI endUIRef;
 
     #region GETTERS 
     public PlayerUI _playerUI { get {  return playerUIRef; } }
@@ -31,13 +32,15 @@ public class UIHandler : MonoBehaviour
     public ChestUI ChestUI { get { return chestUIRef; } }
 
     public PauseUI _pauseUI { get { return pauseUIRef; } }
-    public AbilityUI AbilityUI { get { return abilityUIRef; } }
+    public AbilityUI _AbilityUI { get { return abilityUIRef; } }
 
-    public CityUI CityUI { get { return cityUIRef; } }
+    public CityUI _CityUI { get { return cityUIRef; } }
 
-    public EquipWindowUI EquipWindowUI { get { return equipUIRef; } }
+    public EquipWindowUI _EquipWindowUI { get { return equipUIRef; } }
 
-    public DescriptionWindow DescriptionWindow { get { return descriptionWindowRef; } }
+    public DescriptionWindow _DescriptionWindow { get { return descriptionWindowRef; } }
+
+    public EndUI _EndUI { get { return endUIRef; } }
     #endregion
 
     
@@ -49,17 +52,22 @@ public class UIHandler : MonoBehaviour
         ControlStageUI(!isCityUI);
     }
 
+    public void ControlUiForMainMenu(bool isMainMenu)
+    {
+        ControlCityUI(!isMainMenu);
+        ControlStageUI(!isMainMenu);
+    }
 
     void ControlCityUI(bool isVisible)
     {
-        CityUI.ControlUI(isVisible);
+        _CityUI.ControlUI(isVisible);
     }
     void ControlStageUI(bool isVisible)
     {
         //stage ui is gun, playerui, abilityu
         gunUI.ControlUI(isVisible);
         _playerUI.ControlUI(isVisible);
-        AbilityUI.ControlUI(isVisible);
+        _AbilityUI.ControlUI(isVisible);
 
     }
 
@@ -75,6 +83,9 @@ public class UIHandler : MonoBehaviour
             Destroy(gameObject);
         }
 
+
+
+        DontDestroyOnLoad(gameObject);
         
     }
     private void Start()

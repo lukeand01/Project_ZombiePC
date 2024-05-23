@@ -52,7 +52,7 @@ public class AbilityActiveDataDamageTurret : AbilityActiveData
     }
 
 
-    public override string GetDamageDescription(int level)
+    public override string GetDamageDescription(AbilityClass ability)
     {
         return "Turret deals 15 damage base + 50% of player´s damage";
     }

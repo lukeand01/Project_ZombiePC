@@ -97,5 +97,10 @@ public class Turret : MonoBehaviour, IDamageable
         return 0;
     }
 
+    public float GetTargetCurrentHealth()
+    {
+        return 0;
+    }
+
     #endregion
 }

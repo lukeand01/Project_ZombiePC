@@ -16,6 +16,7 @@ public class CityUI : MonoBehaviour
 
     public void ControlUI(bool isVisible)
     {
+
         holder.SetActive(isVisible);
     }
 

@@ -36,8 +36,10 @@ public class CityHandler : MonoBehaviour
 
     private void Start()
     {
-       // UIHandler.instance.ControlUI(true);
-        //PlayerHandler.instance._playerController.block.AddBlock("City", BlockClass.BlockType.Combat);
+        UIHandler.instance.ControlUI(true);
+        PlayerHandler.instance._playerController.block.AddBlock("City", BlockClass.BlockType.Combat);
+        //we ask the inventory to pass any item to here
+        PlayerHandler.instance._playerInventory.PassStageInventoryToCityInventory();
 
     }
 
@@ -62,7 +64,7 @@ public class CityHandler : MonoBehaviour
 
 
 
-        UIHandler.instance.EquipWindowUI.UpdateOptionForGunContainer(withoutCurrentList);
+        UIHandler.instance._EquipWindowUI.UpdateOptionForGunContainer(withoutCurrentList);
     }
 
 
@@ -85,7 +87,7 @@ public class CityHandler : MonoBehaviour
     {
         List<AbilityActiveData> withoutCurrentList = new();
 
-        List<AbilityClass> currentList = PlayerHandler.instance._playerAbility.GetAbiltiyList();
+        List<AbilityClass> currentList = PlayerHandler.instance._playerAbility.GetActiveAbiltiyList();
 
 
         for (int i = 0; i < cityDataHandler.ownedAbilityList.Count; i++)
@@ -101,7 +103,7 @@ public class CityHandler : MonoBehaviour
         }
 
        
-        UIHandler.instance.EquipWindowUI.UpdateOptionForAbilityContainer(withoutCurrentList);
+        UIHandler.instance._EquipWindowUI.UpdateOptionForAbilityContainer(withoutCurrentList);
     }
 
     

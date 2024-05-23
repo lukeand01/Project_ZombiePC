@@ -13,11 +13,17 @@ MonoBehaviour:
   m_Name: AbilityTierHolder
   m_EditorClassIdentifier: 
   passiveDataRefList:
+  - {fileID: 11400000, guid: cb265cecf598dc1409693006eaa700b5, type: 2}
   - {fileID: 11400000, guid: 385ce600010ea174db241b0f45e58783, type: 2}
+  - {fileID: 11400000, guid: 5d2e6a0bce92858469ca4ecf77b941a6, type: 2}
   - {fileID: 11400000, guid: 0de5fdae2fcc6864ca1264754152a598, type: 2}
+  - {fileID: 11400000, guid: c1385859ab0eb114cb4cbc0e39455596, type: 2}
+  - {fileID: 11400000, guid: 2531698c1140aa2448f6e8786c683bc8, type: 2}
+  - {fileID: 11400000, guid: a152edb9983451d4b933670a6ed7c656, type: 2}
   - {fileID: 11400000, guid: d31147661b6d64f428cdc36eed5336df, type: 2}
   - {fileID: 11400000, guid: 977a40cda55429143adac0b57a22137f, type: 2}
   - {fileID: 11400000, guid: 958f978de04d66641b78a361ff76cfe2, type: 2}
   - {fileID: 11400000, guid: 864f0c6b826e6034eaf947f81340d8b3, type: 2}
+  - {fileID: 11400000, guid: 6f7e2f5c5f6cefa4ea4b3b8a6ccdad0b, type: 2}
   activeDataRefList:
   - {fileID: 11400000, guid: 772f29228f01cf94ab0f438ca47aba43, type: 2}

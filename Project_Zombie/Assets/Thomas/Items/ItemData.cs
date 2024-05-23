@@ -19,10 +19,10 @@ public class ItemData : ScriptableObject
 
 public enum TierType
 {
-    Tier1,
-    Tier2,
-    Tier3,
-    Tier4
+    Tier1 = 0,
+    Tier2 = 1,
+    Tier3 = 2,
+    Tier4 = 3
 }
 
 

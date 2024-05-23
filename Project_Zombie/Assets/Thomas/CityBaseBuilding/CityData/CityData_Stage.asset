@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CityData_Stage
   m_EditorClassIdentifier: 
   <cityStoreLevel>k__BackingField: 0
-  cityStageClassList:
+  <cityStageClassList>k__BackingField:
   - stageData: {fileID: 11400000, guid: 8bf227e4a5ce3e34ab86b700f48b610a, type: 2}

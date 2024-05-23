@@ -343,6 +343,7 @@ public class ChestUI : MonoBehaviour
     public void ChooseAbility(AbilityPassiveData data)
     {
         //we pass tot he player siomple as that.
+
         Leave();
         PlayerHandler.instance._playerController.block.RemoveBlock("AbilityChest");
         PlayerHandler.instance._playerAbility.AddAbility(data);

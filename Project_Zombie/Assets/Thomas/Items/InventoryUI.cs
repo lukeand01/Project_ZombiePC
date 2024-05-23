@@ -47,6 +47,7 @@ public class InventoryUI : MonoBehaviour
     public void CallItemNotification(ItemClass item)
     {
 
+
         ItemNotificationUnit fakeObject = Instantiate(_itemNotificationUnit);
         fakeObject.transform.localScale = Vector3.one;
         fakeObject.MakeFake();

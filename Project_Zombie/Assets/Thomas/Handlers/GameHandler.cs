@@ -8,7 +8,7 @@ public class GameHandler : MonoBehaviour
     public static GameHandler instance {  get; private set; }
 
     public SoundHandler _soundHandler {  get; private set; }
-
+    public SceneLoaderHandler _sceneLoader {  get; private set; }
 
 
     private void Awake()
@@ -23,10 +23,11 @@ public class GameHandler : MonoBehaviour
         }
 
 
+        DontDestroyOnLoad(gameObject);
 
         _soundHandler = GetComponent<SoundHandler>();
+        _sceneLoader = GetComponent<SceneLoaderHandler>();
 
-        DontDestroyOnLoad(gameObject);
 
         ResumeGame();
     }

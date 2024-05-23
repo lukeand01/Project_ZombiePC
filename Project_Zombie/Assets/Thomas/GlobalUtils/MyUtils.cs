@@ -1,5 +1,6 @@
 
-using MyBox;
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +27,9 @@ public static class MyUtils
             StatType.Luck,
             StatType.Vampirism,
             StatType.DamageBack,
-            StatType.Dodge
+            StatType.Dodge,
+            StatType.ElementalPower, 
+            StatType.ElementalChance
 
         };
     }
@@ -290,10 +293,68 @@ public static class MyUtils
                 return "Influences how much you ignore of damage reduction";
             case StatType.Vampirism:
                 return "Influences how much you heal from all the damage you deal";
+            case StatType.ElementalPower:
+                return "Increases the damage dealt by bleeding or burning";
+            case StatType.ElementalChance:
+                return "Increases the chance of applying bleeding or burning";
 
         }
 
         return "";
     }
 
+
+    public static List<StatTrackerType> GetStatTrackerRefList()
+    {
+        return new List<StatTrackerType>()
+        {
+            StatTrackerType.TimeSpent,
+            StatTrackerType.EnemiesKilled,
+            StatTrackerType.PointsGained,
+            StatTrackerType.PassiveAbilitiesFound,
+            StatTrackerType.GunChestsUsed,
+            StatTrackerType.ResourceChestsFound,
+            StatTrackerType.DamageTaken,
+            StatTrackerType.DamageDealt
+        };
+    }
+
+
+    public static float GetTimerBasedInRound(int level)
+    {
+        if(level > 0 && level <= 5)
+        {
+            return UnityEngine.Random.Range(2, 3);
+        }
+        if (level > 5 && level <= 10)
+        {
+            return UnityEngine.Random.Range(1, 2);
+        }
+        if (level > 10 && level <= 20)
+        {
+            return UnityEngine.Random.Range(0.8f, 1.5f);
+        }
+        if (level > 20)
+        {
+            return UnityEngine.Random.Range(0.4f, 1f);
+        }
+
+        return 1;
+    }
+
+    public static float GetTimerForRoundTotal(int level)
+    {
+        return level + (0.4f * (level * level));
+        
+        if(level > 0 && level <= 5)
+        {
+            return level * 2.8f ;
+        }
+        if (level > 5 && level <= 15)
+        {
+            return level * 4;
+        }
+
+        return level * 5;
+    }
 }

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37011ab488e24584281d5d50ebecbac9, type: 3}
+  m_Name: AbilityPasive_CritDamage_HealthDamage
+  m_EditorClassIdentifier: 
+  abilityName: Crit damage and health
+  abilityDescription: gain 5% crit damage. after 5 stacks every enemy hit with more
+    than 80% of health receives 15% more damage.
+  abilityIcon: {fileID: 21300000, guid: 7184252199212cf4a9288a2a2d70dee1, type: 3}
+  abilityStackMax: 5
+  abilityTier: 0
+  _firstValue: 0.05
+  _secondValue: 0.15

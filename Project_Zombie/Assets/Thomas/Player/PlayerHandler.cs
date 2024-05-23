@@ -16,6 +16,7 @@ public class PlayerHandler : MonoBehaviour
 
     public PlayerAbility _playerAbility { get; private set; }
 
+    public PlayerStatTracker _playerStatTracker {  get; private set; }
 
     public Rigidbody _rb {  get; private set; }
     
@@ -39,7 +40,7 @@ public class PlayerHandler : MonoBehaviour
     LayerMask layerForBuilding;
 
 
-
+    
 
     private void Update()
     {
@@ -84,6 +85,25 @@ public class PlayerHandler : MonoBehaviour
     {
         //but i need to 7update as the it happens.
         _entityEvents.eventUpdateStat += UpdateStatUI;
+
+
+
+    }
+
+
+   public void ResetPlayer()
+    {
+        //inform the gun to drop all guns
+        //inform the stathandler to remove all bds
+        //reset the passives.
+
+        _entityStat.ResetEntityStat();      
+        _playerAbility.ResetPassiveAbilities();
+        _playerCombat.ResetPlayerCombat();
+        _playerStatTracker.ResetStatTracker();
+        _playerResources.ResetPlayerResource();
+        //also in the end we need to make sure that it always return tot eh base
+
     }
 
     void UpdateStatUI(StatType stat, float value)
@@ -102,6 +122,9 @@ public class PlayerHandler : MonoBehaviour
             Destroy(gameObject);
         }
 
+
+        DontDestroyOnLoad(gameObject);
+
         itemHolderGun.ResetAllDivisions();
         itemHolderResource.ResetAllDivisions();
         abilityHolder.SetHolder();
@@ -112,7 +135,7 @@ public class PlayerHandler : MonoBehaviour
         _playerCombat = GetComponent<PlayerCombat>();
         _playerResources = GetComponent<PlayerResources>();
         _playerAbility = GetComponent<PlayerAbility>();
-
+        _playerStatTracker = GetComponent<PlayerStatTracker>();
 
         _entityEvents = GetComponent<EntityEvents>();
         _entityStat = GetComponent<EntityStat>();
@@ -124,7 +147,7 @@ public class PlayerHandler : MonoBehaviour
         SetPlayerGunRollLevel(1);
        
         //layerForBuilding |= (1 << )
-            }
+    }
 
     #region GETTING ITENS AND CHANCE LISTS
     public void SetPlayerAbilityRollLevel(int newValue)

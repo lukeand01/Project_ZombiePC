@@ -57,6 +57,7 @@ public class BlockClass
         Complete,
         Movement,
         Combat,
+        Rotation,
         MouseSkill,
         KeySkill,
         Silence,

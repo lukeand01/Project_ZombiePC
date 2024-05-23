@@ -24,7 +24,7 @@ public class PauseUI : MonoBehaviour
     private void Start()
     {
         CreateStatList();
-        descriptionWindow = UIHandler.instance.DescriptionWindow;
+        descriptionWindow = UIHandler.instance._DescriptionWindow;
 
     }
 
@@ -47,6 +47,16 @@ public class PauseUI : MonoBehaviour
             PlayerHandler.instance._playerController.block.AddBlock("Pause", BlockClass.BlockType.Partial);
             descriptionWindow.StopDescription();
             holder.SetActive(true);
+        }
+    }
+
+    public void ForceClosePause()
+    {
+        if (holder.activeInHierarchy)
+        {
+            GameHandler.instance.ResumeGame();
+            PlayerHandler.instance._playerController.block.RemoveBlock("Pause");
+            holder.SetActive(false);
         }
     }
 
@@ -89,7 +99,7 @@ public class PauseUI : MonoBehaviour
     //bullet per shot
 
     [Separator("Description")]
-     DescriptionWindow descriptionWindow;
+    DescriptionWindow descriptionWindow;
 
     //i can just make everyone appear right at first. then we check.
     
@@ -99,7 +109,6 @@ public class PauseUI : MonoBehaviour
     public void StopDescription()
     {
         descriptionWindow.StopDescription();
-
     }
 
     public void DescribeBD(BDClass bd, Transform posRef)
@@ -116,10 +125,10 @@ public class PauseUI : MonoBehaviour
  
     }
 
-    public void DescribeGun(GunClass gun)
+    public void DescribeGun(GunClass gun, Transform posRef)
     {
         //descriptionHolder.SetActive(true);
-        descriptionWindow.DescribeGun(gun);
+        descriptionWindow.DescribeGun(gun, posRef);
     }
 
     public void DescribeStat(StatClass stat, Transform posRef)
@@ -212,6 +221,39 @@ public class PauseUI : MonoBehaviour
 
     #endregion
 
+    #region BUTTONS
+    public void ButtonCall_Resume()
+    {
+        CallPause();
+    }
+    public void ButtonCall_OpenSettings()
+    {
+        OpenSettings();
+    }
+    public void ButtonCall_DebugFinishStage()
+    {
+        if(CityHandler.instance != null)
+        {
+            Debug.Log("cannot call this here");
+            return;
+        }
+
+        //we call the victoryUI.
+
+        //then we load the first stage.
+
+        GameHandler.instance._sceneLoader.LoadMainCity();
+    }
+    public void ButtonCall_QuitGame()
+    {
+        Application.Quit();
+    }
+
+
+    #endregion
+
+
+
     Vector3 GetScreenOffset(Vector3 posRef)
     {
         float screenHeight = Screen.height;
@@ -244,7 +286,11 @@ public class PauseUI : MonoBehaviour
 
     private void OnDisable()
     {
-        StopDescription();
+       if(descriptionWindow != null)
+        {
+            StopDescription();
+        }
+        
     }
 
 

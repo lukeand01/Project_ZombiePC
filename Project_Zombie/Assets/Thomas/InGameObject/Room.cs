@@ -32,9 +32,10 @@ public class Room : MonoBehaviour
     }
 
 
-    public void OpenRoom()
+    public void OpenRoom_Room()
     {
-        LocalHandler.instance.OpenRoom(this);
+        
+        LocalHandler.instance.OpenRoom_LocalHandler(this, "From room");
         foreach (var item in portalList)
         {
             item.OpenForSpawn();

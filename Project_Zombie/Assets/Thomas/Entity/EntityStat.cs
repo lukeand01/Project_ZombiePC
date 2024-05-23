@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -53,6 +54,8 @@ public class EntityStat : MonoBehaviour
     private void FixedUpdate()
     {
         HandleBD();
+
+       
     }
 
 
@@ -61,11 +64,20 @@ public class EntityStat : MonoBehaviour
     protected Dictionary<StatType, float> statBaseDictionary = new Dictionary<StatType, float>();
     protected Dictionary<StatType, float> statAlteredDictionary = new Dictionary<StatType, float>();
 
+    protected List<StatAlteredClass> statAltered_Flat_List = new();
+    [SerializeField]protected List<StatAlteredClass> statAltered_PercentBase_List = new();
+    protected List<StatAlteredClass> statAltered_PercentCurrent_List = new();
+
+    //
+
+    //when we add a value we add to this dictionary but how do you check the value if you cannot loop through a list?
+    //everytime 
+
 
 
     public void SetUp(List<StatClass> initialStatList)
     {
-
+        
 
         List<StatType> refList = MyUtils.GetStatListRef();
 
@@ -178,6 +190,22 @@ public class EntityStat : MonoBehaviour
 
             if (item.IsTempDone())
             {
+
+
+
+                if (item.IsStackable() && !item.LastStack())
+                {
+
+                    RemoveStat(item);                               
+                    item.LoseStack();
+                    item.ResetTemp();
+                    AddBDStat(item);
+
+                    //i need to inform the player of this update here.
+
+                    continue;
+                }
+                
                 RemoveBDWithIndex(i, tempList);
             }
 
@@ -206,8 +234,12 @@ public class EntityStat : MonoBehaviour
         if (dictionaryForStacking.ContainsKey(bd.id))
         {
             //then we stack
+            
+            BDClass stackBD = dictionaryForStacking[bd.id];
+            RemoveStat(stackBD);
+            stackBD.Stack(bd);
+            AddBDStat(stackBD);
 
-            dictionaryForStacking[bd.id].Stack(bd);
             return;
         }
 
@@ -219,7 +251,14 @@ public class EntityStat : MonoBehaviour
             dictionaryForStacking.Add(bd.id, bd);
         }
 
-        
+        //we need to check if we already have this fella.
+
+        bool shouldRefreshInstead = CheckIfShouldRefreshCooldownInstead(bd.id);
+
+        if (shouldRefreshInstead)
+        {
+            return;
+        }
 
         //then we apply the thing.
         switch (bd.bdType)
@@ -275,22 +314,67 @@ public class EntityStat : MonoBehaviour
         {
             permaList.Add(bd);
         }
-
-        //the bd will have a permission.
-        //we always ask the bd to build.
-       
+     
     }
+
+    bool CheckIfShouldRefreshCooldownInstead(string id)
+    {
+        //we are only going to check in the temp list for now
+        foreach (var item in tempList)
+        {
+            if (item.id == id)
+            {
+                item.ResetTemp();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    float GetValueForAlteredDictionary(StatType _type)
+    {
+        float value = 0;
+
+        foreach (var item in statAltered_Flat_List)
+        {
+            value += item.value_Original;
+        }
+
+        float totalValue = GetTotalValue(_type);
+        foreach (var item in statAltered_PercentBase_List)
+        {
+            
+            value += totalValue * item.value_Original;
+        }
+
+        return value;
+    }
+
     void AddBDStat(BDClass bd)
     {
+        //we instead add to the list.
 
-        float flatValue = bd.statValueFlat;
-        statAlteredDictionary[bd.statType] += flatValue;
+        if(bd.statValueFlat != 0)
+        {
+            statAltered_Flat_List.Add(new StatAlteredClass(bd.id, bd.statValueFlat));
+        }
 
-        float basePercentValue = statBaseDictionary[bd.statType] * bd.statValuePercentbasedOnBaseValue;
-        statAlteredDictionary[bd.statType] += basePercentValue;
+        if (bd.statValue_PercentbasedOnBaseValue != 0)
+        {
+            statAltered_PercentBase_List.Add(new StatAlteredClass(bd.id, bd.statValue_PercentbasedOnBaseValue));
+        }
+
+        float value = GetValueForAlteredDictionary(bd.statType);
+
+
+
+        statAlteredDictionary[bd.statType] = value;
+        _entityEvents.OnUpdateStat(bd.statType, GetTotalValue(bd.statType));
+        //we update the right dictionary in the right place.
+
 
         //we inform the fellas to get the right stuff
-        _entityEvents.OnUpdateStat(bd.statType, GetTotalValue(bd.statType));
+
     }
     void AddBDDamage(BDClass bd)
     {
@@ -385,10 +469,45 @@ public class EntityStat : MonoBehaviour
 
     void RemoveStat(BDClass bd)
     {
+        //this is flawed because many variable can change and fuck up everything.
+        //what we should do i form a list that carries a value and an id.
+
+        if(bd.statValueFlat != 0)
+        {
+            for (int i = 0; i < statAltered_Flat_List.Count; i++)
+            {
+                if(bd.id == statAltered_Flat_List[i].id)
+                {
+                    statAltered_Flat_List.RemoveAt(i);
+                }
+            }
+        }
+
+        if(bd.statValue_PercentbasedOnBaseValue != 0)
+        {
+            for (int i = 0; i < statAltered_PercentBase_List.Count; i++)
+            {
+                if (bd.id == statAltered_PercentBase_List[i].id)
+                {
+
+                    statAltered_PercentBase_List.RemoveAt(i);
+                }
+            }
+        }
+
+        float value = GetValueForAlteredDictionary(bd.statType);
+
+        
+        statAlteredDictionary[bd.statType] = value;
+        _entityEvents.OnUpdateStat(bd.statType, GetTotalValue(bd.statType));
+
+
+        return;
+
         float flatValue = bd.statValueFlat;
         statAlteredDictionary[bd.statType] -= flatValue;
 
-        float basePercentValue = statBaseDictionary[bd.statType] * bd.statValuePercentbasedOnBaseValue;
+        float basePercentValue = statBaseDictionary[bd.statType] * bd.statValue_PercentbasedOnBaseValue;
         statAlteredDictionary[bd.statType] -= basePercentValue;
 
         _entityEvents.OnUpdateStat(bd.statType, GetTotalValue(bd.statType));
@@ -430,7 +549,7 @@ public class EntityStat : MonoBehaviour
         {
             if(item.statType == stat && item.bdType == BDType.Stat)
             {
-                ModifierClass modifier = new ModifierClass(item.id, "BD", item.statValueFlat, item.statValuePercentbasedOnBaseValue);
+                ModifierClass modifier = new ModifierClass(item.id, "BD", item.statValueFlat, item.statValue_PercentbasedOnBaseValue);
                 newList.Add(modifier);
             }
             
@@ -490,9 +609,19 @@ public class EntityStat : MonoBehaviour
     {
        float value = statBaseDictionary[stat] + statAlteredDictionary[stat];
 
+
         if(stat == StatType.SkillCooldown)
         {
             value = Mathf.Clamp(value, 0, 0.8f);
+        }
+        if(stat == StatType.Dodge)
+        {
+            value = Mathf.Clamp(value, 0, 0.7f);
+        }
+        
+        if(stat == StatType.CritChance)
+        {
+            value = Mathf.Clamp(value, 0, 100);
         }
 
         return value;
@@ -502,10 +631,36 @@ public class EntityStat : MonoBehaviour
     #endregion
 
 
-    public void CallDodgeFade()
+    public void ResetEntityStat()
+    {
+        //remove all bds 
+        for (int i = 0; i < permaList.Count; i++)
+        {
+            RemoveBDWithIndex(i, permaList);
+        }
+        for (int i = 0; i < tempList.Count; i++)
+        {
+            RemoveBDWithIndex(i, tempList);
+        }
+        for (int i = 0; i < tickList.Count; i++)
+        {
+            RemoveBDWithIndex(i, tickList);
+        }
+
+
+        
+        
+    }
+
+    public void CallDodgeFadeUI()
     {
         if (_entityCanvas == null) return;
         _entityCanvas.CreateFadeUIForDodge();
+    }
+    public void CallRecoverHealthFadeUI(float value)
+    {
+        if (_entityCanvas == null) return;
+        _entityCanvas.CreateFadeUIForRecoverHealth(value);
     }
 
 }
@@ -524,7 +679,34 @@ public class StatClass
 
     public StatType stat;
     [SerializeField] float initialValue;
-    public float value { get { return initialValue; } }    
+    public float value { get { return initialValue; } }
+
+
+}
+
+[System.Serializable]
+public class StatAlteredClass
+{
+
+    //its doble for some reason.
+
+    public StatAlteredClass(string id, float value)
+    {
+        this.id = id;
+        value_Original = value;
+    }
+
+    public void SetValueAltered(float value_Altered)
+    {
+        this.value_Altered = value_Altered;
+    }
+
+    [field:SerializeField] public string id { get; private set; }
+    [field: SerializeField] public float value_Original { get; private set; }
+    public float value_Altered { get; private set; }
+
+
+
 }
 
 public enum StatType 
@@ -545,7 +727,9 @@ public enum StatType
     Luck,
     Vampirism,
     DamageBack,
-    Dodge
+    Dodge,
+    ElementalPower, //this affects how strong bleeding or fire is
+    ElementalChance //this affects the chance of applying fire and 
 
 
 

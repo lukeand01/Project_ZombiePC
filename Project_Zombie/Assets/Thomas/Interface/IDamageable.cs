@@ -13,4 +13,6 @@ public interface IDamageable
     public bool IsDead();
 
     public float GetTargetMaxHealth();
+
+    public float GetTargetCurrentHealth();
 }

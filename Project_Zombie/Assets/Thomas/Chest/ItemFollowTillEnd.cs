@@ -13,7 +13,7 @@ public class ItemFollowTillEnd : MonoBehaviour
 
     float current;
     float total;
-
+    bool isFalse;
     //its 2d and it needs to be always facing the camera.
 
     public void SetUp(ItemClass item, Transform target)

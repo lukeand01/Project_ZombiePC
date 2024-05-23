@@ -31,7 +31,11 @@ public class PlayerController : MonoBehaviour
         InputPause();
 
 
-        if (block.HasBlock(BlockClass.BlockType.Partial)) return;
+        if (block.HasBlock(BlockClass.BlockType.Partial))
+        {
+
+            return;
+        }
 
         if (handler._entityStat.isStunned)
         {
@@ -47,7 +51,16 @@ public class PlayerController : MonoBehaviour
         }
 
         InputMovement();
-        InputRotation();
+
+        if (!block.HasBlock(BlockClass.BlockType.Rotation))
+        {
+            InputRotation();
+        }
+        else
+        {
+            Debug.Log("has rotation block");
+        }
+
         InputDash();
         InputInteract();
         InputEquipWindow();
@@ -77,6 +90,10 @@ public class PlayerController : MonoBehaviour
             dir += Vector3.down;
         }
 
+        if(dir != Vector3.zero)
+        {
+            handler._entityEvents.OnHardInput();
+        }
 
         handler._playerMovement.MovePlayer(dir);
     }
@@ -122,6 +139,7 @@ public class PlayerController : MonoBehaviour
                 handler._playerCombat.Shoot(shootDir);
             }
 
+            handler._entityEvents.OnHardInput();
         }
         else
         {
@@ -137,6 +155,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(key.GetKey(KeyType.Reload)))
         {
             handler._playerCombat.Reload();
+            handler._entityEvents.OnHardInput();
         }
     }
     void InputSwap()
@@ -144,6 +163,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(key.GetKey(KeyType.SwapWeapon)))
         {
             handler._playerCombat.OrderSwapGun();
+            handler._entityEvents.OnHardInput();
         }
     }
 
@@ -152,6 +172,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(key.GetKey(KeyType.Interact)))
         {
             handler._playerInventory.InteractWithCurrentInteractable();
+            
         }
     }
 
@@ -172,14 +193,17 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(key.GetKey(KeyType.Ability1)))
         {
             handler._playerAbility.UseAbilityActive(0);
+            handler._entityEvents.OnHardInput();
         }
         if (Input.GetKeyDown(key.GetKey(KeyType.Ability2)))
         {
             handler._playerAbility.UseAbilityActive(1);
+            handler._entityEvents.OnHardInput();
         }
         if (Input.GetKeyDown(key.GetKey(KeyType.Ability3)))
         {
             handler._playerAbility.UseAbilityActive(2);
+            handler._entityEvents.OnHardInput();
         }
 
     }
@@ -209,6 +233,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(key.GetKey(KeyType.Dash)))
         {
             handler._playerMovement.Dash();
+            handler._entityEvents.OnHardInput();
         }
     }
 
@@ -219,7 +244,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(key.GetKey(KeyType.EquipWindow)))
         {
-            UIHandler.instance.EquipWindowUI.CallUI();
+            UIHandler.instance._EquipWindowUI.CallUI();
         }
 
         

@@ -13,6 +13,7 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [Separator("GRAPHIC")]
     [SerializeField] GameObject mouseHover;
     [SerializeField] GameObject mouseClick;
+    [SerializeField] GameObject base_Selected;
     [Separator("click")]
     [SerializeField] AudioClip clickClip;
     [SerializeField] AudioClip hoverClip;
@@ -52,9 +53,13 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     }
 
 
-    protected void ControlSelect(bool choice)
+    public  void ControlMouseClick(bool choice)
     {
         mouseClick.SetActive(choice);
+    }
+    public void ControlSelected(bool choice)
+    {
+        base_Selected.SetActive(choice);
     }
     private void Update()
     {

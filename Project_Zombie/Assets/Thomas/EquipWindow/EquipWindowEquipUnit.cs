@@ -25,7 +25,7 @@ public class EquipWindowEquipUnit : ButtonBase
 
     private void Awake()
     {
-        abilityIndex = -1;
+        
     }
 
     public ItemGunData gunData { get; private set; }
@@ -45,12 +45,13 @@ public class EquipWindowEquipUnit : ButtonBase
 
         icon.sprite = gunData.itemIcon;
         inputText.text = "";
-        
+ 
     }
     
 
     public AbilityActiveData abilityData { get; private set; }
-    int abilityIndex;
+
+    public int abilityIndex { get; private set; } = -1;
     public void SetAbility(AbilityActiveData abilityData, EquipWindowUI handler)
     {
 
@@ -72,7 +73,8 @@ public class EquipWindowEquipUnit : ButtonBase
     }
     public void SetAbilitySlotIndex(int index)
     {
-        abilityIndex = index;
+        //Log("index slot " + index.ToString() + " was called " + gameObject.name);
+
         inputText.gameObject.SetActive(true);
         inputText.text = (index + 1).ToString();
         abilityIndex = index;
@@ -173,6 +175,12 @@ public class EquipWindowEquipUnit : ButtonBase
 
             return;
         }
+
+        if(draggingUnit.abilityData != null)
+        {
+            Debug.Log("it has ability " + abilityIndex);
+        }
+
         if (draggingUnit.abilityData != null && abilityIndex != -1) 
         {
 

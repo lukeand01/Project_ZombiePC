@@ -12,4 +12,9 @@ public class CityStore_Lab : CityStore
     {
         _cityCanvas.SetAbilities(labData);
     }
+
+    protected override void UpdateInteractUIName(string name)
+    {
+        base.UpdateInteractUIName("Lab");
+    }
 }

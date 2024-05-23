@@ -20,6 +20,28 @@ public class DamageClass
         MakePen(basePen);
     }
 
+    public DamageClass(DamageClass refClass)
+    {
+        MakeDamage(refClass.baseDamage);
+        MakePen(refClass.pen);
+        if (refClass.alwaysCrit)
+        {
+            MakeAlwaysCrit();
+        }
+        MakeCritChance(refClass.critChance);
+        MakeCritDamage(refClass.critDamage);
+        MakeDamageType(refClass.damageType);
+        if (refClass.shoudNotShowPopUp)
+        {
+            MakeUIInvisible();
+        }
+        MakeAttacker(refClass.attacker);
+
+        MakeBulletQuantityDamageModifier(additionalDamageBasedInBulletQuantity);
+        MakePureDamageModifier(pureDamageModifier);
+    }
+    
+
     public string damageableID {  get; private set; }
 
 
@@ -33,6 +55,8 @@ public class DamageClass
     public float critChance;
     public float critDamage { get; private set; }
     public float damageBasedInHealth {  get; private set; }
+
+    public float pureDamageModifier { get; private set; }
 
     public float additionalDamageBasedInBulletQuantity { get; private set; }
 
@@ -105,6 +129,10 @@ public class DamageClass
     {
         additionalDamageBasedInBulletQuantity = value;
     }
+    public void MakePureDamageModifier(float value)
+    {
+        pureDamageModifier = value;
+    }
 
     #endregion
 
@@ -161,9 +189,9 @@ public class DamageClass
         float BulletQuantityDamageModifier = additionalDamageBasedInBulletQuantity * totalDamage;
         totalDamage += BulletQuantityDamageModifier;
 
+        float pureAdditional = totalDamage * pureDamageModifier;
 
-
-        return totalDamage;
+        return totalDamage + pureAdditional;
     }
 
 

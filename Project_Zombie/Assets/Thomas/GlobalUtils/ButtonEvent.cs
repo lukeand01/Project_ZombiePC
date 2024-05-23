@@ -8,8 +8,8 @@ public class ButtonEvent : ButtonBase
 {
     public UnityEvent unityEvent;
 
-
     
+
     public override void OnPointerClick(PointerEventData eventData)
     {
         unityEvent.Invoke();

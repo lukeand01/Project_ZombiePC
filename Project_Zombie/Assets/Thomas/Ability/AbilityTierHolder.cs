@@ -66,7 +66,7 @@ public class AbilityTierHolder : ScriptableObject
     }
 
 
-    
+    //
     
     public List<AbilityPassiveData> GetPassiveChosenList(int amount)
     {
@@ -80,11 +80,11 @@ public class AbilityTierHolder : ScriptableObject
         List<AbilityPassiveData> newList = new();
 
 
-        List<AbilityClass> forbiddenAbilityList = new();
-        List<AbilityClass> higherChanceAbilityList = new();
+        List<AbilityPassiveData> forbiddenAbilityList = PlayerHandler.instance._playerAbility.abilityList_CannotStack;
+        List<AbilityPassiveData> higherChanceAbilityList = PlayerHandler.instance._playerAbility.abilityList_HigherChance;
 
 
-        if(currentChanceListBasedInLevel.Count <= 0)
+        if (currentChanceListBasedInLevel.Count <= 0)
         {
             Debug.Log("there is no list of chances");
             return newList;
@@ -116,6 +116,19 @@ public class AbilityTierHolder : ScriptableObject
                 continue;
             }
             
+            if(forbiddenAbilityList.Contains(ability))
+            {
+                Debug.Log("blocked");
+                continue;
+            }
+
+            if (higherChanceAbilityList.Contains(ability))
+            {
+
+                newList.Add(ability);
+                indexList.Add(random);
+                continue;
+            }
 
             if (abilityChanceClass.chance > roll)
             {

@@ -16,7 +16,7 @@ public class AbilityBaseData : ScriptableObject
     public virtual AbilityActiveData GetActive() => null;
     public virtual AbilityPassiveData GetPassive() => null;
 
-    public virtual string GetDamageDescription(int level)
+    public virtual string GetDamageDescription(AbilityClass ability)
     {
         return "Base Description. need to change it";
     }

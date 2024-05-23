@@ -6,6 +6,13 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
 
+    PlayerHandler handler;
+
+    private void Awake()
+    {
+        handler = GetComponent<PlayerHandler>();
+    }
+
     private void Start()
     {
         interactMask |= (1 << 7);
@@ -15,12 +22,23 @@ public class PlayerInventory : MonoBehaviour
         {
             AddItemForCity(item);
         }
+
+        foreach (var item in initialStageInventoryList)
+        {
+            AddItemForStage(item);
+        }
+
     }
     private void Update()
     {
         CheckForInteractables();
     }
 
+
+    private void FixedUpdate()
+    {
+        HandleResourceGather();
+    }
 
     #region INVENTORY
     //i need ref to all fellas.
@@ -35,7 +53,9 @@ public class PlayerInventory : MonoBehaviour
 
     [Separator("ITENS FOR THE START")]
     [SerializeField] List<ItemClass> initialCityInventoryList = new();
+    [SerializeField] List<ItemClass> initialStageInventoryList = new();
 
+    public List<ItemClass> GetStageInventoryList() => stageInventoryList;
 
     void SetCityInventoryList()
     {
@@ -54,12 +74,14 @@ public class PlayerInventory : MonoBehaviour
         foreach (var item in refItemList)
         {
             ItemClass newItem = new ItemClass(item, 0);
-            UIHandler.instance.CityUI.CreateResourceUnitForItem(newItem);
+            UIHandler.instance._CityUI.CreateResourceUnitForItem(newItem);
             cityInventoryList.Add(newItem);
             cityInventoryDictionary.Add(newItem.data, newItem); 
         }
 
     }
+
+    
 
     public void AddItemForStage(ItemClass item, bool appearInUI = true)
     {
@@ -70,7 +92,8 @@ public class PlayerInventory : MonoBehaviour
         if (appearInUI)
         {
             //wthen we infomr the ui to show that it just received this thing.
-            CheckItemInUI(item.data);
+            CheckItemInUI(item);
+ 
         }
 
 
@@ -93,7 +116,7 @@ public class PlayerInventory : MonoBehaviour
         if (appearInUI)
         {
             //wthen we infomr the ui to show that it just received this thing.
-            CheckItemInUI(item.data);
+            CheckItemInUI(item);
         }
 
 
@@ -103,7 +126,9 @@ public class PlayerInventory : MonoBehaviour
 
         if (index == -1)
         {
-            cityInventoryList.Add(new ItemClass(item.data, item.quantity));
+            ItemClass newItem = new ItemClass(item.data, item.quantity);
+            cityInventoryList.Add(newItem);
+            UIHandler.instance._CityUI.CreateResourceUnitForItem(newItem);
         }
         else
         {
@@ -136,12 +161,16 @@ public class PlayerInventory : MonoBehaviour
         //we add items to the list and once we receive the item we show it all in ui.
         inventoryListForUI.Add(item);   
     }
-    void CheckItemInUI(ItemData data)
+
+    
+    void CheckItemInUI(ItemClass item)
     {
-      
+
+        //the item must be added before being called.
+ 
         for (int i = 0; i < inventoryListForUI.Count; i++)
         {
-            if (inventoryListForUI[i].data == data)
+            if (inventoryListForUI[i].data == item.data)
             {
                 //then we call the ui and remove this fella.
                 UIHandler.instance.InventoryUI.CallItemNotification(inventoryListForUI[i]);
@@ -149,6 +178,9 @@ public class PlayerInventory : MonoBehaviour
                 return;
             }
         }
+
+        UIHandler.instance.InventoryUI.CallItemNotification(item);
+
     }
 
     int GetListIndex(ItemData data, List<ItemClass> targetList)
@@ -321,5 +353,42 @@ public class PlayerInventory : MonoBehaviour
 
     #endregion
 
+    #region RESOURCE GATHER
 
+    ResourceGather currentResourceGather;
+
+    void HandleResourceGather()
+    {
+        if (currentResourceGather == null) return;
+
+        currentResourceGather.HandleResourceGather(this);
+    }
+
+    public void SetResourceGather(ResourceGather newResourceGather)
+    {
+        currentResourceGather = newResourceGather;
+        handler._entityEvents.eventHardInput += RemoveResourceGather;
+
+        handler._playerController.block.AddBlock("Resourcegather", BlockClass.BlockType.Rotation);
+
+    }
+
+    public void RemoveResourceGather()
+    {
+        //if there is any movement then we should remove resource gather. combat, combat
+
+        if (currentResourceGather != null)
+        {
+            currentResourceGather.RemoveResourceGather();
+        }
+
+        Debug.Log("remove resource");
+        handler._entityEvents.eventHardInput -= RemoveResourceGather;
+        handler._playerController.block.RemoveBlock("Resourcegather");
+
+        currentResourceGather = null;
+    }
+
+
+    #endregion
 }

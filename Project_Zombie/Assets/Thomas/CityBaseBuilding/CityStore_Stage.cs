@@ -10,8 +10,13 @@ public class CityStore_Stage : CityStore
     private void Start()
     {
         //city 
-        
+        _cityCanvas.SetStage(cityStageData.cityStageClassList);
 
 
+    }
+
+    protected override void UpdateInteractUIName(string name)
+    {
+        base.UpdateInteractUIName("Stage Store");
     }
 }

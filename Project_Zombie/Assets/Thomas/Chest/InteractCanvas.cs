@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 
@@ -43,6 +44,13 @@ public class InteractCanvas : MonoBehaviour
         if (isDestroyed) return;
         priceHolder.SetActive(true);
         priceText.text = "Price: " + price.ToString();
+    }
+
+    public void ControlNameHolder(string name)
+    {
+        if (isDestroyed) return;
+        priceHolder.SetActive(true);
+        priceText.text = name;
     }
 
     bool isDestroyed;

@@ -5,39 +5,18 @@ using UnityEngine;
 
 public class LocalHandler : MonoBehaviour
 {
-    //this will be responsible for the spawning.
-    //and for the chests. the references to them will be hold here.
-
-
-
-    //spwan requires places. they must be visible for the player otherwise its a bit weird.
-    //so they will be portals. they are a squire and they should do an effect when the enemy is about to be spwaned
-    //they each have a cooldown where they can be used. but who gives order foir them to be used is the localhandler
-    //the way it works is that there is a cooldown for a spawnwave. this spwan wave has a number of zombies it wants to spawn
-    //also we need to be able to limit stronger spawns. for example there should be no more than one giant in the scene. and perpahs we would like for the giant spawn in particular to have a cooldown
-
-
-    //RULES OF SPAWNING
-    //must be somewhat close. most of the spawn should be reserved for the room the player currently it is.
-    //the wave of spawning is 60% the player room and 40 % divided among the rooms connect to that room. if there is no rooms connected there is no division.
-    //
-    //
-
-    //can we make this simple?
-    //we get all the spawns that are close and accessible to the player
-    //on cooldown we randomly send information to them and they store the hover fellas. 
-    //they use that information when they can.
-    //the choice of what kind of fella happens only here. 
-
-
+    
+    //the portals are doubling the initial and not adding the next ones.
 
 
 
     
     public static LocalHandler instance;
-    [SerializeField] StageData _stageData;
+    [field: SerializeField] public StageData _stageData {  get; private set; }
 
+    [SerializeField] bool debug_doNotSpawn;
 
+    [SerializeField] Transform spawnPos;
     //we may give an ability chest with an enemy
 
 
@@ -52,10 +31,16 @@ public class LocalHandler : MonoBehaviour
 
     private void Start()
     {
-        if (_stageData == null) return;
+        if (_stageData == null)
+        {
+
+            return;
+        }
+
         round = 1;
         GetNewSpawnList();
         StartLocalHandler();
+
         UIHandler.instance.ControlUI(false);
         PlayerHandler.instance._playerController.block.RemoveBlock("City");
     }
@@ -71,20 +56,29 @@ public class LocalHandler : MonoBehaviour
 
     public void StartLocalHandler()
     {
-        spawnTotal = 8; //a larger time before they start appearing.
+        if (roomArray.Length == 0) return;
+
+
+        spawnTotal = 4; //a larger time before they start appearing.
         //spawnCurrent = spawnTotal;
         spawnCurrent = 0;
-        round = 1;
-        roundTotal = 25 * round;
+
 
         chestResourceTotal = Random.Range(35, 60);
         chestResourceCurrent = chestResourceTotal;
 
-        roomArray[0].OpenRoom();
+        
         ChestGunSpawn(true);
 
         ChestAbilitySet();
+        roomArray[0].OpenRoom_Room();
+
+        PlayerHandler.instance.transform.position = spawnPos.position;
+
+        StartCoroutine(RoundStartProcess());
     }
+
+
 
 
     #region ROUND 
@@ -92,25 +86,57 @@ public class LocalHandler : MonoBehaviour
 
     float roundCurrent;
     float roundTotal;
-  
+
+    bool roundHasStarted;
+
+    IEnumerator RoundStartProcess()
+    {
+        UIHandler.instance._playerUI.CloseRound();
+
+
+        round = 1;
+        roundTotal = MyUtils.GetTimerForRoundTotal(round);
+        
+        roundCurrent = 0;
+        roundHasStarted = false;
+        yield return new WaitForSeconds(0.5f);
+        UIHandler.instance._playerUI.OpenRound();
+        UIHandler.instance._playerUI.UpdateRoundBar(roundCurrent, roundTotal);
+        UIHandler.instance._playerUI.UpdateRoundText(round.ToString());
+        yield return new WaitForSeconds(2);
+        roundHasStarted = true;
+    }
+
     void HandleRound()
     {
-        if(roundCurrent > 0)
+
+        if (!roundHasStarted) return;
+
+
+        if(roundTotal > roundCurrent )
         {
-            roundCurrent -= Time.fixedDeltaTime;
+            roundCurrent += Time.fixedDeltaTime;
         }
         else
         {
             ProgressStage();
-            roundTotal = 25 * round;
-            roundCurrent = roundTotal;
+            roundTotal = MyUtils.GetTimerForRoundTotal(round);
+
+            roundCurrent = 0;
         }
+
+        UIHandler.instance._playerUI.UpdateRoundBar(roundCurrent, roundTotal);
     }
 
     public void ProgressStage()
     {
         round++;
         //get a new spawnlist.
+        UIHandler.instance._playerUI.UpdateRoundText(round.ToString());
+
+
+
+
         GetNewSpawnList();
     }
 
@@ -120,12 +146,12 @@ public class LocalHandler : MonoBehaviour
     [SerializeField] Room[] roomArray;
     List<Room> openRoomList = new();
     Dictionary<string, Room> openRoomDictionary = new();
-    public void OpenRoom(Room room)
+    public void OpenRoom_LocalHandler(Room room, string fromwhjere)
     {
+
         if (!openRoomDictionary.ContainsKey(room.id))
         {
             openRoomDictionary.Add(room.id, room);
-            room.OpenRoom();
             //we must also liberated
             foreach (var item in room.portalList)
             {
@@ -142,7 +168,7 @@ public class LocalHandler : MonoBehaviour
     //
 
     Dictionary<int, EnemyData> dictionaryForEnemiesWithSpawnCap = new();
-    [SerializeField]List<EnemyChanceSpawnClass> enemyChanceList = new();
+    List<EnemyChanceSpawnClass> enemyChanceList = new();
 
     //every wave is spwaned
 
@@ -159,8 +185,12 @@ public class LocalHandler : MonoBehaviour
     //i still need to spawn at the right fellas.
 
 
+    //
+
+
     void SpawnHandle()
     {
+        if (debug_doNotSpawn) return;
         if(spawnCurrent > 0)
         {
             spawnCurrent -= Time.fixedDeltaTime;
@@ -168,7 +198,7 @@ public class LocalHandler : MonoBehaviour
         else
         {
             //then we spawn.
-            spawnTotal = Random.Range(5, 8);         
+            spawnTotal = MyUtils.GetTimerBasedInRound(round);        
             spawnCurrent = spawnTotal;
             ChooseEnemies();
         }
@@ -231,7 +261,7 @@ public class LocalHandler : MonoBehaviour
 
         if(allowedPortal.Count <= 0)
         {
-            Debug.LogError("NO ALLOWED PORTAL");
+            //Debug.LogError("NO ALLOWED PORTAL");
             return;
         }
 
@@ -277,7 +307,7 @@ public class LocalHandler : MonoBehaviour
     #region CHEST GUN
     [Separator("CHEST GUN")]
     [SerializeField] ChestGun chestGun; //this is the only one we need. we will be teleporting this to the right places.
-    [SerializeField] Transform[] chestGunPosArray;
+
 
     float chestGunCurrent;
     float chestGunTotal;
@@ -311,11 +341,15 @@ public class LocalHandler : MonoBehaviour
         //put in a random position it can be the same.
         int min = 0;
 
+        if (roomArray.Length == 0) return;
+
+
         if (isFirst)
         {
             //then we dont spawn at the first level.
             min = 1;
         }
+
         Transform targetPos = null;
         int safeBreak = 0;
         while(targetPos == null)
@@ -333,7 +367,7 @@ public class LocalHandler : MonoBehaviour
         }
 
         chestGun.transform.position = targetPos.position;
-        chestGun.transform.localRotation = Quaternion.Euler(targetPos.localRotation.x, targetPos.localRotation.y, targetPos.localRotation.z);
+        chestGun.transform.localRotation = Quaternion.Euler(0,-90,0);
         chestGun.gameObject.SetActive(true);
 
 
@@ -372,7 +406,7 @@ public class LocalHandler : MonoBehaviour
         //i cannot use a position that has already been used.
         //otherwise will have two chests in the same poalce.
 
-
+        if (chestResourceSpawnPosArray.Length == 0) return;
         if (_stageData == null) return;
 
         ChestResource newObject = Instantiate(chestResourceTemplate);
@@ -456,7 +490,7 @@ public class LocalHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("chose one");
+
             int random = Random.Range(0, allowedPortal.Count);
             allowedPortal[random].SetNextSpawnToCarryChest(chestAbilityTemplate);
 

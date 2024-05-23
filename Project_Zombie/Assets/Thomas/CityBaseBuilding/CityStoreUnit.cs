@@ -93,8 +93,8 @@ public class CityStoreUnit : ButtonBase
 
         if (gunData != null)
         {
-            UIHandler.instance.DescriptionWindow.DescribeGunData(gunData, transform);
-            UIHandler.instance.DescriptionWindow.StoreDescribeGun(armoryClass, isBought.activeInHierarchy);
+            UIHandler.instance._DescriptionWindow.DescribeGunData(gunData, transform);
+            UIHandler.instance._DescriptionWindow.StoreDescribeGun(armoryClass, isBought.activeInHierarchy);
             return;
         }
 
@@ -104,7 +104,7 @@ public class CityStoreUnit : ButtonBase
 
         base.OnPointerExit(eventData);
         hover.SetActive(false);
-        UIHandler.instance.DescriptionWindow.StopDescription();
+        UIHandler.instance._DescriptionWindow.StopDescription();
     }
 
     public override void OnPointerClick(PointerEventData eventData)

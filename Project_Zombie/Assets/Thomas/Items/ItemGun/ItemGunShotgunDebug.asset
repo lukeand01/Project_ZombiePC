@@ -16,7 +16,6 @@ MonoBehaviour:
   itemDescription: 
   itemIcon: {fileID: 21300000, guid: 46e9142f1a016ee4c83d0e2f4cd80e4d, type: 3}
   tierType: 0
-  damagePerBullet: 50
   bulletPerShot: 12
   bulletOffset: 10
   gunBaseStat:
@@ -36,6 +35,6 @@ MonoBehaviour:
     initialValue: 0.1
   gunModel: {fileID: 4131097718206511249, guid: 2cc77847ebe65e74888d20966de2a67e, type: 3}
   bulletTemplate: {fileID: 1912603505503571018, guid: 03c593b7051d78e41968b090993b4855, type: 3}
-  bulletBehaviorList:
+  <bulletBehaviorList>k__BackingField:
   - {fileID: 11400000, guid: 7de699dcd4418804fa47683b196830a0, type: 2}
   canHoldDownButtonToKeepShooting: 0

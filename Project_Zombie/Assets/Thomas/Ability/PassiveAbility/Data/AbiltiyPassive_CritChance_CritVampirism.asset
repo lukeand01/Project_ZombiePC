@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 697373f038c3f31499e5fd9fe7ea00b0, type: 3}
+  m_Name: AbiltiyPassive_CritChance_CritVampirism
+  m_EditorClassIdentifier: 
+  abilityName: Crit and vampirism
+  abilityDescription: Grants 5% crit chance and after 5 stacks every crit grants
+    30% of your crit chance as health.
+  abilityIcon: {fileID: 21300000, guid: 63b30c77b2de31d4398b65d935f4713c, type: 3}
+  abilityStackMax: 5
+  abilityTier: 0
+  _firstValue: 50
+  _secondValue: 0.3

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy_SimpleMelee_3
   m_EditorClassIdentifier: 
   enemyName: Evolved
-  enemyModel: {fileID: 7099369015076163779, guid: 318c50c56ab9dbb458cef7e546235184, type: 3}
+  enemyModel: {fileID: 5025076984645239854, guid: 4ec27a084a033ec498f16224d73d81ed, type: 3}
   attackRange: 3.5
   attackSpeed: 1
   initialStatList:

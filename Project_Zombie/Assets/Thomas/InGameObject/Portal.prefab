@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 911a4069f8dd66a4b80fd6018538b936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chestAbilityTemplate: {fileID: 0}
+  data: {fileID: 0}
 --- !u!1 &7751281719856563938
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +148,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}

@@ -18,6 +18,9 @@ public class PlayerUI : MonoBehaviour
         pointSpeed = 150;
         speed = 100;
         holder = transform.GetChild(0).gameObject;
+
+        originalPos = roundHolder.transform.position;
+        roundHolder.transform.position = originalPos;
     }
     public void ControlUI(bool isVisible)
     {
@@ -32,6 +35,8 @@ public class PlayerUI : MonoBehaviour
         HandlePoint();
     }
 
+
+    #region MOUSE ICON ANIMATION
     public void CallMouseIconAnimation()
     {
 
@@ -50,7 +55,9 @@ public class PlayerUI : MonoBehaviour
         mouseIcon.transform.DOScale(0.6f, timer);
         yield return null;
     }
+    #endregion
 
+    #region HEALTH
 
     [Separator("HEALTH")]
     [SerializeField] Image healthBar;
@@ -96,7 +103,11 @@ public class PlayerUI : MonoBehaviour
 
     }
 
+    #endregion
 
+    
+
+    #region POINTS
     [Separator("POINTS")]
     [SerializeField] TextMeshProUGUI pointText;
     [SerializeField] FadeUI fadeTemplate;
@@ -168,21 +179,63 @@ public class PlayerUI : MonoBehaviour
         pointTemporary = current;
     }
 
-    [Separator("DODGE")]
-    [SerializeField] Transform dodgePos;
-    public void CreateFadeUIForDodge()
+    #endregion
+   
+
+    #region ROUND
+    [Separator("ROUND")]
+    [SerializeField] GameObject roundHolder;
+    [SerializeField] Image roundBar;
+    [SerializeField] TextMeshProUGUI roundText;
+    Vector3 originalPos;
+
+    public void CloseRound()
     {
-        FadeUI newObject = Instantiate(fadeTemplate);
-        newObject.transform.SetParent(dodgePos);
+        roundHolder.transform.position = originalPos + new Vector3(0, Screen.height * 0.1f, 0);
 
-        float amount = 20f;
-        float x = Random.Range(-amount * 3, amount * 3);
-        float z = Random.Range(-amount, amount);
-
-        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 35, 0) + new Vector3(x, z, 0);  
-
-        newObject.SetUp("Dodge!", Color.black);
+        roundHolder.SetActive(false);
     }
 
+    public void OpenRound()
+    {
+        roundHolder.SetActive(true);
+        roundHolder.transform.DOMove(originalPos, 1.5f);
+    }
+
+
+    public void UpdateRoundText(string roundString)
+    {
+        roundText.text = roundString;
+    }
+    public void UpdateRoundBar(float current, float total)
+    {
+        roundBar.fillAmount = current / total;
+    }
+
+
+    #endregion
+
+    #region SHIELD
+    [Separator("SHIELD")]
+    [SerializeField] GameObject shieldHolder;
+    [SerializeField] Image shieldBar;
+    [SerializeField] TextMeshProUGUI shieldText;
+    [SerializeField] Image shieldRegenBar;
+
+    public void UpdateShield(float current, float total)
+    {
+        shieldHolder.gameObject.SetActive(total > 0);
+
+        shieldBar.fillAmount = current / total;
+        shieldText.text = current.ToString() + " / " + total.ToString();
+
+    }
+
+    public void UpdateShieldRegen(float current, float total)
+    {
+        shieldRegenBar.fillAmount = current / total;   
+    }
+
+    #endregion
 
 }

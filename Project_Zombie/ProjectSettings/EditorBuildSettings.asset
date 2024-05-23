@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 584f476ce08b74248b1099ec6deb6b87
+  - enabled: 1
+    path: Assets/Scenes/LoadingScene.unity
+    guid: 0d009e9a83a7ee844a035e00cdf07dee
+  - enabled: 1
+    path: Assets/Scenes/BaseSceneDraft.unity
+    guid: 861b6cdecd5e8f24ba4e9c69a04ffe76
+  - enabled: 1
+    path: Assets/Scenes/DraftMapIdea2.unity
+    guid: 8584364d7a2cf1646969adbc93b0ce4a
   m_configObjects: {}

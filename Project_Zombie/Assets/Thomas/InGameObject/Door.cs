@@ -39,11 +39,13 @@ public class Door : MonoBehaviour, IInteractable
 
         LocalHandler local = LocalHandler.instance;
 
+        Debug.Log("yo");
+
         if(local != null) 
         {
             foreach (var item in roomToOpenArray)
             {
-                local.OpenRoom(item);
+                item.OpenRoom_Room();
             }
 
         }

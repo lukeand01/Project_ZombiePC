@@ -6,31 +6,32 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Ability / Passive / Armor")]
 public class AbilityPassiveDataArmor : AbilityPassiveData
 {
+    //we create a list of all fellas that we add in the abilityclass.
+    //then we get the value by multiplying the value 
+
     //
 
-    [Separator("ARMOR")]
-    [Range(0, 1)][SerializeField] float firstValue = 1;
-    [Range(0, 1)][SerializeField] float secondValue = 1;
 
     public override void Add(AbilityClass ability)
     {
         base.Add(ability);
 
+        float firstValue = GetFirstValue(ability.stackList);
 
-        int level = ability.level;
-        float value = firstValue * level;
-        int secondSkillModifier = MyUtils.GetSecondPassiveModifier(level);
-        float secondSkillValue = secondSkillModifier * secondValue;
+        float secondValue = GetSecondValue(ability.stackList);
 
+
+       
+        BDClass armorBD = new BDClass("Armor", StatType.DamageReduction, firstValue, 0, 0);
+        PlayerHandler.instance._entityStat.AddBD(armorBD);
+
+        if(secondValue > 0)
+        {
+            BDClass spikeBD = new BDClass("Spike", StatType.DamageBack, secondValue, 0, 0);
+            PlayerHandler.instance._entityStat.AddBD(spikeBD);
+        }
 
         
-
-        BDClass armorBD = new BDClass("Armor", StatType.DamageReduction, value, 0, 0);
-
-        if(secondSkillValue > 0)
-        {
-            BDClass spikeBD = new BDClass("Spike", StatType.DamageBack, secondSkillValue, 0, 0);
-        }
 
     }
     public override void Remove(AbilityClass ability)
@@ -38,7 +39,6 @@ public class AbilityPassiveDataArmor : AbilityPassiveData
         base.Remove(ability);
 
         
-
         EntityStat stat = PlayerHandler.instance._entityStat;
 
         stat.RemoveBdWithID("Armor");
@@ -47,13 +47,14 @@ public class AbilityPassiveDataArmor : AbilityPassiveData
     }
 
 
-    public override string GetDamageDescription(int level)
+    public override string GetDamageDescription(AbilityClass ability)
     {
-        float value = firstValue * level;
-        int secondSkillModifier = MyUtils.GetSecondPassiveModifier(level);
-        float secondSkillValue = secondSkillModifier * secondValue;
 
-        return $"Protection increased by {value} and damageback increased by {secondSkillValue}";
+        float firstValue = GetFirstValue(ability.stackList);
+        float secondValue = GetSecondValue(ability.stackList);
+
+
+        return $"Protection increased by {firstValue} and damageback increased by {secondValue}";
 
     }
 

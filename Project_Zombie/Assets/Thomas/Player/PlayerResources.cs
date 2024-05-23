@@ -21,6 +21,14 @@ public class PlayerResources : MonoBehaviour, IDamageable
     }
     private void Start()
     {
+        ResetPlayerResource();
+
+        handler._entityEvents.eventUpdateStat += UpdateStat;
+    }
+
+    public void ResetPlayerResource()
+    {
+        isDead = false;
         healthTotal = handler._entityStat.GetTotalValue(StatType.Health);
         healthCurrent = healthTotal;
         SetPoints(startingPoints);
@@ -38,11 +46,24 @@ public class PlayerResources : MonoBehaviour, IDamageable
         return isDead;
     }
 
+    void UpdateStat(StatType _stat, float _value)
+    {
+        if(_stat == StatType.Health)
+        {
+
+            healthTotal = _value;
+            UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal);
+        }
+    }
+
+   
+
+
     public void TakeDamage(DamageClass damage)
     {
         if(handler._entityStat.IsImmune)
         {
-            Debug.Log("its immune to damage");
+
             return;
         }
 
@@ -54,28 +75,64 @@ public class PlayerResources : MonoBehaviour, IDamageable
         if (CheckDodge())
         {
             //we ignore the damage and announce the dodge.
-            handler._entityStat.CallDodgeFade();
+            handler._entityStat.CallDodgeFadeUI();
+            handler._entityEvents.OnHasDodged();
             return;
         }
-        
 
+        handler._entityEvents.OnHardInput();
 
         bool isCrit = damage.CheckForCrit();
 
         float reduction = handler._entityStat.GetTotalValue(StatType.DamageReduction);
+
+        Debug.Log("this is the player reduction " + reduction);
+
         float totalHealth = handler._entityStat.GetTotalValue(StatType.Health);
 
 
         float damageValue = damage.GetDamage(reduction, totalHealth, isCrit);
 
-        healthCurrent -= damageValue;
+        
+       
+        handler._playerStatTracker.ChangeStatTracker(StatTrackerType.DamageTaken, damageValue);
+
+        float damageAfterShield = handler._playerCombat.ShieldReduceDamage(damageValue);
+
+        if (damageAfterShield == 0) return;
+
+       healthCurrent -= damageAfterShield;
         UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal);
 
         if (healthCurrent <= 0)
         {
             //death
-            isDead = true;
+
+            Die();
         }
+
+    }
+
+    public void RecoverHealth(float value)
+    {
+        //call a pop 
+
+        handler._entityStat.CallRecoverHealthFadeUI(value);
+        healthCurrent += value;
+        healthCurrent = Mathf.Clamp(healthCurrent, 0, healthTotal);
+        UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal);
+    }
+
+
+    void Die()
+    {
+        isDead = true;
+
+        //stop timer
+        //stop round
+
+        UIHandler.instance._EndUI.StartDefeatUI();
+
 
     }
 
@@ -91,10 +148,13 @@ public class PlayerResources : MonoBehaviour, IDamageable
     bool CheckDodge()
     {
         float dodgeChance = handler._entityStat.GetTotalValue(StatType.Dodge);
-        int roll = UnityEngine.Random.Range(0, 101);
-        dodgeChance = Math.Clamp(dodgeChance, 0, 70);
 
-        return dodgeChance > roll;
+        
+        int roll = UnityEngine.Random.Range(0, 80);
+        dodgeChance = Math.Clamp(dodgeChance, 0, 60);
+
+
+        return dodgeChance >= roll;
     }
 
     void CheckDamageBack(DamageClass damage)
@@ -114,7 +174,10 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
 
     }
-
+    public float GetTargetCurrentHealth()
+    {
+        return healthCurrent;
+    }
 
     #region POINTS
     public int points { get; private set; }
@@ -129,6 +192,8 @@ public class PlayerResources : MonoBehaviour, IDamageable
     {
         points += value;
         UIHandler.instance._playerUI.UpdatePoint(points, value);
+
+        handler._playerStatTracker.ChangeStatTracker(StatTrackerType.PointsGained, value);
     }
     public void SpendPoints(int value)
     {
@@ -140,6 +205,8 @@ public class PlayerResources : MonoBehaviour, IDamageable
     {
         return points >= value;
     }
+
+    
 
     #endregion
 }

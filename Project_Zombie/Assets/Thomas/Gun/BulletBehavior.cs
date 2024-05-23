@@ -5,7 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Bullet / BulletDamageBase")]
 public class BulletBehavior : ScriptableObject
 {
-    
+    [field:SerializeField] public string id { get; private set; } //for detecting the right fella.
+
     public virtual void ApplyContact(IDamageable target, DamageClass damage)
     {
         //this will apply the basic of dealing damage.

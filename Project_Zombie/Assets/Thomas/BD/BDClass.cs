@@ -19,11 +19,11 @@ public class BDClass
     float statValueFlatOriginal;
     public float statValueFlat { get; private set; }
 
-    public float statValuePercentbasedOnBaseValue { get; private set; }
-    float statValuePercentbasedOnBaseValueOriginal;
+   [field:SerializeField] public float statValue_PercentbasedOnBaseValue { get; private set; }
+    float statValue_PercentbasedOnBaseValue_Original;
 
-    public float statValuePercentbasedOnCurrentValue { get; private set; }
-    float statValuePercentbasedOnCurrentValueOriginal;
+    public float statValue_PercentbasedOnCurrentValue { get; private set; }
+    float statValue_PercentbasedOnCurrentValue_Original;
 
 
     public BDClass(string id, StatType statType, float valueFlat, float valuePercentBase, float valuePercentCurrent)
@@ -37,31 +37,32 @@ public class BDClass
         this.statType = statType;
 
         statValueFlat = 0;
-        statValuePercentbasedOnBaseValue = 0;
-        statValuePercentbasedOnCurrentValue = 0;
+        statValue_PercentbasedOnBaseValue = 0;
+        statValue_PercentbasedOnCurrentValue = 0;
 
         statValueFlatOriginal = valueFlat;
-        statValuePercentbasedOnBaseValueOriginal = statValuePercentbasedOnBaseValue;
-        statValuePercentbasedOnCurrentValueOriginal = statValuePercentbasedOnCurrentValue;
+        statValue_PercentbasedOnBaseValue_Original = valuePercentBase;
+        statValue_PercentbasedOnCurrentValue_Original = statValue_PercentbasedOnCurrentValue;
 
         MakeFlatValue(valueFlat);
         MakeValuePercentBasedInBase(valuePercentBase);
-        MakeVavluePercentbasedInCurrent(valuePercentCurrent);
+        MakeValuePercentbasedInCurrent(valuePercentCurrent);
 
 
     }
 
     public void MakeFlatValue(float value)
     {
-        statValueFlat += value;
+        statValueFlat = value;
     }
     public void MakeValuePercentBasedInBase(float value)
     {
-        statValuePercentbasedOnBaseValue += value;
+        //Debug.Log("percent value " + value + " current stacks " + stackCurrent);
+        statValue_PercentbasedOnBaseValue = value;
     }
-    public void MakeVavluePercentbasedInCurrent(float value)
+    public void MakeValuePercentbasedInCurrent(float value)
     {
-        statValuePercentbasedOnCurrentValue += value;
+        statValue_PercentbasedOnCurrentValue += value;
     }
 
     #endregion
@@ -81,7 +82,7 @@ public class BDClass
         this.id = id;
         this.damageable = damageable;
         this.damageType = damageType;
-        this.damageModifier = damageModifier;
+        this.damageModifier = damageModifier * 0.01f;
 
         float damageValue = GetDamage();
         damage = new DamageClass(damageValue);
@@ -193,7 +194,7 @@ public class BDClass
         
     }
 
-    void ResetTemp()
+    public void ResetTemp()
     {
         tempCurrent = tempTotal;
 
@@ -236,15 +237,25 @@ public class BDClass
 
     #region STACKING
 
+    //perphaps i want a modifier per 
+
+
     bool doesStackingRefreshTimer;
     int stackTotal;
     public int stackCurrent { get; private set; }
+
+    public float stackScaleModifier {  get; private set; }
 
     public void MakeStack(int stackTotal, bool doesStackingRefreshTimer)
     {
         stackCurrent = 1;
         this.stackTotal = stackTotal;
         this.doesStackingRefreshTimer = doesStackingRefreshTimer;
+    }
+
+    public void MakeStackScaleable(float stackScaleModifier)
+    {
+        this.stackScaleModifier = stackScaleModifier;
     }
 
     public void Stack(BDClass bd)
@@ -259,26 +270,47 @@ public class BDClass
 
         if (stackCurrent >= stackTotal)
         {
-            Debug.Log("can no longer stack");
+            //Debug.Log("can no longer stack " + stackTotal);
             return;
         }
 
+        
         stackCurrent += 1;
         UpdateBDUnitStack();
         ReapplyBD();
 
-
+        //how to get the values working accordingly.
 
     }
 
+    public void LoseStack()
+    {
+        stackCurrent -= 1;
+        UpdateBDUnitStack();
+        ReapplyBD();
+
+        //each stack might represetn a value so we need to calculate that as well.
+    }
 
     void ReapplyBD()
     {
         if (bdType == BDType.Stat)
         {
-            MakeFlatValue(statValueFlatOriginal);
-            MakeValuePercentBasedInBase(statValuePercentbasedOnBaseValueOriginal);
-            MakeVavluePercentbasedInCurrent(statValuePercentbasedOnCurrentValueOriginal);
+            MakeFlatValue(GetValueMultipledByStackScale(statValueFlatOriginal));
+
+            //Debug.Log(statValue_PercentbasedOnBaseValue_Original + " " + statValue_PercentbasedOnBaseValue);
+
+            //i want it to be 0.15 - 0.3 - 0.45 - 0.3 - 0.15
+
+            //float newValue = GetValueMultipledByStackScale(statValue_PercentbasedOnBaseValue_Original);
+            //Debug.Log("new value for this " + newValue + " from current stack " + stackCurrent);
+            //MakeValuePercentBasedInBase(newValue);
+
+           MakeValuePercentBasedInBase(GetValueMultipledByStackScale(statValue_PercentbasedOnBaseValue_Original));
+
+           
+
+           MakeValuePercentbasedInCurrent(GetValueMultipledByStackScale(statValue_PercentbasedOnCurrentValue_Original));
             return;
         }
 
@@ -304,7 +336,27 @@ public class BDClass
             return;
         }
     }
+
+    float GetValueMultipledByStackScale(float value)
+    {
+        if(stackScaleModifier == 0 || stackCurrent == 0 || value == 0)
+        {
+            return value;
+        }
+
+        //Debug.Log("raw value " + value);
+        float modifier = stackScaleModifier * stackCurrent;
+        //Debug.Log("this is the modifier " +  modifier); 
+        float result = value * modifier;
+        //Debug.Log("this is the result " + result);
+
+        return result;
+    }
+
+
     public bool IsStackable() => stackTotal > 0;
+
+    public bool LastStack() => stackCurrent <= 1;
 
     #endregion
 
@@ -372,7 +424,7 @@ public class BDClass
 
     public string GetFirstForStat()
     {
-        if(statValueFlat > 0|| statValuePercentbasedOnBaseValue > 0 || statValuePercentbasedOnCurrentValue > 0)
+        if(statValueFlat > 0|| statValue_PercentbasedOnBaseValue > 0 || statValue_PercentbasedOnCurrentValue > 0)
         {
             return "Increase";
         }
@@ -391,14 +443,14 @@ public class BDClass
             result += "by " + statValueFlat.ToString();
         }
 
-        if (statValuePercentbasedOnBaseValue != 0)
+        if (statValue_PercentbasedOnBaseValue != 0)
         {
-            result += "by " + statValuePercentbasedOnBaseValue.ToString();
+            result += "by " + statValue_PercentbasedOnBaseValue.ToString();
         }
 
-        if (statValuePercentbasedOnCurrentValueOriginal != 0)
+        if (statValue_PercentbasedOnCurrentValue_Original != 0)
         {
-            result += "by " + statValuePercentbasedOnCurrentValueOriginal.ToString();
+            result += "by " + statValue_PercentbasedOnCurrentValue_Original.ToString();
         }
 
         return result;
@@ -410,7 +462,7 @@ public class BDClass
 
     bool IsPositive()
     {
-        return statValueFlat > 0 || statValuePercentbasedOnBaseValue > 0 || statValuePercentbasedOnCurrentValue > 0;
+        return statValueFlat > 0 || statValue_PercentbasedOnBaseValue > 0 || statValue_PercentbasedOnCurrentValue > 0;
     }
 
     public string GetTypeForDescription()
@@ -475,13 +527,21 @@ public class BDClass
         {
             float baseDamage = 5;
             float percentDamage = damageable.GetTargetMaxHealth() * 0.02f;
-            return baseDamage + percentDamage;
+            float total = baseDamage + percentDamage;
+            float modifier = total * damageModifier;
+            total += modifier;
+
+            return total;
         }
         if(damageType == BDDamageType.Burn)
         {
             float baseDamage = 5;
             float percentDamage = damageable.GetTargetMaxHealth() * 0.05f;
-            return baseDamage + percentDamage;
+            float total = baseDamage + percentDamage;
+            float modifier = total * damageModifier;
+            total += modifier;
+
+            return total;
         }
 
 

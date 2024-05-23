@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -43,9 +44,13 @@ public class PlayerCombat : MonoBehaviour
     private void Update()
     {
        //in a nuteshell this is the time passed.
-       HandleListCooldown();
+        HandleListCooldown();
         DebugCreateLaserAim();
 
+    }
+    private void FixedUpdate()
+    {
+        HandleShield();
     }
 
     void DebugCreateLaserAim()
@@ -89,7 +94,7 @@ public class PlayerCombat : MonoBehaviour
         }
 
 
-       UIHandler.instance.EquipWindowUI.GetEquipForPermaGun(gunList[0]);
+       UIHandler.instance._EquipWindowUI.GetEquipForPermaGun(gunList[0]);
 
         if(CityHandler.instance != null)
         {
@@ -99,7 +104,21 @@ public class PlayerCombat : MonoBehaviour
     }
 
 
+    public void ResetPlayerCombat()
+    {
+        for (int i = 1; i < gunList.Length; i++)
+        {
+            if (gunList[i].data == null) continue;
+            Destroy(gunList[i].gunModel);
+            UIHandler.instance.gunUI.ClearOwnedGunUnit(i);
+            gunList[i].ResetGunClass();
+        }
 
+        gunList[0].data.RemoveGunPassives();
+        gunList[0].data.AddGunPassives();
+
+        ShieldRemove();
+    }
 
     #region GETTER
     public ItemGunData GetCurrentPermaGun()
@@ -333,6 +352,7 @@ public class PlayerCombat : MonoBehaviour
 
 
         UIHandler.instance.gunUI.UpdateGunPortrait(gunList[currentGunIndex].data.itemIcon);
+        UIHandler.instance.gunUI.UpdateGunTitle(gunList[currentGunIndex].data.itemName);
         UIHandler.instance.gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
 
         gunList[currentGunIndex].gunModel.SetActive(true);
@@ -417,6 +437,112 @@ public class PlayerCombat : MonoBehaviour
 
     #endregion
 
+    #region SHIELD
+    //define the shield system here.
+
+    float shieldTotal;
+    float shieldCurrent;
+
+    float shieldModifier; //the value we will use here. 
+
+    float shieldRegenTotal;
+    float shieldRegenCurrent;   
+
+    //we change the shield everytime the stats change? or maybe just a flat shield? for now it
+
+    public void ShieldSet(float shieldValue)
+    {
+        //set the event
+
+        shieldTotal = shieldValue;
+        shieldCurrent = shieldTotal;
+        UIHandler.instance._playerUI.UpdateShield(shieldCurrent, shieldTotal);
+
+        shieldRegenCurrent = 0;
+        shieldRegenTotal = 5;
+        UIHandler.instance._playerUI.UpdateShieldRegen(shieldCurrent, shieldTotal);
+
+        handler._entityEvents.eventDamageTaken += ShieldRegenReset;
+
+        
+    }
+
+    public void ShieldRemove()
+    {
+        shieldTotal = 0;
+        handler._entityEvents.eventDamageTaken -= ShieldRegenReset;
+        UIHandler.instance._playerUI.UpdateShield(0, 0);
+    }
+
+    public float ShieldReduceDamage(float damage)
+    {
+        if (shieldTotal == 0)
+        {
+
+            return damage;
+        }
+
+        float valueToReturn = 0;
+        float valueToReduce = 0;
+
+        if(shieldCurrent > damage)
+        {
+            valueToReduce = damage;
+            valueToReturn = 0;
+        }
+        else
+        {
+            valueToReduce = shieldCurrent;
+            valueToReturn = damage - shieldCurrent ;
+
+        }
+
+        shieldCurrent -= valueToReduce;
+        shieldCurrent = Mathf.Clamp(shieldCurrent, 0, shieldTotal);
+
+        UIHandler.instance._playerUI.UpdateShield(shieldCurrent, shieldTotal);
+
+        return valueToReturn;
+    }
+
+    void CallShieldRegen()
+    {
+        shieldRegenCurrent = 0;
+
+        shieldCurrent = shieldTotal;
+
+        UIHandler.instance._playerUI.UpdateShield(shieldCurrent, shieldTotal);
+    }
+
+    void ShieldRegenReset()
+    {
+        shieldRegenCurrent = 0;
+    }
+    public void HandleShield()
+    {
+        //if shield total is higher
+
+        if(shieldTotal > 0 && shieldTotal > shieldCurrent)
+        {
+            if (shieldRegenCurrent >shieldRegenTotal)
+            {
+                //we only check this if we havent taken damdamage.
+                CallShieldRegen();              
+            }
+            else
+            {
+                shieldRegenCurrent += Time.fixedDeltaTime;
+            }
+
+            UIHandler.instance._playerUI.UpdateShieldRegen(shieldRegenCurrent, shieldRegenTotal);
+
+        }
+
+    }
+
+
+    #endregion
+
 
     void HandleListCooldown()
     {
@@ -424,6 +550,31 @@ public class PlayerCombat : MonoBehaviour
         {
             item.HandleCooldown();
         }
+    }
+
+    #region SHOOT
+
+    [SerializeField]List<BulletBehavior> forcedBulletBehaviorList = new(); //we use this when we want to force all weapons to have a behavior.
+
+
+   
+
+    public void AddForcedBulletBehavior(BulletBehavior bulletBehavior)
+    {
+        forcedBulletBehaviorList.Add(bulletBehavior);
+        
+    }
+    public void RemoveForcedBulletBehavior(BulletBehavior bulletBehavior)
+    {
+        for (int i = 0; i < forcedBulletBehaviorList.Count; i++)
+        {
+            if (forcedBulletBehaviorList[i].id == bulletBehavior.id)
+            {
+                forcedBulletBehaviorList.RemoveAt(i);
+                return;
+            }
+        }
+       
     }
 
     public void Shoot(Vector3 shootDir)
@@ -461,7 +612,7 @@ public class PlayerCombat : MonoBehaviour
         keepShootingIfCanHold = true;
 
 
-        gunList[currentGunIndex].Shoot(shootDir);
+        gunList[currentGunIndex].Shoot(shootDir, forcedBulletBehaviorList);
         _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
         _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
 
@@ -473,11 +624,20 @@ public class PlayerCombat : MonoBehaviour
         trueBlockForShooting = false;
     }
 
+
+    #endregion
+
     public void MakeTrueBlock()
     {
         trueBlockForShooting = true;
     }
 
+    public void RefundCurrentAmmo()
+    {
+        //
+        gunList[currentGunIndex].RefundAmmo(0.1f);
+        _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
+    }
 
     #region SECRET STATS
 

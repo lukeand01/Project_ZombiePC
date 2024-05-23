@@ -25,7 +25,15 @@ public class ResourceUnit : ButtonBase
         UpdateUI();
        
     }
-    
+
+
+
+
+    private void Update()
+    {
+        
+    }
+
 
     public void UpdateUI()
     {
@@ -42,14 +50,17 @@ public class ResourceUnit : ButtonBase
     {
         base.OnPointerEnter(eventData);
         selected.SetActive(true);
-        
 
+
+
+        UIHandler.instance._DescriptionWindow.DescribeResource(item, transform);
     }
     public override void OnPointerExit(PointerEventData eventData)
     {
         base.OnPointerExit(eventData);
         selected.SetActive(false);
-       
+
+        UIHandler.instance._DescriptionWindow.StopDescription();
     }
 
     private void OnDisable()

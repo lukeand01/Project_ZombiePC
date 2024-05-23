@@ -22,7 +22,10 @@ public class CityStore_Armory : CityStore
 
     }
 
-    
+    protected override void UpdateInteractUIName(string name)
+    {
+        base.UpdateInteractUIName("Armory");
+    }
 
 
 }

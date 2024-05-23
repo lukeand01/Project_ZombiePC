@@ -49,6 +49,11 @@ public class CityStore : MonoBehaviour, IInteractable
         _cityCanvas.OpenUI();
     }
 
+    protected virtual void UpdateInteractUIName(string name)
+    {
+        _interactCanvas.ControlNameHolder(name);
+    }
+
     #region INTERACT
     public string GetInteractableID()
     {
@@ -63,6 +68,7 @@ public class CityStore : MonoBehaviour, IInteractable
     public void InteractUI(bool isVisible)
     {
         _interactCanvas.ControlInteractButton(isVisible);
+        UpdateInteractUIName("yo");
     }
 
     public bool IsInteractable()

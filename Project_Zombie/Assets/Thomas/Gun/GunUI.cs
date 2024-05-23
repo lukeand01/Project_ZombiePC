@@ -23,10 +23,15 @@ public class GunUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI reserveAmmoText;
     [SerializeField] Image reloadFillImage;
     [SerializeField] Image gunPortrait;
-
+    [SerializeField] TextMeshProUGUI gunTitleText;
     public void UpdateGunPortrait(Sprite icon)
     {
         gunPortrait.sprite = icon;  
+    }
+
+    public void UpdateGunTitle(string name)
+    {
+        gunTitleText.text = name;
     }
 
     public void UpdateAmmoGun(int current, int reserve)
@@ -75,6 +80,11 @@ public class GunUI : MonoBehaviour
     public void SetOwnedGunUnit(GunClass gun, int index)
     {
         ownedGunShowUnits[index].SetUp(gun);
+    }
+
+    public void ClearOwnedGunUnit(int index)
+    {
+        ownedGunShowUnits[index].gameObject.SetActive(false);
     }
 
     public void ChangeOwnedGunShowUnit(int index)

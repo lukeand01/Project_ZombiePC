@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da27fa4b0876f44b8e5e45c07f88236, type: 3}
   m_Name: StageData_Test
   m_EditorClassIdentifier: 
+  stageName: Stage Test
+  stageSprite: {fileID: 21300000, guid: cd028212deac9db42a7d6df6e01fbb2a, type: 3}
+  stageIndex: 3
   classList:
   - data: {fileID: 11400000, guid: 3839579ea0c928f4ea734d2f5de59aa5, type: 2}
     min: 0
@@ -40,6 +43,24 @@ MonoBehaviour:
     chanceSpawnMaxCap: 30
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 1
+  - data: {fileID: 11400000, guid: ec96d24a90754774ead430407778975b, type: 2}
+    min: 5
+    max: 0
+    totalChanceSpawn: 0
+    baseChanceToSpawn: 50
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 0
+  - data: {fileID: 11400000, guid: 3e284f2bbd3d3814abbc1dad525eff05, type: 2}
+    min: 5
+    max: 0
+    totalChanceSpawn: 0
+    baseChanceToSpawn: 35
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 0
   itemChanceList:
   - data: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
     chance: 60

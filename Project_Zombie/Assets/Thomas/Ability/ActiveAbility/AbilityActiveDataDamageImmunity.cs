@@ -7,7 +7,7 @@ public class AbilityActiveDataDamageImmunity : AbilityActiveData
 {
 
     //immunity stuff not showing.
-
+    
     [SerializeField] float duration = 4;
     public override bool Call(AbilityClass ability)
     {
@@ -22,7 +22,7 @@ public class AbilityActiveDataDamageImmunity : AbilityActiveData
     }
 
 
-    public override string GetDamageDescription(int level)
+    public override string GetDamageDescription(AbilityClass ability)
     {
 
         return $"Become immune for {duration} seconds";

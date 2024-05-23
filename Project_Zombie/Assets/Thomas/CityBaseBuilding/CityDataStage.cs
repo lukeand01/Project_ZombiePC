@@ -6,7 +6,7 @@ using UnityEngine;
 public class CityDataStage : CityData
 {
     //this controls what missions you have and what you play now
-    [SerializeField] List<CityStageClass> cityStageClassList = new();
+    [field:SerializeField] public List<CityStageClass> cityStageClassList { get; private set; } = new();
 
 
 }

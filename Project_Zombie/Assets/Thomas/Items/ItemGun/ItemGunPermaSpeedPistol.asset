@@ -35,6 +35,6 @@ MonoBehaviour:
     initialValue: 0.08
   gunModel: {fileID: 758834203172537232, guid: 6edc56f095065bd4a9cf0b19b26922d2, type: 3}
   bulletTemplate: {fileID: 1912603505503571018, guid: 03c593b7051d78e41968b090993b4855, type: 3}
-  bulletBehaviorList:
+  <bulletBehaviorList>k__BackingField:
   - {fileID: 11400000, guid: 7de699dcd4418804fa47683b196830a0, type: 2}
   canHoldDownButtonToKeepShooting: 0

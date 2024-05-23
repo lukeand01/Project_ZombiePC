@@ -22,13 +22,21 @@ public class AbilityUnit : ButtonBase
     [SerializeField] TextMeshProUGUI keycodeText;
     [SerializeField] GameObject empty;
 
+    bool isPause = false;
+    bool isEnd = false;
+
+
     private void Update()
     {
-        if(Time.timeScale > 0)
+         isPause = UIHandler.instance._pauseUI.IsPauseOn();
+         isEnd = UIHandler.instance._EndUI.IsEnd();
+
+        if(!isPause && !isEnd)
         {
             selected.SetActive(false);
         }
     }
+
 
 
     public void SetUpActive(AbilityClass ability, int index)
@@ -119,7 +127,8 @@ public class AbilityUnit : ButtonBase
             return;
         }
 
-        if(Time.timeScale == 0)
+
+        if (isPause || isEnd)
         {
             selected.SetActive(true);
             UIHandler.instance._pauseUI.DescribeAbiliy(_abilityClass, transform);
@@ -127,7 +136,8 @@ public class AbilityUnit : ButtonBase
     }
     public override void OnPointerExit(PointerEventData eventData)
     {
-        if (Time.timeScale == 0)
+
+        if (isPause || isEnd)
         {
             selected.SetActive(false);
             UIHandler.instance._pauseUI.StopDescription();

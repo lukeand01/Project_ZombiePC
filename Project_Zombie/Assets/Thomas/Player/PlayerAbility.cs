@@ -10,6 +10,10 @@ public class PlayerAbility : MonoBehaviour
     [SerializeField] List<AbilityActiveData> debugAbilityActiveStartingList = new();
     [SerializeField] List<AbilityPassiveData> debugPassiveStartingList = new();
 
+
+    [field: SerializeField] public List<AbilityPassiveData> abilityList_CannotStack { get; private set; } = new();
+    [field: SerializeField] public  List<AbilityPassiveData> abilityList_HigherChance { get; private set; } = new();
+
     private void Start()
     {
         SetAbility();
@@ -18,6 +22,9 @@ public class PlayerAbility : MonoBehaviour
     {
         HandleAbilityActiveCooldown();
     }
+
+
+    
 
     #region SET ABILITIES
     void SetAbility()
@@ -34,7 +41,7 @@ public class PlayerAbility : MonoBehaviour
 
         foreach(var item in abilityActiveList)
         {
-            UIHandler.instance.AbilityUI.SetActiveAbilityUnits(abilityActiveList);
+            UIHandler.instance._AbilityUI.SetActiveAbilityUnits(abilityActiveList);
         }
 
         foreach (var item in debugPassiveStartingList)
@@ -45,7 +52,7 @@ public class PlayerAbility : MonoBehaviour
 
         foreach (var item in abilityActiveList)
         {
-            UIHandler.instance.EquipWindowUI.GetEquipForAbility(item);
+            UIHandler.instance._EquipWindowUI.GetEquipForAbility(item);
         }
 
         if(CityHandler.instance != null)
@@ -107,7 +114,9 @@ public class PlayerAbility : MonoBehaviour
 
         if(index != -1)
         {
-            ReplaceSameAbilityByIndex(index);
+            ReplaceSameAbilityByIndex(index, data);
+
+        
         }
         else
         {
@@ -118,10 +127,33 @@ public class PlayerAbility : MonoBehaviour
 
             UIHandler.instance._pauseUI.AddPassive(passiveAbility);
 
+            index = abilityPassiveList.Count - 1;
+
         }
-        
+
         //everytime we add this fella we send it to the 
 
+        bool canStack = abilityPassiveList[index].CanStackMore();
+
+        if(canStack) 
+        {
+            if(!abilityList_HigherChance.Contains(data))
+            {
+                abilityList_HigherChance.Add(data);
+            }
+
+        }
+        else
+        {
+            if (!abilityList_HigherChance.Contains(data))
+            {
+                abilityList_HigherChance.Add(data);
+            }
+            if (abilityList_HigherChance.Contains(data))
+            {
+                abilityList_HigherChance.Remove(data);
+            }
+        }
 
     }
 
@@ -147,7 +179,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 return i;
             }
-            if (abilityList[i].dataPassive == target)
+            if (abilityList[i].dataPassive.abilityName == target.abilityName)
             {
                 return i;
             }
@@ -159,6 +191,11 @@ public class PlayerAbility : MonoBehaviour
 
     public void ReplaceActiveAbility(AbilityActiveData data, int index)
     {
+        if(index > abilityActiveList.Count - 1)
+        {
+            Debug.Log("this is wrong");
+            return;
+        }
         abilityActiveList[index].SetActive(data);
         if (CityHandler.instance != null)
         {
@@ -181,21 +218,21 @@ public class PlayerAbility : MonoBehaviour
             if (item.dataPassive == null) continue;
             if(item.dataPassive == ability.dataPassive)
             {
-                item.IncreaseLevel();
+                item.IncreaseLevel(null);
                 return;
             }
 
         }
     }
 
-    public void ReplaceSameAbilityByIndex(int index)
+    public void ReplaceSameAbilityByIndex(int index, AbilityPassiveData dataForStacking)
     {
         var item = abilityPassiveList[index];
         if (item.IsEmpty()) return;
         if (item.dataPassive == null) return;
-        item.IncreaseLevel();
+        item.IncreaseLevel(dataForStacking);
+       
 
-        
     }
 
 
@@ -215,7 +252,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if(abilityPassiveList.Count > 0)
         {
-            abilityPassiveList[0].IncreaseLevel();
+            abilityPassiveList[0].IncreaseLevel(null);
         }
     }
 
@@ -232,6 +269,28 @@ public class PlayerAbility : MonoBehaviour
 
 
     #endregion
+
+
+    public void ResetPassiveAbilities()
+    {
+        //we clear all passive abilities.
+        foreach (var item in abilityPassiveList)
+        {
+            if (item.dataPassive == null) continue;
+
+            if(item._abilityUnit != null)
+            {
+                Destroy(item._abilityUnit.gameObject);
+            }
+
+            item.RemovePassive();
+        }
+
+        abilityPassiveList.Clear();
+
+        abilityList_CannotStack.Clear();
+        abilityList_HigherChance.Clear();
+    }
 
     public void UseAbilityActive(int index)
     {
@@ -256,11 +315,13 @@ public class PlayerAbility : MonoBehaviour
     }
 
     //
-    public List<AbilityClass> GetAbiltiyList()
+    public List<AbilityClass> GetActiveAbiltiyList()
     {
-
-
         return abilityActiveList;
+    }
+    public List<AbilityClass> GetPassiveAbilityList()
+    {
+        return abilityPassiveList;
     }
 }
 

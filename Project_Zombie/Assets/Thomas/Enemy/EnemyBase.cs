@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -53,22 +51,31 @@ public class EnemyBase : Tree, IDamageable
         agent = GetComponent<NavMeshAgent>();   
 
         SetEntity();
-        SetStats(5);
 
-        SetSpeed(_entityStat.GetTotalValue(StatType.Speed));
+        _entityEvents.eventUpdateStat += UpdateStat;
 
-        healthTotal = _entityStat.GetTotalValue(StatType.Health);
-        healthCurrent = healthTotal;
-
-        _enemyCanvas.UpdateHealth(healthCurrent, healthTotal);
-
+        
         gameObject.name = data.name + "; Unique_ID: " + id;
 
     }
 
+    
+
+    public void UpdateStat(StatType stat, float value)
+    {
+        if(stat == StatType.Speed)
+        {
+            SetSpeed(value);
+        }
+    }
+
     private void Start()
     {
-        
+        if (!alreadySetStat)
+        {
+            Debug.Log("set fpor debug");
+            SetStats(1); //
+        }
     }
 
     
@@ -94,10 +101,14 @@ public class EnemyBase : Tree, IDamageable
             Debug.LogError("THIS ENEMY IS LACKINGT ENTIY STAT " + gameObject.name);
         }
     }
+
+    bool alreadySetStat;
     public void SetStats(int round)
     {
         //so we need to set the stats of each felal here.
         //we will use the data already inside.
+
+        alreadySetStat = true;
 
         List<StatClass> baseStatList = data.initialStatList;
         List<StatClass> scaleStatList = data.scaleStatList;
@@ -106,7 +117,16 @@ public class EnemyBase : Tree, IDamageable
         //now we need to put these fellas into the thing.
         _entityStat.SetUpWithScalingList(round, baseStatList, scaleStatList);
 
+        SetHealth();
+        SetSpeed(_entityStat.GetTotalValue(StatType.Speed));
+    }
 
+    void SetHealth()
+    {
+        healthTotal = _entityStat.GetTotalValue(StatType.Health);
+        healthCurrent = healthTotal;
+
+        _enemyCanvas.UpdateHealth(healthCurrent, healthTotal);
 
     }
 
@@ -132,22 +152,35 @@ public class EnemyBase : Tree, IDamageable
         return isDead;
     }
 
-    public void TakeDamage(DamageClass damage)
+    public void TakeDamage(DamageClass damageRef)
     {
         if (isDead) return;
 
+        DamageClass damage = new DamageClass(damageRef);
+
+
         bool isCrit = damage.CheckForCrit();
+
+        if (isCrit)
+        {
+            PlayerHandler.instance._entityEvents.OnCrit();
+        }
+
+        PlayerHandler.instance._entityEvents.OnDamagedEntity(this, damage);
+
 
         float reduction = _entityStat.GetTotalValue(StatType.DamageReduction);
         float totalHealth = _entityStat.GetTotalValue(StatType.Health);
 
-
         float damageValue = damage.GetDamage(reduction, totalHealth, isCrit);
 
         healthCurrent -= damageValue;
+        PlayerHandler.instance._playerStatTracker.ChangeStatTracker(StatTrackerType.DamageDealt, damageValue);
         _enemyCanvas.CreateDamagePopUp(damageValue, DamageType.Physical, isCrit);
 
         _enemyCanvas.UpdateHealth(healthCurrent, healthTotal);
+
+        
 
 
         if(healthCurrent <= 0)
@@ -189,7 +222,13 @@ public class EnemyBase : Tree, IDamageable
 
         }
 
-        //when this fella dies we remove the the canvas 
+
+        PlayerHandler.instance._playerStatTracker.ChangeStatTracker(StatTrackerType.EnemiesKilled, 1);
+        PlayerHandler.instance._entityEvents.OnKillEnemy(this);
+
+
+        //when this fella dies we remove t
+        //he the canvas 
         _enemyCanvas.transform.SetParent(null); //no parent. but it should be ordered to destroy itself once there are no more childnre in the damagepopcontainer.
         _enemyCanvas.MakeDestroyItself(transform);
         Destroy(gameObject);
@@ -203,9 +242,9 @@ public class EnemyBase : Tree, IDamageable
 
 
     #region PATHING
-    NavMeshAgent agent;
-
-
+    protected NavMeshAgent agent;
+    protected Vector3 currentAgentTargetPosition;
+    protected bool isMoving;
 
     void SetSpeed(float value)
     {
@@ -217,11 +256,18 @@ public class EnemyBase : Tree, IDamageable
     {
         agent.isStopped = false;
         agent.destination = targetPos;
+
+        isMoving = true;
+        currentAgentTargetPosition = targetPos;
     }
 
     public void StopAgent()
     {
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+
+        isMoving = false;
+
     }
 
     #endregion
@@ -318,7 +364,10 @@ public class EnemyBase : Tree, IDamageable
         //Gizmos.DrawSphere(transform.position, 5);
     }
 
-    
+    public float GetTargetCurrentHealth()
+    {
+        return healthCurrent;
+    }
 }
 
 //how should i go about doing this?

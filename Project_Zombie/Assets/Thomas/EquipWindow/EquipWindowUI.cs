@@ -31,7 +31,7 @@ public class EquipWindowUI : MonoBehaviour
     }
     private void Start()
     {
-        descriptionWindow = UIHandler.instance.DescriptionWindow;
+        descriptionWindow = UIHandler.instance._DescriptionWindow;
     }
 
     private void Update()

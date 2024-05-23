@@ -68,6 +68,10 @@ public class GunClass
 
     }
 
+    public void ResetGunClass()
+    {
+        data = null;
+    }
 
     #region AMMO
 
@@ -75,6 +79,38 @@ public class GunClass
     public int ammoTotal { get; private set; }
     public int ammoReserve { get; private set; }
 
+    float ammoRefundProgress;
+
+    public void RefundAmmo(float modifier)
+    {
+        float valueRestored = ammoTotal * modifier;
+        float valueForAmmo = 0;
+
+        if (valueRestored >= 1)
+        {
+            valueForAmmo = Mathf.FloorToInt(valueRestored);
+        }
+        else
+        {
+            
+            ammoRefundProgress += valueRestored;
+            Debug.Log("here? " + ammoRefundProgress);
+
+            if (ammoRefundProgress >= 1)
+            {
+                valueForAmmo = 1;
+                ammoRefundProgress = 0;
+            }
+        }
+
+
+
+        Debug.Log(valueRestored + " " + valueForAmmo + " " + ammoRefundProgress);
+
+        ammoCurrent += (int)valueForAmmo;
+        ammoCurrent = Mathf.Clamp(ammoCurrent, 0, ammoTotal);
+    }
+    
 
     public void MakeAmmoInfinite()
     {
@@ -175,25 +211,19 @@ public class GunClass
 
     List<BulletBehavior> bulletBehaviorList = new();
 
-
-    public void Shoot(Vector3 gunDir)
+    public void Shoot(Vector3 gunDir,List<BulletBehavior> forcedBulletBehaviorList)
     {
         if (!CanShoot())
         {
             return;
         }
+        List<BulletBehavior> newList = new List<BulletBehavior>();
+        newList.AddRange(forcedBulletBehaviorList);
+        newList.AddRange(bulletBehaviorList);
 
-        //always before shooting we rearrange the damaageclas.
-        //
+        
 
-
-        //get base damage from the gun and multiply it by player damage
-        //get base pen and add to player pen
-        //if it always crits.
-
-
-
-        data.Shoot(this, ownerId, data.bulletTemplate, gunDir, bulletBehaviorList);
+        data.Shoot(this, ownerId, data.bulletTemplate, gunDir, newList);
         UIHandler.instance._playerUI.CallMouseIconAnimation();
         PutInCooldown();
         ammoCurrent -= 1;
@@ -206,10 +236,9 @@ public class GunClass
     }
     public void RemoveBulletBehavior(BulletBehavior newBulletBehavior) 
     {
-
         for (int i = 0; i < bulletBehaviorList.Count; i++)
         {
-            if (bulletBehaviorList[i] == newBulletBehavior)
+            if (bulletBehaviorList[i].id == newBulletBehavior.id)
             {
                 bulletBehaviorList.RemoveAt(i);
             }
