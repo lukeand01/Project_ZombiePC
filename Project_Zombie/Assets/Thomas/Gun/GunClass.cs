@@ -49,7 +49,7 @@ public class GunClass
 
 
         //CRIT CHANCE
-        _DamageClass.MakeCritChance(data.GetValue(StatType.CritChance) + _stat.GetTotalValue(StatType.CritChance));
+        _DamageClass.MakeCritChance(data.GetValue(StatType.CritChance) + _stat.GetTotalValue(StatType.CritChance) + (_stat.GetTotalValue(StatType.Luck) * 1.5f )) ;
 
         //CRIT DAMAGE
         _DamageClass.MakeCritDamage(data.GetValue(StatType.CritDamage) + _stat.GetTotalValue(StatType.CritDamage));

@@ -7,12 +7,20 @@ public class PlayerController : MonoBehaviour
     PlayerHandler handler;
     public BlockClass block { get; private set; }
     public KeyClass key { get; private set; }
+
+    Camera cam;
+
     private void Awake()
     {
         handler = GetComponent<PlayerHandler>();
 
         block = new BlockClass();
-        key = new KeyClass();   
+        key = new KeyClass();
+
+        layerForMouseHover_Enemy |= (1 << 6);
+        layerForMouseHover_Ground |= (1 << 11);
+
+        cam = Camera.main;
     }
 
 
@@ -20,6 +28,14 @@ public class PlayerController : MonoBehaviour
     {
         if (handler == null) return;
     
+
+        if(handler._rb.velocity.y < -8)
+        {
+            Debug.Log("falling too fast");
+            return;
+        }
+        
+
         if (block.HasBlock(BlockClass.BlockType.Complete))
         {
 
@@ -207,19 +223,29 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
+    LayerMask layerForMouseHover_Enemy;
+    LayerMask layerForMouseHover_Ground;
     Vector3 getMouseDirection()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerForMouseHover_Enemy))
         {
+
             // Calculate direction to rotate character
             Vector3 targetDirection = (hit.point - transform.position).normalized;
             targetDirection.y = 0f; // Ignore vertical component (if needed)
 
-            // Rotate character towards mouse position
-            
+            // Rotate character towards mouse position         
+            return targetDirection;
+        }
+        //and another that only hits the map and gives a point in the map.
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerForMouseHover_Ground))
+        {
+            Vector3 targetDirection = (hit.point - transform.position).normalized;
+            targetDirection.y = 0f; 
 
             return targetDirection;
         }

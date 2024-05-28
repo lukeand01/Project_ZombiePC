@@ -98,7 +98,7 @@ public static class MyUtils
                     90,
                     10,
                     0,
-                    0
+                    0,
                 };
 
                 break;
@@ -109,7 +109,7 @@ public static class MyUtils
                     80,
                     20,
                     0,
-                    0
+                    0,
                 };
 
                 break;
@@ -120,7 +120,7 @@ public static class MyUtils
                     65,
                     35,
                     0,
-                    0
+                    0,
                 };
 
                 break;
@@ -131,7 +131,7 @@ public static class MyUtils
                     40,
                     55,
                     5,
-                    0
+                    0,
                 };
 
                 break;
@@ -142,7 +142,7 @@ public static class MyUtils
                     30,
                     60,
                     10,
-                    0
+                    0,
                 };
 
                 break;
@@ -220,7 +220,8 @@ public static class MyUtils
         }
 
 
-        float[] value = new float[4] { chanceTierList[0], chanceTierList[1], chanceTierList[2], chanceTierList[3]};
+        //the last one is for the especial items.
+        float[] value = new float[5] { chanceTierList[0], chanceTierList[1], chanceTierList[2], chanceTierList[3], 4 + level};
 
 
 
@@ -319,40 +320,67 @@ public static class MyUtils
         };
     }
 
-
-    public static float GetTimerBasedInRound(int level)
+    public static int GetSpawnQuantityBasedInRound(int level)
     {
-        if(level > 0 && level <= 5)
+        if (level > 0 && level <= 5)
         {
-            return UnityEngine.Random.Range(2, 3);
+            return level;
         }
         if (level > 5 && level <= 10)
         {
-            return UnityEngine.Random.Range(1, 2);
+            return 5;
         }
-        if (level > 10 && level <= 20)
+        if (level > 10 && level <= 15)
         {
-            return UnityEngine.Random.Range(0.8f, 1.5f);
+            return (int)(level * 0.5f);
         }
         if (level > 20)
         {
-            return UnityEngine.Random.Range(0.4f, 1f);
+            return 15;
+        }
+
+        return 0;
+    }
+    public static float GetSpawnTimerBasedInRound(int level)
+    {
+        if(level > 0 && level <= 5)
+        {
+            return UnityEngine.Random.Range(3, 4);
+        }
+        if (level > 5 && level <= 10)
+        {
+            return UnityEngine.Random.Range(2, 3);
+        }
+        if (level > 10 && level <= 20)
+        {
+            return UnityEngine.Random.Range(1.5f, 2);
+        }
+        if (level > 20)
+        {
+            return UnityEngine.Random.Range(0.8f, 1f);
         }
 
         return 1;
     }
 
+
+
     public static float GetTimerForRoundTotal(int level)
     {
-        return level + (0.4f * (level * level));
-        
+              
         if(level > 0 && level <= 5)
         {
-            return level * 2.8f ;
+            return 10 + (level * 1.5f);
         }
+
         if (level > 5 && level <= 15)
         {
-            return level * 4;
+            return 25 + (level * 2);
+        }
+
+        if (level > 15)
+        {
+            return 35 + (level * 2.5f);
         }
 
         return level * 5;

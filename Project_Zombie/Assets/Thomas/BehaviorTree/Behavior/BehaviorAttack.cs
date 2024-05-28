@@ -33,6 +33,7 @@ public class BehaviorAttack : Sequence2
 
         enemy.CallAbilityIndicator(current, total);
 
+
         if(current > total)
         {
             //then we call the attack against the target. but only if the target is still close to the player.

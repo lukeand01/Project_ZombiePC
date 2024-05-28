@@ -39,6 +39,7 @@ public class DamageClass
 
         MakeBulletQuantityDamageModifier(additionalDamageBasedInBulletQuantity);
         MakePureDamageModifier(pureDamageModifier);
+        if(refClass.cannotBeDodged) MakeCannotDodge();
     }
     
 
@@ -62,6 +63,7 @@ public class DamageClass
 
     bool alwaysCrit;
 
+    public bool cannotBeDodged {  get; private set; }
     public float explosionRadius {  get; private set; }
     //we get the targetHealth scaling.
 
@@ -74,6 +76,10 @@ public class DamageClass
 
     #region MAKE
 
+    public void MakeCannotDodge()
+    {
+        cannotBeDodged = true;
+    }
     public void MakeBlockFromFinishingEntity()
     {
         cannotFinishEntity = true;

@@ -17,17 +17,34 @@ public class Portal : MonoBehaviour
     bool isRoomOpen; //this is to know that it belongsg to a room that it is working.
     bool isBlocked; //this is for abilities that close the portal.
 
-    List<EnemyData> spawnQueueList = new();
+    [SerializeField] List<EnemyData> spawnQueueList = new();
 
     [SerializeField] ChestAbility chestAbilityTemplate;
 
+    LocalHandler handler;
+
+    private void Start()
+    {
+        handler = LocalHandler.instance;
+    }
+
+    private void Awake()
+    {
+        spawnTotal = Random.Range(2, 6);
+    }
+
     private void FixedUpdate()
     {
-        if (spawnTotal == 0) return;
+        if (spawnTotal == 0)
+        {
+            Debug.Log("spawn total");
+            return;
+        }
 
         if(spawnCurrent > 0)
         {
             spawnCurrent -= Time.fixedDeltaTime;
+
         }
         else
         {
@@ -35,6 +52,8 @@ public class Portal : MonoBehaviour
             {
                 Spawn(spawnQueueList[0]);
                 spawnQueueList.RemoveAt(0);
+
+                //this will hlep spawn things at different times.
             }
         }
     }
@@ -51,29 +70,35 @@ public class Portal : MonoBehaviour
         Spawn(data);
     }
 
-    public void Spawn(EnemyData enemy)
+    public void OrderSpawn(EnemyData enemy)
     {
 
-        Debug.Log("called spawn");
-        //put the fella in the world.
-        if (spawnCurrent > 0 && spawnQueueList.Count < 4)
+        if (spawnQueueList.Count > 0)
         {
-            //we can keep spawning.
-            spawnQueueList.Add(enemy);
-            return;
+            //then we simply add to the list.
         }
+        else
+        {
+            spawnTotal = Random.Range(3, 5);
+            spawnCurrent = spawnTotal;
+        }
+        spawnQueueList.Add(enemy);
+    }
+
+    public void Spawn(EnemyData enemy)
+    {
+        Debug.Log("we call to spawn");
+
         int round = LocalHandler.instance.round;
-        EnemyBase newObject = Instantiate(enemy.enemyModel, transform.position + Vector3.forward , Quaternion.identity);
+        EnemyBase newObject = Instantiate(enemy.enemyModel, transform.position + Vector3.forward, Quaternion.identity);
         newObject.SetStats(round);
         newObject.SetChest(chestAbilityTemplate);
         chestAbilityTemplate = null;
 
-        spawnTotal = Random.Range(5, 10);
+        spawnTotal = Random.Range(3, 5);
         spawnCurrent = spawnTotal;
-        
-        
 
-
+        newObject.eventDied += handler.EnemyDied;
     }
 
 

@@ -66,10 +66,17 @@ public class ItemTierHolder : ScriptableObject
         return newList;
     }
 
-    public ItemData GetChosenItem(int level)
+    public ItemData GetChosenItem()
     {
+        float luck = 0;
+
+        if (PlayerHandler.instance != null)
+        {
+            luck = PlayerHandler.instance._entityStat.GetTotalValue(StatType.Luck);
+        }
+
         List<ItemChanceClass> chanceList = currentChanceListBasedInLevel;
-        int roll = Random.Range(0, 101);
+        int roll = Random.Range(0, 101) + (int)(luck * 2);
         ItemData chosenItem = null;
 
         int safeBreak = 0;
@@ -102,8 +109,6 @@ public class ItemTierHolder : ScriptableObject
 
         return chosenItem;
     }
-
-
 
 
     //what i can do is that i build this fella everytime i change level. that way i dont need to worry about building it over and over again.

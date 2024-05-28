@@ -6,8 +6,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "TierHolder / Ability")]
 public class AbilityTierHolder : ScriptableObject
 {
+    //these are the passive
+    //i want to have passive that are always possible. but they rare.
+
     [SerializeField] List<AbilityPassiveData> passiveDataRefList = new();
+    [SerializeField] List<AbilityPassiveData> passiveDataRefListEspecial = new();
+    float spawnChanceForEspecial;
     [SerializeField] List<AbilityActiveData> activeDataRefList = new();
+
 
     Dictionary<TierType, List<AbilityPassiveData>> passiveDataDictionary = new();
     Dictionary<TierType, List<AbilityActiveData>> activeDataDictionary = new();
@@ -21,6 +27,7 @@ public class AbilityTierHolder : ScriptableObject
         OrganizePassiveTier();
     }
 
+    #region ORGANIZE
     void OrganizePassiveTier()
     {
         passiveDataDictionary.Clear();
@@ -64,19 +71,27 @@ public class AbilityTierHolder : ScriptableObject
 
 
     }
-
+    #endregion
 
     //
-    
+
     public List<AbilityPassiveData> GetPassiveChosenList(int amount)
     {
         //tweaks to the logic
         //there should be a higher chance of getting something the player already has.
         //also should not be be able to show the player something he can no longer stack.
+        float luck = 0;
+
+        if(PlayerHandler.instance != null)
+        {
+            luck = PlayerHandler.instance._entityStat.GetTotalValue(StatType.Luck);
+        }
+
 
         List<int> indexList = new();
+        List<int> indexListForEspecial = new();
         int safeBreak = 0;
-        int roll = Random.Range(0, 101);
+        int roll = Random.Range(0, 101) + (int)(luck * 2);
         List<AbilityPassiveData> newList = new();
 
 
@@ -99,6 +114,20 @@ public class AbilityTierHolder : ScriptableObject
                 Debug.Log("it broke off");
                 return newList;
             }
+
+            //right here in the beggining we check the chances to get an item.
+            int rollForEspecial = Random.Range(0, 101);
+
+            if(rollForEspecial > spawnChanceForEspecial && passiveDataRefListEspecial.Count > 0 && indexListForEspecial.Count <= 0)
+            {
+                //then we are going to pick a random from the espcial list to add.
+                int randomEspecial = Random.Range(0, passiveDataRefListEspecial.Count);
+                newList.Add(passiveDataRefListEspecial[randomEspecial]);
+                indexListForEspecial.Add(randomEspecial);
+                continue;
+            }
+
+
 
             int random = Random.Range(0, currentChanceListBasedInLevel.Count);
 
@@ -252,6 +281,9 @@ public class AbilityTierHolder : ScriptableObject
 
 
         }
+
+
+        spawnChanceForEspecial = GetChanceBasedInTier[4];
 
         return newList;
     }

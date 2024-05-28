@@ -19,6 +19,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] EquipWindowUI equipUIRef;
     [SerializeField] DescriptionWindow descriptionWindowRef;
     [SerializeField] EndUI endUIRef;
+    [SerializeField] QuestUI questUIRef;
 
     #region GETTERS 
     public PlayerUI _playerUI { get {  return playerUIRef; } }
@@ -41,6 +42,8 @@ public class UIHandler : MonoBehaviour
     public DescriptionWindow _DescriptionWindow { get { return descriptionWindowRef; } }
 
     public EndUI _EndUI { get { return endUIRef; } }
+
+    public QuestUI _QuestUI { get { return questUIRef; } }
     #endregion
 
     
@@ -68,7 +71,7 @@ public class UIHandler : MonoBehaviour
         gunUI.ControlUI(isVisible);
         _playerUI.ControlUI(isVisible);
         _AbilityUI.ControlUI(isVisible);
-
+        _QuestUI.ControlUI(isVisible);
     }
 
 

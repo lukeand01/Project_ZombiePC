@@ -69,7 +69,7 @@ public class ItemNotificationUnit : MonoBehaviour
         }
         else
         {
-            current += Time.deltaTime;
+            current += Time.unscaledDeltaTime;
         }
     }
 
@@ -78,13 +78,17 @@ public class ItemNotificationUnit : MonoBehaviour
 
         float duration = 0.3f;
 
-        background.DOFade(0, duration);
-        portrait.DOFade(0, duration);
-        nameText.DOFade(0, duration);
-        quantityText.DOFade(0, duration);
+        background.DOFade(0, duration).SetUpdate(true);
+        portrait.DOFade(0, duration).SetUpdate(true);
+        nameText.DOFade(0, duration).SetUpdate(true);
+        quantityText.DOFade(0, duration).SetUpdate(true);
 
 
-        yield return new WaitForSecondsRealtime(0.3f);
+        yield return new WaitForSecondsRealtime(duration);
+        
+        
+
+        //yield return new WaitForSeconds(0.3f);
 
         _inventoryUI.RemoveFirstInList();
 

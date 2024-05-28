@@ -12,6 +12,9 @@ public class LocalHandler : MonoBehaviour
 
     
     public static LocalHandler instance;
+
+    LocalHandler_RoundHandler _roundHandler;
+
     [field: SerializeField] public StageData _stageData {  get; private set; }
 
     [SerializeField] bool debug_doNotSpawn;
@@ -26,6 +29,7 @@ public class LocalHandler : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(gameObject);
 
+        _roundHandler = GetComponent<LocalHandler_RoundHandler>();
 
     }
 
@@ -50,8 +54,18 @@ public class LocalHandler : MonoBehaviour
         ChestGunHandle();
         ChestResourceHandle();
         ChestAbilityHandle();
-        SpawnHandle();
-        HandleRound();
+
+        if (useNewRoundSystem)
+        {
+
+        }
+        else
+        {
+            SpawnHandle();
+            HandleRound();
+        }
+
+        
     }
 
     public void StartLocalHandler()
@@ -60,6 +74,7 @@ public class LocalHandler : MonoBehaviour
 
 
         spawnTotal = 4; //a larger time before they start appearing.
+        spawnWaveQuantity = 1;
         //spawnCurrent = spawnTotal;
         spawnCurrent = 0;
 
@@ -75,11 +90,19 @@ public class LocalHandler : MonoBehaviour
 
         PlayerHandler.instance.transform.position = spawnPos.position;
 
-        StartCoroutine(RoundStartProcess());
+        if (useNewRoundSystem)
+        {
+            _roundHandler.StartRound();
+        }
+        else
+        {
+            StartCoroutine(RoundStartProcess());
+        }
+        
     }
 
 
-
+    [SerializeField] bool useNewRoundSystem;
 
     #region ROUND 
     public int round { get; private set; }
@@ -88,6 +111,16 @@ public class LocalHandler : MonoBehaviour
     float roundTotal;
 
     bool roundHasStarted;
+
+
+    public void SetRound(int newRound)
+    {
+        round = newRound;
+    }
+    public void SetWaveQuantity(int newValue)
+    {
+        spawnWaveQuantity = newValue;
+    }
 
     IEnumerator RoundStartProcess()
     {
@@ -142,6 +175,26 @@ public class LocalHandler : MonoBehaviour
 
     #endregion
 
+    #region ROUND SYSTEM NEW
+
+    //everytime we spawn a fella we add it to the list
+    //everytime an enemy die we send the information here.
+
+    //we are going to add different round types later.
+    
+    public void StartRound_New()
+    {
+        //we have a quantity that we spawn.
+        //but we dont spawn them all at the same time. we spawn randomly and at intervals.
+        //once completed there is a timer.
+
+    }
+
+    //
+
+
+    #endregion
+
     #region ROOM
     [SerializeField] Room[] roomArray;
     List<Room> openRoomList = new();
@@ -163,30 +216,30 @@ public class LocalHandler : MonoBehaviour
     #endregion
 
     #region SPAWN SYSTEM
-    //all we will do is decided how much should spawn in this instant. we are talking about a x amount every random time.
     //at first that will be just one fella.
     //
 
-    Dictionary<int, EnemyData> dictionaryForEnemiesWithSpawnCap = new();
+    //goal of spawner
+    //cannot spawn more because there are more spawners. player´s should not be afraid to open door because of it.
+    //there is a timer for spawn. 
+    //at the start we spawn 1 fella every 3 seconds.
+    //at round 2 we spawn 2 fellas every 3 seeconds.
+    //we keep spawning 
+
+    //we put these fellas right at the start. but how to check on them? everytime a fella dies we check?
+    //everytime a fella is spawned and the fella has a cap we attack an event to its death so we can remove it.
+    Dictionary<string, int> dictionaryForEnemiesWithSpawnCap = new();
     List<EnemyChanceSpawnClass> enemyChanceList = new();
 
     //every wave is spwaned
-
 
     [SerializeField]List<Portal> allowedPortal = new();
 
     float spawnCurrent;
     float spawnTotal;
+    int amountSpawned;
 
     int spawnWaveQuantity; //this version is 0
-
-    //so every level.
-    //like this i will spawn too much.
-    //i still need to spawn at the right fellas.
-
-
-    //
-
 
     void SpawnHandle()
     {
@@ -198,9 +251,24 @@ public class LocalHandler : MonoBehaviour
         else
         {
             //then we spawn.
-            spawnTotal = MyUtils.GetTimerBasedInRound(round);        
+            float additionalTimer = 0;
+
+            if(amountSpawned >= 5)
+            {
+                amountSpawned = 0;
+                additionalTimer *= spawnTotal * 2;
+                additionalTimer = Mathf.Clamp(additionalTimer, 3, 5);
+            }
+            else
+            {
+                amountSpawned++;
+            }
+
+
+            spawnTotal = MyUtils.GetSpawnTimerBasedInRound(round) + additionalTimer;
+            spawnWaveQuantity = MyUtils.GetSpawnQuantityBasedInRound(round);
             spawnCurrent = spawnTotal;
-            ChooseEnemies();
+            ChooseEnemiesAndSpawn();
         }
     }
 
@@ -211,7 +279,7 @@ public class LocalHandler : MonoBehaviour
         spawnWaveQuantity = 1; //for now it will be just one.
     }
 
-    void ChooseEnemies()
+    public void ChooseEnemiesAndSpawn()
     {
         //a stage map will dictate the chances of any fellas appearing. the chances based with level.
         //we first get the list of only the fellas that we can spawn at the moment. we remove the max and min.
@@ -231,22 +299,42 @@ public class LocalHandler : MonoBehaviour
             safeBreak++;
             if(safeBreak > 1000)
             {
-                Debug.LogError("Safe break for choose enemies");
+                //Debug.LogError("Safe break for choose enemies");
+                SpawnChosenEnemies(chosenEnemyList);
                 break;
             }
 
             //check each fella against the raindom.
             int random = Random.Range(0, enemyChanceList.Count);
             EnemyChanceSpawnClass enemyChance = enemyChanceList[random];
+
+            if (!CanStackEnemy(enemyChance))
+            {
+                Debug.Log("cannot add more of this fella " + enemyChance.data.enemyName);
+                continue;
+            }
+            else
+            {
+                //Debug.Log("can add this fella");
+            }
+
             if(enemyChance.totalChanceSpawn >= roll)
             {
                 chosenEnemyList.Add(enemyChance.data);
+                AddToStackDictionary(enemyChance);
+                //we check if we should put in the dictionary
             }
             else
             {
                 roll -= 10;
             }
 
+        }
+
+
+        foreach (var item in chosenEnemyList)
+        {
+            _roundHandler.AddEnemy(item);
         }
 
         SpawnChosenEnemies(chosenEnemyList);
@@ -258,6 +346,8 @@ public class LocalHandler : MonoBehaviour
         //now we need to get the right spawners.
         //the spawner
         List<int> indexList = new();
+
+
 
         if(allowedPortal.Count <= 0)
         {
@@ -281,6 +371,8 @@ public class LocalHandler : MonoBehaviour
             bool stopLoop = false;
             int safeBreake = 0;
 
+            //i will check 
+
             while (!stopLoop)
             {
                 int randomSpawner = Random.Range(0, allowedPortal.Count);
@@ -291,7 +383,14 @@ public class LocalHandler : MonoBehaviour
                 {
                     break;
                 }
-                allowedPortal[randomSpawner].Spawn(item);
+
+                if (!stopLoop)
+                {
+                    continue;
+                }
+
+                
+                allowedPortal[randomSpawner].OrderSpawn(item);
                 indexList.Add(randomSpawner);
             }
             
@@ -299,8 +398,51 @@ public class LocalHandler : MonoBehaviour
 
     }
 
+    public void EnemyDied(EnemyData data)
+    {
+        //we check if the enemy was in the list and we remove it. o
+        if (dictionaryForEnemiesWithSpawnCap.ContainsKey(data.name))
+        {
+            //if we have a key. then we must remove a number of it.
+            dictionaryForEnemiesWithSpawnCap[data.name] -= 1;
 
+            if (dictionaryForEnemiesWithSpawnCap[data.name] <= 0)
+            {
+                dictionaryForEnemiesWithSpawnCap.Remove(data.name);
+            }
+        }
 
+    }
+    void AddToStackDictionary(EnemyChanceSpawnClass enemySpawnClass)
+    {
+        if (enemySpawnClass.maxAllowedAtAnyTime == 0)
+        {
+            return;
+        }
+
+        Debug.Log("add");
+
+        if (dictionaryForEnemiesWithSpawnCap.ContainsKey(enemySpawnClass.data.name))
+        {
+            
+            dictionaryForEnemiesWithSpawnCap[enemySpawnClass.data.name] += 1;
+        }
+        else
+        {
+            dictionaryForEnemiesWithSpawnCap.Add(enemySpawnClass.data.name, 1);
+        }
+    }
+
+    bool CanStackEnemy(EnemyChanceSpawnClass enemySpawnClass)
+    {
+        if (!dictionaryForEnemiesWithSpawnCap.ContainsKey(enemySpawnClass.data.name)) return true;
+        return dictionaryForEnemiesWithSpawnCap[enemySpawnClass.data.name] < enemySpawnClass.maxAllowedAtAnyTime;
+    }
+
+    public void RemoveEnemyFromSpawnList(EnemyData data)
+    {
+        _roundHandler.RemoveEnemy(data);
+    }
 
     #endregion
 
@@ -341,7 +483,7 @@ public class LocalHandler : MonoBehaviour
         //put in a random position it can be the same.
         int min = 0;
 
-        if (roomArray.Length == 0) return;
+        if (roomArray.Length <= 1) return;
 
 
         if (isFirst)
@@ -350,13 +492,15 @@ public class LocalHandler : MonoBehaviour
             min = 1;
         }
 
+
+
         Transform targetPos = null;
         int safeBreak = 0;
         while(targetPos == null)
         {
             int random = Random.Range(min, roomArray.Length);
             targetPos = roomArray[random].GetChestGunSpawnPos();
-
+            Debug.Log("random " + random);
             safeBreak++;
 
             if(safeBreak > 1000)
@@ -498,15 +642,19 @@ public class LocalHandler : MonoBehaviour
         }
     }
 
-   //we get a random allowed
+    //we get a random allowed
 
     #endregion
-}
-public class SpawnWaveClass
-{
-    //this has information regarding how many fellas we should spawn.
+
+    #region SHRINE
+    //shrines will spawn randomly around the map. they can appar in front of the player because they would do an animation
+    //we randomly choose one out of three types of shrine and we inform the player what kind of shrine it is.
+    //the quest
 
 
+
+
+    #endregion
 }
 
 

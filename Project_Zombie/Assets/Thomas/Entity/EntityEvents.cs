@@ -15,11 +15,19 @@ public class EntityEvents : MonoBehaviour
     public Action eventDamageTaken;
     public void OnDamageTaken() => eventDamageTaken?.Invoke();
 
+    public Action eventHealed;
+    public void OnHealed() => eventHealed?.Invoke();
 
     public Action eventHardInput; //movement, dash, shooting
     public void OnHardInput()
     {
         eventHardInput?.Invoke();
+    }
+
+    public Action eventOpenChest; //movement, dash, shooting
+    public void OnOpenChest()
+    {
+        eventOpenChest?.Invoke();
     }
 
     public Action eventHasDodged; 

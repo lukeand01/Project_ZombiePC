@@ -64,14 +64,13 @@ public class EntityStat : MonoBehaviour
     protected Dictionary<StatType, float> statBaseDictionary = new Dictionary<StatType, float>();
     protected Dictionary<StatType, float> statAlteredDictionary = new Dictionary<StatType, float>();
 
-    protected List<StatAlteredClass> statAltered_Flat_List = new();
-    [SerializeField]protected List<StatAlteredClass> statAltered_PercentBase_List = new();
-    protected List<StatAlteredClass> statAltered_PercentCurrent_List = new();
+    [SerializeField] protected Dictionary<StatType, List<StatAlteredClass>> statAltered_Flat_Dictionary = new();
+    [SerializeField] protected Dictionary<StatType, List<StatAlteredClass>> statAltered_PercentBase_Dictionary = new();
+    [SerializeField] protected Dictionary<StatType, List<StatAlteredClass>> statAltered_PercentCurrent_Dictionary = new();
 
-    //
+    
 
-    //when we add a value we add to this dictionary but how do you check the value if you cannot loop through a list?
-    //everytime 
+    //the list for this should be unique for each thing.
 
 
 
@@ -95,6 +94,9 @@ public class EntityStat : MonoBehaviour
                 statBaseDictionary.Add(item, 0);
             }
 
+            statAltered_Flat_Dictionary.Add(item, new List<StatAlteredClass>());
+            statAltered_PercentBase_Dictionary.Add(item, new List<StatAlteredClass>());
+            statAltered_PercentCurrent_Dictionary.Add(item, new List<StatAlteredClass>());
         }
 
         SetUpEmptyAlteredDictionary(refList);
@@ -103,7 +105,6 @@ public class EntityStat : MonoBehaviour
     public void SetUpWithScalingList(int round, List<StatClass> initialStatList, List<StatClass> scalingStatList)
     {
        List<StatType> refList =  MyUtils.GetStatListRef();
-
 
         //i need to create the list and i can do this later perhpass:
 
@@ -239,7 +240,7 @@ public class EntityStat : MonoBehaviour
             RemoveStat(stackBD);
             stackBD.Stack(bd);
             AddBDStat(stackBD);
-
+            Debug.Log("it stacked");
             return;
         }
 
@@ -335,15 +336,27 @@ public class EntityStat : MonoBehaviour
     {
         float value = 0;
 
+
+
+        List<StatAlteredClass> statAltered_Flat_List = statAltered_Flat_Dictionary[_type];
+
         foreach (var item in statAltered_Flat_List)
         {
             value += item.value_Original;
         }
 
-        float totalValue = GetTotalValue(_type);
+        //this valyue is altered.
+        List<StatAlteredClass> statAltered_PercentBase_List = statAltered_PercentBase_Dictionary[_type];
+        float baseValue = statBaseDictionary[_type]; 
         foreach (var item in statAltered_PercentBase_List)
         {
-            
+            value += baseValue * item.value_Original;
+        }
+
+        List<StatAlteredClass> statAltered_PercentCurrent_List = statAltered_PercentCurrent_Dictionary[_type];
+        float totalValue = GetTotalValue(_type);
+        foreach (var item in statAltered_PercentCurrent_List)
+        {
             value += totalValue * item.value_Original;
         }
 
@@ -356,12 +369,12 @@ public class EntityStat : MonoBehaviour
 
         if(bd.statValueFlat != 0)
         {
-            statAltered_Flat_List.Add(new StatAlteredClass(bd.id, bd.statValueFlat));
+            statAltered_Flat_Dictionary[bd.statType].Add(new StatAlteredClass(bd.id, bd.statValueFlat));
         }
 
         if (bd.statValue_PercentbasedOnBaseValue != 0)
         {
-            statAltered_PercentBase_List.Add(new StatAlteredClass(bd.id, bd.statValue_PercentbasedOnBaseValue));
+            statAltered_PercentBase_Dictionary[bd.statType].Add(new StatAlteredClass(bd.id, bd.statValue_PercentbasedOnBaseValue));
         }
 
         float value = GetValueForAlteredDictionary(bd.statType);
@@ -474,6 +487,8 @@ public class EntityStat : MonoBehaviour
 
         if(bd.statValueFlat != 0)
         {
+            List<StatAlteredClass> statAltered_Flat_List = statAltered_Flat_Dictionary[bd.statType];
+
             for (int i = 0; i < statAltered_Flat_List.Count; i++)
             {
                 if(bd.id == statAltered_Flat_List[i].id)
@@ -485,11 +500,12 @@ public class EntityStat : MonoBehaviour
 
         if(bd.statValue_PercentbasedOnBaseValue != 0)
         {
+            List<StatAlteredClass> statAltered_PercentBase_List = statAltered_PercentBase_Dictionary[bd.statType];
+
             for (int i = 0; i < statAltered_PercentBase_List.Count; i++)
             {
                 if (bd.id == statAltered_PercentBase_List[i].id)
                 {
-
                     statAltered_PercentBase_List.RemoveAt(i);
                 }
             }

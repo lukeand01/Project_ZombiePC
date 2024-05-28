@@ -104,7 +104,6 @@ public class BehaviorChase : Sequence2
         {
             //then we call this and apss to the next
             //then we force right at way for the enemy to stop
-            enemy.StopAgent();
             return NodeState.Success;
         }
         else

@@ -46,23 +46,25 @@ public class PlayerMovement : MonoBehaviour
 
     public void MovePlayer(Vector3 dirVector)
     {
-
+        //the thing that disables it is the death plane
+        
         if(dirVector != Vector3.zero)
         {
             lastDir = dirVector;
         }
 
         float currentSpeed = stat.GetTotalValue(StatType.Speed);
+
         float giantModifier = currentSpeed * currentGiantPassiveEffect;
 
 
-
+       //if the player is ever falling he cannot move or do anything.
 
         float moveModifier = 1;
 
         Vector3 movement = new Vector3(dirVector.x, 0, dirVector.y) * (currentSpeed - giantModifier) * moveModifier;
-
-        handler._rb.velocity = movement;
+        Vector3 fallSpeed = new Vector3(0, handler._rb.velocity.y , 0);
+        handler._rb.velocity = movement + fallSpeed;
     }
 
     #endregion
@@ -113,11 +115,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void GiantInRange()
     {
-        Debug.Log("giant in range");
         giantCooldownTotal = 0.5f;
         giantCooldownCurrent = giantCooldownTotal;
 
-        currentGiantPassiveEffect = 0.9f;
+        currentGiantPassiveEffect = 0.6f;
+
+        Debug.Log("giant in range");
     }
     
     void HandleGiantCooldown()

@@ -11,9 +11,12 @@ public class EnemyGiant : EnemyBase
 
     const float ICE_STORM_VALUE = 12;
     
-    private void Start()
+
+
+    protected override void StartFunction()
     {
-        
+        base.StartFunction();
+
         UpdateTree(GetBehavior());
         _abilityIndicatorCanvas.StartCircleIndicator(ICE_STORM_VALUE);
         _abilityIndicatorCanvas.ControlCircleFill(0, 0);
@@ -39,12 +42,8 @@ public class EnemyGiant : EnemyBase
 
         if (targets.Length > 0)
         {
-
-            Debug.Log("apply slow to player");
             PlayerHandler.instance._playerMovement.GiantInRange();
         }
-
-
         
 
     }

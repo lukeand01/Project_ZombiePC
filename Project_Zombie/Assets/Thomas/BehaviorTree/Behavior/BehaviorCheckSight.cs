@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BehaviorCheckSight : Sequence2
 {
@@ -32,18 +33,25 @@ public class BehaviorCheckSight : Sequence2
         //we check if all eyes can see the player 
         //
 
-        Vector3 targetPos = (enemy.transform.position - playerTransform.position).normalized;    
+        
 
         foreach (var item in eyeArray)
         {
-            if(!Physics.Raycast(item.position, targetPos, 50, wallAndPlayerLayer))
+            Vector3 targetPos = (playerTransform.position - item.position).normalized;
+            Ray ray = new Ray(item.position, targetPos);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 50, wallAndPlayerLayer))
             {
-                return NodeState.Failure;
+                if (hit.collider.tag == "Player")
+                {
+                    return NodeState.Success;
+                }
             }
         }
 
-        Debug.Log("got here");
-        return NodeState.Success;
+
+        Debug.Log("didnt spot");
+        return NodeState.Failure;
 
 
     }

@@ -53,11 +53,12 @@ public class BulletScript : MonoBehaviour
     float damageChangeAfterBounce;
 
 
-    List<BulletBehavior> bulletBehaviorList = new();
+    [SerializeField] List<BulletBehavior> bulletBehaviorList = new();
 
     public void MakeDamage(DamageClass damage, float damageChangeAfterCollision, float damageChangeAfterBounce)
     {
         this.damage = damage;
+
         this.damageChangeAfterBounce = damageChangeAfterBounce;
         this.damageChangeAfterCollision = damageChangeAfterCollision;
 
@@ -115,11 +116,14 @@ public class BulletScript : MonoBehaviour
             return;
         }
 
+
         if (isEnemy && other.gameObject.tag == "Enemy") return;
         if (!isEnemy && other.gameObject.tag == "Player") return;
 
         IDamageable damageable = other.GetComponent<IDamageable>();
 
+        //Debug.Log("deal damage to " + other.gameObject.name + " " + damage.baseDamage);
+ 
 
         if (damageable != null)
         {

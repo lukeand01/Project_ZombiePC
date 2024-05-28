@@ -168,7 +168,7 @@ public class PlayerHandler : MonoBehaviour
     }
     public ItemData GetGunChosen()
     {
-        return itemHolderGun.GetChosenItem(playerGunRollLevel);
+        return itemHolderGun.GetChosenItem();
     }
 
     public List<AbilityPassiveData> GetPassiveList()

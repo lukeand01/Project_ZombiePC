@@ -9,7 +9,7 @@ public class Turret : MonoBehaviour, IDamageable
     //how to define the certain behaviors?
 
 
-    [SerializeField] BulletScript bulletTemplate;
+    [SerializeField] protected BulletScript bulletTemplate;
 
     [SerializeField] protected List<StatClass> scaleClass = new(); //each uses it the way it wants.
 
@@ -29,6 +29,7 @@ public class Turret : MonoBehaviour, IDamageable
 
     [SerializeField] protected GameObject graphic;
     [SerializeField] protected GameObject head;
+    [SerializeField] protected Transform gunPointTransform;
 
     private void Awake()
     {
@@ -42,6 +43,9 @@ public class Turret : MonoBehaviour, IDamageable
     public virtual void SetUp()
     {
         //what does it need to know?
+
+
+
     }
 
 

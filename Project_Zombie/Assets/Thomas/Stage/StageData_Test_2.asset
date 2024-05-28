@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da27fa4b0876f44b8e5e45c07f88236, type: 3}
+  m_Name: StageData_Test_2
+  m_EditorClassIdentifier: 
+  stageName: Second test stage
+  stageSprite: {fileID: 21300000, guid: b7a0e32ec056b004f8bd38557256d7d3, type: 3}
+  stageIndex: 4
+  classList:
+  - data: {fileID: 11400000, guid: 3839579ea0c928f4ea734d2f5de59aa5, type: 2}
+    min: 0
+    max: 0
+    totalChanceSpawn: 0
+    baseChanceToSpawn: 60
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 0
+  - data: {fileID: 11400000, guid: cb9769c528a0d3b45b040e2334a19e2e, type: 2}
+    min: 0
+    max: 0
+    totalChanceSpawn: 0
+    baseChanceToSpawn: 20
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 0
+  - data: {fileID: 11400000, guid: be14677f5840eb24aa2ae958e77196a8, type: 2}
+    min: 5
+    max: 0
+    totalChanceSpawn: 0
+    baseChanceToSpawn: 5
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 1
+  - data: {fileID: 11400000, guid: 3e284f2bbd3d3814abbc1dad525eff05, type: 2}
+    min: 10
+    max: 0
+    totalChanceSpawn: 0
+    baseChanceToSpawn: 15
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 0
+  - data: {fileID: 11400000, guid: ec96d24a90754774ead430407778975b, type: 2}
+    min: 10
+    max: 0
+    totalChanceSpawn: 0
+    baseChanceToSpawn: 25
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 0
+  itemChanceList:
+  - data: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+    chance: 60
+    minAmount: 20
+    maxAmount: 30
+  - data: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+    chance: 20
+    minAmount: 5
+    maxAmount: 15

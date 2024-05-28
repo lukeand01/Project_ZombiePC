@@ -10,6 +10,9 @@ public class EnemyBase : Tree, IDamageable
     public EnemyData GetData() { return data; }
 
 
+    public Action<EnemyData> eventDied;
+    public void OnDied(EnemyData data) => eventDied?.Invoke(data);
+
     [SerializeField] EnemyCanvas _enemyCanvas;
     [SerializeField] GameObject head;
     EntityEvents _entityEvents; //these are just a bunch of events that might interest this entity.
@@ -59,6 +62,14 @@ public class EnemyBase : Tree, IDamageable
 
     }
 
+    protected virtual void StartFunction()
+    {
+
+        if (!alreadySetStat)
+        {
+            SetStats(1); //
+        }
+    }
     
 
     public void UpdateStat(StatType stat, float value)
@@ -71,11 +82,7 @@ public class EnemyBase : Tree, IDamageable
 
     private void Start()
     {
-        if (!alreadySetStat)
-        {
-            Debug.Log("set fpor debug");
-            SetStats(1); //
-        }
+        StartFunction();
     }
 
     
@@ -107,6 +114,7 @@ public class EnemyBase : Tree, IDamageable
     {
         //so we need to set the stats of each felal here.
         //we will use the data already inside.
+
 
         alreadySetStat = true;
 
@@ -159,6 +167,7 @@ public class EnemyBase : Tree, IDamageable
         DamageClass damage = new DamageClass(damageRef);
 
 
+
         bool isCrit = damage.CheckForCrit();
 
         if (isCrit)
@@ -201,6 +210,9 @@ public class EnemyBase : Tree, IDamageable
         isDead = true;
         PlayerHandler.instance._playerResources.GainPoints(5);
 
+
+        LocalHandler.instance.RemoveEnemyFromSpawnList(data);
+
         if(_chestAbility != null)
         {
             //we spawn at the exact position
@@ -225,13 +237,18 @@ public class EnemyBase : Tree, IDamageable
 
         PlayerHandler.instance._playerStatTracker.ChangeStatTracker(StatTrackerType.EnemiesKilled, 1);
         PlayerHandler.instance._entityEvents.OnKillEnemy(this);
-
+        OnDied(data);
 
         //when this fella dies we remove t
         //he the canvas 
+
+
+
+
         _enemyCanvas.transform.SetParent(null); //no parent. but it should be ordered to destroy itself once there are no more childnre in the damagepopcontainer.
         _enemyCanvas.MakeDestroyItself(transform);
         Destroy(gameObject);
+
     }
 
     public float GetTargetMaxHealth()
@@ -333,6 +350,7 @@ public class EnemyBase : Tree, IDamageable
     {
         float baseDamage = _entityStat.GetTotalValue(StatType.Damage);
         float pen = _entityStat.GetTotalValue(StatType.Pen);
+
 
         return new DamageClass(baseDamage, pen);
     }

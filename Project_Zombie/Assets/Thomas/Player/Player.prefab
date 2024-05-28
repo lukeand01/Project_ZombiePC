@@ -164,6 +164,7 @@ MonoBehaviour:
   debugLineRenderer: {fileID: 587409228619845004}
   gunSpawnPos: {fileID: 2103177402696973477}
   gunList: []
+  forcedBulletBehaviorList: []
 --- !u!114 &2339307243749580190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,6 +221,8 @@ MonoBehaviour:
   debugPassiveStartingList:
   - {fileID: 11400000, guid: 385ce600010ea174db241b0f45e58783, type: 2}
   - {fileID: 11400000, guid: 385ce600010ea174db241b0f45e58783, type: 2}
+  <abilityList_CannotStack>k__BackingField: []
+  <abilityList_HigherChance>k__BackingField: []
 --- !u!114 &2760048031163321034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +258,7 @@ MonoBehaviour:
     initialValue: 100
   _entityCanvas: {fileID: 6597969589820539114}
   debugStatList: []
+  statAltered_PercentBase_List: []
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
   <IsInvisible>k__BackingField: 0
@@ -669,7 +673,6 @@ GameObject:
   - component: {fileID: 4555971501659685063}
   - component: {fileID: 2262170625519106601}
   - component: {fileID: 2650756730628268501}
-  - component: {fileID: 8794989995894659927}
   m_Layer: 0
   m_Name: ForwardReminder
   m_TagString: Untagged
@@ -742,27 +745,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8794989995894659927
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3896559525976967893}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4883440284098968308
 GameObject:
   m_ObjectHideFlags: 0
@@ -915,6 +897,7 @@ MonoBehaviour:
   bdContainer: {fileID: 0}
   fadeTemplate: {fileID: 7427351375631977441, guid: a4ff05ad241ccdb46a571114faab0589, type: 3}
   dodgePos: {fileID: 1708350864742443223}
+  recoverHealthPos: {fileID: 0}
 --- !u!1 &7283105295437416866
 GameObject:
   m_ObjectHideFlags: 0

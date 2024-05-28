@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0da27fa4b0876f44b8e5e45c07f88236, type: 3}
-  m_Name: StageData_Test
+  m_Name: StageData_Test_1
   m_EditorClassIdentifier: 
   stageName: Stage Test
   stageSprite: {fileID: 21300000, guid: cd028212deac9db42a7d6df6e01fbb2a, type: 3}
@@ -21,17 +21,17 @@ MonoBehaviour:
     max: 0
     totalChanceSpawn: 0
     baseChanceToSpawn: 60
-    chancePerLevelToSpawn: -5
+    chancePerLevelToSpawn: 0
     chanceSpawnMaxCap: 0
-    chanceSpawnMinCap: 20
+    chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 0
   - data: {fileID: 11400000, guid: cb9769c528a0d3b45b040e2334a19e2e, type: 2}
     min: 0
     max: 0
     totalChanceSpawn: 0
     baseChanceToSpawn: 20
-    chancePerLevelToSpawn: 10
-    chanceSpawnMaxCap: 60
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 0
   - data: {fileID: 11400000, guid: be14677f5840eb24aa2ae958e77196a8, type: 2}
@@ -39,24 +39,24 @@ MonoBehaviour:
     max: 0
     totalChanceSpawn: 0
     baseChanceToSpawn: 5
-    chancePerLevelToSpawn: 5
-    chanceSpawnMaxCap: 30
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 1
-  - data: {fileID: 11400000, guid: ec96d24a90754774ead430407778975b, type: 2}
-    min: 5
+  - data: {fileID: 11400000, guid: 3e284f2bbd3d3814abbc1dad525eff05, type: 2}
+    min: 10
     max: 0
     totalChanceSpawn: 0
-    baseChanceToSpawn: 50
+    baseChanceToSpawn: 15
     chancePerLevelToSpawn: 0
     chanceSpawnMaxCap: 0
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 0
-  - data: {fileID: 11400000, guid: 3e284f2bbd3d3814abbc1dad525eff05, type: 2}
-    min: 5
+  - data: {fileID: 11400000, guid: ec96d24a90754774ead430407778975b, type: 2}
+    min: 10
     max: 0
     totalChanceSpawn: 0
-    baseChanceToSpawn: 35
+    baseChanceToSpawn: 25
     chancePerLevelToSpawn: 0
     chanceSpawnMaxCap: 0
     chanceSpawnMinCap: 0

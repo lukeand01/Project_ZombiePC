@@ -1,3 +1,4 @@
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ public class Door : MonoBehaviour, IInteractable
     [SerializeField] int doorPriceBase; //should multiply by some modifier.
     [SerializeField] Room[] roomToOpenArray;
 
+    [Separator("CONDITIONS TO OPEN DOOR")]
+    [SerializeField] Door[] doorRequiredArray;
 
 
     string id;
@@ -25,6 +28,23 @@ public class Door : MonoBehaviour, IInteractable
     public void Interact()
     {
         //i check if you ahve the money.
+
+
+        if(doorRequiredArray.Length > 0)
+        {
+            Debug.Log("door required array ");
+            foreach(var room in doorRequiredArray)
+            {
+                Debug.Log("ye");
+                if (room != null)
+                {
+                    Debug.Log("still has the door");
+                    return;
+                }
+            }
+        }
+
+
         bool canOpen = PlayerHandler.instance._playerResources.CanSpendPoints(doorPriceBase);
 
         if(canOpen)

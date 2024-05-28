@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy_SimpleRanged
   m_EditorClassIdentifier: 
   enemyName: Ranged
-  enemyModel: {fileID: 7099369015076163779, guid: 318c50c56ab9dbb458cef7e546235184, type: 3}
+  enemyModel: {fileID: 1727601203664543072, guid: 7cad7924635a21448a488ecd076e8323, type: 3}
   attackRange: 15
   attackSpeed: 2
   initialStatList:

@@ -560,13 +560,25 @@
 //MY GOAL
 //the player is falling through the floor.
 ///show the price of itens when buying in the store
-//fix the round. make it progress normally.
-//create a timer every 5 turns of rest. there will be no further spawns.
+//fix the round. make it progress normally. 
 //rework the spawner. something that feels more right.
-//create a limit for enemies in the stage.
-//bullets are not being destroy by wall.
-//the aim should be more free. it should only attack if you hover an enemy. or maybe we should have a false arm but the bullet should go to the object.
+///create a limit for enemies in the stage.
+///bullets are not being destroy by wall.
+///the aim should be more free. it should only attack if you hover an enemy. or maybe we should have a false arm but the bullet should go to the object.
+//we will look at where the mouse is and shoot where the mouse is unless we hover at an enemy. 
 
+//MY GOAL
+//cgheck active abilities
+//should be able to fall and thas insta death.
+//
+
+
+///Giant is doing nothing. he starts stunned.
+///giant raidus effect is not working.
+///the cap is not working
+
+
+//ABOUT SPAWNER
 
 
 //THINGS TO PUT IN THE ROOM
@@ -669,3 +681,91 @@
 //you can do a secondary quest for a stage currency.
 //they are random: stay in the circle for long enough, kill a quantity in a short duration, do a simple puzzle, deliver a heavy object to another place. 
 
+//WHAT I CAN DO NOW?
+//there will be places to mine resources. Iron and copper.
+//there is a computer that you can gain intel, which allows to build new builds or, when activated oyu must protect the place to gain the intel.
+//gun boxes
+//there are shrines randomly placed in the map. you must complete a random goal to get the bless from this thing. "kill 100 enemies". you gain a bless. 
+//A - forces a random bless. you must complete it or you lose 15% of your health. it gives 10 bleses. low timer
+//B - choose one goal out of three. you must complete it or you lose 50% of your health. it gives 10 blesses. high timer
+//C - force random goal. does not need to be completed.
+//bless is a stage coin that you can use for other stuff. but for what? rerolls, open doors, summon bosses,
+//create the upgrade box?
+//you can unluck passages and teleports.
+//there are powers that will appear from dead enemies? what and where?
+//secret doors that require conditions. - 
+
+
+
+//in the end of the game you can trade blesses for other things.
+//but you can also trade for other things. blesses grant you rerolls.
+
+
+//MY GOAL FOR NEXT WEEK
+//Shrines and stage goals. create the three types of goals. can fit three goals at once.
+//can use bless to reroll.
+//can only open the doors to the boss arena from teh center not the sides. once the center is open can open the sides.
+//can fall. have to make the ground collider a bit more forgiving.
+//can use a bridge that works for a short duration
+//blueprint computer where you must activate them and protect the area. once you do that you gain intel. (dont need to worry about the resource for the meantime)
+//can use the shrine for some kind of power. it will consume the shrine and cost bless.
+//create the upgrade system for temp guns.
+//create teh artilery enemy. it will spawn at a random position. it argets the player aywhere. can only spawn in opehnj area. create sound for the player to find it.
+//create ranged. it will just shoot projectiles. slwo projectiles.
+//create mage that will damage teh area. but it moves.
+//probably i will have to revise the spawn system
+//take a time to get things clean
+//check active abilities.
+//create 3 more passives
+
+//THREE MORE PASSIVES
+//increase luck. at 3 gain money after every chest is opened. 
+//if you die you are revived. you can only get one of this. it should be extremely rare for this fella.
+//gain 25% movespeed when below 25% health. cannot stack.
+
+
+//MY GOAL - 1
+///3 more passives 
+///create luck
+///luck needs to do something, it needs to increase the chance of getting items.
+///luck actually increases all chance based stats. increase critchance and dodge chance.
+///create revive
+///create movespeed when low in health
+///can fall and die. more ground collider more forgiving.
+///can use bless to reroll. 
+///be able to create conditions to be able to open a door.
+///create ranged enemy
+///also - certain passives should be available at all tiers.
+///also - cannot dodge certain damages.
+///also - for some reason the stats from the data are not being passed to the enemy.
+
+
+//MY GOAL - 1.5
+///i want to change the round system to actually be per round. it will make easier to control
+///but make it so you can swtich between the two easily.
+//also - when enemies are killed the damagepopup goes down.
+
+//MY GOAL - 2
+//create the shrine system
+//they spawn in map
+//create the different types of shrine
+//create the system for the goal
+//can fit three goal at the same time.
+//create the blueprint computer.
+//quests can also be seen in the pause ui
+
+//MY GOAL - 3
+//create perma upgrade system
+//create mage eenmy
+//create artillery enemy. create sound tips foar the player to find the artuillery.
+//create a bridge
+
+
+
+//WITH THIS THE VERSION 0.4 IS COMPLETED
+
+
+
+//MY GOAL FOR THE AFTER THIS
+//work in the city
+//

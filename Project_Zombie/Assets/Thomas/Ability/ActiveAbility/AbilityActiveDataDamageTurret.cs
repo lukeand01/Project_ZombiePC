@@ -11,38 +11,27 @@ public class AbilityActiveDataDamageTurret : AbilityActiveData
     {
         base.Call(ability);
 
-        //we needd to ask the mouse if we can place it in the place.
-        //onoyl in the ground. in the place it is created it will push enemies away.
-        //also cannot be placed in top of other enemies.
-        //it has a healthbar and a durationbar.
-
         Vector3 mousePosition = Input.mousePosition;
 
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
 
         LayerMask layer = 10;
         layer |= (1 << 9);
-        //we only check 
+        layer |= (1 << 10);
 
-
+        Transform playerTransform = PlayerHandler.instance.transform;
         // Perform the raycast
         if (Physics.Raycast(ray, out RaycastHit hit, 150, layer))
         {
-            if(hit.collider != null)
+            Debug.Log("yo " + hit.collider.name);
+            float distance = Vector3.Distance(playerTransform.position, hit.point);
+        
+            if(hit.collider.gameObject.layer == 10 && distance < 15)
             {
-                //if we have found ground we will spawn it. however
-                if(hit.collider.gameObject.layer == 10)
-                {
-                    //then we are going to spawn it. if its too much by the side then it should reange itself
-
-                    Turret newObject = Instantiate(damageTurretTemplate);
-
-
-                }
-
-
+                Turret newObject = Instantiate(damageTurretTemplate, hit.point, Quaternion.identity);
+                newObject.SetUp();
+                return true;
             }
-
 
         }
 

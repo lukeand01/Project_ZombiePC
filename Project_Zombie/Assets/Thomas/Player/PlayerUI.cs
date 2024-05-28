@@ -17,10 +17,12 @@ public class PlayerUI : MonoBehaviour
     {
         pointSpeed = 150;
         speed = 100;
+        bless_Speed = 10;
+
         holder = transform.GetChild(0).gameObject;
 
         originalPos = roundHolder.transform.position;
-        roundHolder.transform.position = originalPos;
+        originalPos_New = roundHolder.transform.position;
     }
     public void ControlUI(bool isVisible)
     {
@@ -31,8 +33,9 @@ public class PlayerUI : MonoBehaviour
     {
         mouseIcon.transform.position = Input.mousePosition;
 
-        HandleHealth();
-        HandlePoint();
+        HealthHandle();
+        PointHandle();
+        BlessHandle();
     }
 
 
@@ -82,7 +85,7 @@ public class PlayerUI : MonoBehaviour
         healthTemporary = current;
     }
 
-    void HandleHealth()
+    void HealthHandle()
     {
         if(healthCurrent != healthTemporary)
         {
@@ -116,7 +119,7 @@ public class PlayerUI : MonoBehaviour
     float pointTemporary;
     float pointSpeed;
 
-    void HandlePoint()
+    void PointHandle()
     {
         if(pointCurrent != pointTemporary)
         {
@@ -134,20 +137,19 @@ public class PlayerUI : MonoBehaviour
 
     }
 
-
     public void UpdatePoint(int current, int change = 0)
     {
         if(change != 0)
         {
             //spawn stuff to show
-            CreateFadeUI(change);
+            CreateFadeUI_Point(change);
 
         }
 
         pointCurrent = current;
     }
 
-    void CreateFadeUI(int value)
+    void CreateFadeUI_Point(int value)
     {
 
         FadeUI newObject = Instantiate(fadeTemplate);
@@ -202,6 +204,10 @@ public class PlayerUI : MonoBehaviour
         roundHolder.transform.DOMove(originalPos, 1.5f);
     }
 
+    public void ControlRoundProgressBarUI(bool isVisible)
+    {
+
+    }
 
     public void UpdateRoundText(string roundString)
     {
@@ -214,6 +220,78 @@ public class PlayerUI : MonoBehaviour
 
 
     #endregion
+
+    #region ROUND NEW
+    [Separator("ROUND")]
+    [SerializeField] GameObject roundHolder_New;
+    [SerializeField] Image roundIcon_New;
+    [SerializeField] TextMeshProUGUI roundText_New;
+    Vector3 originalPos_New;
+
+    public void CloseRound_New()
+    {
+        roundHolder_New.transform.position = originalPos_New + new Vector3(0, Screen.height * 0.1f, 0);
+
+        roundHolder_New.SetActive(false);
+    }
+
+    public void OpenRound_New()
+    {
+        roundHolder.SetActive(false);
+        roundHolder_New.SetActive(true);
+        roundHolder_New.transform.DOMove(originalPos_New, 1.5f);
+    }
+
+
+
+    public void UpdateRoundText_New( int newValue, bool isForce)
+    {
+        StopAllCoroutines();
+
+        if (isForce)
+        {
+            roundText_New.text = newValue.ToString();
+            return;
+        }
+
+
+        StartCoroutine(UpdateRoundTextProcess(newValue));
+    }
+
+    IEnumerator UpdateRoundTextProcess(int newValue)
+    {
+        roundText_New.DOKill();
+
+        float timer = 0.15f;
+        roundText_New.DOFade(0, timer);
+
+        yield return new WaitForSecondsRealtime(timer);
+
+        roundText_New.text = newValue.ToString();
+        roundText_New.DOFade(1, timer);
+
+        yield return new WaitForSecondsRealtime(timer);
+
+        roundText_New.DOFade(0, timer);
+
+        yield return new WaitForSecondsRealtime(timer);
+
+        roundText_New.DOFade(1, timer);
+
+        yield return new WaitForSecondsRealtime(timer);
+        roundText_New.DOFade(0, timer);
+
+        yield return new WaitForSecondsRealtime(timer);
+
+        roundText_New.DOFade(1, timer);
+
+
+    }
+    
+
+
+    #endregion
+
 
     #region SHIELD
     [Separator("SHIELD")]
@@ -238,4 +316,76 @@ public class PlayerUI : MonoBehaviour
 
     #endregion
 
+
+    #region BLESS
+    [Separator("BLESS")]
+    [SerializeField] GameObject blessHolder; //it should only be visible if there is more than just one bless.
+    [SerializeField] TextMeshProUGUI blessText;
+
+    float bless_Current;
+    float bless_Temporary;
+    float bless_Speed;
+
+    public void UpdateBless(int current, int change = 0 )
+    {
+        if (change != 0)
+        {
+            //spawn stuff to show
+            CreateFadeUI_Bless(change);
+
+        }
+
+        bless_Current = current;
+    }
+
+    void BlessHandle()
+    {
+        if (bless_Current != bless_Temporary)
+        {
+            if (bless_Current > bless_Temporary)
+            {
+                bless_Temporary += Time.unscaledDeltaTime * bless_Speed;
+            }
+            if (bless_Current < bless_Temporary)
+            {
+                bless_Temporary -= Time.unscaledDeltaTime * bless_Speed;
+            }
+        }
+
+        blessText.text = "Bless: " + bless_Temporary.ToString("f0");
+    }
+
+    public void Bless_ForceUpdate(int current)
+    {
+        bless_Current = current;
+        bless_Temporary = current;
+    }
+
+    void CreateFadeUI_Bless(int value)
+    {
+
+        FadeUI newObject = Instantiate(fadeTemplate);
+        newObject.transform.SetParent(blessText.transform);
+
+        float amount = 20f;
+        float x = Random.Range(-amount * 3, amount * 3);
+        float z = Random.Range(-amount, amount);
+
+        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 35, 0) + new Vector3(x, z, 0);
+
+        Color color = Color.white;
+
+        if (value > 0)
+        {
+            color = Color.green;
+        }
+        if (value < 0)
+        {
+            color = Color.red;
+        }
+
+        newObject.SetUp(value.ToString(), color);
+    }
+
+    #endregion
 }

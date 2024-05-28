@@ -20,7 +20,7 @@ MonoBehaviour:
   - stat: 0
     initialValue: 500
   - stat: 1
-    initialValue: 6
+    initialValue: 0
   scaleStatList:
   - stat: 0
     initialValue: 50

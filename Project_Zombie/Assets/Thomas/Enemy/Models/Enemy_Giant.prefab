@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1370669261995211337}
   - component: {fileID: 7647058154441013194}
   - component: {fileID: 1678958972527307736}
-  - component: {fileID: 2958102204122231556}
   m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
@@ -84,27 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &2958102204122231556
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2781453273893827637}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4881350047678341723
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,7 +339,6 @@ GameObject:
   - component: {fileID: 3377580906891136124}
   - component: {fileID: 2787982529483305857}
   - component: {fileID: 561466545106781936}
-  - component: {fileID: 4030960510259585214}
   m_Layer: 6
   m_Name: Sphere (1)
   m_TagString: Untagged
@@ -434,27 +411,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &4030960510259585214
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6872022450813782810}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6911778141456783151
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,10 +586,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.3313742, y: 2.086684, z: 1.1782036}
-  m_Center: {x: -0.014763355, y: 1.0395159, z: -0.02329266}
+  m_Size: {x: 3.2150364, y: 2.086684, z: 3.1972618}
+  m_Center: {x: 0.030288696, y: 1.0395159, z: -0.043740273}
 --- !u!54 &626696309563531700
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -688,8 +644,10 @@ MonoBehaviour:
   debugInitialList: []
   _entityCanvas: {fileID: 7717334786668827456}
   debugStatList: []
+  statAltered_PercentBase_List: []
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
+  <IsInvisible>k__BackingField: 0
   tempList: []
   permaList: []
   tickList: []
@@ -729,6 +687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: be14677f5840eb24aa2ae958e77196a8, type: 2}
   _enemyCanvas: {fileID: 2950874495343466795}
+  head: {fileID: 0}
   _abilityIndicatorCanvas: {fileID: 4651179736912358732}
 --- !u!1001 &3220574097476456840
 PrefabInstance:
@@ -745,6 +704,14 @@ PrefabInstance:
     - target: {fileID: 706202884058859384, guid: d7dc84e0c3ee0d34c9a87afd8347a443, type: 3}
       propertyPath: m_Name
       value: EnemyCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 2505807434293605204, guid: d7dc84e0c3ee0d34c9a87afd8347a443, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932091800447608479, guid: d7dc84e0c3ee0d34c9a87afd8347a443, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8681370125369020326, guid: d7dc84e0c3ee0d34c9a87afd8347a443, type: 3}
       propertyPath: m_Pivot.x
@@ -863,6 +830,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 165.88914
       objectReference: {fileID: 0}
+    - target: {fileID: 4005552970641084283, guid: d2580d51b45a4fd4196eaf691bedfc76, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6176559145317686387, guid: d2580d51b45a4fd4196eaf691bedfc76, type: 3}
       propertyPath: m_Name
       value: EntityCanvas
@@ -949,7 +920,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7870664267864401734, guid: d2580d51b45a4fd4196eaf691bedfc76, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

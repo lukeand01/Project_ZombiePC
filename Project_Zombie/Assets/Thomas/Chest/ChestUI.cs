@@ -35,6 +35,9 @@ public class ChestUI : MonoBehaviour
     private void Awake()
     {
         holder = transform.GetChild(0).gameObject;
+
+        freeReroll_Gun = true;
+        freeReroll_Ability = true;
     }
 
     [Separator("BASE")]
@@ -58,6 +61,15 @@ public class ChestUI : MonoBehaviour
         this.currentChest = currentChest;
     }
 
+    bool freeReroll_Gun;
+    bool freeReroll_Ability;
+    int rollsUsed = 0;
+    int blessCost = 0;
+
+    //everytime you call a roll, it doubles. everytime you open a new 
+    //for now it will the same value. always.
+
+
     #region GUN
     [Separator("GUN")]
     [SerializeField] GameObject gunHolder;
@@ -70,6 +82,7 @@ public class ChestUI : MonoBehaviour
     [SerializeField] GameObject gunSwapHolder;
     [SerializeField] StatDescriptionGroupHolder[] statDescriptionHolder;
     [SerializeField] GunSwapUnit[] gunSwapUnits;
+    [SerializeField] ButtonBase gun_Reroll_Button;
     ItemGunData currentChosenGun;
 
 
@@ -83,6 +96,8 @@ public class ChestUI : MonoBehaviour
     {
         titleText.text = "SPINNING";
 
+
+        UpdateGunRollButton();
 
         holder.SetActive(true);
         gunHolder.SetActive(true); 
@@ -105,6 +120,18 @@ public class ChestUI : MonoBehaviour
 
         StartCoroutine(SpinningGunProcess(gunListForSpinning));
 
+    }
+
+    void UpdateGunRollButton()
+    {
+        if (freeReroll_Gun)
+        {
+            gun_Reroll_Button.SetText("Free Roll");
+        }
+        else
+        {
+            gun_Reroll_Button.SetText("Use 1 Bless");
+        }
     }
 
     //it need to be something different.
@@ -177,7 +204,16 @@ public class ChestUI : MonoBehaviour
     }
 
     public void GunReroll()
-    {      
+    {
+        if (!PlayerHandler.instance._playerResources.BLess_HasEnough(1) && !freeReroll_Gun)
+        {
+            return;
+        }
+
+       if(!freeReroll_Gun) PlayerHandler.instance._playerResources.Bless_Lose(50);
+        freeReroll_Gun = false;
+        UpdateGunRollButton();
+
         List<ItemData> spinningGunList = PlayerHandler.instance.GetGunSpinningList();
         ItemData chosenGun = PlayerHandler.instance.GetGunChosen();
         CallChestGun(spinningGunList, chosenGun);
@@ -315,11 +351,14 @@ public class ChestUI : MonoBehaviour
     [SerializeField] GameObject abilityHolder;
     [SerializeField] GameObject abilityButtonHolder;
     [SerializeField] ChestAbilityUnit[] chestAbilityUnitArray;
-
+    [SerializeField] ButtonBase ability_Reroll_Button;
 
     public void CallChestAbility(List<AbilityPassiveData> passiveAbilities)
     {
         //we dont need to create the images as we will always have them.
+
+        UpdateAbilityRollButton();
+
         holder.SetActive(true);
         abilityHolder.SetActive(true);
         gunHolder.SetActive(false);
@@ -351,11 +390,34 @@ public class ChestUI : MonoBehaviour
 
     public void AbilityReroll()
     {
+        Debug.Log("called");
+        if (!PlayerHandler.instance._playerResources.BLess_HasEnough(1) && !freeReroll_Ability)
+        {
+            return;
+        }
+
+        UpdateAbilityRollButton();
+
+        if (!freeReroll_Ability) PlayerHandler.instance._playerResources.Bless_Lose(1);
+        freeReroll_Ability = false;
         List<AbilityPassiveData> passiveListForReroll = PlayerHandler.instance.GetPassiveList();
         CallChestAbility(passiveListForReroll);
     }
 
-
+    void UpdateAbilityRollButton()
+    {
+        if (freeReroll_Ability)
+        {
+            ability_Reroll_Button.SetText("Free Roll");
+        }
+        else
+        {
+            ability_Reroll_Button.SetText("Use 1 Bless");
+        }
+    }
 
     #endregion
+
+
+
 }
