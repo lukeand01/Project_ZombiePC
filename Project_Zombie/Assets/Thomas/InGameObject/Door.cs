@@ -45,7 +45,7 @@ public class Door : MonoBehaviour, IInteractable
         }
 
 
-        bool canOpen = PlayerHandler.instance._playerResources.CanSpendPoints(doorPriceBase);
+        bool canOpen = PlayerHandler.instance._playerResources.HasEnoughPoints(doorPriceBase);
 
         if(canOpen)
         {

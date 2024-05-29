@@ -22,7 +22,7 @@ public class StageData : ScriptableObject
 
     #region  ENEMIES
     [Separator("Enemy")]
-    public List<EnemyChanceSpawnClass> classList = new(); 
+    public List<EnemyChanceSpawnClass> classList = new();
 
     //then we need to update them.
     public List<EnemyChanceSpawnClass> GetCompleteSpawnList(int level)
@@ -41,7 +41,7 @@ public class StageData : ScriptableObject
 
         foreach (EnemyChanceSpawnClass item in classList)
         {
-            if(item.max != 0 && spawn > item.max)
+            if (item.max != 0 && spawn > item.max)
             {
                 //we dont add this fella
                 continue;
@@ -68,7 +68,7 @@ public class StageData : ScriptableObject
         {
             float chance = item.baseChanceToSpawn + item.chancePerLevelToSpawn * level;
             chance = Mathf.Clamp(chance, item.chanceSpawnMinCap, item.chanceSpawnMaxCap);
-            EnemyChanceSpawnClass enemySpawn = new EnemyChanceSpawnClass(item.data,chance, item.maxAllowedAtAnyTime);
+            EnemyChanceSpawnClass enemySpawn = new EnemyChanceSpawnClass(item.data, chance, item.maxAllowedAtAnyTime);
             newList.Add(enemySpawn);
         }
 
@@ -77,7 +77,6 @@ public class StageData : ScriptableObject
 
     }
     #endregion
-
 
     #region ITEMS
     [Separator("Item")]
@@ -91,7 +90,7 @@ public class StageData : ScriptableObject
         int safeBreak = 0;
 
 
-        if(itemChanceList.Count <= 0)
+        if (itemChanceList.Count <= 0)
         {
             return new ItemClass(null, 0);
         }
@@ -103,9 +102,9 @@ public class StageData : ScriptableObject
             int randomItem = Random.Range(0, itemChanceList.Count);
             ItemChanceClass itemChance = itemChanceList[randomItem];
 
-            if(itemChance.chance >= roll)
+            if (itemChance.chance >= roll)
             {
-                int quantity = Random.Range(itemChance.minAmount, itemChance.maxAmount); 
+                int quantity = Random.Range(itemChance.minAmount, itemChance.maxAmount);
                 return new ItemClass(itemChance.data, quantity);
             }
             else
@@ -121,6 +120,21 @@ public class StageData : ScriptableObject
 
 
     #endregion
+
+    #region QUESTS FOR BLESS
+    [Separator("QUEST FOR BLESS")]
+    [SerializeField] List<QuestData> questList_Bless = new();
+    [SerializeField] List<QuestData> questList_Challenge = new();
+    [SerializeField] List<QuestData> questList_Curse = new(); //all curses allowed in this thing 
+
+    //
+
+    //i need to choose 
+
+
+
+    #endregion
+
 }
 [System.Serializable]
 public class EnemyChanceSpawnClass

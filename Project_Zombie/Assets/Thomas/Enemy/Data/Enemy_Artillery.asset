@@ -10,19 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 586ed45482a7b49459c4a4d56809d9fa, type: 3}
-  m_Name: Enemy_Mage
+  m_Name: Enemy_Artillery
   m_EditorClassIdentifier: 
-  enemyName: Mage
-  enemyModel: {fileID: 73792577005997645, guid: 5507771e71856c9498fd12487aa55428, type: 3}
-  attackRange: 20
-  attackSpeed: 1
+  enemyName: Artillery
+  enemyModel: {fileID: 6559205954906567091, guid: fafa9a3aef7714e4dbfc9c2c0b67a957, type: 3}
+  attackRange: 200
+  attackSpeed: 8
   initialStatList:
   - stat: 0
-    initialValue: 850
-  - stat: 1
-    initialValue: 3
+    initialValue: 150
   - stat: 2
-    initialValue: 60
+    initialValue: 200
   scaleStatList:
   - stat: 0
     initialValue: 30

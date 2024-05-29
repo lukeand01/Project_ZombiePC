@@ -10,6 +10,8 @@ public class GunClass
     [SerializeField] ItemGunData debugShowData;
     string ownerId;
 
+   
+
     public GunClass()
     {
         data = null;
@@ -32,7 +34,17 @@ public class GunClass
         SetInitialValues(handler._entityStat);
 
         debugShowData = data;
+
+        isInUpgradeStation = false;
     }
+
+   
+
+    public GunClass(ItemGunData data)
+    {
+        //we actually need to pass all the information we can
+    }
+
 
     void SetInitialValues(EntityStat _stat)
     {
@@ -282,6 +294,21 @@ public class GunClass
 
 
     }
+
+    #endregion
+
+    #region UPGRADE STATION
+    public bool isInUpgradeStation { get; private set; }
+    public void AddUpgradeStation()
+    {
+        isInUpgradeStation = true;
+    }
+    public void RemoveUpgradeStation()
+    {
+        isInUpgradeStation = false;
+    }
+
+
 
     #endregion
 

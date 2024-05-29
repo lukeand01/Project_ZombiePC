@@ -29,3 +29,10 @@ public class QuestUnit : ButtonBase
     }
 
 }
+
+
+//we spawn shrine in a random place of the options
+//we keep on spawning at long cooldowns but we can have at most 3.
+//decided the quest and type in the moment of itneraction
+//we call ui to make the reveal.
+//

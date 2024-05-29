@@ -2,6 +2,7 @@ using DG.Tweening;
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class QuestUI : MonoBehaviour
@@ -26,10 +27,7 @@ public class QuestUI : MonoBehaviour
     [SerializeField] QuestUnit unitTemplate;
     [SerializeField] Transform container;
     [SerializeField] GameObject windowHolder;
-    public void ControlUI(bool isVisible)
-    {
-        holder.SetActive(isVisible);
-    }
+    
 
     public void OpenUI()
     {
@@ -58,7 +56,26 @@ public class QuestUI : MonoBehaviour
 
     #region SHRINE
 
+    [Separator("SHRINE")]
+    [SerializeField] GameObject shrineHolder;
+    [SerializeField] BlessUnit[] blessUnitArray;
+    [SerializeField] GameObject shrineRefuseButton;
+    [SerializeField] TextMeshProUGUI shrineTitleText;
 
+    public void Shrine_OpenUI()
+    {
+        //at first we do a little bit of suspense.
+        //then we reveal the cards.
+        //where do i get the cards and how to decide what i can do?
+        shrineHolder.SetActive(true);
+
+
+    }
+
+    public void Shrine_CloseUI()
+    {
+
+    }
 
     #endregion
 

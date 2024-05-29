@@ -286,7 +286,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
         UIHandler.instance._playerUI.UpdatePoint(points, -value);
     }
 
-    public bool CanSpendPoints(int value)
+    public bool HasEnoughPoints(int value)
     {
         return points >= value;
     }
@@ -316,7 +316,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
         bless = Mathf.Clamp(bless, 0, 9999);
         UIHandler.instance._playerUI.UpdateBless(bless, value);     
     }
-    public bool BLess_HasEnough(int value)
+    public bool Bless_HasEnough(int value)
     {
         return bless >= value;
     }

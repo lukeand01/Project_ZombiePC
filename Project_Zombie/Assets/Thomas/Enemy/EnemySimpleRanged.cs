@@ -26,18 +26,11 @@ public class EnemySimpleRanged : EnemyBase
     {
         base.UpdateFunction();
 
+        canShoot = RotateTarget();
 
-
-        if (PlayerHandler.instance == null) return;
-
-        Vector3 direction = PlayerHandler.instance.transform.position - transform.position;
-        Vector3 directionNormalized = direction.normalized;
-
-
-        Quaternion targetRotation = Quaternion.LookRotation(directionNormalized);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 15 * Time.deltaTime);
-        canShoot = Quaternion.Angle(transform.rotation, targetRotation) <= 10;
     }
+
+    
 
     Sequence2 GetBehavior()
     {

@@ -87,6 +87,11 @@ public class GunUI : MonoBehaviour
         ownedGunShowUnits[index].gameObject.SetActive(false);
     }
 
+    public void ShowOwnedGunUnit(int index)
+    {
+        ownedGunShowUnits[index].gameObject.SetActive(true);
+    }
+
     public void ChangeOwnedGunShowUnit(int index)
     {
 

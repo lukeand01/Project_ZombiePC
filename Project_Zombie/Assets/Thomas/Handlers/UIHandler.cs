@@ -71,7 +71,7 @@ public class UIHandler : MonoBehaviour
         gunUI.ControlUI(isVisible);
         _playerUI.ControlUI(isVisible);
         _AbilityUI.ControlUI(isVisible);
-        _QuestUI.ControlUI(isVisible);
+
     }
 
 

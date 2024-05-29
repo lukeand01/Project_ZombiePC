@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestData_KillEnemy : MonoBehaviour
+[CreateAssetMenu(menuName = "Quest / KillEnemy")]
+public class QuestData_KillEnemy : QuestData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    //maybe we randomize the value?
+    //or give a list of possible values.
+    //should i set the reward here? 
+    //what if i want to give random attributes tot he player?
+    //
+
+    public override void AddQuest()
     {
-        
+        base.AddQuest();
+    }
+    public override void RemoveQuest()
+    {
+        base.RemoveQuest();
+    }
+    public override void FinishQuest()
+    {
+        base.FinishQuest();
     }
 }

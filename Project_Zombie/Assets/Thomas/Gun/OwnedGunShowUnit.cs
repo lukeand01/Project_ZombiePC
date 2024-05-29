@@ -9,9 +9,12 @@ using UnityEngine.UI;
 
 public class OwnedGunShowUnit : ButtonBase
 {
+
+
     [Separator("OWNED GUN PART")]
     [SerializeField] Image icon;
-    [SerializeField] GameObject selected;
+    [SerializeField] GameObject selected_ForShow;
+    [SerializeField] GameObject select_ForPause;
     [SerializeField] TextMeshProUGUI ammoText;
     [SerializeField] GameObject holder;
 
@@ -25,18 +28,19 @@ public class OwnedGunShowUnit : ButtonBase
     {
         this.gun = gun;
         icon.sprite = gun.data.itemIcon;
-        selected.SetActive(false);
+        Unselect();
         ammoText.text = gun.ammoCurrent.ToString();
         holder.SetActive(true);
     }
 
     public void Select()
     {
-        selected.SetActive(true);
+        selected_ForShow.SetActive(true);
     }
     public void Unselect()
     {
-        selected.SetActive(false);
+
+        selected_ForShow.SetActive(false);
     }
     public void UpdateAmmo(int ammo)
     {
@@ -54,7 +58,7 @@ public class OwnedGunShowUnit : ButtonBase
 
         if (!isPause && !isEnd)
         {
-            selected.SetActive(false);
+            select_ForPause.SetActive(false);
         }
     }
 
@@ -64,7 +68,7 @@ public class OwnedGunShowUnit : ButtonBase
 
         if (isPause || isEnd)
         {
-            selected.SetActive(true);
+            select_ForPause.SetActive(true);
             UIHandler.instance._pauseUI.DescribeGun(gun, transform);
         }
     }
@@ -74,13 +78,13 @@ public class OwnedGunShowUnit : ButtonBase
 
         if (isPause || isEnd)
         {
-            selected.SetActive(false);
+            select_ForPause.SetActive(false);
             UIHandler.instance._pauseUI.StopDescription();
         }
     }
     private void OnDisable()
     {
-        selected.SetActive(false);
+        select_ForPause.SetActive(false);
     }
 
 }

@@ -1,3 +1,4 @@
+using MyBox;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -357,6 +358,20 @@ public class EnemyBase : Tree, IDamageable
 
     #endregion
 
+    protected bool RotateTarget()
+    {
+        if (PlayerHandler.instance == null) return false;
+
+        Vector3 direction = PlayerHandler.instance.transform.position - transform.position;
+        Vector3 directionNormalized = direction.normalized;
+
+
+        Quaternion targetRotation = Quaternion.LookRotation(directionNormalized);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 15 * Time.deltaTime);
+        return Quaternion.Angle(transform.rotation, targetRotation) <= 10;
+    }
+
+
     public bool IsStunned()
     {
         return _entityStat.isStunned;
@@ -374,6 +389,23 @@ public class EnemyBase : Tree, IDamageable
 
     #endregion
 
+
+    [Separator("SOUND FOR ENEMY")]
+    [SerializeField] SoundUnit soundUnitTemplate;
+    [SerializeField] Transform container;
+
+    protected void CreateAudioSource(AudioClip clip)
+    {
+        if(soundUnitTemplate == null || container == null)
+        {
+            Debug.Log("sound assets missing in " + gameObject.name);
+            return;
+        }
+        SoundUnit newObject = Instantiate(soundUnitTemplate);
+        newObject.transform.SetParent(container);
+        newObject.transform.localPosition = Vector3.zero;
+        newObject.SetUp(clip);
+    }
 
 
     private void OnDrawGizmos()

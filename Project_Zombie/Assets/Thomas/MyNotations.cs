@@ -515,7 +515,7 @@
 //health bar in top of the enemy head is not working properly.
 ///the armor passive also not working?
 ///the portals are not working when you oepn teh area. they are not spawning enemies.
-///the ability unit should start without selected active.
+///the ability unit should start without selected_ForShow active.
 ///didnt see the gun box
 ///need the gun box to be rotated properly.
 ///need to show title of gun in the gunui.
@@ -755,11 +755,37 @@
 //quests can also be seen in the pause ui
 
 //MY GOAL - 3
-//create perma upgrade system
-//create mage eenmy
-//create artillery enemy. create sound tips foar the player to find the artuillery.
+///create temp upgrade system
+//apply the changes once the machine is done
+//the machine also cost stuff.
+///create mage enemy
+///create artillery enemy. create sound tips foar the player to find the artuillery.
+//create a charger enemy. use the same behavior of the dash.
 //create a bridge
 
+//MY GOAL - 4
+//create sound for stuff:
+//shooting
+//spells
+//portal spawning enemies.
+//death
+//buttons
+//enemies being hit
+//enemies being killed
+//opening the gunchest
+//
+
+
+//i will create the mage now.
+//the mage has a similar behavior to ranged.
+//but when he spots the player. 
+//area of damage its already the artillery.
+//buff the allies and do short and quicky area of damage attacks.
+
+
+//the charger simply charges the player.
+//he has armor in front so he cannot killed by shooting at his head unless you have enough pen.
+//he stops at walls and he can fall
 
 
 //WITH THIS THE VERSION 0.4 IS COMPLETED
@@ -769,3 +795,39 @@
 //MY GOAL FOR THE AFTER THIS
 //work in the city
 //
+
+
+
+//problem
+//for a quest i may want certain things, but perphaps they should only care about how to achieve the thing
+//kill 100 enemies - 
+//or in the stage we can create classes that take a type and then we choose the values there.
+//what about choosing the reward?
+//would reward be this different?
+//rewards can be: bless, bd stats, gun,  
+
+//you should not be able to open gun if the gunupgradestation is working.
+//
+//or should?
+
+//how the temp upgrade system works?
+//you have to choose one of the weapons. 
+//so you hold the weapon you wish to give. then you interact and you lose that weapon
+//it takes a time and when complete it delivers the weapons back.
+//but how the upgrade works?
+//it improves all gun stats.
+//stats - damage, reloadspeed, magsize, 
+//and it gives one additional value :
+//Headshot - first shot against target deals more damage.
+//Double mag - 50% of the magazine
+//explosive ammo - bullet deal damage in area.
+//more barrles - 2 more bullets per shot
+//thick bullet - each bullet goes through one additional target.
+//blood consumer - this weapons has 15% vampirism.
+//Light weight - gives movespeed when holding this weapon.
+
+
+//upgrade system
+//each gun must have ability passives.
+//this wont be passive otherwise it will show in ui.
+//so we create a "gunpassiveData" which it can hold and alter gunpassives.

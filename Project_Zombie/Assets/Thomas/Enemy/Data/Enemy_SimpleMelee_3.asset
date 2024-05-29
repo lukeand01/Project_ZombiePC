@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: Evolved
   enemyModel: {fileID: 5025076984645239854, guid: 4ec27a084a033ec498f16224d73d81ed, type: 3}
   attackRange: 3.5
-  attackSpeed: 1
+  attackSpeed: 0.5
   initialStatList:
   - stat: 0
     initialValue: 1000

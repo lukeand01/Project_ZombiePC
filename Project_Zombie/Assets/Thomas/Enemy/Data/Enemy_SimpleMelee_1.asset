@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: Scratcher
   enemyModel: {fileID: 7099369015076163779, guid: 318c50c56ab9dbb458cef7e546235184, type: 3}
   attackRange: 3.5
-  attackSpeed: 1
+  attackSpeed: 0.9
   initialStatList:
   - stat: 0
     initialValue: 120

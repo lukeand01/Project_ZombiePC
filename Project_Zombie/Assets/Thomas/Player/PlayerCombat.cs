@@ -125,6 +125,10 @@ public class PlayerCombat : MonoBehaviour
     {
         return gunList[0].data;
     }
+    public GunClass GetCurrentGun()
+    {
+        return gunList[currentGunIndex];
+    }
 
     #endregion
 
@@ -236,8 +240,13 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
+    
+
+
     GameObject CreateGunModel(ItemGunData data)
     {
+        
+
         GameObject newObject = Instantiate(data.gunModel, gunSpawnPos.transform.position, data.gunModel.transform.localRotation);
         
         newObject.SetActive(false);
@@ -292,8 +301,7 @@ public class PlayerCombat : MonoBehaviour
             currentGunIndex++;
 
 
-
-
+           
             if (currentGunIndex >= gunList.Length)
             {
                 currentGunIndex = 0;
@@ -306,6 +314,11 @@ public class PlayerCombat : MonoBehaviour
             {
                 continue;
             }
+            if (gunList[currentGunIndex].isInUpgradeStation)
+            {
+                continue;
+            }
+
 
             done = true;
         }
@@ -328,7 +341,7 @@ public class PlayerCombat : MonoBehaviour
 
         if(gunList[currentGunIndex].data == null)
         {
-            Debug.Log("NO DATA HERE");
+            //Debug.Log("NO DATA HERE");
             return;
         }
             
@@ -542,6 +555,93 @@ public class PlayerCombat : MonoBehaviour
 
 
     #endregion
+
+    #region STUFF FOR UPGRADE STATION
+    public bool CanUseGunStation()
+    {
+        return currentGunIndex != 0;
+    }
+
+    public void RemoveCurrentGun_ForUpgradeStation()
+    {
+        if(currentGunIndex == 0)
+        {
+            Debug.Log("this is the perma");
+            return;
+        }
+
+        if (gunList[currentGunIndex].data == null)
+        {
+            Debug.Log("no data here");
+            return;
+        }
+
+        Destroy(gunList[currentGunIndex].gunModel);
+        UIHandler.instance.gunUI.ClearOwnedGunUnit(currentGunIndex);
+
+        //then we move to the next gun
+        OrderSwapGun();
+
+    }
+    public void ReceiveTempGun_FromUpgradeStation()
+    {
+        //then we check if there is space. if there isnt we cannot pick it up.
+        //we put them in either 1 or 2. whatever is 
+
+
+        //the gun never left.
+        //but now we are going to call it back
+        //but i need to know what index i did this.
+
+        //we need to find the fella 
+        int indexToUse = 0;
+
+
+        if (gunList[1].data != null)
+        {
+            if (gunList[1].isInUpgradeStation)
+            {
+                indexToUse += 1;
+            }
+        }
+        if (gunList[2].data != null)
+        {
+            if (gunList[2].isInUpgradeStation)
+            {
+                indexToUse += 2;
+            }
+        }
+        if (indexToUse == 3)
+        {
+            Debug.Log("both guns are in upgrade station for some reason");
+            return;
+        }
+
+        if (indexToUse == 0)
+        {
+            Debug.Log("found nothing for some reason");
+            return;
+        }
+
+
+        //we will pass the information for teh right gunlist to copy.
+        //
+
+
+        GameObject spawnedModel = CreateGunModel(gunList[indexToUse].data);
+        gunList[indexToUse].SetGunModel(spawnedModel);
+        //UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[indexToUse], indexToUse);
+        UIHandler.instance.gunUI.ShowOwnedGunUnit(indexToUse);
+        currentGunIndex = indexToUse;   
+        SwapGunModel();
+    }
+
+    #endregion
+
+
+
+
+
 
 
     void HandleListCooldown()

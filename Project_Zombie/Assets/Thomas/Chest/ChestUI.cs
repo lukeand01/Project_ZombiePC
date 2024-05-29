@@ -205,7 +205,7 @@ public class ChestUI : MonoBehaviour
 
     public void GunReroll()
     {
-        if (!PlayerHandler.instance._playerResources.BLess_HasEnough(1) && !freeReroll_Gun)
+        if (!PlayerHandler.instance._playerResources.Bless_HasEnough(1) && !freeReroll_Gun)
         {
             return;
         }
@@ -391,7 +391,7 @@ public class ChestUI : MonoBehaviour
     public void AbilityReroll()
     {
         Debug.Log("called");
-        if (!PlayerHandler.instance._playerResources.BLess_HasEnough(1) && !freeReroll_Ability)
+        if (!PlayerHandler.instance._playerResources.Bless_HasEnough(1) && !freeReroll_Ability)
         {
             return;
         }
