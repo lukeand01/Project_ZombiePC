@@ -20,6 +20,7 @@ public class Portal : MonoBehaviour
     [SerializeField] List<EnemyData> spawnQueueList = new();
 
     [SerializeField] ChestAbility chestAbilityTemplate;
+    [SerializeField] Transform spawnPoint;
 
     LocalHandler handler;
 
@@ -87,15 +88,15 @@ public class Portal : MonoBehaviour
 
     public void Spawn(EnemyData enemy)
     {
-        Debug.Log("we call to spawn");
+
 
         int round = LocalHandler.instance.round;
-        EnemyBase newObject = Instantiate(enemy.enemyModel, transform.position + Vector3.forward, Quaternion.identity);
+        EnemyBase newObject = Instantiate(enemy.enemyModel, spawnPoint.transform.position + Vector3.forward, Quaternion.identity);
         newObject.SetStats(round);
         newObject.SetChest(chestAbilityTemplate);
         chestAbilityTemplate = null;
 
-        spawnTotal = Random.Range(3, 5);
+        spawnTotal = Random.Range(1, 3);
         spawnCurrent = spawnTotal;
 
         newObject.eventDied += handler.EnemyDied;
@@ -112,7 +113,10 @@ public class Portal : MonoBehaviour
         isRoomOpen = true;
     }
 
-
+    public bool HasEnemyToSpawn()
+    {
+        return spawnQueueList.Count > 0;    
+    }
 }
 
 

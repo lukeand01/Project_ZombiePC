@@ -5,27 +5,24 @@ using UnityEngine;
 public  class QuestData : ScriptableObject
 {
     [TextArea] public string quest_Description;
-    [field:SerializeField] public int quest_amountRequired {  get; private set; }
-    [field: SerializeField] public int quest_blessAmount { get; private set; }
-    [field: SerializeField] public QuestType quest_Type { get; private set; }
     
 
 
 
-    public virtual void AddQuest()
+    public virtual void AddQuest(QuestClass _questClass)
     {
 
     }
     
-    public virtual void RemoveQuest()
+    public virtual void RemoveQuest(QuestClass _questClass)
     {
 
     }
 
-    public virtual void FinishQuest()
+    public virtual void FinishQuest(QuestClass _questClass)
     {
         //give a bless here.
-        PlayerHandler.instance._playerResources.Bless_Gain(quest_blessAmount);
+        //PlayerHandler.instance._playerResources.Bless_Gain(quest_blessAmount);
     }
 
 }
@@ -33,7 +30,7 @@ public  class QuestData : ScriptableObject
 //
 public enum QuestType
 {
-    City,
+    Bless,
     Curse,
     Challenge,
 

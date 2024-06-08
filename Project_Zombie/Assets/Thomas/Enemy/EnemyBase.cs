@@ -15,7 +15,7 @@ public class EnemyBase : Tree, IDamageable
     public void OnDied(EnemyData data) => eventDied?.Invoke(data);
 
     [SerializeField] EnemyCanvas _enemyCanvas;
-    [SerializeField] GameObject head;
+    [SerializeField] protected GameObject head;
     EntityEvents _entityEvents; //these are just a bunch of events that might interest this entity.
     EntityStat _entityStat; //
 
@@ -24,12 +24,12 @@ public class EnemyBase : Tree, IDamageable
     float healthCurrent;
     float healthTotal;
 
-    
+    protected Rigidbody _rb;
 
 
     private void Awake()
     {
-
+        _rb = GetComponent<Rigidbody>();
         AwakeFunction();
 
     }
@@ -72,7 +72,6 @@ public class EnemyBase : Tree, IDamageable
         }
     }
     
-
     public void UpdateStat(StatType stat, float value)
     {
         if(stat == StatType.Speed)
@@ -87,7 +86,6 @@ public class EnemyBase : Tree, IDamageable
     }
 
     
-
     public void SetChest(ChestAbility chestAbilityTemplate)
     {
         _chestAbility = chestAbilityTemplate;
@@ -145,6 +143,12 @@ public class EnemyBase : Tree, IDamageable
     string id;
     bool isDead;
     LayerMask groundLayer;
+    bool isImmuneToExplosion;
+
+    public void ControlEnemyImmunityToExplosion(bool isImmune)
+    {
+        isImmuneToExplosion = isImmune;
+    }
 
     public void ApplyBD(BDClass bd)
     {
@@ -165,8 +169,16 @@ public class EnemyBase : Tree, IDamageable
     {
         if (isDead) return;
 
-        DamageClass damage = new DamageClass(damageRef);
+        if (isImmuneToExplosion && damageRef.isExplosion)
+        {
+            return;
+        }
+        if (damageRef.isExplosion)
+        {
+            Debug.Log("is explosion damage " + gameObject.name);
+        }
 
+        DamageClass damage = new DamageClass(damageRef);
 
 
         bool isCrit = damage.CheckForCrit();
@@ -184,6 +196,7 @@ public class EnemyBase : Tree, IDamageable
 
         float damageValue = damage.GetDamage(reduction, totalHealth, isCrit);
 
+
         healthCurrent -= damageValue;
         PlayerHandler.instance._playerStatTracker.ChangeStatTracker(StatTrackerType.DamageDealt, damageValue);
         _enemyCanvas.CreateDamagePopUp(damageValue, DamageType.Physical, isCrit);
@@ -197,13 +210,20 @@ public class EnemyBase : Tree, IDamageable
         {
             //death
             Die();
+            GameHandler.instance._soundHandler.CreateSfx(data.audio_Dead,transform);
         }
         else
         {
             PlayerHandler.instance._playerResources.GainPoints(1);
+            GameHandler.instance._soundHandler.CreateSfx(data.audio_Hit, transform);
         }
 
 
+    }
+
+    public void CallShieldPopUp()
+    {
+        _enemyCanvas.CreateShieldPopUp();
     }
 
     void Die()
@@ -245,9 +265,9 @@ public class EnemyBase : Tree, IDamageable
 
 
 
-
+        Vector3 posBeforeInde = _enemyCanvas.transform.position;
         _enemyCanvas.transform.SetParent(null); //no parent. but it should be ordered to destroy itself once there are no more childnre in the damagepopcontainer.
-        _enemyCanvas.MakeDestroyItself(transform);
+        _enemyCanvas.MakeDestroyItself(posBeforeInde);
         Destroy(gameObject);
 
     }
@@ -257,7 +277,6 @@ public class EnemyBase : Tree, IDamageable
         return _entityStat.GetTotalValue(StatType.Health);
     }
     #endregion
-
 
     #region PATHING
     protected NavMeshAgent agent;
@@ -290,7 +309,7 @@ public class EnemyBase : Tree, IDamageable
 
     #endregion
 
-    #region TARGETTING
+    #region TARGETTING AND ATTACKING
 
     //
     public IDamageable targetIdamageable { get; private set; }
@@ -332,7 +351,7 @@ public class EnemyBase : Tree, IDamageable
 
 
         float distanceForAttack = Vector3.Distance(targetObject.transform.position, transform.position);
-
+        GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
 
         //we will check any fellas in front 
 
@@ -358,17 +377,17 @@ public class EnemyBase : Tree, IDamageable
 
     #endregion
 
-    protected bool RotateTarget()
+    protected bool RotateTarget(Vector3 target, float rotationSpeed = 15, float rotationAngle = 10)
     {
         if (PlayerHandler.instance == null) return false;
 
-        Vector3 direction = PlayerHandler.instance.transform.position - transform.position;
+        Vector3 direction = target - transform.position;
         Vector3 directionNormalized = direction.normalized;
 
 
         Quaternion targetRotation = Quaternion.LookRotation(directionNormalized);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 15 * Time.deltaTime);
-        return Quaternion.Angle(transform.rotation, targetRotation) <= 10;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        return Quaternion.Angle(transform.rotation, targetRotation) <= rotationAngle;
     }
 
 
@@ -417,6 +436,17 @@ public class EnemyBase : Tree, IDamageable
     public float GetTargetCurrentHealth()
     {
         return healthCurrent;
+    }
+
+    public void RestoreHealth(float value)
+    {
+        healthCurrent += value;
+        healthCurrent = UnityEngine.Mathf.Clamp(healthCurrent, 0f, healthTotal);
+    }
+
+    public GameObject GetObjectRef()
+    {
+        return gameObject;
     }
 }
 

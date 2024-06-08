@@ -19,7 +19,7 @@ public class EnemyMage : EnemyBase
 
     protected override void UpdateFunction()
     {
-        RotateTarget();
+        RotateTarget(PlayerHandler.instance.transform.position);
 
         base.UpdateFunction();
     }
@@ -41,7 +41,7 @@ public class EnemyMage : EnemyBase
         //in time it deals damage to area.
         //also create a warning for the player to see.
 
-
+        GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
 
         Vector3 playerPosition = PlayerHandler.instance.transform.position;
 

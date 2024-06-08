@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7381293936052344184}
   m_Layer: 6
   m_Name: Enemy_Hound
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,7 +102,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 3e284f2bbd3d3814abbc1dad525eff05, type: 2}
   _enemyCanvas: {fileID: 1522029419385902767}
+  head: {fileID: 0}
   _abilityIndicatorCanvas: {fileID: 0}
+  soundUnitTemplate: {fileID: 0}
+  container: {fileID: 0}
+  shouldOnlyMoveWhenFacing: 0
 --- !u!114 &6467380131581242244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +136,7 @@ MonoBehaviour:
   debugStatList: []
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
+  <IsInvisible>k__BackingField: 0
   tempList: []
   permaList: []
   tickList: []

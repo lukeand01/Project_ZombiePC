@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 6899324859654774195}
   - component: {fileID: 8742394220195838575}
   - component: {fileID: 7908116642997860582}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -47,6 +47,7 @@ Transform:
   - {fileID: 4624799765534573746}
   - {fileID: 1423014934934335261}
   - {fileID: 452713828118164745}
+  - {fileID: 7641426721296118981}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &8218827420423263052
@@ -68,8 +69,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.487398, z: 1}
+  m_Center: {x: 0, y: -0.2436992, z: 0}
 --- !u!54 &8864332775608074527
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -78,8 +79,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32310074267282001}
   serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
+  m_Mass: 50
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -92,7 +93,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -129,6 +130,7 @@ MonoBehaviour:
   rotationVector: {x: 0, y: 0, z: 0}
   feet: {fileID: 6488493747819231610}
   head: {fileID: 6641179839284698120}
+  audio_Dash: {fileID: 8300000, guid: 75adfe9a619833445a701305b983e548, type: 3}
 --- !u!114 &6793137427464182098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,13 +159,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugStartWithWeapon: 0
-  debugGunDataPerma: {fileID: 11400000, guid: 34eff2ce5ce97a6418e92af39813b2cb, type: 2}
-  debugGunDataTemp1: {fileID: 11400000, guid: c6955791b210ba34ea525cc70f104824, type: 2}
+  debugGunDataPerma: {fileID: 11400000, guid: b5ce0634117da2145bff94c8137aff90, type: 2}
+  debugGunDataTemp1: {fileID: 11400000, guid: 175ac004bae164d4d94e189ba599b0fc, type: 2}
   debugGunDataTemp2: {fileID: 0}
   debugLaserStartPos: {fileID: 1423014934934335261}
   debugLineRenderer: {fileID: 587409228619845004}
   gunSpawnPos: {fileID: 2103177402696973477}
   gunList: []
+  audioSrc_Reload: {fileID: 5475532513346852611}
+  audio_Swap: {fileID: 8300000, guid: 9158afb6966d445db9caf1dccf7acbcc, type: 3}
   forcedBulletBehaviorList: []
 --- !u!114 &2339307243749580190
 MonoBehaviour:
@@ -178,6 +182,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingPoints: 5000
+  initialBless: 1
+  initialQuestList:
+  - editorName: 
+    <questType>k__BackingField: 0
+    <questData>k__BackingField: {fileID: 0}
+    <amountTotal>k__BackingField: 2
+    <timerTotal>k__BackingField: 10
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 5
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 10
+    punishList: []
+  questList: []
 --- !u!114 &6916328399593581005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,10 +208,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e4985a0c984bd149a102f00cf8a6781, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  refItemList: []
+  refItemList:
+  - {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+  - {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+  - {fileID: 11400000, guid: c4fa8ed7843d9d4459af738f0eeb4eb1, type: 2}
   stageInventoryList: []
   cityInventoryList: []
-  initialCityInventoryList: []
+  initialCityInventoryList:
+  - data: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+    quantity: 15
   initialStageInventoryList:
   - data: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
     quantity: 15
@@ -215,12 +238,9 @@ MonoBehaviour:
   abilityActiveList: []
   abilityPassiveList: []
   debugAbilityActiveStartingList:
-  - {fileID: 11400000, guid: eb97b6b647086574c8107dfa233d865e, type: 2}
   - {fileID: 11400000, guid: 018520bf817226e4eae4e2e69bd9dfa4, type: 2}
-  - {fileID: 11400000, guid: c2b5bfa252452504e98d218ce473bf63, type: 2}
   debugPassiveStartingList:
-  - {fileID: 11400000, guid: 385ce600010ea174db241b0f45e58783, type: 2}
-  - {fileID: 11400000, guid: 385ce600010ea174db241b0f45e58783, type: 2}
+  - {fileID: 11400000, guid: 3b6feb5fa5369804d938fe09dcb10e89, type: 2}
   <abilityList_CannotStack>k__BackingField: []
   <abilityList_HigherChance>k__BackingField: []
 --- !u!114 &2760048031163321034
@@ -249,16 +269,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugInitialList:
   - stat: 0
-    initialValue: 20000
+    initialValue: 100
   - stat: 1
     initialValue: 15
-  - stat: 15
-    initialValue: 100
-  - stat: 2
-    initialValue: 100
   _entityCanvas: {fileID: 6597969589820539114}
   debugStatList: []
-  statAltered_PercentBase_List: []
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
   <IsInvisible>k__BackingField: 0
@@ -298,7 +313,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1708350864742443223}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: FadePos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +350,7 @@ GameObject:
   - component: {fileID: 1691228640677884322}
   - component: {fileID: 6024974024535574946}
   - component: {fileID: 8489704628666240280}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -428,7 +443,7 @@ GameObject:
   - component: {fileID: 2861477147452133390}
   - component: {fileID: 1925906283628429473}
   - component: {fileID: 3850088220443159637}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -515,7 +530,7 @@ GameObject:
   - component: {fileID: 5820392437626321143}
   - component: {fileID: 2585846373113621065}
   - component: {fileID: 1156504680730126743}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: StunnedImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -589,7 +604,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5472790754499779226}
   - component: {fileID: 4156067461819219699}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: UICamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -673,7 +688,7 @@ GameObject:
   - component: {fileID: 4555971501659685063}
   - component: {fileID: 2262170625519106601}
   - component: {fileID: 2650756730628268501}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ForwardReminder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -754,7 +769,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2103177402696973477}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GunSpawnPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,7 +804,7 @@ GameObject:
   - component: {fileID: 3325350141410408229}
   - component: {fileID: 5537163169501938218}
   - component: {fileID: 6597969589820539114}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: EntityCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -897,7 +912,135 @@ MonoBehaviour:
   bdContainer: {fileID: 0}
   fadeTemplate: {fileID: 7427351375631977441, guid: a4ff05ad241ccdb46a571114faab0589, type: 3}
   dodgePos: {fileID: 1708350864742443223}
-  recoverHealthPos: {fileID: 0}
+  recoverHealthPos: {fileID: 1708350864742443223}
+--- !u!1 &5800063291000386623
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7641426721296118981}
+  - component: {fileID: 5475532513346852611}
+  m_Layer: 3
+  m_Name: AudioSrc_Reload
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7641426721296118981
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5800063291000386623}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7547599842594611916}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &5475532513346852611
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5800063291000386623}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7283105295437416866
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,7 +1050,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6641179839284698120}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -939,7 +1082,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4624799765534573746}
   - component: {fileID: 587409228619845004}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1074,7 +1217,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6488493747819231610}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1105,7 +1248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1423014934934335261}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AimStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}

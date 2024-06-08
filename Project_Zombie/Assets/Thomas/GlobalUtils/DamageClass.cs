@@ -22,6 +22,7 @@ public class DamageClass
 
     public DamageClass(DamageClass refClass)
     {
+        
         MakeDamage(refClass.baseDamage);
         MakePen(refClass.pen);
         if (refClass.alwaysCrit)
@@ -64,7 +65,7 @@ public class DamageClass
     bool alwaysCrit;
 
     public bool cannotBeDodged {  get; private set; }
-    public float explosionRadius {  get; private set; }
+
     //we get the targetHealth scaling.
 
 
@@ -72,7 +73,8 @@ public class DamageClass
 
 
     public bool shoudNotShowPopUp;
-    
+
+    public bool isExplosion {  get; private set; }
 
     #region MAKE
 
@@ -140,6 +142,10 @@ public class DamageClass
         pureDamageModifier = value;
     }
 
+    public void MakeExplosion()
+    {
+        isExplosion = true;
+    }
     #endregion
 
 

@@ -14,9 +14,6 @@ public class BulletScript : MonoBehaviour
 
 
 
-
-
-
     public void SetUp(string id, Vector3 dir)
     {
         ownedID = id;
@@ -99,7 +96,7 @@ public class BulletScript : MonoBehaviour
     }
     public void MakeCollision(int collisionTotal)
     {
-        this.collisionsAllowedTotal = collisionTotal;
+        collisionsAllowedTotal = collisionTotal;
     }
 
 
@@ -124,6 +121,10 @@ public class BulletScript : MonoBehaviour
 
         //Debug.Log("deal damage to " + other.gameObject.name + " " + damage.baseDamage);
  
+        if(damage == null)
+        {
+            Debug.Log("no damage here");
+        }
 
         if (damageable != null)
         {
@@ -134,6 +135,11 @@ public class BulletScript : MonoBehaviour
             }
             else
             {
+                if(damageable.GetTargetMaxHealth() == -5)
+                {
+                    //THEN THIS MEANS ITS A SHIELD
+                    collisionsAllowedCurrent += 9999;
+                }
 
                 foreach (var item in bulletBehaviorList)
                 {
@@ -161,10 +167,12 @@ public class BulletScript : MonoBehaviour
     {
         if (collisionsAllowedCurrent >= collisionsAllowedTotal)
         {
+            //Debug.Log("Destroyed. total and current " + collisionsAllowedTotal + " : " + collisionsAllowedCurrent);
             Destroy(gameObject);
         }
         else
         {
+            //Debug.Log(" Didnt destroy. total and current " + collisionsAllowedTotal + " : " + collisionsAllowedCurrent);
             collisionsAllowedCurrent++;
             //reduce damage or speed
         }

@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public BlockClass block { get; private set; }
     public KeyClass key { get; private set; }
 
-    Camera cam;
+
 
     private void Awake()
     {
@@ -20,18 +20,36 @@ public class PlayerController : MonoBehaviour
         layerForMouseHover_Enemy |= (1 << 6);
         layerForMouseHover_Ground |= (1 << 11);
 
-        cam = Camera.main;
+
     }
 
+    private void Start()
+    {
+        
+        
+
+    }
 
     private void Update()
     {
+
+
+        if (handler._cam == null)
+        {
+            UIHandler.instance.debugui.UpdateDEBUGUI(" zero");
+        }
+        else
+        {
+            UIHandler.instance.debugui.UpdateDEBUGUI("no longer zero");
+        }
+
         if (handler == null) return;
-    
+
+
+
 
         if(handler._rb.velocity.y < -8)
         {
-            Debug.Log("falling too fast");
             return;
         }
         
@@ -65,6 +83,7 @@ public class PlayerController : MonoBehaviour
             InputSwap();
             InputAbilityActive();
         }
+        
 
         InputMovement();
 
@@ -228,7 +247,16 @@ public class PlayerController : MonoBehaviour
     LayerMask layerForMouseHover_Ground;
     Vector3 getMouseDirection()
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        
+        if (handler._cam == null)
+        {
+
+            return Vector3.zero;
+        }
+
+        
+
+        Ray ray = handler._cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerForMouseHover_Enemy))
@@ -266,7 +294,9 @@ public class PlayerController : MonoBehaviour
     void InputEquipWindow()
     {
 
+
         if (CityHandler.instance == null) return;
+
 
         if (Input.GetKeyDown(key.GetKey(KeyType.EquipWindow)))
         {

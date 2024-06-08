@@ -15,7 +15,7 @@ public class PlayerUI : MonoBehaviour
 
     private void Awake()
     {
-        pointSpeed = 150;
+        pointSpeed = 300;
         speed = 100;
         bless_Speed = 10;
 
@@ -46,7 +46,7 @@ public class PlayerUI : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(MouseIconAnimationProcess());
     }
-    
+
     IEnumerator MouseIconAnimationProcess()
     {
         float timer = 0.03f;
@@ -87,18 +87,18 @@ public class PlayerUI : MonoBehaviour
 
     void HealthHandle()
     {
-        if(healthCurrent != healthTemporary)
+        if (healthCurrent != healthTemporary)
         {
-            if(healthCurrent > healthTemporary)
+            if (healthCurrent > healthTemporary)
             {
                 healthTemporary += Time.deltaTime * speed;
             }
-            if(healthCurrent < healthTemporary)
+            if (healthCurrent < healthTemporary)
             {
                 healthTemporary -= Time.deltaTime * speed;
             }
 
-           
+
         }
 
         healthBar.fillAmount = healthTemporary / healthTotal;
@@ -108,7 +108,7 @@ public class PlayerUI : MonoBehaviour
 
     #endregion
 
-    
+
 
     #region POINTS
     [Separator("POINTS")]
@@ -121,7 +121,7 @@ public class PlayerUI : MonoBehaviour
 
     void PointHandle()
     {
-        if(pointCurrent != pointTemporary)
+        if (pointCurrent != pointTemporary)
         {
             if (pointCurrent > pointTemporary)
             {
@@ -139,7 +139,7 @@ public class PlayerUI : MonoBehaviour
 
     public void UpdatePoint(int current, int change = 0)
     {
-        if(change != 0)
+        if (change != 0)
         {
             //spawn stuff to show
             CreateFadeUI_Point(change);
@@ -163,11 +163,11 @@ public class PlayerUI : MonoBehaviour
 
         Color color = Color.white;
 
-        if(value > 0)
+        if (value > 0)
         {
             color = Color.green;
         }
-        if(value < 0)
+        if (value < 0)
         {
             color = Color.red;
         }
@@ -182,7 +182,7 @@ public class PlayerUI : MonoBehaviour
     }
 
     #endregion
-   
+
 
     #region ROUND
     [Separator("ROUND")]
@@ -244,7 +244,7 @@ public class PlayerUI : MonoBehaviour
 
 
 
-    public void UpdateRoundText_New( int newValue, bool isForce)
+    public void UpdateRoundText_New(int newValue, bool isForce)
     {
         StopAllCoroutines();
 
@@ -287,7 +287,7 @@ public class PlayerUI : MonoBehaviour
 
 
     }
-    
+
 
 
     #endregion
@@ -311,7 +311,7 @@ public class PlayerUI : MonoBehaviour
 
     public void UpdateShieldRegen(float current, float total)
     {
-        shieldRegenBar.fillAmount = current / total;   
+        shieldRegenBar.fillAmount = current / total;
     }
 
     #endregion
@@ -326,7 +326,7 @@ public class PlayerUI : MonoBehaviour
     float bless_Temporary;
     float bless_Speed;
 
-    public void UpdateBless(int current, int change = 0 )
+    public void UpdateBless(int current, int change = 0)
     {
         if (change != 0)
         {
@@ -388,4 +388,6 @@ public class PlayerUI : MonoBehaviour
     }
 
     #endregion
+
+
 }

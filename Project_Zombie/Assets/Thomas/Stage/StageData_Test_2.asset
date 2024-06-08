@@ -16,51 +16,87 @@ MonoBehaviour:
   stageSprite: {fileID: 21300000, guid: b7a0e32ec056b004f8bd38557256d7d3, type: 3}
   stageIndex: 4
   classList:
-  - data: {fileID: 11400000, guid: 3839579ea0c928f4ea734d2f5de59aa5, type: 2}
+  - Id: Ranged
+    data: {fileID: 11400000, guid: 8996d72b5f1f4cf4ab6669a787585898, type: 2}
+    min: 3
+    max: 0
+    baseChanceToSpawn: 40
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 6
+  - Id: Simple Melee 1
+    data: {fileID: 11400000, guid: 3839579ea0c928f4ea734d2f5de59aa5, type: 2}
     min: 0
     max: 0
-    totalChanceSpawn: 0
     baseChanceToSpawn: 60
-    chancePerLevelToSpawn: 0
+    chancePerLevelToSpawn: -2
     chanceSpawnMaxCap: 0
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 0
-  - data: {fileID: 11400000, guid: cb9769c528a0d3b45b040e2334a19e2e, type: 2}
+  - Id: Simple Melee 2
+    data: {fileID: 11400000, guid: cb9769c528a0d3b45b040e2334a19e2e, type: 2}
     min: 0
     max: 0
-    totalChanceSpawn: 0
     baseChanceToSpawn: 20
-    chancePerLevelToSpawn: 0
+    chancePerLevelToSpawn: 5
     chanceSpawnMaxCap: 0
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 0
-  - data: {fileID: 11400000, guid: be14677f5840eb24aa2ae958e77196a8, type: 2}
-    min: 5
+  - Id: Enemy 3
+    data: {fileID: 11400000, guid: b5194f29f1993e84280f69cf372c338a, type: 2}
+    min: 15
     max: 0
-    totalChanceSpawn: 0
-    baseChanceToSpawn: 5
-    chancePerLevelToSpawn: 0
-    chanceSpawnMaxCap: 0
-    chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 1
-  - data: {fileID: 11400000, guid: 3e284f2bbd3d3814abbc1dad525eff05, type: 2}
-    min: 10
-    max: 0
-    totalChanceSpawn: 0
-    baseChanceToSpawn: 15
-    chancePerLevelToSpawn: 0
-    chanceSpawnMaxCap: 0
-    chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 0
-  - data: {fileID: 11400000, guid: ec96d24a90754774ead430407778975b, type: 2}
-    min: 10
-    max: 0
-    totalChanceSpawn: 0
     baseChanceToSpawn: 25
     chancePerLevelToSpawn: 0
     chanceSpawnMaxCap: 0
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 0
+  - Id: 'Giant '
+    data: {fileID: 11400000, guid: be14677f5840eb24aa2ae958e77196a8, type: 2}
+    min: 5
+    max: 0
+    baseChanceToSpawn: 10
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 1
+  - Id: Hound
+    data: {fileID: 11400000, guid: 3e284f2bbd3d3814abbc1dad525eff05, type: 2}
+    min: 10
+    max: 0
+    baseChanceToSpawn: 15
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 6
+  - Id: Bomber
+    data: {fileID: 11400000, guid: ec96d24a90754774ead430407778975b, type: 2}
+    min: 5
+    max: 0
+    baseChanceToSpawn: 25
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 1
+  - Id: Artillery
+    data: {fileID: 11400000, guid: 0d53dedb7d075c442b2c3be108b9eec5, type: 2}
+    min: 16
+    max: 0
+    baseChanceToSpawn: 15
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 1
+  - Id: Mage
+    data: {fileID: 11400000, guid: 0d53dedb7d075c442b2c3be108b9eec5, type: 2}
+    min: 10
+    max: 0
+    baseChanceToSpawn: 25
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 2
   itemChanceList:
   - data: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
     chance: 60
@@ -70,3 +106,51 @@ MonoBehaviour:
     chance: 20
     minAmount: 5
     maxAmount: 15
+  questList_Bless:
+  - editorName: Kill 50
+    <questType>k__BackingField: 0
+    <questData>k__BackingField: {fileID: 11400000, guid: 611bffb8d57567d42bd8268b9b0013ab, type: 2}
+    <amountTotal>k__BackingField: 50
+    <timerTotal>k__BackingField: 0
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+  - editorName: Kill 75
+    <questType>k__BackingField: 0
+    <questData>k__BackingField: {fileID: 11400000, guid: 611bffb8d57567d42bd8268b9b0013ab, type: 2}
+    <amountTotal>k__BackingField: 75
+    <timerTotal>k__BackingField: 0
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+  - editorName: Kill 100
+    <questType>k__BackingField: 0
+    <questData>k__BackingField: {fileID: 11400000, guid: 611bffb8d57567d42bd8268b9b0013ab, type: 2}
+    <amountTotal>k__BackingField: 100
+    <timerTotal>k__BackingField: 0
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+  questList_Challenge:
+  - editorName: Kill 75 in 50
+    <questType>k__BackingField: 2
+    <questData>k__BackingField: {fileID: 11400000, guid: 611bffb8d57567d42bd8268b9b0013ab, type: 2}
+    <amountTotal>k__BackingField: 75
+    <timerTotal>k__BackingField: 50
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+  questList_Curse:
+  - editorName: Kill 200
+    <questType>k__BackingField: 1
+    <questData>k__BackingField: {fileID: 11400000, guid: 611bffb8d57567d42bd8268b9b0013ab, type: 2}
+    <amountTotal>k__BackingField: 200
+    <timerTotal>k__BackingField: 0
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 5
+    punishList: []

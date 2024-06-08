@@ -100,11 +100,7 @@ public class SceneLoaderHandler : MonoBehaviour
 
         currentStageData = stage;
 
-        if (CityHandler.instance)
-        {
-            //we tell the cityhandler to recalculate everything regarding the citystores and equip window
-            
-        }
+        
 
         if(PlayerHandler.instance != null)
         {
@@ -116,7 +112,11 @@ public class SceneLoaderHandler : MonoBehaviour
 
 
         PlayerHandler.instance._playerController.block.ClearBlock();
-
+        if (CityHandler.instance)
+        {
+            //we tell the cityhandler to recalculate everything regarding the citystores and equip window
+            CityHandler.instance.StartCity();
+        }
     }
 
 

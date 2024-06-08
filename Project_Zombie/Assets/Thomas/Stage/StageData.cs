@@ -123,13 +123,83 @@ public class StageData : ScriptableObject
 
     #region QUESTS FOR BLESS
     [Separator("QUEST FOR BLESS")]
-    [SerializeField] List<QuestData> questList_Bless = new();
-    [SerializeField] List<QuestData> questList_Challenge = new();
-    [SerializeField] List<QuestData> questList_Curse = new(); //all curses allowed in this thing 
+    [SerializeField] List<QuestClass> questList_Bless = new();
+    [SerializeField] List<QuestClass> questList_Challenge = new();
+    [SerializeField] List<QuestClass> questList_Curse = new(); //all curses allowed in this thing 
 
-    //
+    public List<QuestClass> GetQuestList()
+    {
+        
+        
 
-    //i need to choose 
+        int roll = Random.Range(0, 101);
+
+        if(questList_Curse.Count <= 0)
+        {
+            roll += 11;
+            Debug.Log("there is no curse");
+        }
+        if (questList_Challenge.Count <= 0)
+        {
+            roll += 11;
+            Debug.Log("there is no challege");
+        }
+
+        if (roll >= 0 && roll <= 10 )
+        {
+            //then its curse
+            Debug.Log("curse");
+            int roll_Curse = Random.Range(0, questList_Curse.Count);
+            return new List<QuestClass>() { questList_Curse[roll_Curse], null, null };
+
+        }
+        if(roll > 10 && roll <= 20)
+        {
+            Debug.Log("challenge");
+            int roll_Challenge = Random.Range(0, questList_Challenge.Count);
+            return new List<QuestClass>() { questList_Challenge[roll_Challenge], null, null };
+        }
+        if(roll > 20)
+        {
+            //hten its normal bless
+            Debug.Log("bless " + questList_Bless.Count);
+            List<int> alreadyUsedIndexList = new();
+            List<QuestClass> questList = new();
+            int brakeLimit = 0;
+
+            
+
+            while(questList.Count < 3)
+            {
+                brakeLimit++;
+
+                if(brakeLimit > 10000)
+                {
+                    //then we will just fill in the list as better as we can.
+
+                    Debug.Log("the list to find quest bless broke off");
+                    return null;
+                }
+
+
+                int roll_Bless = Random.Range(0, questList_Bless.Count);
+
+                if (alreadyUsedIndexList.Contains(roll_Bless))
+                {
+                    continue;
+                }
+
+                questList.Add(questList_Bless[roll_Bless]);
+                alreadyUsedIndexList.Add(roll_Bless);
+
+            }
+
+            return questList;
+        }
+
+
+        return null;
+    }
 
 
 
@@ -163,13 +233,13 @@ public class EnemyChanceSpawnClass
     }
 
 
-
+    [SerializeField] string Id;
 
     public EnemyData data;
     [Range(0, 25)] public int min = 1;
     [Range(0, 25)] public int max = 25; //max 
 
-    public float totalChanceSpawn;
+    public float totalChanceSpawn { get; private set; }
     [Range(0,100)]public float baseChanceToSpawn;
     [Range(-100,100)]public float chancePerLevelToSpawn;
 

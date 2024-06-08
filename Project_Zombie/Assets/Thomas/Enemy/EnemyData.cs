@@ -17,4 +17,10 @@ public class EnemyData : ScriptableObject
     public List<StatClass> initialStatList = new();
     public List<StatClass> scaleStatList = new();
 
+    [Separator("SOUND")]
+    public AudioClip audio_Hit;
+    public AudioClip audio_Dead;
+    public AudioClip audio_Spawned;
+    public AudioClip audio_Attack;
+
 }

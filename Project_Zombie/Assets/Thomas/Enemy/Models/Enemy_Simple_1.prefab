@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 1497500476275291310}
   m_Layer: 6
   m_Name: Enemy_Simple_1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -194,8 +194,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.3313742, y: 2.086684, z: 1.1782036}
-  m_Center: {x: -0.014763355, y: 1.0395159, z: -0.02329266}
+  m_Size: {x: 1.5850954, y: 2.4679866, z: 1.5645096}
+  m_Center: {x: -0.033915043, y: 1.2301672, z: -0.10365319}
 --- !u!54 &5403407705704941436
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -239,6 +239,9 @@ MonoBehaviour:
   _enemyCanvas: {fileID: 6085177228700293304}
   head: {fileID: 3636954239973724494}
   _abilityIndicatorCanvas: {fileID: 0}
+  soundUnitTemplate: {fileID: 0}
+  container: {fileID: 0}
+  shouldOnlyMoveWhenFacing: 0
 --- !u!114 &9025989907392422924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,6 +491,9 @@ MonoBehaviour:
   stunnedImage: {fileID: 2621343030298349166}
   bdUnitTemplate: {fileID: 2635378787862333430, guid: 42146edaa86479148af9b50fbeb4ffe0, type: 3}
   bdContainer: {fileID: 2519643803868783186}
+  fadeTemplate: {fileID: 0}
+  dodgePos: {fileID: 0}
+  recoverHealthPos: {fileID: 0}
 --- !u!1 &3330343248642477846
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,6 +709,7 @@ MonoBehaviour:
   stackFromCenter: 0
   stackReverse: 0
   limitPerLine: 5
+  isDebug: 0
 --- !u!1 &4853563676464255862
 GameObject:
   m_ObjectHideFlags: 0

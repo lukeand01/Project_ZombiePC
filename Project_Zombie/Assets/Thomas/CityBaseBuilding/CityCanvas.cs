@@ -63,6 +63,7 @@ public class CityCanvas : MonoBehaviour
         holder.SetActive(true);
         PlayerHandler.instance._playerController.block.AddBlock("CityCanvas", BlockClass.BlockType.Complete);
         UIHandler.instance._EquipWindowUI.ForceCloseUI();
+        UIHandler.instance._MouseUI.ControlAppear(false);
     }
     public void CloseUI()
     {
@@ -75,6 +76,7 @@ public class CityCanvas : MonoBehaviour
         holder.SetActive(false);
         UIHandler.instance._DescriptionWindow.StopDescription();
         Invoke(nameof(CallFreePlayer), 0.1f);
+        UIHandler.instance._MouseUI.ControlAppear(true);
     }
 
     void CallFreePlayer()
@@ -268,7 +270,8 @@ public class CityCanvas : MonoBehaviour
     }
 
     public void SetStage(List<CityStageClass> cityStageClassList)
-    {      
+    {
+
         foreach (var item in cityStageClassList)
         {
             StageUnit newObject = Instantiate(stageUnitTemplate);

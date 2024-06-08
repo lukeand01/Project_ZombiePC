@@ -60,6 +60,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0db4222f62eb5b546938ed0014a76bcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundTemplate_Spatial: {fileID: 2449499032341904556, guid: 3ec3acd4177245647895eb194dfc4ecd, type: 3}
+  soundTemplate_global: {fileID: 2449499032341904556, guid: 0373d10c96ebe02428df186f7f881d91, type: 3}
 --- !u!114 &6997610093423266852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,7 +92,7 @@ MonoBehaviour:
   rotateImageBackground: {fileID: 7714698027867119024}
   rotateImage: {fileID: 180465667124368333}
   rotateImageHolder: {fileID: 7841466181464853914}
-  currentSceneIndex: 1
+  currentSceneIndex: 2
 --- !u!1 &1870680248965442196
 GameObject:
   m_ObjectHideFlags: 0

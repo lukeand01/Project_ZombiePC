@@ -1,9 +1,7 @@
 using MyBox;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using Unity.VisualScripting;
 
 public class EquipWindowUI : MonoBehaviour
 {
@@ -60,7 +58,7 @@ public class EquipWindowUI : MonoBehaviour
     public void CallUI()
     {
 
-        if(isOpen )
+        if (isOpen )
         {
             CloseUI();
         }

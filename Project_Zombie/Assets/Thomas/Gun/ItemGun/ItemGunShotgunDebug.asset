@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040e2e5b0dc8e1c4787d35730cbcc974, type: 3}
+  m_Name: ItemGunShotgunDebug
+  m_EditorClassIdentifier: 
+  itemName: ShotungDebug
+  itemDescription: 
+  itemIcon: {fileID: 21300000, guid: 46e9142f1a016ee4c83d0e2f4cd80e4d, type: 3}
+  tierType: 0
+  bulletPerShot: 12
+  bulletOffset: 10
+  gunBaseStat:
+  - stat: 2
+    initialValue: 5
+  - stat: 5
+    initialValue: 0
+  - stat: 6
+    initialValue: 0
+  - stat: 7
+    initialValue: 0
+  - stat: 8
+    initialValue: 1
+  - stat: 9
+    initialValue: 2
+  - stat: 10
+    initialValue: 0.1
+  gunModel: {fileID: 4131097718206511249, guid: 2cc77847ebe65e74888d20966de2a67e, type: 3}
+  bulletTemplate: {fileID: 1912603505503571018, guid: 03c593b7051d78e41968b090993b4855, type: 3}
+  <bulletBehaviorList>k__BackingField:
+  - {fileID: 11400000, guid: 7de699dcd4418804fa47683b196830a0, type: 2}
+  canHoldDownButtonToKeepShooting: 0
+  goThroughPower: 0
+  audio_Shoot: {fileID: 8300000, guid: 2203773368e4340d98c114f55c2dd7fd, type: 3}
+  audio_Reload: {fileID: 8300000, guid: eb5685b26a6494994af389a3293064e8, type: 3}

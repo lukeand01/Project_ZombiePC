@@ -12,6 +12,10 @@ public interface IDamageable
     public string GetID();
     public bool IsDead();
 
+    public void RestoreHealth(float value);
+    public GameObject GetObjectRef();
+
+
     public float GetTargetMaxHealth();
 
     public float GetTargetCurrentHealth();

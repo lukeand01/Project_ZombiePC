@@ -50,10 +50,10 @@ public class EnemyCanvas : MonoBehaviour
         //transform.LookAt(mainCam.transform.position);
     }
 
-    public void MakeDestroyItself(Transform newPosRef)
+    public void MakeDestroyItself(Vector3 pos)
     {
         shouldDestroyItself = true;
-        transform.position = newPosRef.position;
+        transform.position = pos;
         healthHolder.SetActive(false);
     }
 
@@ -62,8 +62,8 @@ public class EnemyCanvas : MonoBehaviour
         FadeUI newObject = Instantiate(fadeTemplate);
         newObject.transform.SetParent(damageContainer);
          newObject.transform.rotation = Quaternion.Euler(0, -180, 0);
-        float modifierX = 70;
-        float modifierY = 15;
+        float modifierX = 0;
+        float modifierY = 35;
         float x = Random.Range(-modifierX, modifierX);
         float y = Random.Range(0, modifierY) + 50;
 
@@ -93,7 +93,29 @@ public class EnemyCanvas : MonoBehaviour
 
     }
 
+    public void CreateShieldPopUp()
+    {
+        FadeUI newObject = Instantiate(fadeTemplate);
+        newObject.transform.SetParent(damageContainer);
+        newObject.transform.rotation = Quaternion.Euler(0, -180, 0);
+        float modifierX = 0;
+        float modifierY = 25;
+        float x = Random.Range(-modifierX, modifierX);
+        float y = Random.Range(0, modifierY) + 100;
 
+        Vector3 offset = new Vector3(x, y, 0);
+
+        newObject.ChangeHeightModifier(1.8f);
+        newObject.ChangeColorModifier(1);
+        newObject.ChangeScaleModifier(2f);
+       
+        //i need this to keep following the player.
+
+        newObject.transform.localPosition = Vector3.zero + offset;
+
+        newObject.SetUp("SHIELD", Color.black);
+
+    }
 
     [Separator("HEALTH")]
     [SerializeField] GameObject healthHolder;

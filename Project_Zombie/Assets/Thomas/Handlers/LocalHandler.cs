@@ -54,6 +54,8 @@ public class LocalHandler : MonoBehaviour
         ChestGunHandle();
         ChestResourceHandle();
         ChestAbilityHandle();
+        Shrine_Handle();
+
 
         if (useNewRoundSystem)
         {
@@ -78,6 +80,8 @@ public class LocalHandler : MonoBehaviour
         //spawnCurrent = spawnTotal;
         spawnCurrent = 0;
 
+        shrineCurrent = 0;
+        shrineTotal = Random.Range(130, 200);
 
         chestResourceTotal = Random.Range(35, 60);
         chestResourceCurrent = chestResourceTotal;
@@ -89,6 +93,8 @@ public class LocalHandler : MonoBehaviour
         roomArray[0].OpenRoom_Room();
 
         PlayerHandler.instance.transform.position = spawnPos.position;
+        PlayerHandler.instance._playerCombat.ControlGunHolderVisibility(true);
+        UIHandler.instance._MouseUI.ControlAppear(true);
 
         if (useNewRoundSystem)
         {
@@ -175,26 +181,7 @@ public class LocalHandler : MonoBehaviour
 
     #endregion
 
-    #region ROUND SYSTEM NEW
-
-    //everytime we spawn a fella we add it to the list
-    //everytime an enemy die we send the information here.
-
-    //we are going to add different round types later.
     
-    public void StartRound_New()
-    {
-        //we have a quantity that we spawn.
-        //but we dont spawn them all at the same time. we spawn randomly and at intervals.
-        //once completed there is a timer.
-
-    }
-
-    //
-
-
-    #endregion
-
     #region ROOM
     [SerializeField] Room[] roomArray;
     List<Room> openRoomList = new();
@@ -228,18 +215,20 @@ public class LocalHandler : MonoBehaviour
 
     //we put these fellas right at the start. but how to check on them? everytime a fella dies we check?
     //everytime a fella is spawned and the fella has a cap we attack an event to its death so we can remove it.
-    Dictionary<string, int> dictionaryForEnemiesWithSpawnCap = new();
-    List<EnemyChanceSpawnClass> enemyChanceList = new();
+    public Dictionary<string, int> dictionaryForEnemiesWithSpawnCap { get; private set; } = new();
+    [field:SerializeField] public List<EnemyChanceSpawnClass> enemyChanceList { get; private set; } = new();
 
     //every wave is spwaned
 
-    [SerializeField]List<Portal> allowedPortal = new();
+    public List<Portal> allowedPortal { get; private set; } = new();
 
     float spawnCurrent;
     float spawnTotal;
     int amountSpawned;
 
     int spawnWaveQuantity; //this version is 0
+
+    //there seems to be a disconnect 
 
     void SpawnHandle()
     {
@@ -272,7 +261,7 @@ public class LocalHandler : MonoBehaviour
         }
     }
 
-    void GetNewSpawnList()
+    public void GetNewSpawnList()
     {
         if (_stageData == null) return;
         enemyChanceList = _stageData.GetCompleteSpawnList(round);
@@ -290,6 +279,10 @@ public class LocalHandler : MonoBehaviour
             return;
         }
         
+        //maybe we order the respawn through here.
+        //
+        
+
         List<EnemyData> chosenEnemyList = new();
         int safeBreak = 0;
 
@@ -332,8 +325,10 @@ public class LocalHandler : MonoBehaviour
         }
 
 
+
         foreach (var item in chosenEnemyList)
         {
+           
             _roundHandler.AddEnemy(item);
         }
 
@@ -341,7 +336,7 @@ public class LocalHandler : MonoBehaviour
 
     }
 
-    void SpawnChosenEnemies(List<EnemyData> enemyDataList)
+    public void SpawnChosenEnemies(List<EnemyData> enemyDataList)
     {
         //now we need to get the right spawners.
         //the spawner
@@ -413,7 +408,7 @@ public class LocalHandler : MonoBehaviour
         }
 
     }
-    void AddToStackDictionary(EnemyChanceSpawnClass enemySpawnClass)
+    public void AddToStackDictionary(EnemyChanceSpawnClass enemySpawnClass)
     {
         if (enemySpawnClass.maxAllowedAtAnyTime == 0)
         {
@@ -433,7 +428,7 @@ public class LocalHandler : MonoBehaviour
         }
     }
 
-    bool CanStackEnemy(EnemyChanceSpawnClass enemySpawnClass)
+    public bool CanStackEnemy(EnemyChanceSpawnClass enemySpawnClass)
     {
         if (!dictionaryForEnemiesWithSpawnCap.ContainsKey(enemySpawnClass.data.name)) return true;
         return dictionaryForEnemiesWithSpawnCap[enemySpawnClass.data.name] < enemySpawnClass.maxAllowedAtAnyTime;
@@ -480,6 +475,7 @@ public class LocalHandler : MonoBehaviour
 
     void ChestGunSpawn(bool isFirst = false)
     {
+        Debug.Log("chest gun spawn");
         //put in a random position it can be the same.
         int min = 0;
 
@@ -500,7 +496,6 @@ public class LocalHandler : MonoBehaviour
         {
             int random = Random.Range(min, roomArray.Length);
             targetPos = roomArray[random].GetChestGunSpawnPos();
-            Debug.Log("random " + random);
             safeBreak++;
 
             if(safeBreak > 1000)
@@ -549,6 +544,8 @@ public class LocalHandler : MonoBehaviour
     {
         //i cannot use a position that has already been used.
         //otherwise will have two chests in the same poalce.
+
+        Debug.Log("chest resource spawn");
 
         if (chestResourceSpawnPosArray.Length == 0) return;
         if (_stageData == null) return;
@@ -650,7 +647,139 @@ public class LocalHandler : MonoBehaviour
     //shrines will spawn randomly around the map. they can appar in front of the player because they would do an animation
     //we randomly choose one out of three types of shrine and we inform the player what kind of shrine it is.
     //the quest
+    [Separator("SHRINE")]
+    [SerializeField] Shrine shrineTemplate;
+    [SerializeField] Transform[] shrinePosArray;
+    List<Shrine> shrineSpawnedList = new();
+    List<int> shrineIndexList = new();
+    float shrineCurrent;
+    float shrineTotal;
 
+   
+
+    void Shrine_Handle()
+    {
+        if(shrineSpawnedList.Count >= 3)
+        {
+            shrineCurrent = 0;
+            return;
+        }
+        if(shrinePosArray.Length == 0)
+        {
+            //Debug.Log("not enough in teh array");
+            return;
+        }
+
+        if(shrineSpawnedList.Count >= shrinePosArray.Length)
+        {
+            shrineCurrent = 0;
+            //Debug.Log("all positions filled");
+            return;
+        }
+
+        if(shrineCurrent > shrineTotal)
+        {
+            Shrine_Spawn();
+            shrineCurrent = 0;
+        }
+        else
+        {
+            shrineCurrent += Time.fixedDeltaTime;
+        }
+
+    }
+
+    void Shrine_Spawn()
+    {
+
+        int roll = Random.Range(0, shrinePosArray.Length);
+        int safeBreak = 0;
+
+        while (shrineIndexList.Contains(roll))
+        {
+            roll = Random.Range(0, shrinePosArray.Length);
+
+            safeBreak += 1;
+
+            if(safeBreak > 1000)
+            {
+                Debug.Log("broke shrine spawn");
+                return;
+            }
+
+            continue;
+        }
+
+
+        Shrine newObject = Instantiate(shrineTemplate);
+       
+        newObject.transform.position = shrinePosArray[roll].position + new Vector3(0,-6,0);
+        newObject.SetIndex(shrineSpawnedList.Count);
+        newObject.RaiseFromGround();
+        shrineIndexList.Add(roll);
+        shrineSpawnedList.Add(newObject);
+        shrineTotal = Random.Range(130, 200);
+    }
+
+    public void Shrine_Remove(int index)
+    {
+        shrineSpawnedList.RemoveAt(index);
+        shrineIndexList.RemoveAt(index);
+    }
+
+
+    #endregion
+
+    #region POWER
+    [Separator("POWER")]
+    [SerializeField] List<PowerObject> powerRefList = new();
+
+    float powerCurrent;
+    float powerTotal;
+
+
+    //power has to be a bit smarter
+    //i have to give ammo every x turns. every 3 turns the last enemy 
+    //
+
+    void Power_Set()
+    {
+        chestAbilityTotal = 35;
+        chestAbilityCurrent = chestAbilityTotal;
+    }
+
+    void Power_Handle()
+    {
+        if (allowedPortal.Count <= 0)
+        {
+
+            return;
+        }
+
+        if (powerCurrent > 0)
+        {
+            powerCurrent -= Time.fixedDeltaTime;
+        }
+        else
+        {
+
+            int random = Random.Range(0, allowedPortal.Count);
+            allowedPortal[random].SetNextSpawnToCarryChest(chestAbilityTemplate);
+
+            powerCurrent = powerTotal;
+        }
+    }
+
+    public bool ShouldSpawnAmmoPower()
+    {
+        return true;
+    }
+
+    //it is isnt given by the 
+
+    #endregion
+
+    #region DROPS
 
 
 

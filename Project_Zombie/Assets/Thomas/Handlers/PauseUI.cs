@@ -40,6 +40,7 @@ public class PauseUI : MonoBehaviour
             GameHandler.instance.ResumeGame();
             PlayerHandler.instance._playerController.block.RemoveBlock("Pause");
             holder.SetActive(false);
+            descriptionWindow.StopDescription();
         }
         else
         {

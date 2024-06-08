@@ -28,6 +28,11 @@ public class PlayerCombat : MonoBehaviour
     bool keepShootingIfCanHold;
     bool trueBlockForShooting; //this is used to block to hold fire while swapping
 
+    [Separator("SOUND")]
+    [SerializeField] AudioSource audioSrc_Reload;
+    [SerializeField] AudioClip audio_Swap;
+
+
     private void Awake()
     {
         handler = GetComponent<PlayerHandler>();
@@ -47,6 +52,11 @@ public class PlayerCombat : MonoBehaviour
         HandleListCooldown();
         DebugCreateLaserAim();
 
+
+       
+
+
+
     }
     private void FixedUpdate()
     {
@@ -64,7 +74,7 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
-
+        return;
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 dir = (transform.position - mousePos).normalized;
@@ -117,8 +127,14 @@ public class PlayerCombat : MonoBehaviour
         gunList[0].data.RemoveGunPassives();
         gunList[0].data.AddGunPassives();
 
-        ShieldRemove();
+        ShieldRemove(-1);
     }
+
+    public void ControlGunHolderVisibility(bool isVisible)
+    {
+        gunSpawnPos.gameObject.SetActive(isVisible);
+    }
+
 
     #region GETTER
     public ItemGunData GetCurrentPermaGun()
@@ -241,8 +257,6 @@ public class PlayerCombat : MonoBehaviour
     }
 
     
-
-
     GameObject CreateGunModel(ItemGunData data)
     {
         
@@ -286,6 +300,8 @@ public class PlayerCombat : MonoBehaviour
 
         bool done = false;
 
+        int lastGun = currentGunIndex;
+
         while (!done)
         {
             int safeBreak = 0;
@@ -323,6 +339,12 @@ public class PlayerCombat : MonoBehaviour
             done = true;
         }
 
+        if(lastGun != currentGunIndex)
+        {
+            GameHandler.instance._soundHandler.CreateSfx(audio_Swap);
+        }
+
+        CancelReload();
 
         _gunUI.ChangeOwnedGunShowUnit(currentGunIndex);
         SwapGunModel();
@@ -363,6 +385,7 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
+        audioSrc_Reload.clip = gunList[currentGunIndex].data.Get_Audio_Reload;
 
         UIHandler.instance.gunUI.UpdateGunPortrait(gunList[currentGunIndex].data.itemIcon);
         UIHandler.instance.gunUI.UpdateGunTitle(gunList[currentGunIndex].data.itemName);
@@ -408,11 +431,13 @@ public class PlayerCombat : MonoBehaviour
         isReloading = true;
 
         float current = 0;
-        float valueRef = gunList[currentGunIndex].data.GetValue(StatType.ReloadSpeed);
+        float valueRef = gunList[currentGunIndex].GetGunTotalStat(StatType.ReloadSpeed);
         float total = valueRef;
         float reloadModifier = handler._entityStat.GetTotalValue(StatType.ReloadSpeed) * total;
         total -= reloadModifier;
         total = Mathf.Clamp(total, valueRef/ 2, valueRef);
+
+        audioSrc_Reload.Play();
 
         while (total > current)
         {
@@ -423,7 +448,7 @@ public class PlayerCombat : MonoBehaviour
 
         gunList[currentGunIndex].ReloadGun();
 
-
+         handler._entityEvents.OnReloadedGun(gunList[currentGunIndex].data);
         _gunUI.UpdateReloadFill(0, 0);
         _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
         _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
@@ -434,11 +459,19 @@ public class PlayerCombat : MonoBehaviour
     public void CancelReload()
     {
         if (!isReloading) return;
+        audioSrc_Reload.Stop();
         StopCoroutine(reloadProcess);
         _gunUI.UpdateReloadFill(0, 0);
         isReloading = false;
     }
 
+    public void RefreshAllReserveAmmo()
+    {
+        gunList[1].RefreshReserveAmmo();
+        gunList[2].RefreshReserveAmmo();
+        _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
+
+    }
 
     public void FullInstantReload()
     {
@@ -480,11 +513,30 @@ public class PlayerCombat : MonoBehaviour
         
     }
 
-    public void ShieldRemove()
+    public void Shield_Recharge_Percent(float value)
     {
-        shieldTotal = 0;
-        handler._entityEvents.eventDamageTaken -= ShieldRegenReset;
-        UIHandler.instance._playerUI.UpdateShield(0, 0);
+        float valueToRecharge = shieldTotal * value;
+
+        shieldCurrent += valueToRecharge;
+        shieldCurrent = Mathf.Clamp(shieldCurrent, 0, shieldTotal);
+
+        UIHandler.instance._playerUI.UpdateShield(shieldCurrent, shieldTotal);
+    }
+
+    public void ShieldRemove(float shieldValue)
+    {
+        if(shieldTotal == shieldValue || shieldValue == -1)
+        {
+            shieldTotal = 0;
+            handler._entityEvents.eventDamageTaken -= ShieldRegenReset;
+            UIHandler.instance._playerUI.UpdateShield(0, 0);
+        }
+        else
+        {
+            //otherwise there is another shield.
+        }
+
+
     }
 
     public float ShieldReduceDamage(float damage)
@@ -600,7 +652,7 @@ public class PlayerCombat : MonoBehaviour
         if (gunList[1].data != null)
         {
             if (gunList[1].isInUpgradeStation)
-            {
+            {               
                 indexToUse += 1;
             }
         }
@@ -640,10 +692,6 @@ public class PlayerCombat : MonoBehaviour
 
 
 
-
-
-
-
     void HandleListCooldown()
     {
         foreach (var item in gunList)
@@ -656,8 +704,20 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField]List<BulletBehavior> forcedBulletBehaviorList = new(); //we use this when we want to force all weapons to have a behavior.
 
+    int forcedGoThroughPower; //everytime we change weapons we should set this.
 
-   
+    public void ForcedGoThroughPower_Increase(int value)
+    {
+        forcedGoThroughPower += value;
+    }
+    public void ForcedGoThroughPower_Decrease(int value)
+    {
+        forcedGoThroughPower -= value;
+    }
+    public void ForcedGoThroughPower_Set(int value)
+    {
+        forcedGoThroughPower = value;
+    }
 
     public void AddForcedBulletBehavior(BulletBehavior bulletBehavior)
     {
@@ -715,7 +775,7 @@ public class PlayerCombat : MonoBehaviour
         gunList[currentGunIndex].Shoot(shootDir, forcedBulletBehaviorList);
         _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
         _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
-
+        
     }
 
     public void ResetHoldShoot()

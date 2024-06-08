@@ -22,7 +22,11 @@ MonoBehaviour:
   - stat: 1
     initialValue: 3
   - stat: 2
-    initialValue: 60
+    initialValue: 85
   scaleStatList:
   - stat: 0
     initialValue: 30
+  audio_Hit: {fileID: 8300000, guid: 8e4851963e3ebde4b948020b48d7cd78, type: 3}
+  audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
+  audio_Spawned: {fileID: 0}
+  audio_Attack: {fileID: 8300000, guid: ef852f4dba9f9e34285d4227eb3883d0, type: 3}

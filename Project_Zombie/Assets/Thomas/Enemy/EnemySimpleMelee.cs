@@ -37,9 +37,12 @@ public class EnemySimpleMelee : EnemyBase
         }
     }
 
-    private void Start()
+
+
+    protected override void StartFunction()
     {
         UpdateTree(GetBehavior());
+        base.StartFunction();
     }
 
     Sequence2 GetBehavior()
@@ -50,6 +53,11 @@ public class EnemySimpleMelee : EnemyBase
             new BehaviorAttack(this)
 
         });
+    }
+
+    public override void CallAttack()
+    {
+        base.CallAttack();
     }
 
 }

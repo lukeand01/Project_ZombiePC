@@ -20,7 +20,7 @@ public class EnemyArtillery : EnemyBase
 
     protected override void UpdateFunction()
     {
-        RotateTarget();
+        RotateTarget(PlayerHandler.instance.transform.position);
 
         base.UpdateFunction();
     }

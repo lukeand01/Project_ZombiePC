@@ -7,16 +7,15 @@ public class PlayerCamera : MonoBehaviour
 
     LayerMask wallLayer;
 
-
+    PlayerHandler handler;
     Wall currentWall;
 
-    Camera cam;
 
     private void Awake()
     {
         wallLayer |= (1 << 9);
 
-        cam = Camera.main;
+        handler = GetComponent<PlayerHandler>();    
     }
 
     private void Update()
@@ -27,13 +26,14 @@ public class PlayerCamera : MonoBehaviour
 
     void DetectWalls()
     {
+        if (handler._cam == null) return;
 
-        Vector3 direction = transform.position - cam.transform.position;
+        Vector3 direction = transform.position - handler._cam.transform.position;
 
 
         RaycastHit hit;
 
-        if (Physics.Raycast(cam.transform.position, direction, out hit, Mathf.Infinity))
+        if (Physics.Raycast(handler._cam.transform.position, direction, out hit, Mathf.Infinity))
         {
             if(hit.collider != null) 
             { 

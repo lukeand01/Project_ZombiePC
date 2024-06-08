@@ -66,8 +66,11 @@ public class OwnedGunShowUnit : ButtonBase
     {
         base.OnPointerEnter(eventData);
 
+        Debug.Log("poiinter enter");
+
         if (isPause || isEnd)
         {
+            Debug.Log("this");
             select_ForPause.SetActive(true);
             UIHandler.instance._pauseUI.DescribeGun(gun, transform);
         }

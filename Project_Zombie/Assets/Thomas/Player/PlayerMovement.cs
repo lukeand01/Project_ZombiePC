@@ -85,8 +85,14 @@ public class PlayerMovement : MonoBehaviour
 
         */
 
-        Quaternion targetRotation = Quaternion.LookRotation(rotationVector, Vector3.up);
-        graphic.transform.rotation = Quaternion.RotateTowards(graphic.transform.rotation, targetRotation, Time.deltaTime * 700);
+
+        if(rotationVector != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(rotationVector, Vector3.up);
+            graphic.transform.rotation = Quaternion.RotateTowards(graphic.transform.rotation, targetRotation, Time.deltaTime * 700);
+        }
+
+
 
 
     }
@@ -139,9 +145,12 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region DASH
-
+    
     [SerializeField] Transform feet;
     [SerializeField] Transform head; //we shoot a raycast from both of these to tell if there is a wall ahead.
+
+    [Separator("DASH")]
+    [SerializeField] AudioClip audio_Dash;
 
     int dashTotal;
     int dashCurrent;
@@ -193,14 +202,15 @@ public class PlayerMovement : MonoBehaviour
         //a short period you cannot control the char and a short period
         //if there is a wall in front we stop it.
 
+        GameHandler.instance._soundHandler.CreateSfx(audio_Dash);
 
         handler._playerController.block.AddBlock("Dash", BlockClass.BlockType.Partial);
         BDClass bdClass = new BDClass("Dash", BDType.Immune, 0);
         handler._entityStat.AddBD(bdClass);
 
         float startTime = Time.time;
-        float dashTime = 0.12f;
-        float dashSpeed = 45;
+        float dashTime = 0.1f;
+        float dashSpeed = 85;
 
 
 

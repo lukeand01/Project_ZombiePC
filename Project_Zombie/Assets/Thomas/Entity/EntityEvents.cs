@@ -50,6 +50,12 @@ public class EntityEvents : MonoBehaviour
         eventCrit?.Invoke();
     }
 
+    public Action<ItemGunData> eventReloadedGun;
+    public void OnReloadedGun(ItemGunData data)
+    {
+        eventReloadedGun?.Invoke(data);
+    }
+
     private void OnDestroy()
     {
         eventUpdateStat = delegate { }; 

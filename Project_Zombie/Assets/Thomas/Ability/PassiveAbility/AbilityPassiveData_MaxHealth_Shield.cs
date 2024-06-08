@@ -32,7 +32,8 @@ public class AbilityPassiveData_MaxHealth_Shield : AbilityPassiveData
     {
         base.Remove(ability);
         PlayerHandler.instance._entityStat.RemoveBdWithID("Health_Shield");
-        PlayerHandler.instance._playerCombat.ShieldRemove();
+        float shieldValue = _secondValue; //i plan on changing this later.
+        PlayerHandler.instance._playerCombat.ShieldRemove(shieldValue);
 
 
     }

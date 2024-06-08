@@ -23,6 +23,7 @@ public class PlayerHandler : MonoBehaviour
     public EntityEvents _entityEvents {  get; private set; }
     public EntityStat _entityStat { get; private set; }
 
+    public Camera _cam { get; private set; }
 
     public int playerGunRollLevel { get; private set; }
     public int playerAbilityRollLevel {  get; private set; }
@@ -40,10 +41,13 @@ public class PlayerHandler : MonoBehaviour
     LayerMask layerForBuilding;
 
 
-    
-
     private void Update()
     {
+
+        if(_cam == null)
+        {
+            _cam = Camera.main;
+        }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {

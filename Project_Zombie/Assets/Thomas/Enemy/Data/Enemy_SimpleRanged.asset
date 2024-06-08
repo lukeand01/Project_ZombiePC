@@ -14,15 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Ranged
   enemyModel: {fileID: 1727601203664543072, guid: 7cad7924635a21448a488ecd076e8323, type: 3}
-  attackRange: 15
-  attackSpeed: 2
+  attackRange: 50
+  attackSpeed: 1
   initialStatList:
   - stat: 0
-    initialValue: 150
+    initialValue: 200
   - stat: 1
     initialValue: 3
   - stat: 2
     initialValue: 60
   scaleStatList:
   - stat: 0
-    initialValue: 30
+    initialValue: 50
+  - stat: 2
+    initialValue: 2
+  audio_Hit: {fileID: 8300000, guid: 8e4851963e3ebde4b948020b48d7cd78, type: 3}
+  audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
+  audio_Spawned: {fileID: 0}
+  audio_Attack: {fileID: 8300000, guid: ef852f4dba9f9e34285d4227eb3883d0, type: 3}

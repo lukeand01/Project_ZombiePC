@@ -106,5 +106,15 @@ public class Turret : MonoBehaviour, IDamageable
         return 0;
     }
 
+    public void RestoreHealth(float value)
+    {
+        //
+    }
+
+    public GameObject GetObjectRef()
+    {
+        return gameObject;
+    }
+
     #endregion
 }

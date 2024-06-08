@@ -63,7 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -94,10 +94,12 @@ MonoBehaviour:
   text: {fileID: 9032824497637734806}
   mouseHover: {fileID: 0}
   mouseClick: {fileID: 0}
+  base_Selected: {fileID: 0}
+  base_ControlClick: {fileID: 0}
   clickClip: {fileID: 0}
   hoverClip: {fileID: 0}
   clickTimerTotal: 0
-  stat: 0
+  <stat>k__BackingField: 0
   statDescriptionText: {fileID: 9032824497637734806}
   selected: {fileID: 5606853727635943198}
 --- !u!1 &5606853727635943198
@@ -234,7 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

@@ -482,7 +482,7 @@ GameObject:
   - component: {fileID: 2798477937175354507}
   m_Layer: 6
   m_Name: Enemy_Bomber
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -524,10 +524,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.3313742, y: 2.086684, z: 1.1782036}
-  m_Center: {x: -0.014763355, y: 1.0395159, z: -0.02329266}
+  m_Size: {x: 1.6958275, y: 2.086684, z: 1.7555962}
+  m_Center: {x: -0.043891907, y: 1.0395159, z: -0.08032036}
 --- !u!54 &7069411399788478048
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -569,7 +569,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: ec96d24a90754774ead430407778975b, type: 2}
   _enemyCanvas: {fileID: 6834306275441588316}
+  head: {fileID: 0}
   _abilityIndicatorCanvas: {fileID: 5741924468824182367}
+  soundUnitTemplate: {fileID: 0}
+  container: {fileID: 0}
 --- !u!114 &3033546843830745045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,6 +602,7 @@ MonoBehaviour:
   debugStatList: []
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
+  <IsInvisible>k__BackingField: 0
   tempList: []
   permaList: []
   tickList: []

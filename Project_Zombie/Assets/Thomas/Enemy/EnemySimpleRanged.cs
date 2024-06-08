@@ -26,7 +26,7 @@ public class EnemySimpleRanged : EnemyBase
     {
         base.UpdateFunction();
 
-        canShoot = RotateTarget();
+        canShoot = RotateTarget(PlayerHandler.instance.transform.position);
 
     }
 
@@ -53,6 +53,7 @@ public class EnemySimpleRanged : EnemyBase
             return;
         }
 
+        GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
 
         Vector3 shootDir = PlayerHandler.instance.transform.position - transform.position;
 

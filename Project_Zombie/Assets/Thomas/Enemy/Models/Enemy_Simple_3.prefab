@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 2536197974415525310}
   m_Layer: 6
   m_Name: Enemy_Simple_3
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -230,8 +230,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.3313742, y: 2.086684, z: 1.1782036}
-  m_Center: {x: -0.014763355, y: 1.0395159, z: -0.02329266}
+  m_Size: {x: 1.5373137, y: 2.5222166, z: 1.2369686}
+  m_Center: {x: -0.006777644, y: 1.2572821, z: 0.006089866}
 --- !u!54 &3178680307614765732
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -275,6 +275,8 @@ MonoBehaviour:
   _enemyCanvas: {fileID: 7106990787005923260}
   head: {fileID: 3475278767531445542}
   _abilityIndicatorCanvas: {fileID: 0}
+  soundUnitTemplate: {fileID: 0}
+  container: {fileID: 0}
   shouldOnlyMoveWhenFacing: 0
 --- !u!114 &8436667942268502463
 MonoBehaviour:
@@ -303,7 +305,6 @@ MonoBehaviour:
   debugInitialList: []
   _entityCanvas: {fileID: 986688307811338421}
   debugStatList: []
-  statAltered_PercentBase_List: []
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
   <IsInvisible>k__BackingField: 0

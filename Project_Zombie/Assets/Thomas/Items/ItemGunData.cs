@@ -17,6 +17,15 @@ public class ItemGunData : ItemData
     public BulletScript bulletTemplate;
     [field:SerializeField] public List<BulletBehavior> bulletBehaviorList { get; private set; } = new(); //the amount of stuff that a single bullet from this will do. like setting people on fire and dealing damage.
     public bool canHoldDownButtonToKeepShooting;
+    [field:SerializeField] public int goThroughPower;
+
+    [Separator("SOUNDS")]
+     [SerializeField]AudioClip audio_Shoot;
+     [SerializeField]AudioClip audio_Reload;
+
+    public AudioClip Get_Audio_Reload { get { return audio_Reload; } }
+
+    //the reload is more complex buecause it needs to persist while the player is reloading and stop if the player is no longer reloading.
 
 
     private void OnEnable()
@@ -44,6 +53,7 @@ public class ItemGunData : ItemData
     //butllet per shot is modifier
     //also we should be able to get damage from it
     //i can just put those variables in the gun? but then i would need to double check everytime.
+    
 
     public void Shoot(GunClass gun, string ownerId, BulletScript bulletTemplate, Vector3 gunDir, List<BulletBehavior> newBulletBehaviorList)
     {
@@ -55,9 +65,9 @@ public class ItemGunData : ItemData
         PlayerCombat combat = PlayerHandler.instance._playerCombat;
 
 
+        int goThroughPower = gun.GoThroughPower_Total;
 
 
-        
 
         for (int i = 0; i < gun.bulletPerShot; i++)
         {
@@ -71,11 +81,10 @@ public class ItemGunData : ItemData
             BulletScript newBullet = Instantiate(bulletTemplate, gunPointPosition.position, Quaternion.identity);
             newBullet.SetUp(ownerId, direction);
 
-            
 
             newBullet.MakeDamage(gun._DamageClass, 0, 0);
-            newBullet.MakeSpeed(25, 0, 0);
-
+            newBullet.MakeSpeed(50, 0, 0);
+            newBullet.MakeCollision(goThroughPower);
 
             
 
@@ -83,6 +92,7 @@ public class ItemGunData : ItemData
         }
 
 
+        GameHandler.instance._soundHandler.CreateSfx(audio_Shoot);
 
         //i need to receive
     }

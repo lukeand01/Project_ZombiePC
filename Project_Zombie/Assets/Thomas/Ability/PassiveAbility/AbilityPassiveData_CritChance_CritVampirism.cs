@@ -37,7 +37,7 @@ public class AbilityPassiveData_CritChance_CritVampirism : AbilityPassiveData
     {
         float critChance = PlayerHandler.instance._entityStat.GetTotalValue(StatType.CritChance);
 
-        PlayerHandler.instance._playerResources.RecoverHealth(_secondValue * critChance);
+        PlayerHandler.instance._playerResources.RestoreHealth(_secondValue * critChance);
 
     }
 

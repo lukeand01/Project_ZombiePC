@@ -15,3 +15,4 @@ MonoBehaviour:
   <cityStoreLevel>k__BackingField: 0
   <cityStageClassList>k__BackingField:
   - stageData: {fileID: 11400000, guid: 8bf227e4a5ce3e34ab86b700f48b610a, type: 2}
+  - stageData: {fileID: 11400000, guid: d4415c538e89ab44ab1f7d52a773264e, type: 2}

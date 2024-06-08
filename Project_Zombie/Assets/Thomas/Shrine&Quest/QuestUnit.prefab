@@ -404,6 +404,8 @@ MonoBehaviour:
   clickTimerTotal: 0
   quantityText: {fileID: 8514476530454415712}
   descriptionText: {fileID: 1168045646586863241}
+  barHolder: {fileID: 5954570529895841334}
+  bar: {fileID: 2295719762889917472}
 --- !u!1 &5954570529895841334
 GameObject:
   m_ObjectHideFlags: 0

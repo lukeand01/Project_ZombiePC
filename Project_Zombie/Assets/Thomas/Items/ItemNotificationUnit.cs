@@ -20,6 +20,9 @@ public class ItemNotificationUnit : MonoBehaviour
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI quantityText;
 
+
+    //
+
     private void Awake()
     {
         holder = transform.GetChild(0).gameObject;
@@ -41,6 +44,17 @@ public class ItemNotificationUnit : MonoBehaviour
         this.fakeCopy = fakeCopy;
 
         total = 3f;
+    }
+
+    public void SetUp_GunUpgrade(InventoryUI _inventoryUI, string gunName, string gunUpgradeName, Transform fakeCopy)
+    {
+        nameText.text = gunName;
+        quantityText.text = gunUpgradeName;
+
+        this._inventoryUI = _inventoryUI;
+        this.fakeCopy = fakeCopy;
+
+        total = 3;
     }
 
 

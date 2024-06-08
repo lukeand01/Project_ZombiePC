@@ -27,14 +27,17 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
     bool isTurnRunning;
 
-    float intervalToSpawnCurrent;
-    float intervalToSpawnTotal; //this is the time we are going to spwan an amount.
+    [SerializeField] int amountPerInterval;
 
-    int amountToSpawn = 0;
-    int amountSpawned = 0; 
+    float intervalTimerCurrent;
+    [SerializeField]float intervalTimerTotal; //this is the time we are going to spwan an amount.
+
+    int intervalQuantityTotal; //the number of times we will have interval spawns.
+    [SerializeField]int intervalQuantityCurrent;
+    
 
     [SerializeField] List<EnemyData> currentTurnEnemySpawnedList = new(); //all the enemies that were spawned in this turn. we wait to get to zero to remove it.
-
+    public int currentNumberForSpawnedEnemy;
     private void Awake()
     {
         _handler = GetComponent<LocalHandler>();
@@ -58,7 +61,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         UIHandler.instance._playerUI.UpdateRoundText_New(0, true);
         round = 0;
 
-        yield return new WaitForSecondsRealtime(1.5f);
+        yield return new WaitForSecondsRealtime(1f);
 
         NextTurn();
 
@@ -75,38 +78,154 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     {
         isTurnRunning = false;
 
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return new WaitForSecondsRealtime(0.2f);
 
         
         round++;
+
+
         UIHandler.instance._playerUI.UpdateRoundText_New(round, false);
 
         _handler.SetRound(round);
-        _handler.SetWaveQuantity(GetAmountToSpawnPerInterval());
-      
-        yield return new WaitForSecondsRealtime(1.5f);
 
-        amountToSpawn = GetAmountToSpawnPerRound();
-        amountSpawned = 0;
+        _handler.GetNewSpawnList();
 
-        intervalToSpawnTotal = GetIntervalBetweenSpawns();
-        intervalToSpawnCurrent = 0;
+        yield return new WaitForSecondsRealtime(1);
+
+        amountPerInterval = GetAmountToSpawnPerInterval(); //this amount of enemies per interval
+
+        intervalQuantityTotal = GetQuantityOfSpawnIntervals(); //quantity of interval each round has.
+        intervalQuantityCurrent = 0;
+
+        intervalTimerTotal = GetIntervalBetweenSpawns(); //quantity of 
+        intervalTimerCurrent = intervalTimerTotal * 0.7f;
+
+
+        if(round % 5 == 0)
+        {
+            PlayerHandler.instance._playerCombat.RefreshAllReserveAmmo();
+        }
 
         isTurnRunning = true;
     }
 
     void SpawnEnemies()
     {
-        int quantityToSpawnPerInterval = GetAmountToSpawnPerInterval();
 
-        amountSpawned += quantityToSpawnPerInterval;
+        //there is an amount of fellas that i want to spawn every round and an amount every interval.
 
-        _handler.SetWaveQuantity(quantityToSpawnPerInterval);
-        _handler.ChooseEnemiesAndSpawn();
+        //i want to choose the fellas here.
+        //i need to know the portals here.
+        //
+
+        if(intervalQuantityCurrent >= intervalQuantityTotal)
+        {
+            Debug.Log("can no longer spawn in this turn");
+            return;
+        }
+
+        if (_handler.enemyChanceList.Count <= 0)
+        {
+            return;
+        }
+
+        //maybe we order the respawn through here.
+        //
+
+        List<EnemyData> chosenEnemyList = new();
+        int safeBreak = 0;
+
+        intervalQuantityCurrent++;
+
+        int roll = Random.Range(0, 101);
+        while (amountPerInterval > chosenEnemyList.Count)
+        {
+            safeBreak++;
+            if (safeBreak > 1000)
+            {
+                //Debug.LogError("Safe break for choose enemies");
+                return;
+            }
+
+            //check each fella against the raindom.
+            int random = Random.Range(0, _handler.enemyChanceList.Count);
+            EnemyChanceSpawnClass enemyChance = _handler.enemyChanceList[random];
+
+            if (!_handler.CanStackEnemy(enemyChance))
+            {
+                Debug.Log("cannot add more of this fella " + enemyChance.data.enemyName);
+                continue;
+            }
+            else
+            {
+                //Debug.Log("can add this fella");
+            }
+
+            if (enemyChance.totalChanceSpawn >= roll)
+            {
+                chosenEnemyList.Add(enemyChance.data);
+                _handler.AddToStackDictionary(enemyChance);
+                //we check if we should put in the dictionary
+            }
+            else
+            {
+                roll -= 10;
+            }
+
+        }
 
 
+        foreach (var item in chosenEnemyList)
+        {
+            AddEnemy(item);
+        }
+
+        SendDataToPortals(chosenEnemyList);
         
     }
+
+    void SendDataToPortals(List<EnemyData> enemyList)
+    {
+        //we will randomly send to all portals.
+        List<Portal> availablePortalList = _handler.allowedPortal;
+        int lastPortal = -1; //i will try to randomize a bit more so that i doesnt repeat the same way too much.
+
+
+
+        foreach (var item in enemyList)
+        {
+           
+
+            int random = Random.Range(0, availablePortalList.Count);
+
+            int safeBreak = 0;
+
+            while (random == lastPortal)
+            {
+                random = Random.Range(0, availablePortalList.Count);
+
+                safeBreak++;
+
+                if(safeBreak > 100)
+                {
+                    continue;
+                }
+            }
+
+            availablePortalList[random].OrderSpawn(item);
+            lastPortal = random;    
+
+
+        }
+
+    }
+
+
+    List<EnemyData> GetChosenEnemyList()
+    {
+        return null;
+    }
+
 
     void HandleTurn()
     {
@@ -114,22 +233,22 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         if (!isTurnRunning) return;
 
-        if (amountSpawned >= amountToSpawn)
+        if (intervalQuantityCurrent >= intervalQuantityTotal)
         {
             //Debug.Log("must wait for enemies");
-            intervalToSpawnCurrent = intervalToSpawnTotal;
+            intervalTimerCurrent = intervalTimerTotal;
             return;
         }
         if (round == 0) return;
 
-        if (intervalToSpawnCurrent > intervalToSpawnTotal)
+        if (intervalTimerCurrent > intervalTimerTotal)
         {
-            intervalToSpawnCurrent = 0;
+            intervalTimerCurrent = 0;
             SpawnEnemies();
         }
         else
         {
-            intervalToSpawnCurrent += Time.deltaTime;
+            intervalTimerCurrent += Time.deltaTime;
             
         }
 
@@ -151,22 +270,23 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         if(currentTurnEnemySpawnedList.Count > 0)
         {
-           // Debug.Log("enemies in scene");
+           Debug.Log("enemies in scene");
             return;
         }
-        if(amountSpawned < amountToSpawn)
+        if(intervalQuantityTotal > intervalQuantityCurrent)
         {
-           //Debug.Log("there are fellas left to spawn");
+           Debug.Log("there are spawn intervals left");
             return;
         }
 
-        if(intervalToSpawnTotal > intervalToSpawnCurrent)
+        if(intervalTimerTotal > intervalTimerCurrent)
         {
             //Debug.Log("its counting the interval yet");
             return;
         }
 
-        if(currentTurnEnemySpawnedList.Count <= 0 && amountSpawned >= amountToSpawn && round != 0)
+
+        if(currentTurnEnemySpawnedList.Count == 0)
         {
             //Debug.Log("this round is over");
             NextTurn();
@@ -175,16 +295,16 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
     public void AddEnemy(EnemyData data)
     {
+        currentNumberForSpawnedEnemy += 1;
         currentTurnEnemySpawnedList.Add(data);
     }
     public void RemoveEnemy(EnemyData data)
     {
-        Debug.Log("here");
+        currentNumberForSpawnedEnemy -= 1;
         for (int i = 0; i < currentTurnEnemySpawnedList.Count; i++)
         {
             if (currentTurnEnemySpawnedList[i].name == data.name)
             {
-                Debug.Log("found it");
                 currentTurnEnemySpawnedList.RemoveAt(i);
                 return;
             }
@@ -200,56 +320,61 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
     #region GETTING VALUES FOR SPAWN
 
-    int GetAmountToSpawnPerRound()
+    //how many spawn inter5vals will be called per round
+    int GetQuantityOfSpawnIntervals()
     {
-        return 1;
-
-        int additional = 2;
-
-
-        if(round > 5)
+        //return 1;
+        if(round >= 3)
         {
-            additional += 3;
+            return 4;
         }
-        if(round > 10)
+
+        if(round > 5 && round <= 9)
         {
-            additional += 3;
+            return 6;
         }
-        if(round > 15)
+        if(round > 10 && round <= 14)
         {
-            additional += 3;
+            return 7;
+        }
+        if(round > 15 && round <= 19)
+        {
+            return 8;
         }
         if(round > 20)
         {
-            additional += 4;
+            return 9;
         }
-
-        //20 + 9 = 29 * 2 = 58
-
-        return 2 * (round + additional);
+        return 3;
+       
     }
     int GetAmountToSpawnPerInterval()
     {
-        
-        int value = round / 2;
-        value = Mathf.Clamp(value, 4, 10);
-        return value;
+        //return 1;
+
+        if (round == 1) return 2;
+        if (round > 1 && round <= 5) return 6;
+        if(round > 10 && round <= 15) return 10;
+        if (round > 15) return 15;
+
+        return 1;
 
     }
     float GetIntervalBetweenSpawns()
     {
+
         if (round > 0 && round <= 5)
         {
-            return 3;
+            return 2;
         }
 
         if (round > 5 && round <= 10)
         {
-            return 2;
+            return 1;
         }
         if (round > 10 )
         {
-            return 1.5f;
+            return 0.5f;
         }
 
         return 0;
@@ -259,3 +384,5 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
 
 }
+
+//

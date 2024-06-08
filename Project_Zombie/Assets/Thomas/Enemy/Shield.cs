@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,16 @@ public class Shield : MonoBehaviour, IDamageable
 {
     [SerializeField] EnemyBase enemyHoldingShield;
     [SerializeField] float howMuchPenIsRequiredToGoThrough;
+    string id;
+
+    private void Awake()
+    {
+        id = Guid.NewGuid().ToString();
+    }
+    private void Start()
+    {
+        enemyHoldingShield.ControlEnemyImmunityToExplosion(true);
+    }
 
     public void ApplyBD(BDClass bd)
     {
@@ -15,7 +26,12 @@ public class Shield : MonoBehaviour, IDamageable
 
     public string GetID()
     {
-        return "";
+        return id;
+    }
+
+    public GameObject GetObjectRef()
+    {
+        return gameObject;
     }
 
     public float GetTargetCurrentHealth()
@@ -25,7 +41,7 @@ public class Shield : MonoBehaviour, IDamageable
 
     public float GetTargetMaxHealth()
     {
-        return 0;
+        return -5;
     }
 
     public bool IsDead()
@@ -33,10 +49,29 @@ public class Shield : MonoBehaviour, IDamageable
         return false;
     }
 
+    public void RestoreHealth(float value)
+    {
+        //
+    }
+
     public void TakeDamage(DamageClass damage)
     {
         //if it has pen enough it attacks the other target.
-        
+        //it cnanot be damaged by explosionm damage.
+        //the problem is that it may reach
+
+        if(damage.pen > howMuchPenIsRequiredToGoThrough)
+        {
+            enemyHoldingShield.TakeDamage(damage);
+            return;
+        }
+
+        if (damage.isExplosion)
+        {
+            return;
+        }
+
+        enemyHoldingShield.CallShieldPopUp();
     }
 
     

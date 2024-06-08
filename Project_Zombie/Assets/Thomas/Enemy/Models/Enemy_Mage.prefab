@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 7959060106187158477}
   m_Layer: 6
   m_Name: Enemy_Mage
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -622,6 +622,8 @@ MonoBehaviour:
   _enemyCanvas: {fileID: 8286072349304074365}
   head: {fileID: 7953685603905860846}
   _abilityIndicatorCanvas: {fileID: 0}
+  soundUnitTemplate: {fileID: 0}
+  container: {fileID: 0}
   eyeArray:
   - {fileID: 6843580826245219415}
   - {fileID: 6599444977476182244}

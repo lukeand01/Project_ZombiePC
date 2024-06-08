@@ -545,7 +545,7 @@ GameObject:
   - component: {fileID: 4825173832297872710}
   m_Layer: 6
   m_Name: Enemy_Giant
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -644,7 +644,6 @@ MonoBehaviour:
   debugInitialList: []
   _entityCanvas: {fileID: 7717334786668827456}
   debugStatList: []
-  statAltered_PercentBase_List: []
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
   <IsInvisible>k__BackingField: 0
@@ -689,6 +688,8 @@ MonoBehaviour:
   _enemyCanvas: {fileID: 2950874495343466795}
   head: {fileID: 0}
   _abilityIndicatorCanvas: {fileID: 4651179736912358732}
+  soundUnitTemplate: {fileID: 0}
+  container: {fileID: 0}
 --- !u!1001 &3220574097476456840
 PrefabInstance:
   m_ObjectHideFlags: 0

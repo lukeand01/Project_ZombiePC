@@ -1,3 +1,4 @@
+using DG.Tweening;
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,8 +18,23 @@ public class QuestUnit : ButtonBase
 
     public void SetUp(QuestClass _quest)
     {
+
+        if(_quest == null)
+        {
+            Debug.Log("quest class");
+            return;
+        }
+        if(_quest.questData == null)
+        {
+            Debug.Log("quest data");
+            return;
+        }
+
+        barHolder.SetActive(false);
+
         this._quest = _quest;
-        descriptionText.text = _quest.questData.quest_Description;
+        _quest.SetUnit(this);
+        descriptionText.text = _quest.GetDescription();
         UpdateUI();
     }
 
@@ -26,6 +42,32 @@ public class QuestUnit : ButtonBase
     public void UpdateUI()
     {
         quantityText.text = _quest.amountCurrent + " / " + _quest.amountTotal;
+    }
+
+    public void UpdateBar(float current, float total)
+    {
+        barHolder.SetActive(true);
+
+        bar.fillAmount = current / total;
+    }
+
+    public void SelectEffect(float timer)
+    {
+        StartCoroutine(SelectEffectProcess(timer));
+    }
+    IEnumerator SelectEffectProcess(float timer)
+    {
+        transform.DOScale(1.3f, timer).SetUpdate(true);
+
+        yield return new WaitForSecondsRealtime(timer);
+
+        transform.DOScale(1.2f, timer).SetUpdate(true);
+    }
+
+    public void CompleteQuest()
+    {
+        //do an effect then order its destruction.
+        Destroy(gameObject);
     }
 
 }

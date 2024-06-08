@@ -11,7 +11,7 @@ public class CityHandler : MonoBehaviour
     public static CityHandler instance;
     [SerializeField] CityDataHandler cityDataHandler;
     [SerializeField] List<CityStore> cityStoreList = new(); //i will use this list to give the save data to them once the game starts or to force an update.
-
+    [SerializeField] Transform spawnPos;
 
 
 
@@ -31,18 +31,26 @@ public class CityHandler : MonoBehaviour
         cityDataHandler.UpdateAbilityList();
     }
 
-
-
-
     private void Start()
     {
         UIHandler.instance.ControlUI(true);
-        PlayerHandler.instance._playerController.block.AddBlock("City", BlockClass.BlockType.Combat);
-        //we ask the inventory to pass any item to here
-        PlayerHandler.instance._playerInventory.PassStageInventoryToCityInventory();
 
+        //we ask the inventory to pass any item to here
+        UIHandler.instance._MouseUI.ControlAppear(true);
+        PlayerHandler.instance._playerInventory.PassStageInventoryToCityInventory();
+        PlayerHandler.instance.transform.position = spawnPos.position;
+
+        PlayerHandler.instance._playerController.block.AddBlock("City", BlockClass.BlockType.Combat);
     }
 
+
+    public void StartCity()
+    {
+
+        PlayerHandler.instance._playerCombat.ControlGunHolderVisibility(false);
+        
+        //hide the gun from the player.
+    }
 
 
     public void UpdateGunListUsingCurrentPermaGun(ItemGunData gunData)
@@ -81,8 +89,6 @@ public class CityHandler : MonoBehaviour
     //i need to store the items i already have.
     //i should the info about the progress in the data?
     //only the armoy needs to know if i own the place or not.
-
-
     public void UpdateAbilityListUsingCurrentAbilities()
     {
         List<AbilityActiveData> withoutCurrentList = new();

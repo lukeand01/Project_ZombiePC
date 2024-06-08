@@ -725,6 +725,220 @@
 
 
 //MY GOAL - 1
+
+
+//MY GOAL - 1.5
+//also - when enemies are killed the damagepopup goes down.
+
+//MY GOAL - 2
+//create the blueprint computer.
+//quests can also be seen in the pause ui
+
+
+
+
+//GOAL OF TODAY
+//the charge enemy
+//make sure the shield is working
+//apply effects to teh gun once the process is done
+//create a bd system for the gun.
+//connect to the gunstats. Damage, Magazine, firerate, Pen, Critchance, Critdamage, ReloadSpeed
+//make a way to add tot he shield.
+
+//GOAL OF TODAY
+using static System.Collections.Specialized.BitVector32;
+
+///move system. the player can move and can look around
+///there is the one perma and two temps
+///create ammo system. perma always has infiite ammo
+///can reload. 
+///can change the behavior of bullets. we carry the bullet behavior in the player because this will be universal now.
+///create stat handler for entity.
+///the player has stats
+///the enemy has stats that can be scaled.
+///first i needd to be able to change stats in a non-heavy manner
+///can crit. and it is influenced by player critchance and critdamage. guns also have modifierse.
+///handle penetration.
+///stat reload speed affect reload speed.
+///create a system for handling damage reduction.
+///create popup for damage. it needs to always be facing the player and also show over everything else.
+///can interact with a chest.
+///when you receive resources the game is not paused. the icon appear and goes to the player and then it appears in the top what you gained and how much
+///
+///the effect of many guns appearing till one is hover.
+///i need to randomly select 
+///cannot click till the thing is done spinning.
+///now i want to do the reroll
+///then i will do the equip with no other gun
+///then we will make that your guns can appear by the left.
+///you can hover them to see their stats in relation to the chosen. when you no longer hovering it instantly goes back to only the chosen
+///the rotations of new guns seem to not be working.
+///the chest gun is not swaping the right weapon
+///gain point for shooting. create a nice effect for point gaining
+///create a health bar.
+///create bd system. create bd units that appear somewhere and that you can look at it.
+///create a pause menu.
+///can add and remove bd
+///stats are correct.
+///can stack passives.
+///show all weapons you have and which one is currently being used. show the current ammo all weapons have.
+///there is a weird problem that swapping guns are not working.
+///fix the gun rotation
+///fix the gun swaping to wrong index.
+///creat the chest ability ui
+///three options for ability.
+///you need to roll for these abiity and its based on their tier.
+///you cannot get two rolls of the same ability.
+///create door 
+///create pause
+///create enemy behavior. 
+///create pathfind
+///take a look at destructable terrain
+///create damage class
+///create ui indicators for teh zombie abilities.
+///create three tipes of simple melee. they are just different streghts. they all move in straight lines to the player. 
+///create a bomber enemy. the enemy explodes after getting close.
+///create a tank enemy. its slow and a lot of health. it causes slow in area. its attack stun the player for a short duration
+///create hound. it is fast and deals a lot of damage. but its easy to kill. 
+///create spawn system
+///create system for gunboxes
+///create system for resource box
+///create stunned system
+///fix the pathfind. they are not tarversing where it used to be a gate.
+///the resource chest is not being destroyed.
+///the resource chest is spawning at teh start. it shouldnt.
+///we should go through the resource chest.
+///the enemies are not dying.
+///in the base we wont show any of the combat ui.
+///create stunned system
+///create immune system
+///create dash system
+///create bleeding system.
+///now we create bdunits to show the player what he is suffering. the enemies can also have it but they disaply somewhere else.
+///stun and bleeding apply to enemy
+///the bd in top of enemy´s head is not working because i think grid doesnt work in this utation.
+///you can see all your own bds and pause to check them better. can see the guns and can see the stats. we need a whole list by the right.
+///change it so the description appears as a window instead of staying in place. then i place the passive holderMain there.
+///create and update passive description
+///create and update stat description
+///create ability box. each enemy has a chance to carry a ability box that will be dropped once dead.
+///shotgun spread is not working.
+///fix the way damage pop up is working. the damage should stay after the nemey die. once the enemy die we remove the canvas, and then after there is no more damagepopup it is destroyed
+///should not damage itself.
+///the chest is not being destroyed for some reason. just some times.
+///fix the chest appearing stuck. we can use grtavity spawn the chest high and then let gravity adjust it.
+///the gun is shooting twice sometimes.
+///when swaping you block input till you release your hand
+///reloading must update teh gununit
+///can become invisible for a short duration. meaning that enemies will ignore the target. no visual stuff, just a bd and make it invisible
+///can become immune for a short duration
+///create system for a weapon to give the player passives.
+///Pistol Speed: grants an amount of speed and less cooldown for dash
+///Pistol Sharp: Increases damageback per {}. and a chance to dodge.
+///fix the damage popup. its too far from head and doesnt follow the target. 
+///SMG: has a chance of each shot to shoot one additioanl bullet.
+///sawed off shotgun: deals more damage per additional pellet. 0.5 % per pellet.
+///creates system for dodge. and when you dodge there is a popup
+///creates system for damageback
+///creates system for increasing the amount of shoots based in a modifier.
+///shoot a fireaball at mouse
+///create burning tick
+///instantly reload the mag and deasl damage around based in the magsize.
+///for a short duration all your weapons shoot twice as many bullets.
+///your weapon slot is linked to your gunclass. any changes are made directly.
+///you can drag items.
+///create window description
+///if you release into a player slot and with the right type then we order the swap
+///weapons you are using or abilities do not show in your options
+///you cannot drag your weapon away because you must always have a weapon
+///you can oepn the armory.
+///you can buy stuff in the armory and it will appear in the tab.
+///opening the tab always close citystore ui
+///you can drag away and remove your abilities.
+///you cannot move or do anything while the tab is open
+///create lab
+///create smith
+///shoot a fireaball at mouse
+///instantly reload the mag and deasl damage around based in the magsize.
+///for a short duration all your weapons shoot twice as many bullets.
+///become invisible
+///become immune to damage for a short duration
+///create teh stage menu.
+///can see the name of the store when interacting
+///create loading screen.
+///create the buttons for the pauseUI
+///button for resume game
+///button for settings
+///button for load city (DEBUG)
+///button for exit to deskptop.
+///create the system for loading into teh stage.
+///create the system for loading outn of stage. 
+///remove all passives, all temp weapons, all bds
+///fix the light. its too dark when you load the scene
+///for now you will load into the stage and choose whenever you want to flee. 
+///the ability unit is not working.
+///create victoryUI
+///create defeatUI
+///need to show the resource you grabbed. and the resource you gained.
+///i also want to show alll the passive abilities he got
+///need to show all the stats. How many you killed, how long you took, how many chests openedd, how much points gained and spent
+///the player can die
+///you can use the defeat buttons
+///those resources you get from the stage are carried to the city.
+///add resources that take time to gather.
+///can stacks of different levels.
+///improve passive random getter.
+///the stack in an ability unit always show the bigger stack. 
+///any damage you deal has a chance of causing bleed.
+///reload passive
+///skill cooldown
+///slow the enemy with bullet. every 3 stacks increase the chance of stunning the target with a bullet.
+///passive armor
+///when stackalbe bd runs out of time ti removes 1 stack.
+///crit damage. after 5 stacks you gain vampirism based in your crit damage everytime you do crit.
+///increase maxhealth. at 3 you gain a maxhealth shield. it fully regens after not taking damage for 5 seconds. 
+///increase chance to dodge. at 3 dodging grants a portion of health back.
+///increase critchance. at stack 3 enemies with 80% healt of more received 15% more damage. 
+///fix the bd stacking with additional stats each stack.
+///shield system
+///popup for health recover.
+///clamp all values directly in the entity stat.
+///can add bullet behavior to the guns.
+///certain debuffs cannot stack. so if the same appear the latter should be removed.
+///max health passive - the health is not being calculated properly.
+///shield mechanic based in maxhealth
+///shield recovers after a period of not taking damage.
+///dodge passive
+///recovering health creats a health popup
+///recover health from dodging
+///crit damage and crit vamparism passive
+///crit chance and damage for enemies over 80%
+///popup for health recover
+///clamp all values directly in the entity stat.
+///the enemy for some reason is getting too close to attack. that is ahppening because he is too fast. need to force it to work either way.
+///fix the enemy not moving from spawn
+///the pause stat is weird. fix it
+///add that you can see your gun at the pause
+///you should not start with the shield on
+///the health stacking passive didnt work; the problem is that its not calling for update.
+///the armor passive also not working?
+///the portals are not working when you oepn teh area. they are not spawning enemies.
+///the ability unit should start without selected_ForShow active.
+///didnt see the gun box
+///need the gun box to be rotated properly.
+///need to show title of gun in the gunui.
+///imrpveo gun algortinh. make sure the guns are found based in your roll chance.
+///the player is not touching the ground.
+///give something to distinguish between the types of enemy.
+///create round system
+///show the price of itens when buying in the store
+///create a limit for enemies in the stage.
+///bullets are not being destroy by wall.
+///the aim should be more free. it should only attack if you hover an enemy. or maybe we should have a false arm but the bullet should go to the object.
+///Giant is doing nothing. he starts stunned.
+///giant raidus effect is not working.
+///the cap is not working
+///fix the enemy not moving from spawn
 ///3 more passives 
 ///create luck
 ///luck needs to do something, it needs to increase the chance of getting items.
@@ -746,22 +960,91 @@
 //also - when enemies are killed the damagepopup goes down.
 
 //MY GOAL - 2
-//create the shrine system
-//they spawn in map
-//create the different types of shrine
-//create the system for the goal
-//can fit three goal at the same time.
+///create the shrine system
+///they spawn in map
+///create the different types of shrine
+///create the system for the goal
+///can fit three goal at the same time.
 //create the blueprint computer.
 //quests can also be seen in the pause ui
 
+
+///now i need to get the quest from an algo
+///higher chance of gettign bless, lower chance to get challenge and curse.
+///also the shrine needs to spawn in teh world. there can bne only three srhines at any time.
+///cannot open the shrine if you have 3 quests.
+///the shrine costs points
+
+
+//GOAL OF TODAY
+///the upgrade weapon also costs money to start.
+//the charge enemy
+//make sure the shield is working
+//apply effects to teh gun once the process is done
+//create a bd system for the gun.
+//connect to the gunstats. Damage, Magazine, firerate, Pen, Critchance, Critdamage, ReloadSpeed
+//make a way to add tot he shield.
+
+//GOAL OF TODAY
+//criar upgrade datas.
+///upgrade station aplica um stack de upgrade (10 % de todos os valores da arma) e uma habiliades aleatoria
+///quando vc pega a arma da station tem um popup de q tipo de upgrade foi
+///connetar os status alterados da arma para sua funcionalidades
+///Damage,
+///FireRate,
+///Pen,
+///ReloadSpeed,
+///Magazine,
+///CritDamage,
+///CritChance,
+//Vampirism
+
+//GOAL
+///shield should be working 
+///when you damage the shield is should show a popup.
+///shield should stop the wielder from receing damage explosion
+///criar gun upgrade q permite a arma atrevessar uma pessoa.
+///sniper can do it as well.
+///shield should stop bullets going through.
+///shield should check if there is enough pen, if there is enough it deals damage and is allowed through if i can.
+///get explosion bullet working well. 
+///make it so that the damage pop up stays same place in the x but changes in the y
+
+
+
+//GOAL
+///no menu de pause vc pode ver esses status alterados.
+//also correct the bug where teh damage popup falls down.
+///the popup from the upgrade station should be better.
+///inform the player what was the power he got.
+///create a way to replenish ammo. make it so enemies may drop
+///put an image in the mouse. interaction makes the thing slowly rotate.
+///if hover over an enemy is red.
+///normally is white
+///if over an interactable then its blue.
+
 //MY GOAL - 3
 ///create temp upgrade system
-//apply the changes once the machine is done
-//the machine also cost stuff.
+///apply the changes once the machine is done
+///the machine also cost stuff.
 ///create mage enemy
 ///create artillery enemy. create sound tips foar the player to find the artuillery.
 //create a charger enemy. use the same behavior of the dash.
 //create a bridge
+//need to create a way to replenish ammo.
+//have to check that the calculation of bullets is working
+///a way to show what was the random upgrade the player got.
+///put an image in the mouse, the mouse behaves differently based in what you are hovering.
+
+
+//MY GOAL
+///shooting
+///swap
+///reload
+///dash
+///enemies when hit
+///enemies when they die
+
 
 //MY GOAL - 4
 //create sound for stuff:
@@ -773,19 +1056,78 @@
 //enemies being hit
 //enemies being killed
 //opening the gunchest
+
+//MY GOAL - 5
+//put grpahics and animation
+//create muzzle flash
+//create an effect gfor the bullets so they look better.
+
+
+//NOW THE GOAL IS TO PLAY THE GAME AND FIX THE WORSE PROBLEMS.
+//we should start from the main menu
+//we should play in the builded version.
+
+
+
+
+//MY GOAL
+//mouse ui is not turning red when hovering enemy
+///mouse ui is not showing when you open and pause and close
+///mouse ui should have other shapes in main menu, city and pause
+///spawning behind the portal. whatever rotation is not working.
+///the shrine is not fetching quests
+///the timer for shirne spawn should be bigger.
+///the quest window is not opening when receiving a new quest
+///the quest window is overlaying the pause ui.
+///you can go through a gate with dash.
+///the gun unit has a delay when getttgin description
+///the round take too long to start
+///the bullets should be faster
+///the enemies need bigger colliders.
+///there should be more enemies per wave
+///the cooldown for the portal individual spawn should be lower.
+//for some reason there are more people in the spawn list than are being spawned.
+
+
+//MY GOAL
+//i want enemy to shoot faster on sight but less faster in next shot
+///the enemy projectile is hitting own enemies.
+//i want more enemies in the third round.
+//when going right there is an inivislb ecollider.
+//remove the invisible wall by the right. otherwise player cannot shoot through it
+//i want the enemies attack to be two hitter to 3 hitters. (ranged will be a 2 hitters and melee will be a 3 hitter
+//cannot go through the right door. 
+//too easy to fall in the top
+//i need to put more places for shrines.
 //
 
 
-//i will create the mage now.
-//the mage has a similar behavior to ranged.
-//but when he spots the player. 
-//area of damage its already the artillery.
-//buff the allies and do short and quicky area of damage attacks.
+///check if shrine is spawning
+///check if gunupgrade station is spawned.
+///check if gunbox is spawning
 
 
-//the charger simply charges the player.
-//he has armor in front so he cannot killed by shooting at his head unless you have enough pen.
-//he stops at walls and he can fall
+//now i just need to make sure the abilities are working. so all weapons will be available to get as you wish.
+
+//MY GOAL
+//when i leave the screen i lose the block
+
+
+//PROBLEMS WITH BUILDED VERSION
+///for some reason the camera is not rotating
+//teh canvas is all fucked
+//the city ui is not working
+//the pause ui is not working
+//the dash ui
+//the gun owned ui
+///the character is not interacting
+//the add items appear in the main menu
+//ui for the abilities are not appearing
+///cannot dash
+///cannot open the equi tab
+//the guns and abilities available are not appearing in the equip tab.
+
+
 
 
 //WITH THIS THE VERSION 0.4 IS COMPLETED
@@ -794,21 +1136,22 @@
 
 //MY GOAL FOR THE AFTER THIS
 //work in the city
+//work in the main menu. add the settings
+//create the drop system.
+
+
+//CITY
+//how to make the city interesting?
+//we have character just walking around and working
+//you have to improve the city.
+//the city has a pop, which you gain by completing quests.
+//you need to build houses to actually gain pop
+//and you need other things to build houses.
+//improving buildings require pop as resource
+//create a minigame for a turret defense?
+//i want minigames in the city as well
 //
 
-
-
-//problem
-//for a quest i may want certain things, but perphaps they should only care about how to achieve the thing
-//kill 100 enemies - 
-//or in the stage we can create classes that take a type and then we choose the values there.
-//what about choosing the reward?
-//would reward be this different?
-//rewards can be: bless, bd stats, gun,  
-
-//you should not be able to open gun if the gunupgradestation is working.
-//
-//or should?
 
 //how the temp upgrade system works?
 //you have to choose one of the weapons. 
@@ -816,6 +1159,7 @@
 //it takes a time and when complete it delivers the weapons back.
 //but how the upgrade works?
 //it improves all gun stats.
+//some of these fellas can stack.
 //stats - damage, reloadspeed, magsize, 
 //and it gives one additional value :
 //Headshot - first shot against target deals more damage.
@@ -825,7 +1169,19 @@
 //thick bullet - each bullet goes through one additional target.
 //blood consumer - this weapons has 15% vampirism.
 //Light weight - gives movespeed when holding this weapon.
+//Fragmentation Bullet - every bullet in contact with an enemy breaks off into three other pieces that deal 20% of the damage. they do apply status
+//Possessed - start a quest that after completing it grants this gun higher damage.
+//Sharp Projectile - grants this gun 25% pen.
+//Reload Protector - when you reload this gun you recover 50 % of your shield. you get a shield of 50;
+//
 
+
+
+
+//MECHANICS - DROPS
+//you will have abilities to set pre game
+//you can choose cards, and those cards will spawn things in the game at every x turns.
+//you start with the ammo one.
 
 //upgrade system
 //each gun must have ability passives.

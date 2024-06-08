@@ -52,6 +52,7 @@ MonoBehaviour:
   _interactCanvas: {fileID: 6307336673625464446}
   doorPriceBase: 500
   roomToOpenArray: []
+  doorRequiredArray: []
 --- !u!65 &1161376332650004032
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -669,6 +670,7 @@ GameObject:
   - component: {fileID: 4063442047714560073}
   - component: {fileID: 7904687462937785575}
   - component: {fileID: 6634294597752495247}
+  - component: {fileID: 77447970757007274}
   m_Layer: 9
   m_Name: Graphic
   m_TagString: Untagged
@@ -764,7 +766,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5566950526697008062}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 0.5, y: 0.5, z: 0.5}
@@ -773,3 +775,24 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!65 &77447970757007274
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5566950526697008062}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0000002, y: 0.99999994, z: 1.0000002}
+  m_Center: {x: -0.00000023841858, y: 0, z: 0}

@@ -10,5 +10,26 @@ public class MainMenuUI : MonoBehaviour
 
         UIHandler.instance.ControlUiForMainMenu(true);
         PlayerHandler.instance._playerController.block.AddBlock("MainMenu", BlockClass.BlockType.Complete);
+        UIHandler.instance._MouseUI.ControlAppear(false);
+        Cursor.visible = true;
     }
+
+    public void CallButton_NewGame()
+    {
+        GameHandler.instance._sceneLoader.LoadMainCity();
+    }
+    public void CallButton_LoadGame()
+    {
+
+    }
+    public void CallButton_Settings()
+    {
+
+    }
+    public void CallButton_Quit()
+    {
+        Application.Quit();
+    }
+
+
 }

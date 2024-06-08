@@ -14,6 +14,7 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [SerializeField] GameObject mouseHover;
     [SerializeField] GameObject mouseClick;
     [SerializeField] GameObject base_Selected;
+    [SerializeField] GameObject base_ControlClick;
     [Separator("click")]
     [SerializeField] AudioClip clickClip;
     [SerializeField] AudioClip hoverClip;
@@ -36,6 +37,11 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
+        if(base_ControlClick != null)
+        {
+            if (base_ControlClick.activeInHierarchy) return;
+        }
+
         if (clickClip != null && GameHandler.instance != null) GameHandler.instance._soundHandler.CreateSfx(clickClip);
 
         clickTimerCurrent = clickTimerTotal;
@@ -61,6 +67,12 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         base_Selected.SetActive(choice);
     }
+    public void ControlCannotClick(bool choice)
+    {
+        base_ControlClick.SetActive(choice);
+    }
+
+
     private void Update()
     {
         if (clickTimerCurrent <= 0) return;
@@ -79,6 +91,10 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
+        if (base_ControlClick != null)
+        {
+            if (base_ControlClick.activeInHierarchy) return;
+        }
         if (mouseHover != null) mouseHover.SetActive(true);
         if (hoverClip != null && GameHandler.instance != null) GameHandler.instance._soundHandler.CreateSfx(hoverClip);
     }
@@ -86,6 +102,10 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
+        if (base_ControlClick != null)
+        {
+            if (base_ControlClick.activeInHierarchy) return;
+        }
         if (mouseHover != null) mouseHover.SetActive(false);
     }
 

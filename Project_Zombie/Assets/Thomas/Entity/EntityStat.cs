@@ -191,9 +191,6 @@ public class EntityStat : MonoBehaviour
 
             if (item.IsTempDone())
             {
-
-
-
                 if (item.IsStackable() && !item.LastStack())
                 {
 
@@ -679,6 +676,10 @@ public class EntityStat : MonoBehaviour
         _entityCanvas.CreateFadeUIForRecoverHealth(value);
     }
 
+    public void CallPowerFadeUI(string powerName)
+    {
+        _entityCanvas.CreateFadeUIForPower(powerName);
+    }
 }
 
 //it can rece

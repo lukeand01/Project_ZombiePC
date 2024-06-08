@@ -8,12 +8,6 @@ public class InventoryUI : MonoBehaviour
 
     //we will use this only for resource.
 
-    #region UPDATE INVENTORY LIST
-
-
-
-    #endregion
-
     #region UI FOR NEW ITEM
     [SerializeField] Transform gridContainer;
     [SerializeField] ItemNotificationUnit _itemNotificationUnit;
@@ -72,13 +66,24 @@ public class InventoryUI : MonoBehaviour
         }
         else
         {
-            Debug.Log("couldnt remove");
         }
         
     }
 
     #endregion
 
+    public void CallNotification_GunUpgrade(string gunName, string gunUpgradeName)
+    {
+        ItemNotificationUnit fakeObject = Instantiate(_itemNotificationUnit);
+        fakeObject.transform.localScale = Vector3.one;
+        fakeObject.MakeFake();
+        fakeObject.transform.SetParent(gridContainer);
 
+        ItemNotificationUnit newObject = Instantiate(_itemNotificationUnit);
+        newObject.transform.SetParent(itemNotificationSpawnPos);
+        newObject.transform.position = itemNotificationSpawnPos.position;
+        newObject.transform.localScale = Vector3.one;
+        newObject.SetUp_GunUpgrade(this, gunName, gunUpgradeName, fakeObject.transform);
+    }
 
 }

@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -435,8 +435,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 14.7204, y: 0}
-  m_SizeDelta: {x: 129.4409, y: 100}
+  m_AnchoredPosition: {x: 14.720398, y: 2.2633972}
+  m_SizeDelta: {x: 129.4409, y: 104.5269}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5334605560688633869
 CanvasRenderer:
@@ -492,6 +492,7 @@ MonoBehaviour:
   mouseHover: {fileID: 0}
   mouseClick: {fileID: 0}
   base_Selected: {fileID: 0}
+  base_ControlClick: {fileID: 0}
   clickClip: {fileID: 0}
   hoverClip: {fileID: 0}
   clickTimerTotal: 0

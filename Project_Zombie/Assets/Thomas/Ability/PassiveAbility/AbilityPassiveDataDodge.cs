@@ -35,7 +35,7 @@ public class AbilityPassiveDataDodge : AbilityPassiveData
     
     void OnSuccessfulDodge()
     {
-        PlayerHandler.instance._playerResources.RecoverHealth(_secondValue);
+        PlayerHandler.instance._playerResources.RestoreHealth(_secondValue);
     }
 
 

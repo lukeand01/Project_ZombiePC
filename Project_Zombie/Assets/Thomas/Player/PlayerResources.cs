@@ -1,7 +1,9 @@
 using MyBox;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class PlayerResources : MonoBehaviour, IDamageable
 {
@@ -28,6 +30,12 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
 
         Bless_Set(initialBless);
+        SetInitialQuests();
+    }
+
+    private void FixedUpdate()
+    {
+        QuestHandle();
     }
 
     public void ResetPlayerResource()
@@ -56,7 +64,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
     [ContextMenu("DEBUG HEAL")]
     public void Debug_Heal()
     {
-        RecoverHealth(30);
+        RestoreHealth(30);
     }
     #endregion
 
@@ -140,7 +148,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     }
 
-    public void RecoverHealth(float value)
+    public void RestoreHealth(float value)
     {
         //call a pop 
 
@@ -250,7 +258,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
         yield return new WaitForSecondsRealtime(2);
 
 
-        RecoverHealth(healthTotal * 0.25f);
+        RestoreHealth(healthTotal * 0.25f);
 
         handler._playerController.block.RemoveBlock("Revive");
         BDClass bd = new BDClass("Revive", BDType.Immune, 1.5f);
@@ -330,16 +338,85 @@ public class PlayerResources : MonoBehaviour, IDamageable
     #endregion
 
     #region QUEST SYSTEM
+    [Separator("QUEST")]
+    [SerializeField] List<QuestClass> initialQuestList;
+
+    [SerializeField] List<QuestClass> questList = new(); //the quests that are active.
+
+
+    //we add to the right list.
+    //
+
+    void SetInitialQuests()
+    {
+        foreach (var item in initialQuestList)
+        {
+            AddQuest(item);
+        }
+    }
+
+    void QuestHandle()
+    {
+        foreach (var item in questList)
+        {
+            item.ProgressTimer();
+        }
+    }
 
     public void AddQuest(QuestClass quest)
     {
         //we show in the thing and we update everytime.
 
+        //i need to create a new quest 
 
+
+        if(quest.questData == null)
+        {
+            return;
+        }
+
+        QuestClass newQuest = new QuestClass(quest);
+        newQuest.SetID(Guid.NewGuid().ToString(), this);
+
+        UIHandler.instance._QuestUI.AddQuestUnit(newQuest);    
+        questList.Add(newQuest);   
+
+        newQuest.questData.AddQuest(newQuest);
+
+        UIHandler.instance._QuestUI.OpenUI();
 
     }
 
+    public void RemoveQuest(string id)
+    {
+        for (int i = 0; i < questList.Count; i++)
+        {
+            var item = questList[i];
 
+            if(item.id == id)
+            {
+                questList.RemoveAt(i);
+                item.questData.RemoveQuest(item);
+                if (questList.Count <= 0)
+                {
+                    UIHandler.instance._QuestUI.CloseUI();
+                }
+
+                return;
+            }
+        }
+    }
+
+    public bool HasRoomForQuest()
+    {
+        return questList.Count < 3;
+    }
+
+
+    public GameObject GetObjectRef()
+    {
+        return gameObject;
+    }
 
     #endregion
 

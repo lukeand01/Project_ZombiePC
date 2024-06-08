@@ -19,11 +19,16 @@ public class DescriptionWindow : MonoBehaviour
     private void Awake()
     {
         descriptionHolder = transform.GetChild(0).gameObject;
+        SetGunStat();
     }
 
     public void StopDescription()
     {
         descriptionHolder.SetActive(false);
+
+        gun_Stat_Holder.SetActive(false);
+        gun_Upgrade_Holder.SetActive(false);
+
     }
 
     public void DescribeBD(BDClass bd, Transform posRef)
@@ -79,7 +84,7 @@ public class DescriptionWindow : MonoBehaviour
     public void DescribeGun(GunClass gun, Transform posRef)
     {
         descriptionHolder.SetActive(true);
-        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
+        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position) + new Vector3(-50,0,0);
         CloseStoreDescribe();
 
         nameText.text = gun.data.itemName;
@@ -90,9 +95,21 @@ public class DescriptionWindow : MonoBehaviour
         float damagePerShot = gun.data.GetValue(StatType.Damage);
         int bulletPerShot = gun.data.bulletPerShot;
 
-        damageText.text = $"Damage Per Bullet({damagePerShot} ; Bullet per shot ({bulletPerShot}))";
-        cooldownText.text = "Ammo: " + gun.ammoCurrent.ToString() + " / " + gun.ammoReserve.ToString();
+        damageText.text = $"Damage Per Bullet({damagePerShot} / Bullet per shot ({bulletPerShot}))";
 
+        string gunReserveAmmoString = gun.ammoReserve.ToString();
+        if(gun.ammoReserve == -1)
+        {
+            gunReserveAmmoString = "*";
+        }
+
+        cooldownText.text = "Ammo: " + gun.ammoCurrent.ToString() + " / " + gunReserveAmmoString;
+
+
+        //we also show all upgrades in this fella
+        //and we show the stats, the stats show the 
+        DescribeGun_Stat(gun);
+        DescribeGun_Upgrades(gun);
     }
 
     public void DescribeGunData(ItemGunData gunData, Transform posRef)
@@ -222,4 +239,64 @@ public class DescriptionWindow : MonoBehaviour
 
     }
 
+
+    [Separator("DESCRIPTION FOR GUN")]
+    [SerializeField] GameObject gun_Stat_Holder;
+    [SerializeField] Transform gun_Stat_Container;
+    [SerializeField] StatDescriptionUnit gun_Stat_Template;
+    [SerializeField] GameObject gun_Upgrade_Holder;
+    [SerializeField] Transform gun_Upgrade_Container;
+    [SerializeField] GunUpgradeUnit gun_Upgrade_Template;
+
+
+    List<StatDescriptionUnit> gun_Stat_UnitList = new();
+
+    void SetGunStat()
+    {
+        List<StatType> refList = MyUtils.GetStatForGunListRef();
+
+        foreach (var item in refList)
+        {
+           StatDescriptionUnit newObject = Instantiate(gun_Stat_Template);
+            newObject.SetUp(item, 0); //we give no stats here but when we open with teh gun we change that.
+            newObject.RemoveRaycast();
+            newObject.transform.SetParent(gun_Stat_Container);
+            gun_Stat_UnitList.Add(newObject);
+        }
+
+    }
+
+    void DescribeGun_Stat(GunClass gun)
+    {
+        gun_Stat_Holder.SetActive(true);
+        foreach (var item in gun_Stat_UnitList)
+        {
+            float value = gun.GetGunTotalStat(item.stat);
+            item.UpdateWithAlteredValue(gun.data.GetValue(item.stat), value);
+        }
+    }
+    void DescribeGun_Upgrades(GunClass gun)
+    {
+        //we clear the container every time.
+        //
+        if(gun.gunUpgradeList.Count == 0)
+        {
+            return;
+        }
+
+        gun_Upgrade_Holder.SetActive(true);
+
+        for (int i = 0; i < gun_Upgrade_Container.childCount; i++)
+        {
+            Destroy(gun_Upgrade_Container.GetChild(i).gameObject);
+        }
+
+        foreach (var item in gun.gunUpgradeList)
+        {
+            GunUpgradeUnit newObject = Instantiate(gun_Upgrade_Template);
+            newObject.SetUp(item.upgradeName, item.upgradeDescription);
+            newObject.transform.SetParent(gun_Upgrade_Container);
+        }
+
+    }
 }

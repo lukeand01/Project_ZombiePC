@@ -7,12 +7,14 @@ using UnityEngine.UI;
 
 public class StatDescriptionUnit : ButtonBase
 {
-    [SerializeField] StatType stat;
+    [field:SerializeField] public StatType stat {  get; private set; }
     float value;
     [SerializeField] TextMeshProUGUI statDescriptionText;
     [SerializeField] GameObject selected;
 
     List<ModifierClass> modifierList = new();
+
+    Image mainImage;
 
 
     public void SetUp(StatType stat, float value)
@@ -20,6 +22,16 @@ public class StatDescriptionUnit : ButtonBase
         this.stat = stat;
         this.value = value;
         statDescriptionText.text = stat.ToString() + ": " + value.ToString();
+    }
+    public void RemoveRaycast()
+    {
+        mainImage = GetComponent<Image>();
+        mainImage.raycastTarget = false;
+    }
+
+    public void UpdateWithAlteredValue(float value, float alteredValue)
+    {
+        statDescriptionText.text = $"{stat} : {value} ({alteredValue})";
     }
 
     public void UpdateStat(string value, List<ModifierClass> modifierList, float totalValue)

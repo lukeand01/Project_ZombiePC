@@ -20,7 +20,8 @@ public class UIHandler : MonoBehaviour
     [SerializeField] DescriptionWindow descriptionWindowRef;
     [SerializeField] EndUI endUIRef;
     [SerializeField] QuestUI questUIRef;
-
+    [SerializeField] MouseUI mouseUIRef;
+    public DebugUI debugui;
     #region GETTERS 
     public PlayerUI _playerUI { get {  return playerUIRef; } }
 
@@ -44,6 +45,8 @@ public class UIHandler : MonoBehaviour
     public EndUI _EndUI { get { return endUIRef; } }
 
     public QuestUI _QuestUI { get { return questUIRef; } }
+
+    public MouseUI _MouseUI { get { return mouseUIRef; } }
     #endregion
 
     
@@ -68,10 +71,11 @@ public class UIHandler : MonoBehaviour
     void ControlStageUI(bool isVisible)
     {
         //stage ui is gun, playerui, abilityu
+
         gunUI.ControlUI(isVisible);
         _playerUI.ControlUI(isVisible);
         _AbilityUI.ControlUI(isVisible);
-
+        _MouseUI.ControlVisibility(isVisible);
     }
 
 

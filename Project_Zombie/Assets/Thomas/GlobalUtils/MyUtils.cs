@@ -61,6 +61,7 @@ public static class MyUtils
             StatType.Magazine,
             StatType.CritDamage,
             StatType.CritChance,
+            StatType.Vampirism
 
         };
     }
@@ -384,5 +385,23 @@ public static class MyUtils
         }
 
         return level * 5;
+    }
+
+
+    public static List<BDClass> GetGunListToBuffEveryValue(int value)
+    {
+        //it will buff damage as percent 
+        //damage, firespeed, 
+        return new List<BDClass>() 
+        { 
+            new BDClass("GenericBuff", StatType.Damage, 0, value, 0),
+            new BDClass("GenericBuff", StatType.Pen, 0, value, 0),
+            new BDClass("GenericBuff", StatType.CritChance, 0, value, 0),
+            new BDClass("GenericBuff", StatType.CritDamage, 0, value, 0),
+            new BDClass("GenericBuff", StatType.FireRate, 0, value, 0),
+            new BDClass("GenericBuff", StatType.Magazine, 0, value, 0),
+            new BDClass("GenericBuff", StatType.ReloadSpeed, 0, value, 0),
+        };
+
     }
 }

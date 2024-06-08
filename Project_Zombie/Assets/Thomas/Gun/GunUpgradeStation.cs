@@ -1,3 +1,4 @@
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,11 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
 {
     [SerializeField] InteractCanvas _interactCanvas;
     [SerializeField] GunUpgradeStationCanvas _gunUpgradeStationCanvas;
-    [SerializeField] int pointCost; 
+    [SerializeField] int pointCost;
+
+    [Separator("GUN UPGRADE")]
+    [SerializeField] List<GunUpgradeData> gunUpgradeList = new();
+    [SerializeField] float timeToUpgradeGun;
     string id;
 
     GunClass gun;
@@ -22,7 +27,12 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
     {
         id = Guid.NewGuid().ToString();
 
-        upgradeTimerTotal = 10;
+        upgradeTimerTotal = timeToUpgradeGun;
+    }
+
+    private void Start()
+    {
+        _interactCanvas.ControlPriceHolder(pointCost);
     }
 
     private void FixedUpdate()
@@ -64,6 +74,41 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
 
         //do the thing for the gun.
 
+        
+
+    }
+
+    GunUpgradeData GetRandomUpgrade()
+    {
+        GunUpgradeData data = null;
+        int safeBreak = 0;
+
+
+        while(data == null)
+        {
+            safeBreak++;
+            if(safeBreak > 1000)
+            {
+                Debug.Log("had to break here");
+                return null;
+            }
+
+            int random = UnityEngine.Random.Range(0, gunUpgradeList.Count);
+            if (gun.HasUpgradeNonStackable(gunUpgradeList[random]))
+            {
+                continue;
+            }
+            else
+            {
+                data = gunUpgradeList[random];
+            }
+            
+
+        }
+
+
+
+        return data;
     }
 
     //i need to know the index of the weapon.
@@ -81,12 +126,27 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
     }
     void GiveGunToPlayer()
     {
+       
+        
+
+
+
+        gun.AddUpgradeStack(0.1f);
+        GunUpgradeData data = GetRandomUpgrade();
+        data.AddUpgrade(gun);
+        gun.AddUpgradeToList(data);
+
+
+        gun.ReloadGunForFree();
+
+        UIHandler.instance.InventoryUI.CallNotification_GunUpgrade(gun.data.itemName, data.upgradeName);
+
         PlayerHandler.instance._playerCombat.ReceiveTempGun_FromUpgradeStation();
         gun.RemoveUpgradeStation();
-        Debug.Log("gave gun");
 
         hasGun = false;
         isActive = false;
+
     }
 
 
@@ -98,6 +158,9 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
     public void Interact()
     {
         //need to remove the gun from the player and force the player equip
+
+        
+
 
         if (isActive)
         {
@@ -117,6 +180,7 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
             if (PlayerHandler.instance._playerResources.HasEnoughPoints(pointCost))
             {
                 StartStation();
+                PlayerHandler.instance._playerResources.SpendPoints(pointCost);
             }
 
         }
@@ -126,7 +190,15 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
 
     public void InteractUI(bool isVisible)
     {
-        _interactCanvas.ControlInteractButton(isVisible);
+        if(isActive && !hasGun)
+        {
+            _interactCanvas.ControlInteractButton(false);
+        }
+        else
+        {
+            _interactCanvas.ControlInteractButton(isVisible);
+        }
+        
     }
 
     public bool IsInteractable()
@@ -150,6 +222,8 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
     }
 
     
+
+
 }
 
 //what about a station for that uses points and simply increase stats.
