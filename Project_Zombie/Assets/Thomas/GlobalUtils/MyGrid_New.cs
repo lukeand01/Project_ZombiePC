@@ -13,8 +13,13 @@ public class MyGrid_New : LayoutGroup
     [ConditionalField(nameof(canControlSize))][SerializeField] Vector3 size = Vector3.one;
 
     [Separator("SPACING")]
-    [SerializeField] float spacing;
+    [SerializeField] float spacingX;
     [SerializeField] float spacingY;
+
+    [Separator("SPACING BASED IN SCREEN SIZE")]
+    [SerializeField] bool shouldUseScreenSpacing;
+    [ConditionalField(nameof(shouldUseScreenSpacing))][SerializeField] float spacingBasedInPercentScreenWidth = 0.1f;
+    [ConditionalField(nameof(shouldUseScreenSpacing))][SerializeField] float spacingBasedInPercentScreenHeight = 0.1f;
 
     [Separator("Limit")]
     public int limitPerLine = 3;
@@ -56,10 +61,26 @@ public class MyGrid_New : LayoutGroup
             float itemWidth = item.sizeDelta.x;
             currentLimit++;
 
+            int spacingY_Calculated = 0;
+            int spacingX_Calculated = 0;
+
+
+            if (shouldUseScreenSpacing)
+            {
+                spacingX_Calculated = (int)(Screen.width * spacingBasedInPercentScreenWidth);
+                spacingY_Calculated = (int)(Screen.height * spacingBasedInPercentScreenHeight);
+            }
+            else
+            {
+                spacingY_Calculated = (int)(spacingY - 100);
+                spacingX_Calculated = (int)(itemWidth + spacingX);
+            }
+
+
             if (currentLimit > limitPerLine)
             {
                 currentLimit = 1;
-                posY += (int)(spacingY - 100);
+                posY += spacingY_Calculated;
                 posX = 0;
             }
 
@@ -68,10 +89,17 @@ public class MyGrid_New : LayoutGroup
                 item.localScale = size;
             }
 
+            
+           
             SetChildAlongAxis(item, 0, posX - padding.left);
             SetChildAlongAxis(item, 1, posY - padding.top);
-            posX += (int)(itemWidth + spacing);
+
+
+            posX += spacingX_Calculated;
+
         }
     }
+
+    //the spacingX should be based in screen widhg and height
 
 }

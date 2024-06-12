@@ -243,10 +243,7 @@ public class ChestUI : MonoBehaviour
 
     public void GunEquip(ButtonChestEquip buttonEquip)
     {
-        //we need to check if there is a least one free slot.
-        //then we give this weapon to the player
-
-        //we use the buttonequip to trigger effects on it in case we need.
+        //why is this not updating?
 
 
         PlayerCombat combat = PlayerHandler.instance._playerCombat;

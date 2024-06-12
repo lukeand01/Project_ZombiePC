@@ -40,7 +40,9 @@ public class InventoryUI : MonoBehaviour
 
     public void CallItemNotification(ItemClass item)
     {
-
+        //must not call this if i am in anotther scene
+        //we will not create this.
+        if (LocalHandler.instance == null && CityHandler.instance == null) return; 
 
         ItemNotificationUnit fakeObject = Instantiate(_itemNotificationUnit);
         fakeObject.transform.localScale = Vector3.one;

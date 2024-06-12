@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: Ranged
   enemyModel: {fileID: 1727601203664543072, guid: 7cad7924635a21448a488ecd076e8323, type: 3}
   attackRange: 50
-  attackSpeed: 1
+  attackSpeed: 5
   initialStatList:
   - stat: 0
     initialValue: 200

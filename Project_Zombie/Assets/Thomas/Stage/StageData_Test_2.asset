@@ -24,13 +24,13 @@ MonoBehaviour:
     chancePerLevelToSpawn: 0
     chanceSpawnMaxCap: 0
     chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 6
+    maxAllowedAtAnyTime: 4
   - Id: Simple Melee 1
     data: {fileID: 11400000, guid: 3839579ea0c928f4ea734d2f5de59aa5, type: 2}
     min: 0
     max: 0
     baseChanceToSpawn: 60
-    chancePerLevelToSpawn: -2
+    chancePerLevelToSpawn: -5
     chanceSpawnMaxCap: 0
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 0
@@ -40,7 +40,7 @@ MonoBehaviour:
     max: 0
     baseChanceToSpawn: 20
     chancePerLevelToSpawn: 5
-    chanceSpawnMaxCap: 0
+    chanceSpawnMaxCap: 60
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 0
   - Id: Enemy 3

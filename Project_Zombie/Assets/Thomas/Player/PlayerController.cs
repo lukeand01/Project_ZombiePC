@@ -34,14 +34,7 @@ public class PlayerController : MonoBehaviour
     {
 
 
-        if (handler._cam == null)
-        {
-            UIHandler.instance.debugui.UpdateDEBUGUI(" zero");
-        }
-        else
-        {
-            UIHandler.instance.debugui.UpdateDEBUGUI("no longer zero");
-        }
+        
 
         if (handler == null) return;
 

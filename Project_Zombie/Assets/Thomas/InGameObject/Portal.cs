@@ -89,7 +89,6 @@ public class Portal : MonoBehaviour
     public void Spawn(EnemyData enemy)
     {
 
-
         int round = LocalHandler.instance.round;
         EnemyBase newObject = Instantiate(enemy.enemyModel, spawnPoint.transform.position + Vector3.forward, Quaternion.identity);
         newObject.SetStats(round);

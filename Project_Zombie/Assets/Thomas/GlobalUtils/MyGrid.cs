@@ -153,7 +153,7 @@ public class MyGrid : LayoutGroup
 
         int posX = 0;
 
-        //then we use spacing.
+        //then we use spacingX.
 
         int sideModifier = 1;
 

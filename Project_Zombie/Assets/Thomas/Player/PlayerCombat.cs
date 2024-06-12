@@ -42,8 +42,12 @@ public class PlayerCombat : MonoBehaviour
     private void Start()
     {
 
+        //the problem is because this is starting somewhere else where there is no cityhandler. i simply must call it from the cityhandler.
+
         SetUp();
         _gunUI = UIHandler.instance.gunUI;
+        
+        
     }
 
     private void Update()
@@ -61,6 +65,13 @@ public class PlayerCombat : MonoBehaviour
     private void FixedUpdate()
     {
         HandleShield();
+
+
+        //TESTING
+
+        //so the problem is simply the calling.
+
+  
     }
 
     void DebugCreateLaserAim()
@@ -104,15 +115,38 @@ public class PlayerCombat : MonoBehaviour
         }
 
 
-       UIHandler.instance._EquipWindowUI.GetEquipForPermaGun(gunList[0]);
+        UIHandler.instance._EquipWindowUI.GetEquipForPermaGun(gunList[0]);
 
         if(CityHandler.instance != null)
         {
             CityHandler.instance.UpdateGunListUsingCurrentPermaGun(gunList[0].data);
         }
+        
+
+        
+        //StartCoroutine(CallThisLater());
+
+        //we could call this when we open the thing as well, to make sure it opens at the right momet
 
     }
 
+    //we might give more time for everything to load in teh sceneloader.
+    IEnumerator CallThisLater()
+    {        
+        yield return new WaitForSeconds(2);
+
+        if (CityHandler.instance != null)
+        {
+            //UIHandler.instance.debugui.UpdateDEBUGUI("DID CALL THIS");
+            
+        }
+        else
+        {
+            //UIHandler.instance.debugui.UpdateDEBUGUI("DIDNT CALL THIS");
+        }
+    }
+
+    //why is the thing not updating. it will update in update just to test it.
 
     public void ResetPlayerCombat()
     {

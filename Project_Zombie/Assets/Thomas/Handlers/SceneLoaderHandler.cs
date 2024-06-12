@@ -95,14 +95,19 @@ public class SceneLoaderHandler : MonoBehaviour
 
         yield return StartCoroutine(LoadProcess(index));
 
+        yield return new WaitForSecondsRealtime(1);
+
         GameHandler.instance.ResumeGame();
         UIHandler.instance._pauseUI.ForceClosePause();
 
         currentStageData = stage;
+        if (CityHandler.instance != null)
+        {
+            //we tell the cityhandler to recalculate everything regarding the citystores and equip window
+            CityHandler.instance.StartCity();
+        }
 
-        
-
-        if(PlayerHandler.instance != null)
+        if (PlayerHandler.instance != null)
         {
             //reset the abilities and guns.
             PlayerHandler.instance.ResetPlayer();
@@ -110,13 +115,15 @@ public class SceneLoaderHandler : MonoBehaviour
 
         yield return StartCoroutine(RaiseCurtainProcess());
 
-
         PlayerHandler.instance._playerController.block.ClearBlock();
-        if (CityHandler.instance)
+
+        if (CityHandler.instance != null)
         {
             //we tell the cityhandler to recalculate everything regarding the citystores and equip window
-            CityHandler.instance.StartCity();
+            PlayerHandler.instance._playerController.block.AddBlock("City", BlockClass.BlockType.Combat);
         }
+
+
     }
 
 
@@ -147,6 +154,10 @@ public class SceneLoaderHandler : MonoBehaviour
 
         yield return new WaitUntil(() => CityHandler.instance != null || LocalHandler.instance != null);
 
+        if(CityHandler.instance != null)
+        {
+            //UIHandler.instance.debugui.UpdateDEBUGUI("FIXED THIS");
+        }
 
 
         currentSceneIndex = index;

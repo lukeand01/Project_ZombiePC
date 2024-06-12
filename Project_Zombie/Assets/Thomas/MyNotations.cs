@@ -1106,6 +1106,31 @@ using static System.Collections.Specialized.BitVector32;
 ///check if gunupgrade station is spawned.
 ///check if gunbox is spawning
 
+///the gate is not opening
+///the left last gate is not passable
+///the ui for the gunbox is wrong. the container not working
+///when you get a new weapon fromt the gunbox its not appearing in the gun slots.
+///i think the bullets should not have shadow because the shadows seem like the bullets
+///very common getting stuck in different grounds.
+//the enemies are too slow perphaps or they getting easily stuck because they are taking too long to go after the player. perphaps the solution would be to respawn some of them if they are too far for too long.
+//too many enemies in the second wave. or they are too tanky. 
+///so in the builded version adding a gun is not updating the ui
+///also i cannot see the description window for the gun unit
+///the box didnt destroyed once the ability was chosen
+//the slow bullet is not working and breaking the gun
+///the ranged are shooting too fast.
+///
+
+//FIXE GOALS
+//certain abilities are just not being added and not show in the thing
+//the slow bullet are breaking the bullet behavior.
+//the new portals are not being used to spawn the fellas.
+//
+
+//DESIGN GOALS
+//bleed deals little damage. it should just deal more damage.
+//
+
 
 //now i just need to make sure the abilities are working. so all weapons will be available to get as you wish.
 
@@ -1116,28 +1141,77 @@ using static System.Collections.Specialized.BitVector32;
 //PROBLEMS WITH BUILDED VERSION
 ///for some reason the camera is not rotating
 //teh canvas is all fucked
-//the city ui is not working
-//the pause ui is not working
+///the resource ui is not working
+///the stat in pause ui is not working
+//the store ui
 //the dash ui
 //the gun owned ui
 ///the character is not interacting
 //the add items appear in the main menu
-//ui for the abilities are not appearing
+///ui for the abilities are not appearing
 ///cannot dash
 ///cannot open the equi tab
-//the guns and abilities available are not appearing in the equip tab.
+///the guns and abilities available are not appearing in the equip tab.
+//one of the ability store items is not working
+
+//the city has no block
+///the gun in equip window not updating
+///the ability in equip window not updating
 
 
+//how to get the thing to work? the unit is not working in teh continar
 
 
 //WITH THIS THE VERSION 0.4 IS COMPLETED
 
+//CRITICS FOR VERSION 0.4
+//
+
+//VERSION 0.6
+
+//MECHANICS
+//the gun box is changed to look more like cod
+//create the drop system
+//you can build new buildings for your city.
+//there are npcs walking around. they do nothing but they have to pretend to work
+//create pop resource for city.
+//there is an area where you can train and test your guns and skills
+//there is a building that you can perma increase your stats.
+
+//CONTENT
+//2 new enemies
+//3 new guns
+//3 new gun upgrades
+//3 new quests
+//5 new passive abilities
+//the turret active ability.
+
+//PERFOMANCE
+//pooling for projectiles
+//pooling for enemies
+
+//GENERAL FIXES
+//
 
 
 //MY GOAL FOR THE AFTER THIS
 //work in the city
 //work in the main menu. add the settings
 //create the drop system.
+//create the pooling system which will improve the perfoamnce for projectiles
+//create pooling for enemies as well.
+//need to work in the buy store item screen.
+//fix that the equip window will show the last position of the drag item for a splitsecond.
+//create more passive abilities
+//create more active abilities
+//more gun upgrades
+//more enemies
+//more guns
+//more quests
+//add effects to the bullets
+//when you pick the resource box it should stack the different resource being granted if they are the same.
+//i think the ranged units should try moving after every hit. especially if the player gets too close.
+//the gun box shouldnt be a ui. it should be like cod, a weapon rising to the air as the game continues to play.
 
 
 //CITY

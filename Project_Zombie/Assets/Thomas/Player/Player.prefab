@@ -237,10 +237,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityActiveList: []
   abilityPassiveList: []
-  debugAbilityActiveStartingList:
-  - {fileID: 11400000, guid: 018520bf817226e4eae4e2e69bd9dfa4, type: 2}
-  debugPassiveStartingList:
-  - {fileID: 11400000, guid: 3b6feb5fa5369804d938fe09dcb10e89, type: 2}
+  debugAbilityActiveStartingList: []
+  debugPassiveStartingList: []
   <abilityList_CannotStack>k__BackingField: []
   <abilityList_HigherChance>k__BackingField: []
 --- !u!114 &2760048031163321034

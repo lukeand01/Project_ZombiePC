@@ -475,7 +475,7 @@ public class LocalHandler : MonoBehaviour
 
     void ChestGunSpawn(bool isFirst = false)
     {
-        Debug.Log("chest gun spawn");
+
         //put in a random position it can be the same.
         int min = 0;
 
@@ -609,11 +609,14 @@ public class LocalHandler : MonoBehaviour
     [SerializeField] ChestAbility chestAbilityTemplate;
 
     float chestAbilityTotal;
-    float chestAbilityCurrent;
+    [SerializeField] float chestAbilityCurrent;
+
+    //its better to check directly here than to keep in the portal.
+    //or other way to get abilities.
 
     void ChestAbilitySet()
     {
-        chestAbilityTotal = 35;
+        chestAbilityTotal = 3;
         chestAbilityCurrent = chestAbilityTotal;
     }
 
@@ -624,6 +627,8 @@ public class LocalHandler : MonoBehaviour
 
             return;
         }
+
+        UIHandler.instance.debugui.UpdateDEBUGUI(chestAbilityCurrent.ToString());
 
         if(chestAbilityCurrent > 0)
         {

@@ -27,6 +27,9 @@ public class EquipWindowUI : MonoBehaviour
         SetUIEquipWindow();
         currentOpenOptionIndex = -1;
     }
+
+
+
     private void Start()
     {
         descriptionWindow = UIHandler.instance._DescriptionWindow;

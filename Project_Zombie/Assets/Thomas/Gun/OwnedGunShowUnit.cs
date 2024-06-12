@@ -20,6 +20,9 @@ public class OwnedGunShowUnit : ButtonBase
 
     GunClass gun;
 
+
+    
+
     private void Awake()
     {
         holder.SetActive(false);
@@ -53,6 +56,9 @@ public class OwnedGunShowUnit : ButtonBase
 
     private void Update()
     {
+       
+
+
         isPause = UIHandler.instance._pauseUI.IsPauseOn();
         isEnd = UIHandler.instance._EndUI.IsEnd();
 
@@ -60,11 +66,17 @@ public class OwnedGunShowUnit : ButtonBase
         {
             select_ForPause.SetActive(false);
         }
+
+
+      
+
     }
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
         base.OnPointerEnter(eventData);
+
+
 
         Debug.Log("poiinter enter");
 

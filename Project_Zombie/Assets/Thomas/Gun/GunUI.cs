@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -77,8 +78,15 @@ public class GunUI : MonoBehaviour
     [SerializeField] OwnedGunShowUnit[] ownedGunShowUnits;
     OwnedGunShowUnit currentOwnedGunShowUnit;
 
+
+    private void Update()
+    {
+        //UIHandler.instance.debugui.UpdateDEBUGUI("This is visible " + ownedGunShowUnits[1].gameObject.activeInHierarchy);
+    }
+
     public void SetOwnedGunUnit(GunClass gun, int index)
     {
+        ownedGunShowUnits[index].gameObject.SetActive(true);
         ownedGunShowUnits[index].SetUp(gun);
     }
 

@@ -20,12 +20,14 @@ MonoBehaviour:
   - stat: 0
     initialValue: 1000
   - stat: 1
-    initialValue: 4.5
+    initialValue: 5
   - stat: 2
-    initialValue: 90
+    initialValue: 150
   scaleStatList:
   - stat: 0
     initialValue: 50
+  - stat: 2
+    initialValue: 5
   audio_Hit: {fileID: 8300000, guid: 8e4851963e3ebde4b948020b48d7cd78, type: 3}
   audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
   audio_Spawned: {fileID: 0}

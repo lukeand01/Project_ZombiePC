@@ -48,10 +48,17 @@ public class CityHandler : MonoBehaviour
     {
 
         PlayerHandler.instance._playerCombat.ControlGunHolderVisibility(false);
-        
+
+        //ready the equip here and i get ref from the player
+        ItemGunData currentPermaGun = PlayerHandler.instance._playerCombat.GetCurrentPermaGun();
+        UpdateGunListUsingCurrentPermaGun(currentPermaGun);
+
+        UpdateAbilityListUsingCurrentAbilities();
+
         //hide the gun from the player.
     }
 
+    //cant i call this directly from somewhere else?
 
     public void UpdateGunListUsingCurrentPermaGun(ItemGunData gunData)
     {
@@ -71,14 +78,13 @@ public class CityHandler : MonoBehaviour
         }
 
 
-
         UIHandler.instance._EquipWindowUI.UpdateOptionForGunContainer(withoutCurrentList);
     }
 
 
     public void BuyAndUpdateGun(ItemGunData gunData)
     {
-        Debug.Log("call this");
+
         ItemGunData currentPerma = PlayerHandler.instance._playerCombat.GetCurrentPermaGun();
         cityDataHandler.cityArmory.BuyGun(gunData);
         cityDataHandler.UpdateGunList();
