@@ -51,11 +51,11 @@ public class EnemyBomber : EnemyBase
         targetLayers  |= (1 << 3);
         targetLayers |= (1 << 8);
 
-        RaycastHit[] targets = Physics.SphereCastAll(transform.position, distanceForAttack, Vector3.up, 0, targetLayers);
+        RaycastHit[] targets = Physics.SphereCastAll(transform.position, data.attackRange, Vector3.up, 0, targetLayers);
 
         DamageClass damage = GetDamage();
 
-
+        PlayerHandler.instance.TryToCallExplosionCameraEffect(transform);
 
 
         foreach (var item in targets)
@@ -67,7 +67,7 @@ public class EnemyBomber : EnemyBase
             //push it from teh palyer too
         }
 
-        Destroy(gameObject);
+        Die();
        
     }
 
@@ -81,7 +81,7 @@ public class EnemyBomber : EnemyBase
         }
         else
         {
-            _abilityIndicatorCanvas.StartCircleIndicator(data.attackRange);
+            _abilityIndicatorCanvas.StartCircleIndicator(data.attackRange * 1.1f);
             _abilityIndicatorCanvas.ControlCircleFill(current, total);
         }
 

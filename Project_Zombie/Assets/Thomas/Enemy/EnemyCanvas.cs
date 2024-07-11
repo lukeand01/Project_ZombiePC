@@ -15,7 +15,6 @@ public class EnemyCanvas : MonoBehaviour
 
     Vector3 sameTarget;
 
-    bool shouldDestroyItself;
 
     private void Awake()
     {
@@ -38,10 +37,6 @@ public class EnemyCanvas : MonoBehaviour
     private void Update()
     {
 
-        if(damageContainer.childCount <= 0 && shouldDestroyItself)
-        {
-            Destroy(gameObject);
-        }
        
         Quaternion rotation = Quaternion.LookRotation(sameTarget);
         rotation.eulerAngles = new Vector3(0, rotation.eulerAngles.y, 0);
@@ -52,7 +47,6 @@ public class EnemyCanvas : MonoBehaviour
 
     public void MakeDestroyItself(Vector3 pos)
     {
-        shouldDestroyItself = true;
         transform.position = pos;
         healthHolder.SetActive(false);
     }

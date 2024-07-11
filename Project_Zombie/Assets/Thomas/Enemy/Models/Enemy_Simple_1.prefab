@@ -165,7 +165,7 @@ Transform:
   m_GameObject: {fileID: 1806195253991736956}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.79, y: 0, z: 0}
+  m_LocalPosition: {x: 18.98, y: 1.5600001, z: 0.82999986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -238,7 +238,11 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 3839579ea0c928f4ea734d2f5de59aa5, type: 2}
   _enemyCanvas: {fileID: 6085177228700293304}
   head: {fileID: 3636954239973724494}
+  _entityEvents: {fileID: 9025989907392422924}
+  _entityStat: {fileID: 1333699426865011604}
+  agent: {fileID: 1497500476275291310}
   _abilityIndicatorCanvas: {fileID: 0}
+  _enemySightedByCamera: {fileID: 7654666042393462055}
   soundUnitTemplate: {fileID: 0}
   container: {fileID: 0}
   shouldOnlyMoveWhenFacing: 0
@@ -268,7 +272,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugInitialList: []
   _entityCanvas: {fileID: 3003473527723736535}
-  debugStatList: []
+  debugStatList:
+  - stat: 0
+    initialValue: 165
+  - stat: 1
+    initialValue: 3.5
+  - stat: 2
+    initialValue: 60
+  - stat: 3
+    initialValue: 0
+  - stat: 4
+    initialValue: 0
+  - stat: 5
+    initialValue: 0
+  - stat: 7
+    initialValue: 0
+  - stat: 6
+    initialValue: 0
+  - stat: 8
+    initialValue: 0
+  - stat: 9
+    initialValue: 0
+  - stat: 10
+    initialValue: 0
+  - stat: 11
+    initialValue: 0
+  - stat: 12
+    initialValue: 0
+  - stat: 13
+    initialValue: 0
+  - stat: 14
+    initialValue: 0
+  - stat: 15
+    initialValue: 0
+  - stat: 16
+    initialValue: 0
+  - stat: 17
+    initialValue: 0
+  - stat: 18
+    initialValue: 0
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
   <IsInvisible>k__BackingField: 0
@@ -721,6 +763,7 @@ GameObject:
   - component: {fileID: 1980616049848541320}
   - component: {fileID: 3385014555580605895}
   - component: {fileID: 4581665985073333034}
+  - component: {fileID: 7654666042393462055}
   m_Layer: 6
   m_Name: Graphic
   m_TagString: Untagged
@@ -793,6 +836,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7654666042393462055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853563676464255862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae645c9026ab0244ac1ae58365859f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5118846953716150809
 GameObject:
   m_ObjectHideFlags: 0
@@ -974,7 +1029,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.869
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

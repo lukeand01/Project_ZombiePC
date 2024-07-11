@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BulletScript : MonoBehaviour
 {
@@ -11,17 +12,42 @@ public class BulletScript : MonoBehaviour
     [SerializeField] Vector3 dir;
     bool canMove;
     [SerializeField] DestroySelf _destroySelf;
+    [SerializeField] BoxCollider _collider;
+    [SerializeField]TrailRenderer _trailRenderer;
+    [SerializeField] TrailRenderer _trailRenderer2;
 
+    //we will create a place to store for teh player.
 
+    LayerMask _layer;
+
+    //
+
+    public void ResetToReturnToPool()
+    {
+        if (_trailRenderer != null)
+        {
+            _trailRenderer.Clear();
+            
+        }
+        if (_trailRenderer2 != null)
+        {
+            _trailRenderer2.Clear();
+        }
+    }
+
+    private void Awake()
+    {
+        _layer |= (1 << 14);
+    }
 
     public void SetUp(string id, Vector3 dir)
     {
         ownedID = id;
         this.dir = dir;
         canMove = true;
-
+        _collider.enabled = true;
         //none of them have range.
-        _destroySelf.SetUpDestroy(7);
+        _destroySelf.SetUpDestroy(7, this);
     }
     public void MakeEnemy()
     {
@@ -32,14 +58,46 @@ public class BulletScript : MonoBehaviour
     private void Update()
     {
         //
-        if (!canMove) return;
-        //the bullet keeps on moving.
 
-        transform.position += dir.normalized * speed * Time.deltaTime;
 
 
      
 
+    }
+    private void FixedUpdate()
+    {
+        if (!canMove) return;
+        //the bullet keeps on moving. 
+        RaycastHit hit;
+       bool isWall = Physics.Raycast(transform.position, dir.normalized, out hit, 500, _layer);
+
+
+
+        if (isWall && hit.collider != null)
+        {
+
+            //we check the distance and if its low enough we assume its going to hit anyway
+            if(hit.distance <= 0.5f) //if we are at this distance we will assume hit already.
+            {
+                //so what we must do instead  because if its a shield then we should stop.
+                canMove = false;
+                
+                //have to check 
+
+                IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+
+                if(damageable != null)
+                {
+                    CalculateDamageable(damageable);
+                }
+                
+
+                return;
+            }
+
+        }
+
+        transform.position += dir.normalized * speed * Time.fixedDeltaTime;
     }
 
 
@@ -49,6 +107,7 @@ public class BulletScript : MonoBehaviour
     float damageChangeAfterCollision;
     float damageChangeAfterBounce;
 
+    public Vector3 posWhenShot { get; private set; }
 
     [SerializeField] List<BulletBehavior> bulletBehaviorList = new();
 
@@ -56,9 +115,21 @@ public class BulletScript : MonoBehaviour
     {
         this.damage = damage;
 
+
         this.damageChangeAfterBounce = damageChangeAfterBounce;
         this.damageChangeAfterCollision = damageChangeAfterCollision;
 
+    }
+
+    public void MakePlayerDamageableRef(IDamageable damageable)
+    {
+        damage.MakeAttacker(damageable);
+        damage.MakePlayerPosWhenCreated(PlayerHandler.instance.transform.position);
+
+    }
+    public void MakePlayerPosWhenShot(Vector3 shootPos)
+    {
+        posWhenShot = shootPos;
     }
 
     public void MakeBulletBehavior(List<BulletBehavior> bulletBehaviorList)
@@ -100,10 +171,35 @@ public class BulletScript : MonoBehaviour
     }
 
 
+
+    void CalculateDamageable(IDamageable damageable)
+    {
+        if (damageable.GetID() == ownedID)
+        {
+
+
+        }
+        else
+        {
+            if (damageable.GetTargetMaxHealth() == -5)
+            {
+                //THEN THIS MEANS ITS A SHIELD
+                collisionsAllowedCurrent += 9999;
+            }
+
+            foreach (var item in bulletBehaviorList)
+            {
+                item.ApplyContact(damageable, damage);
+            }
+
+            CheckCollision();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
 
-
+        canMove = false;
 
         //then we apply everything and check if this fella can continue.
         if (other.gameObject.tag == "Wall")
@@ -114,8 +210,16 @@ public class BulletScript : MonoBehaviour
         }
 
 
-        if (isEnemy && other.gameObject.tag == "Enemy") return;
-        if (!isEnemy && other.gameObject.tag == "Player") return;
+        if (isEnemy && other.gameObject.tag == "Enemy")
+        {
+            canMove = true;
+            return;
+        }
+        if (!isEnemy && other.gameObject.tag == "Player")
+        {
+            canMove = true;
+            return;
+        }
 
         IDamageable damageable = other.GetComponent<IDamageable>();
 
@@ -128,26 +232,7 @@ public class BulletScript : MonoBehaviour
 
         if (damageable != null)
         {
-            if (damageable.GetID() == ownedID)
-            {
-
-
-            }
-            else
-            {
-                if(damageable.GetTargetMaxHealth() == -5)
-                {
-                    //THEN THIS MEANS ITS A SHIELD
-                    collisionsAllowedCurrent += 9999;
-                }
-
-                foreach (var item in bulletBehaviorList)
-                {
-                    item.ApplyContact(damageable, damage);
-                }
-
-                CheckCollision();
-            }
+            CalculateDamageable(damageable);
         }
     }
 
@@ -155,7 +240,7 @@ public class BulletScript : MonoBehaviour
     {
         if (bounceCurrent >= bounceTotal)
         {
-            Destroy(gameObject);
+            GameHandler.instance._pool.Bullet_Release(this);
         }
         else
         {
@@ -168,7 +253,9 @@ public class BulletScript : MonoBehaviour
         if (collisionsAllowedCurrent >= collisionsAllowedTotal)
         {
             //Debug.Log("Destroyed. total and current " + collisionsAllowedTotal + " : " + collisionsAllowedCurrent);
-            Destroy(gameObject);
+            canMove = false;
+            _collider.enabled = false;
+            GameHandler.instance._pool.Bullet_Release(this);
         }
         else
         {

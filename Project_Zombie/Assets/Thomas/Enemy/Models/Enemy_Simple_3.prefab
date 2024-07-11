@@ -132,7 +132,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.869
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -199,7 +199,7 @@ Transform:
   m_GameObject: {fileID: 4047076181668792642}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.678, y: 0, z: 4.8964295}
+  m_LocalPosition: {x: 18.98, y: 1.5600001, z: 10.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -271,9 +271,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d753d14b57f11554c90bf49e32c2000c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 3839579ea0c928f4ea734d2f5de59aa5, type: 2}
+  data: {fileID: 11400000, guid: b5194f29f1993e84280f69cf372c338a, type: 2}
   _enemyCanvas: {fileID: 7106990787005923260}
   head: {fileID: 3475278767531445542}
+  _entityEvents: {fileID: 8436667942268502463}
+  _entityStat: {fileID: 7677647295231080130}
+  agent: {fileID: 2536197974415525310}
   _abilityIndicatorCanvas: {fileID: 0}
   soundUnitTemplate: {fileID: 0}
   container: {fileID: 0}
@@ -304,7 +307,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugInitialList: []
   _entityCanvas: {fileID: 986688307811338421}
-  debugStatList: []
+  debugStatList:
+  - stat: 0
+    initialValue: 1050
+  - stat: 1
+    initialValue: 5
+  - stat: 2
+    initialValue: 155
+  - stat: 3
+    initialValue: 0
+  - stat: 4
+    initialValue: 0
+  - stat: 5
+    initialValue: 0
+  - stat: 7
+    initialValue: 0
+  - stat: 6
+    initialValue: 0
+  - stat: 8
+    initialValue: 0
+  - stat: 9
+    initialValue: 0
+  - stat: 10
+    initialValue: 0
+  - stat: 11
+    initialValue: 0
+  - stat: 12
+    initialValue: 0
+  - stat: 13
+    initialValue: 0
+  - stat: 14
+    initialValue: 0
+  - stat: 15
+    initialValue: 0
+  - stat: 16
+    initialValue: 0
+  - stat: 17
+    initialValue: 0
+  - stat: 18
+    initialValue: 0
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
   <IsInvisible>k__BackingField: 0
@@ -321,7 +362,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

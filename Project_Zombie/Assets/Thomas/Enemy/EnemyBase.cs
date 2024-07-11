@@ -1,6 +1,7 @@
 using MyBox;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,19 +17,22 @@ public class EnemyBase : Tree, IDamageable
 
     [SerializeField] EnemyCanvas _enemyCanvas;
     [SerializeField] protected GameObject head;
-    EntityEvents _entityEvents; //these are just a bunch of events that might interest this entity.
-    EntityStat _entityStat; //
+    [SerializeField] EntityEvents _entityEvents; //these are just a bunch of events that might interest this entity.
+    [SerializeField] EntityStat _entityStat; //
 
-    ChestAbility _chestAbility; //if you have it
 
     float healthCurrent;
     float healthTotal;
 
     protected Rigidbody _rb;
 
+    public bool isAttacking {  get; private set; }
+
+    public void SetIsAttack(bool isAttacking) => this.isAttacking = isAttacking;
 
     private void Awake()
     {
+        shieldedPenetrationValue = -1;
         _rb = GetComponent<Rigidbody>();
         AwakeFunction();
 
@@ -43,6 +47,8 @@ public class EnemyBase : Tree, IDamageable
             return;
         }
         base.UpdateFunction();
+
+        CheckIfShouldBeDespawned();
     }
 
     protected virtual void AwakeFunction()
@@ -54,7 +60,6 @@ public class EnemyBase : Tree, IDamageable
 
         agent = GetComponent<NavMeshAgent>();   
 
-        SetEntity();
 
         _entityEvents.eventUpdateStat += UpdateStat;
 
@@ -85,28 +90,22 @@ public class EnemyBase : Tree, IDamageable
         StartFunction();
     }
 
-    
-    public void SetChest(ChestAbility chestAbilityTemplate)
+    public virtual void ResetEnemyForPool()
     {
-        _chestAbility = chestAbilityTemplate;
+        gameObject.SetActive(false);
+        isDead = false;
+        //but also turn on the collider.
+
+        if(_abilityIndicatorCanvas != null)
+        {
+            _abilityIndicatorCanvas.StopCircleIndicator();
+        }
+       
     }
 
     #region STAT ENTITY
 
-    void SetEntity()
-    {
-        _entityEvents = GetComponent<EntityEvents>();
-        if (_entityEvents == null)
-        {
-            Debug.LogError("THIS ENEMY IS LACKINGT ENTIY EVENTS " + gameObject.name);
-        }
 
-        _entityStat = GetComponent<EntityStat>();
-        if (_entityStat == null)
-        {
-            Debug.LogError("THIS ENEMY IS LACKINGT ENTIY STAT " + gameObject.name);
-        }
-    }
 
     bool alreadySetStat;
     public void SetStats(int round)
@@ -120,9 +119,38 @@ public class EnemyBase : Tree, IDamageable
         List<StatClass> baseStatList = data.initialStatList;
         List<StatClass> scaleStatList = data.scaleStatList;
 
+        
+
+
+        if(_entityStat == null)
+        {
+            Debug.Log("something wrong here " + gameObject.name);
+        }
 
         //now we need to put these fellas into the thing.
         _entityStat.SetUpWithScalingList(round, baseStatList, scaleStatList);
+
+        //if its blood moon we give speed an additional value and increase health
+
+
+        if(LocalHandler.instance != null)
+        {
+            bool isBloodMoon = LocalHandler.instance.IsBloodMoon;
+
+            if (isBloodMoon)
+            {
+                BDClass bd_Health = new BDClass("BloodMoon_Health", StatType.Health, 0, 0, 0.25f);
+                BDClass bd_Damage = new BDClass("BloodMoon_Damage", StatType.Damage, 0, 0.35f, 0);
+                BDClass bd_Speed = new BDClass("BloodMoon_Speed", StatType.Speed, 5, 0, 0);
+
+                _entityStat.AddBD(bd_Health);
+                _entityStat.AddBD(bd_Damage);
+                _entityStat.AddBD(bd_Speed);
+            }
+
+
+        }
+
 
         SetHealth();
         SetSpeed(_entityStat.GetTotalValue(StatType.Speed));
@@ -165,10 +193,18 @@ public class EnemyBase : Tree, IDamageable
         return isDead;
     }
 
+    [SerializeField] float shieldedPenetrationValue = -1;
+    public void SetShieldedPenetrationValue(float penetrationValue)
+    {
+        shieldedPenetrationValue = penetrationValue;
+    }
+
     public void TakeDamage(DamageClass damageRef)
     {
+        //Debug.Log("took damage");
         if (isDead) return;
 
+       
         if (isImmuneToExplosion && damageRef.isExplosion)
         {
             return;
@@ -177,6 +213,42 @@ public class EnemyBase : Tree, IDamageable
         {
             Debug.Log("is explosion damage " + gameObject.name);
         }
+
+       if(shieldedPenetrationValue != -1 && damageRef.attacker != null && !damageRef.isExplosion)
+        {
+
+
+            if(damageRef.attacker.GetID() == "Player")
+            {
+                //actually i want to record the position when the player shot.
+                Vector3 damageDirection = (damageRef.lastPos - transform.position).normalized;
+
+                float angle = Vector3.Angle(damageDirection, transform.forward);
+
+                if(angle < 65)
+                {
+                    Debug.Log("front");
+
+                    //and not call 
+
+                    if (damageRef.pen < shieldedPenetrationValue)
+                    {
+                        CallShieldPopUp();
+                        return;
+                    }                  
+                    
+                }
+                else
+                {
+                    Debug.Log("back");
+                }
+
+                
+            }
+
+        }
+        
+
 
         DamageClass damage = new DamageClass(damageRef);
 
@@ -202,9 +274,7 @@ public class EnemyBase : Tree, IDamageable
         _enemyCanvas.CreateDamagePopUp(damageValue, DamageType.Physical, isCrit);
 
         _enemyCanvas.UpdateHealth(healthCurrent, healthTotal);
-
-        
-
+      
 
         if(healthCurrent <= 0)
         {
@@ -226,7 +296,7 @@ public class EnemyBase : Tree, IDamageable
         _enemyCanvas.CreateShieldPopUp();
     }
 
-    void Die()
+    protected void Die()
     {
         isDead = true;
         PlayerHandler.instance._playerResources.GainPoints(5);
@@ -234,27 +304,7 @@ public class EnemyBase : Tree, IDamageable
 
         LocalHandler.instance.RemoveEnemyFromSpawnList(data);
 
-        if(_chestAbility != null)
-        {
-            //we spawn at the exact position
-            //we are goingt to raycast down to get the 
-          
-            RaycastHit hit;
-
-           bool success = Physics.Raycast(head.transform.position, Vector3.down , out hit, 250, groundLayer);
-
-
-            if(success && hit.collider != null)
-            {
-                Instantiate(_chestAbility, hit.point, Quaternion.identity);
-            }
-            else
-            {
-                Debug.Log("yo");
-            }
-
-        }
-
+        HandleWhatDeathShouldDrop();
 
         PlayerHandler.instance._playerStatTracker.ChangeStatTracker(StatTrackerType.EnemiesKilled, 1);
         PlayerHandler.instance._entityEvents.OnKillEnemy(this);
@@ -268,10 +318,89 @@ public class EnemyBase : Tree, IDamageable
         Vector3 posBeforeInde = _enemyCanvas.transform.position;
         _enemyCanvas.transform.SetParent(null); //no parent. but it should be ordered to destroy itself once there are no more childnre in the damagepopcontainer.
         _enemyCanvas.MakeDestroyItself(posBeforeInde);
-        Destroy(gameObject);
+
+
+        GameHandler.instance._pool.Enemy_Release(data, this);
+        //Destroy(gameObject);
 
     }
 
+
+    void HandleWhatDeathShouldDrop()
+    {
+
+        //
+
+        ChestAbility _chestAbility = LocalHandler.instance.GetChestAbility();
+
+        if (_chestAbility != null)
+        {
+            //we spawn at the exact position
+            //we are goingt to raycast down to get the 
+
+            RaycastHit hit;
+
+            bool success = Physics.Raycast(head.transform.position, Vector3.down, out hit, 250, groundLayer);
+
+
+            if (success && hit.collider != null)
+            {
+                Instantiate(_chestAbility, hit.point, Quaternion.identity);
+            }
+            else
+            {
+                Debug.Log("yo");
+            }
+
+            return;
+
+        }
+
+        Chest_Ammo _chestAmmo = LocalHandler.instance.GetChestAmmo();
+
+        if(_chestAmmo != null )
+        {
+            RaycastHit hit;
+
+            bool success = Physics.Raycast(head.transform.position, Vector3.down, out hit, 250, groundLayer);
+
+            if (success && hit.collider != null)
+            {
+                Instantiate(_chestAmmo, hit.point, Quaternion.identity);
+            }
+            else
+            {
+                Debug.Log("yo");
+            }
+
+            return;
+        }
+
+        DropData _dropData = GameHandler.instance.cityDataHandler.cityDropLauncher.GetDropData();
+
+        if(_dropData != null)
+        {
+            //we spawn the box. the spawn box is inside the data.
+            RaycastHit hit;
+
+            bool success = Physics.Raycast(head.transform.position, Vector3.down, out hit, 250, groundLayer);
+
+            if (success && hit.collider != null)
+            {
+                Instantiate(_dropData.dropModel, hit.point, Quaternion.identity);
+            }
+            else
+            {
+                Debug.Log("yo");
+            }
+
+            return;
+        }
+
+        //then we check if the roll was sucess.
+
+        Debug.Log("dropped nothing");
+    }
     public float GetTargetMaxHealth()
     {
         return _entityStat.GetTotalValue(StatType.Health);
@@ -279,7 +408,7 @@ public class EnemyBase : Tree, IDamageable
     #endregion
 
     #region PATHING
-    protected NavMeshAgent agent;
+    [SerializeField]protected NavMeshAgent agent;
     protected Vector3 currentAgentTargetPosition;
     protected bool isMoving;
 
@@ -407,6 +536,31 @@ public class EnemyBase : Tree, IDamageable
 
 
     #endregion
+
+    #region VISIBLE FOR CAMERA AND CHECK FOR DESPAWNS IF TOO FAR AWAY
+    [Separator("GRAPHIC")]
+    [SerializeField] EnemySightedByCameraScript _enemySightedByCamera;
+
+    void CheckIfShouldBeDespawned()
+    {
+        if (data.shouldNotDespawnBecauseOfDistance) return;
+        if (_enemySightedByCamera.IsVisibleByCamera) return;
+
+        Transform playerTransform = PlayerHandler.instance.transform;
+        float distance = Vector3.Distance(transform.position, playerTransform.position);
+
+
+
+        if(distance > 80)
+        {
+            Debug.Log("i am too far away and should despawn");
+            LocalHandler.instance.GetEnemyAndSpawninAnotherPortal(this);
+        }
+
+    }
+
+    #endregion
+
 
 
     [Separator("SOUND FOR ENEMY")]

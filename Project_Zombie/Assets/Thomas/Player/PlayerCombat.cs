@@ -117,10 +117,7 @@ public class PlayerCombat : MonoBehaviour
 
         UIHandler.instance._EquipWindowUI.GetEquipForPermaGun(gunList[0]);
 
-        if(CityHandler.instance != null)
-        {
-            CityHandler.instance.UpdateGunListUsingCurrentPermaGun(gunList[0].data);
-        }
+        
         
 
         
@@ -180,6 +177,10 @@ public class PlayerCombat : MonoBehaviour
         return gunList[currentGunIndex];
     }
 
+    public int GetCurrentGunIndex { get { return currentGunIndex; } }
+
+
+
     #endregion
 
     #region RECEIVE
@@ -218,7 +219,7 @@ public class PlayerCombat : MonoBehaviour
 
         if (CityHandler.instance != null)
         {
-            CityHandler.instance.UpdateGunListUsingCurrentPermaGun(gunList[0].data);
+            CityHandler.instance.UpdateGunListUsingCurrentPermaGun();
         }
 
 
@@ -507,6 +508,13 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
+    public void RecoverReserveAmmoByPercent(float percent)
+    {
+        gunList[1].ReplenishReserveAmmoBasedInTotal(percent);
+        gunList[2].ReplenishReserveAmmoBasedInTotal(percent);
+        _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
+    }
+
     public void FullInstantReload()
     {
         gunList[currentGunIndex].ReloadGunForFree();
@@ -514,6 +522,8 @@ public class PlayerCombat : MonoBehaviour
         _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
 
     }
+
+
 
     #endregion
 
@@ -523,7 +533,7 @@ public class PlayerCombat : MonoBehaviour
     float shieldTotal;
     float shieldCurrent;
 
-    float shieldModifier; //the value we will use here. 
+    float shieldModifier; //the value_Level we will use here. 
 
     float shieldRegenTotal;
     float shieldRegenCurrent;   
@@ -716,7 +726,7 @@ public class PlayerCombat : MonoBehaviour
 
         GameObject spawnedModel = CreateGunModel(gunList[indexToUse].data);
         gunList[indexToUse].SetGunModel(spawnedModel);
-        //UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[indexToUse], indexToUse);
+        //UIHandler.instance.gunUI.SetOwnedGunUnit(dropList[indexToUse], indexToUse);
         UIHandler.instance.gunUI.ShowOwnedGunUnit(indexToUse);
         currentGunIndex = indexToUse;   
         SwapGunModel();

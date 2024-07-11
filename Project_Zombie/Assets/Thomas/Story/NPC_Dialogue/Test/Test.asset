@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a3c4ce08eef6504ba5c70494ba55614, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  <npcName>k__BackingField: Test NPC
+  <npcSprite>k__BackingField: {fileID: 21300000, guid: c3d7abc009f1f574daaa5cd896fd477d, type: 3}
+  <npcModel>k__BackingField: {fileID: 9106949773451620482, guid: 0341502f69a1cb9428258fc6fa1f72f0, type: 3}
+  <houseIndex>k__BackingField: -1
+  dialogueList:
+  - {fileID: 11400000, guid: c0ff7cca365383443bb3192c4191b4c1, type: 2}

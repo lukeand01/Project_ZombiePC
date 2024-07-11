@@ -5,28 +5,16 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "CityData / Handler")]
 public class CityDataHandler : ScriptableObject
 {
+    //this set up must be before we have set up the other stuff.
+    [field:SerializeField] public CityDataArmory cityArmory {  get; private set; }
 
-    public CityDataArmory cityArmory;
-    public List<ItemGunData> ownedGunList { get; private set; } = new(); //gunlcass bcause i might want to addd levels to this stuff.
+    [field: SerializeField] public CityData_Main cityMain { get; private set; }
 
+    [field:SerializeField] public CityDataLab cityLab { get; private set; }
 
+    [field: SerializeField] public CityData_DropLauncher cityDropLauncher{ get; private set; }
 
-    public void UpdateGunList()
-    {
-        ownedGunList.Clear(); //
-        ownedGunList = cityArmory.GetGunList();
-
-    }
-
-
-    public CityDataLab cityLab;
-    public List<AbilityActiveData> ownedAbilityList {  get; private set; } = new();
-
-    public void UpdateAbilityList()
-    {
-        ownedAbilityList.Clear();
-        ownedAbilityList = cityLab.GetAbilityList();
-    }
+    [field: SerializeField] public CityData_BodyEnhancer cityBodyEnhancer { get; private set; }
 
 
     public CityDataStage cityStage;

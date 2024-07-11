@@ -27,12 +27,18 @@ public class ChestBase : MonoBehaviour, IInteractable
         
     }
 
-    public void InteractUI(bool isVisible)
+    public virtual void InteractUI(bool isVisible)
     {
         interactCanvas.ControlInteractButton(isVisible);
+
+
+        //this makes the gunchest update the price.
+
+
+
     }
 
-    public bool IsInteractable()
+    public virtual bool IsInteractable()
     {
         return !isLocked;
     }

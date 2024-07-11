@@ -33,7 +33,10 @@ public class BehaviorCheckSight : Sequence2
         //we check if all eyes can see the player 
         //
 
-        
+        if(eyeArray.Length == 0)
+        {
+            Debug.Log("no eye array");
+        }
 
         foreach (var item in eyeArray)
         {
@@ -42,16 +45,20 @@ public class BehaviorCheckSight : Sequence2
 
             if (Physics.Raycast(ray, out RaycastHit hit, 50, wallAndPlayerLayer))
             {
-                if (hit.collider.tag == "Player")
+                if (hit.collider.tag != "Player")
                 {
-                    return NodeState.Success;
+                    return NodeState.Failure;
                 }
+            }
+            else
+            {
+                return NodeState.Failure;
             }
         }
 
 
-        Debug.Log("didnt spot");
-        return NodeState.Failure;
+
+        return NodeState.Success;
 
 
     }

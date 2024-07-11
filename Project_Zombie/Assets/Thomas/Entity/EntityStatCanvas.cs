@@ -127,5 +127,23 @@ public class EntityStatCanvas : MonoBehaviour
         newObject.SetUp(powerName.ToString(), Color.yellow);
     }
 
+
+    
+    public void CreateFadeUIForDrop(string dropName)
+    {
+        FadeUI newObject = Instantiate(fadeTemplate);
+        newObject.transform.SetParent(recoverHealthPos);
+
+        newObject.ChangeScaleModifier(2);
+
+        float amount = 20;
+        float x = Random.Range(-amount * 3, amount * 3);
+        float z = Random.Range(-amount, amount);
+
+        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 35, 0) + new Vector3(x, z, 0);
+        newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        newObject.SetUp(dropName, Color.yellow);
+    }
+
     #endregion
 }

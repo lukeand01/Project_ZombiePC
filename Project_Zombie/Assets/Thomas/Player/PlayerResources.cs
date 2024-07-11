@@ -15,11 +15,13 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     string id;
     bool isDead;
-    
+
+    [SerializeField] bool debugCannotTakeDamage;
 
     private void Awake()
     {
-        id  =Guid.NewGuid().ToString();
+        //id  =Guid.NewGuid().ToString();
+        id = "Player";
         handler = GetComponent<PlayerHandler>();    
     }
     private void Start()
@@ -46,9 +48,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
         SetPoints(startingPoints);
 
         UIHandler.instance._playerUI.ForceUpdateHealth(healthCurrent, healthTotal);
-
-        hasRevive = false;
-        alreadyRevived = false;
+        ResetQuest_Stage();
 
         PlayerHandler.instance._rb.useGravity = true;
     }
@@ -93,6 +93,9 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageClass damage)
     {
+        Debug.Log("take damage");
+        if (debugCannotTakeDamage) return;
+
         if(handler._entityStat.IsImmune)
         {
 
@@ -160,22 +163,34 @@ public class PlayerResources : MonoBehaviour, IDamageable
         handler._entityEvents.OnHealed();
     }
 
+    public void RestoreHealthBasedInPercent(float percent)
+    {
+        float value = healthTotal * percent;
+        RestoreHealth(value);
+    }
 
     public void Die(bool hasFallen = false)
     {
+
+        Debug.Log("has revive " + hasRevive);
+
         if (hasRevive && !hasFallen)
         {
+            Debug.Log("called this");
             CallRevive();
             return;
         }
 
 
         isDead = true;
+        hasRevive = false;
+        alreadyRevived = false;
         //stop timer
         //stop round
 
 
         UIHandler.instance._EndUI.StartDefeatUI();
+
         PlayerHandler.instance._rb.velocity = Vector3.zero;
         PlayerHandler.instance._rb.useGravity = false;
     }
@@ -228,26 +243,33 @@ public class PlayerResources : MonoBehaviour, IDamageable
     #endregion
 
     #region REVIVE
-    bool hasRevive;
+    [SerializeField] bool hasRevive;
     bool alreadyRevived;
     public void AddRevive()
     {
         if (alreadyRevived) return;
+
+       
         hasRevive = true;
+
     }
     public void RemoveRevive()
     {
+
         hasRevive = false;
     }
     public void CallRevive()
     {
+
+
         alreadyRevived = true;
         hasRevive = false;
 
         isDead = true; //we say this so enemies will stop chasing
 
         handler._playerController.block.AddBlock("Revive", BlockClass.BlockType.Complete);
-
+        BDClass bd = new BDClass("Revive", BDType.Immune, 5f);
+        handler._entityStat.AddBD(bd);
         StartCoroutine(CallReviveProcess());
     }
 
@@ -257,12 +279,13 @@ public class PlayerResources : MonoBehaviour, IDamageable
         Debug.Log("revive started");
         yield return new WaitForSecondsRealtime(2);
 
+        isDead = false;
 
         RestoreHealth(healthTotal * 0.25f);
 
         handler._playerController.block.RemoveBlock("Revive");
-        BDClass bd = new BDClass("Revive", BDType.Immune, 1.5f);
-        handler._entityStat.AddBD(bd);
+        //BDClass bd = new BDClass("Revive", BDType.Immune, 1.5f);
+        
 
     }
 
@@ -283,7 +306,11 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     public void GainPoints(int value)
     {
-        points += value;
+        float modifier = handler._entityStat.GetTotalEspecialConditionValue(EspecialConditionType.PointsModifier);
+        float additionalValue = value * modifier;
+       
+
+        points += value + (int)additionalValue;
         UIHandler.instance._playerUI.UpdatePoint(points, value);
 
         handler._playerStatTracker.ChangeStatTracker(StatTrackerType.PointsGained, value);
@@ -412,12 +439,110 @@ public class PlayerResources : MonoBehaviour, IDamageable
         return questList.Count < 3;
     }
 
-
     public GameObject GetObjectRef()
     {
         return gameObject;
     }
 
+    void ResetQuest_Stage()
+    {
+        foreach (var item in questList)
+        {
+            item.questData.RemoveQuest(item);
+        }
+
+        questList.Clear();
+    }
+
+
     #endregion
 
+    #region QUEST SYSTEM - STORY
+    //quite similiar but this will carry but this wioll not reset.
+    [Separator("Quest Story")]
+    [SerializeField] List<QuestClass> questList_Story = new();
+    public List<QuestClass> GetQuestList_Story { get { return questList_Story; } }
+    //but this ui where should i put it?
+       
+    public void AddQuest_Story(QuestClass quest)
+    {
+        //we show in the thing and we update everytime.
+
+        //i need to create a new quest 
+
+
+        if (quest.questData == null)
+        {
+            return;
+        }
+
+        QuestClass newQuest = new QuestClass(quest);
+        newQuest.SetID(Guid.NewGuid().ToString(), this);
+
+        UIHandler.instance._QuestUI.AddQuestUnit(newQuest);
+        questList_Story.Add(newQuest);
+
+        newQuest.questData.AddQuest(newQuest);
+
+        UIHandler.instance._QuestUI.OpenUI();
+
+    }
+
+    public void RemoveQuest_Story(string id)
+    {
+        for (int i = 0; i < questList_Story.Count; i++)
+        {
+            var item = questList_Story[i];
+
+            if (item.id == id)
+            {
+                questList_Story.RemoveAt(i);
+                item.questData.RemoveQuest(item);
+                if (questList_Story.Count <= 0)
+                {
+                    UIHandler.instance._QuestUI.CloseUI();
+                }
+
+                return;
+            }
+        }
+    }
+
+    public bool HasRoomForQuest_Story()
+    {
+        return questList_Story.Count < 3;
+    }
+
+    void ResetQuest_Story()
+    {
+        foreach (var item in questList_Story)
+        {
+            item.questData.RemoveQuest(item);
+        }
+    }
+    #endregion
+
+
+    #region DROP SYSTEM
+
+    List<DropClass> dropList = new(); //these are the drops. every turn we check with this list.
+    int dropLimit;
+
+    
+    public void IncreaseDropLimit()
+    {
+        if (dropList.Count >= 3)
+        {
+            return;
+        }
+
+        dropList.Add(new DropClass(null, 0));
+    }
+
+    public void CheckDropAfterRound()
+    {
+
+    }
+
+    #endregion
 }

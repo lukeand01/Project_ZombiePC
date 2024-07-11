@@ -12,6 +12,13 @@ public class AbilityActiveDataFireball : AbilityActiveData
 
     [SerializeField] FireballProjectil fireBallTemplate;
     [Range(0.01f, 1)][SerializeField] float damageModifier = 1;
+
+    //instead i want to charge this ability and to zoomb the camerea a bit and to not move while holding
+    //
+
+    //we just ask if its chargeable.
+    //then in that case
+
     public override bool Call(AbilityClass ability)
     {
         //get the mouise position and shoot a projectile.
@@ -27,6 +34,27 @@ public class AbilityActiveDataFireball : AbilityActiveData
 
 
         return true;
+    }
+
+
+    public override void StartCharge(AbilityClass ability)
+    {
+        base.StartCharge(ability);
+        Debug.Log("start charge");
+
+        PlayerHandler.instance._playerController.block.AddBlock("Fireball", BlockClass.BlockType.OnlyCharge);
+        PlayerHandler.instance._playerCamera.ControlFieldOfView(45);
+        
+        
+
+    }
+    public override void StopCharge(AbilityClass ability)
+    {
+        base.StopCharge(ability);
+        Debug.Log("stop charge");
+
+        PlayerHandler.instance._playerController.block.RemoveBlock("Fireball");
+        PlayerHandler.instance._playerCamera.ReturnFieldOfViewToOriginal();
     }
 
     Vector3 getMouseDirection()

@@ -25,11 +25,16 @@ public class AbilityUnit : ButtonBase
     bool isPause = false;
     bool isEnd = false;
 
+    private void Start()
+    {
+       
+    }
 
     private void Update()
     {
          isPause = UIHandler.instance._pauseUI.IsPauseOn();
          isEnd = UIHandler.instance._EndUI.IsEnd();
+
 
         if(!isPause && !isEnd)
         {
@@ -44,6 +49,9 @@ public class AbilityUnit : ButtonBase
         ability.SetUI(this);
         _abilityClass = ability;
         keycodeText.text = (index + 1).ToString();
+        gameObject.name = Random.Range(0, 100).ToString();
+
+
 
         if (ability.IsEmpty())
         {
@@ -66,8 +74,13 @@ public class AbilityUnit : ButtonBase
         _abilityClass = ability;
         _abilityPassiveData = ability.dataPassive;
 
+
         ability.SetUI(this);
+        
+       
         empty.SetActive(false);
+        gameObject.name = Random.Range(0, 1000).ToString();
+
 
         icon.sprite = _abilityPassiveData.abilityIcon;
 
@@ -90,25 +103,51 @@ public class AbilityUnit : ButtonBase
         levelHolder.SetActive(false);
     }
 
-    public void UpdateCooldown(float current, float total)
+    public void UpdateCooldown(float current, float total, bool displayAsInt = false)
     {
         cooldownImage.gameObject.SetActive(current > 0);
         cooldownImage.fillAmount = current / total;
-        cooldownText.text = current.ToString("f1"); 
+
+        if (displayAsInt)
+        {
+            cooldownText.text = current.ToString("f0");
+        }
+        else
+        {
+            cooldownText.text = current.ToString("f1");
+        }
+
+       
 
     }
 
+    [Separator("CHARGE UI")]
+    [SerializeField] GameObject chargeHolder;
+    [SerializeField] Image chargeFill;
+
+    public void UpdateChargeFill(float current, float total)
+    {
+        chargeHolder.SetActive(current > 0);
+        chargeFill.fillAmount = current / total;
+    }
+
+
     public void UpdateActiveUI()
     {
-        if (_abilityClass == null) return; 
+
+
+        if (_abilityClass == null) return;
+
 
         if (_abilityClass.dataActive != null)
         {
+
             empty.SetActive(false);
             icon.sprite = _abilityClass.dataActive.abilityIcon;
         }
         else
         {
+
             empty.SetActive(true);
         }
     }

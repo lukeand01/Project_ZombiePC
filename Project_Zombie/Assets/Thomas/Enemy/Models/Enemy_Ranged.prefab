@@ -199,7 +199,7 @@ Transform:
   m_GameObject: {fileID: 3703658868627234341}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1.38, z: 0.479}
+  m_LocalPosition: {x: 0, y: 0.981, z: 0.479}
   m_LocalScale: {x: 0.44315, y: 0.44315, z: 0.44315}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -453,7 +453,7 @@ Transform:
   m_GameObject: {fileID: 5502294157975803954}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.76, y: 0, z: -7.1}
+  m_LocalPosition: {x: -14.337791, y: 1.5600001, z: -11.694064}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -586,6 +586,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 8996d72b5f1f4cf4ab6669a787585898, type: 2}
   _enemyCanvas: {fileID: 529465346092279652}
   head: {fileID: 2107072213733772598}
+  _entityEvents: {fileID: 4090667400706245644}
+  _entityStat: {fileID: 6830942644709005929}
+  agent: {fileID: 2732536004204897809}
   _abilityIndicatorCanvas: {fileID: 0}
   soundUnitTemplate: {fileID: 0}
   container: {fileID: 0}

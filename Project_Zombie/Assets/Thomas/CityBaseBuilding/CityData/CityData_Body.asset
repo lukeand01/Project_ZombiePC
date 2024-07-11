@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b94e31467ba87724a83a99b7000ab593, type: 3}
+  m_Name: CityData_Body
+  m_EditorClassIdentifier: 
+  <cityStoreLevel>k__BackingField: 0
+  <popRequirement>k__BackingField: 5
+  <resourcePopRef>k__BackingField: {fileID: 11400000, guid: 5557f4efc84e59844861b35c4006e011, type: 2}
+  <requirementToIncreaseLevelList>k__BackingField:
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: c4fa8ed7843d9d4459af738f0eeb4eb1, type: 2}
+      <quantity>k__BackingField: 150
+    requiredCityStoreLevelList: []
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: c4fa8ed7843d9d4459af738f0eeb4eb1, type: 2}
+      <quantity>k__BackingField: 150
+    requiredCityStoreLevelList: []
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: c4fa8ed7843d9d4459af738f0eeb4eb1, type: 2}
+      <quantity>k__BackingField: 150
+    requiredCityStoreLevelList: []
+  indexList: 000000000000000000000000000000000000000000000000000000000000000000000000
+  <currentStatAlteredList>k__BackingField:
+  - stat: 0
+    initialValue: 150
+  - stat: 1
+    initialValue: 30
+  - stat: 2
+    initialValue: 0
+  - stat: 3
+    initialValue: 0
+  - stat: 4
+    initialValue: 0
+  - stat: 7
+    initialValue: 0
+  - stat: 6
+    initialValue: 0
+  - stat: 12
+    initialValue: 0
+  - stat: 17
+    initialValue: 0

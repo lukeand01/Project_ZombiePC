@@ -24,6 +24,8 @@ public class AbilityIndicatorCanvas : MonoBehaviour
 
     public void StopCircleIndicator()
     {
+        ControlCircleFill(0, 0);
+        circleIndicator.gameObject.SetActive(false);
         
     }
     public void ControlCircleFill(float current, float total)

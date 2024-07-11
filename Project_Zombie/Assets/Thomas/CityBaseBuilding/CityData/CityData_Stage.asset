@@ -12,7 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddfd8526df5355242aa20eaf774de5b4, type: 3}
   m_Name: CityData_Stage
   m_EditorClassIdentifier: 
-  <cityStoreLevel>k__BackingField: 0
+  <cityStoreLevel>k__BackingField: 1
+  <popRequirement>k__BackingField: 0
+  <resourcePopRef>k__BackingField: {fileID: 11400000, guid: 5557f4efc84e59844861b35c4006e011, type: 2}
+  <requirementToIncreaseLevelList>k__BackingField:
+  - requiredResourceList: []
+    requiredCityStoreLevelList: []
+  - requiredResourceList: []
+    requiredCityStoreLevelList: []
+  - requiredResourceList: []
+    requiredCityStoreLevelList: []
   <cityStageClassList>k__BackingField:
   - stageData: {fileID: 11400000, guid: 8bf227e4a5ce3e34ab86b700f48b610a, type: 2}
   - stageData: {fileID: 11400000, guid: d4415c538e89ab44ab1f7d52a773264e, type: 2}

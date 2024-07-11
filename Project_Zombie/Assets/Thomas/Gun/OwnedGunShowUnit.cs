@@ -78,7 +78,7 @@ public class OwnedGunShowUnit : ButtonBase
 
 
 
-        Debug.Log("poiinter enter");
+
 
         if (isPause || isEnd)
         {

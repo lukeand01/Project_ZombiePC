@@ -23,8 +23,7 @@ public class ChestAbility : ChestBase
         }
 
 
-
-        List<AbilityPassiveData> passiveList = PlayerHandler.instance.GetPassiveList();
+        List<AbilityPassiveData> passiveList = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList();
 
         _chestUI.SetChest(this);
         _chestUI.CallChestAbility(passiveList);

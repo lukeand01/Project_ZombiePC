@@ -284,7 +284,7 @@
 //passive deals 20% damage to bosses . at 3 deals 15% more damage to enemies with 80% health <= UNSURE
 //passive enemies that have a debuff receive 3% more damage. at 5 they explode when killed.
 //passive killing an enemy grants you 1 additional health. up to 100 per stack, can stack 5 times.
-//heal one by every enemy you damage. the value increase one by every stack. up to 5.
+//heal one by every enemy you damage. the value_Level increase one by every stack. up to 5.
 //Does nothing till stack 3 - enemies that you hit that are below 15% of health instantly die.
 //passive enemies around you are randomly struck by lioghting. every stack grants an additional lighting and 1% to the damage. the damage is based off the player´s damage.
 //passive dashing deal damage. every stack increases the damage. at stack 4 you get a an additioanl dash ammo.
@@ -1121,14 +1121,22 @@ using static System.Collections.Specialized.BitVector32;
 ///the ranged are shooting too fast.
 ///
 
+
+//the problem is the end ui. when i create a new fella for the endui i should not set it for the class.
 //FIXE GOALS
-//certain abilities are just not being added and not show in the thing
-//the slow bullet are breaking the bullet behavior.
-//the new portals are not being used to spawn the fellas.
-//
+///certain abilities are just not being added and not show in the thing. what abilities are not being added?
+///the slow bullet are breaking the bullet behavior. slow bullet should show as bd
+///the new portals are not being used to spawn the fellas.
+///the revive passive is not working
+///when you restart the mission is keeps all the stuff in it.
+//the ability where you gain crit chance is breaking. but only in builded version.
+///ranged projectile is passing above the player.
+///getting stuck in gate.
+///revive is always appearing. it should be extremely rare.
+///even if the player already have revive its still appearing.
 
 //DESIGN GOALS
-//bleed deals little damage. it should just deal more damage.
+///bleed deals little damage. it should just deal more damage.
 //
 
 
@@ -1167,7 +1175,7 @@ using static System.Collections.Specialized.BitVector32;
 //CRITICS FOR VERSION 0.4
 //
 
-//VERSION 0.6
+//VERSION 0.5
 
 //MECHANICS
 //the gun box is changed to look more like cod
@@ -1190,9 +1198,17 @@ using static System.Collections.Specialized.BitVector32;
 //pooling for projectiles
 //pooling for enemies
 
-//GENERAL FIXES
-//
+//IMPROVEMENTS
+//create main menu that lookas better
+//create settings menu
+//create effeect for the bullet
 
+//GENERAL FIXES
+//when you increase the total health you should health by that same amount
+//the giant is walking sideways towards the player. remember to fix that when you put the grqpahics
+//the pause ui passive abiity number is not showing the number of stacks
+//the ranged enemies are not moving, and other times they are stuck near a wall firing at the wall.
+//the guns are all called shotugn
 
 //MY GOAL FOR THE AFTER THIS
 //work in the city
@@ -1214,6 +1230,473 @@ using static System.Collections.Specialized.BitVector32;
 //the gun box shouldnt be a ui. it should be like cod, a weapon rising to the air as the game continues to play.
 
 
+//now i have to do it for ability
+//what else do i want to do?
+//i need to make sure its working in the equip tab.
+//and now we will improve the buy screen.
+//i want an effect for buying, not instantly
+//i need to add more stats to the gun stats description.
+
+//HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+//TODAY
+///button that resets to default.
+///i will just fixc the thing fading when its not supposed to fade.
+//then i will do the thing where armory can see the guns that i can get from chest
+//and lab can see the passives abilities as well.
+
+
+//
+
+
+//things i need to make sure. that the passive is working
+//that the guns can be found.
+
+
+//i want to spawn the npc
+//and i want to receive the quest.
+//i need more stuff for the equip tab. i need a place to check the quests. i should be able to check quests in the main building as well.
+//i want to see quests
+//i want to see drops
+//and eventually i want to see trikents. additional things
+//also i need to create a way to increase stats.
+//i also need to find a way to add these fellas to the list.
+//where would you find npcs: quests and secrets.
+//
+
+//TODAY
+///i want to create teh additional holders for the equip tab. "Quest" and "Drop" and "trinket" but i will do nothing in them yet.
+///now i want to spawn the especial npc <- DO THIS YOU FUCK.
+//find a way to change the dialogue and progress it
+///then we add a quest
+///add those quests to the equip tab
+///add those quests to the main building.
+
+
+//GOAL
+//able to progress dialogue
+///fix for the especial npc number appearing when its not meant to
+///all the gun units are show as hidden. only the temp ones should be at default.
+//try to gain a weapon and see what happens. a perma and a temp.
+//then i want to create the 5the cod box <= half created. have to test in game.
+///then i need to check the ability side.
+
+///now i have to test receiving a perma and a temp weapon
+///then i go and do the same to abilities. 
+///then i need to create the logic for passive ability spawning.
+
+
+//now i need to create the thing for the drop system
+//first we create the data to hold it all
+//second we create the store where you can buy stuff
+//then we create the equip tab
+
+//now i will check if the perma stats are passing to the game
+//i will create the perfoamcen stuff. pooling for projectiles and enemies.
+//then we will fix the stuff
+
+
+//i need to improve the movement. should move towards the mouse. take it from stone shard
+//the abilities are black
+
+
+//projectile pooling and enemy pooling
+//that means that when i want to instantiate something i should use a reference instead. i need to get every place that ever shot a bullet
+
+
+
+
+//most of it should be working
+
+//should i just directly put it in the player instead of doing this?
+
+//PROBLEMS TO FIX 
+///i am need to update the units to show if they are maxlevel.
+///also change speed so that its a bigger number.
+
+//then i need to do the dialogue progress.
+//then i head to the drop and the the stage part of the game
+//also create the thing for increasing stat.
+//whern i get here the goal is to first fix the bugs.
+//then i will create stuff for perfoamnce. pooling
+
+
+//the goal now is improving movement
+//need to change teh cooldown for the dash. teh cooldown will go less far and will have a much higher cooldown.
+//
+
+
+//the dialogue i will skip for now. too stuck on it.
+//lets just create the thing for improving stats
+//then we will take a look at teh drop. at buying, getting, assign them onequip tab and increase 
+
+//PROBLEMS
+///the buttons from the holder are duplicating
+///the units are not updating. thats because its only getting the actual list and once i change the index list i am not updating the actual list.
+///the problem the guns are not appearing in the equip tab
+///for some reason the owned gun list is duplicating one item three times.
+
+
+//i want to create the drop system.
+//at least for now i will do the space in teh equip tab.
+//then i will create the city data for it.
+//i want to have a quest for expanding the drop system from 1 to 3.
+
+
+//TOMORROW
+//take a better look at movement and dash
+///fix the ability getting dark
+//fix the logerrors that were showing
+//test some more the change to pooling
+///fix the collider in the spawner
+//stage quest not resetting <- have to test
+//fix the dash passing through the door.
+///equip tab is over the pause menu
+//the suicide bomber deals damage to everyone. also the suicide bomber is immortal.
+
+//MY REPORT
+//what i need to do now to improve this game?
+//i need to create teh respawning for the enemies.
+//i need to make it challenging for the player. the player cant just peacefully stroll around the game
+//i need to create ways to get the store contacts
+//and i need to create story quests. so i need to create a screen for when you return from the city.
+//i need more enemies. and i need them to be more vicious.
+//i need the enemy projectiles be faster, but there is less of them
+//i need an enemy that jumps at the player. need to keep player always guessing. i want the player to always keep moving.
+//i need to create 
+//need to make sure the abilities are fun. especially their interactions.
+//create a melee system. perphaps incentivizing melee will do wonder for the game. to spare ammo and do some cool attacks
+//i need to increase the speed of every enemy at later stages but to a cap.
+//make a way so they cant dash through the gaps to areas where they havent opened it yet.
+
+
+
+
+//perphaps the fireball should charge and leave the player stuck. unless they move which stops the charge.
+//we can create enemies that keep damage the sourroudnings. if it gets close enough it will deal damage by ticks.
+
+
+//THE GOAL IS TOO SIMPLY MAKE THE BASE GAME FUN. EVEN WITHOUT POWERS. THEN I WANT THE POWER TO IMPROVE TEH GAMEPLAY
+//i want to achieve this through: movement, melee, enemies behavior.
+//i want to be the kind of game that you are cobnstnatly in the edge.
+//the way to achieve this:
+//the player has to behave in ways to get what they want. melee for conversing ammo and more points. certain enemies have weak spots. 
+//certains enemies spawn in different places so the player has to keep an eye.
+//currently the base enemy offer no danger. too slow. increase speed, reduce attack. if they are near you they should deal damage.
+//then the map will be another thing because the player will need to do things aruond the map. every map will have a gimmick.
+//the game never lets the player just rest. 
+
+//need a way core to the game how to restore ammo.
+//ammo will be restored through random boxes. touching it grants you a portion of your ammo back.
+//
+
+//need a way to force the player out of one room. and that will be through the spawns. there will be way more spawns.
+//ammo is gained by getting dropped ammo box. but if they are rare enough wahts the point of the melee?
+//but when should we stagger?
+//dodge also deals damage and stuns those hit. maybe this could be an ability.
+//i will not be using the melee. because it doesnt fit with the style? but perphaps certain temp guns are melee.
+//i need the mage to be more interesting. 
+//you have weaker mage. is the same but it also fires the projectile.
+//and the strong mage. is the same but the projectile is stronger and faster. and the artillery creates many 
+//a shield enemy. it bounches everything you shoot slowly but its very slow to rotate.
+//
+//
+
+
+//GOAL FOR IMPROVING GAMEPLAY
+//reduce even more the dash.
+//increase speed and attack speed for basic enemies.
+//increase projectile speed.
+//more enemies: Mage, Assassin, Shield and a charger.
+//i need enemies to despawn and spawn close to the player. and to do we check the farthest enemies from the player and do that.
+//created ammo box that recover a percent of the ammo of all weapons.
+//create the different turn systems.
+//create effect for the bullets.
+//create a system where i can charge an ability
+//create the drop system? think about this
+
+
+//i will first get the system working in
+
+//GOAL FOR NOW
+//i will crewate teh drop system. the enemies shouls still drop ammo and abilities with the same chance <- TEST
+//create ammo box. it replenishes a percent value. <- TEST
+///create bullet effect
+//fix the problem with the fellas spawning
+//then i want to improving the spawning system, so they spawn only close. maybe some fellas only want to spawn behind the player.
+//and also they should despawn to never be too far.
+//i want the ability box, ammo box and drop box to be constantly rotating. <- TEST
+
+//also need a way to war what the player has picked. and maybe a ui from the box could appear that stands still for a while.
+//also let me start working in the spawn system.
+
+
+//GOAL FOR TOMORROW
+///test the ammobox
+///first let create the city and the building that controls the drops
+//teste teh drop spawn system <= check further later on other testing
+///then i want to check if the especial conditions are working
+///create an ui when you pickj a drop
+
+//GOAL
+//improve spawn
+//each stage should have its own difficulty.
+///there should be a list of closests gates and another in between. we spawn most in the closests.
+///if the enemy is too far and out of sight then he will despawn and respawn closer to the player
+///certain enemies are immune to this respawning. such as artillery - Giant is not.
+//also the abilities shoukldnt apear if they are not being used. also should set the level for player about the ability.
+//
+
+
+
+//RULES FOR SPAWN SYSTEM
+//we need a liskt of closests rooms. a gamehandler checks who is certain level for hr first and another for the seocnd. most are spawned in the first.
+//we reform the list with period of 5. so it doesnt overrum too much.
+//we check the enemies as well. if the enemies are ever too far away, and also not visible in the camera then we remove it and put it in the list to replaced again.
+//but there should be exceptions, such as artillery. it doesnt care how far it is.
+//create a way to tell in which room the player is.
+
+
+//the drops i will create
+//nuke all creatures low level
+//Double points for a period
+//next gunbox for free
+//Health regen
+//
+
+//GOAL FOR TOMORROW
+//
+
+
+//turn types:
+//Normal
+//Madness: all doors close at random times and they stay closed for short durations. enemies outside just wait.
+//Nightmare :enemies deal more damage and move faster.
+// 
+
+//DROP TYPES:
+//Nuke all small enemies.
+//
+
+
+
+//Melee mechanic
+//create a melee attack.
+//it works as following: has ammo that can be restored, does damage but doesnt stagger, if the enemy already is staggered then it pushed them back and dealms more damage.
+//you can deflect projectiles
+
+//REPORTS AFTER PLAYING
+//also the pop resource in the bar the text is wrong
+//the stage canvas still has the button holder.
+//the enemies are spawning regardless of the rules
+// 
+
+
+//GOALS _+_+_+_+_+_+_+_+_+_+_+_+_+_+_
+///spawn system improved.
+//create dev tool
+//fix the bugs
+//create the main menu with the new ui
+///create the system for cooldown per round and cooldown per timer. other ability ui improvements
+///create the system for you to hold the ability to charge the ability
+//create new content (new passive, new active, new enemies, new gun abilities, new guns )
+//put more things in the map. mechanics unique to this map.
+//create the turret
+//create an area where you can train in the city.
+//
+
+//FOUND BUGS
+//bullet trails are bugging when rotating and holding
+//you can dash through doors.
+//you can dash through gaps.
+///bomber is immortal and is dealing global damage
+//quests  are not resetting
+///the bomber keeps moving while exploding.
+///the bomber is spawning with the explosion radius already visible
+///also the bomber kept dying over and over again.
+
+//GOAL STEPS
+///nex thing i want to do is the ability system four cooldown
+///and also change the ui description to show that it is different
+///ability cooldowns that use timer automaticly the round ends.
+///then i need to check teh gun algo for the gunchest
+///then i need to check the ability algo for teh ability chest
+//LUCK is a core stat and not gainable by passive,
+
+//gained how? need to be by doing something. not tied to quests. temple quests should be secondary;
+//
+
+
+//GOAL STEPS
+///i want to be able to call something on cooldown and on condition with a passive. like a storm in a closeby enemy.
+///then i want the ability to be able to charge abilities.
+///camera controls. i want to zoom and shake the camera.
+///i want explosions nearby to causa the camera to shake. and the strenght is based on how close it was.
+//perphaps i want movement to be weaker at the start. so that it feels more precise.
+
+
+//what would be the new enemy?
+//i want a shielded enemy
+//i want a enemy that jumps
+//i want a hive enemy. enemy that spawns others.
+//i want a better mage.
+//i want an enemy that causes areas to be not accessible for a short duration.
+//
+
+//currently we have:
+//simple - which will be the masses.
+//ranged - which throw simple projectiles
+//bomber - explodes. deals a lot of damage but should be easy to deal with.
+//Hound - fast enemy with low health.
+//Giant - offers crowd control against the player. big and tanky.
+//Mage - hard to deal with as they keep creating many speels to kill you. i want different mages.
+//Artillery - Create a reason for the player to keep moving
+
+
+//what i want
+//Shielded: it doesnt take damagage from the front so it will charge at the player. charge simply means that it moves fast for a moment but also is that it doesnt turn very well.
+//Jumper: it jumps at teh player. it jumps at the player cause damage but stun for a short duration
+//trapper: it hides in a spot. if the player passes gets damaged and stunned
+//
+
+//the shielded enemy cannot be just tanking stuff.
+//
+
+
+//for some reason the shield is taking damage.
+//what we can do is that the charge stops if the player is ahead, and then push the player backwards.
+//problem is that i am not using physics. 
+//so when i amshooting too close then it will simply stop the bulklet.
+//i will use a raycast. it will check if its its wall. if its a shield and if its close enough then 
+
+//i might change how the shield works to isntead be the enemybehavior. it will check the damage direction instead of the driection,.
+//charge behavior does the push
+
+
+//first thign i will change the enemyto actually check if it has a shield. this will prevent the problems. more as a safenet to be safe.
+//second thing will be doing the charge.
+
+//the little weird steps the charger takes.
+//
+
+
+//we will focus in the next step before charger just to ge4t me some time.
+
+//GOAL STEPS
+//get the shield enemy working well. <= it needs improvement but i will go to something else now.
+///improve the mage: it will spam a bunch of attacks.
+///a big eye that looks at the player. causing burning damage while the eye has line of sight.
+
+//the charge is still doing that weird movement
+
+
+//GOAL STEPS
+//overhaul the control of spawn intensity throught the stage data.
+//create a system where you can change the kinda of round. control spawn and stats and everything.
+//when you reach 25 turns, the next rounds will use another system. instead they will be constantly spawning and consta increasing.
+//need to create a cap of enemies so it doesnt spawn more. i should pu the cap at 150?
+
+
+
+///first i will create the eye
+///need to create a fakelist for the round
+//need to pass the new graphic for the round ui
+//need to create a list for spawns. and decided the chances for spawning from the especial list.
+//then we test the effect of bloodmoon
+//i want to stress test the spawn cap.
+
+//we are having problem with with spawning. fix it
+//
+
+//GOAL STEPS
+//then i will create two new passives (Thunder, )
+//then i will create the turret
+//then i will create a new enemy ()
+//the reload ability was not working
+//you could charge through walls
+//decided what to do with the gaps
+//and fix the player falling and dying.
+
+//GOAL STEPS
+//create 2 new guns
+//create 2 new gun passives
+//create another enemy
+//create 2 more shrine quests.
+
+//GOAL STEPS
+//create training area.
+//improve the main menu
+//change the ui
+
+
+//GOAL STEPS
+//take a look at map mechanics
+//start testing the game heavily.
+
+//GOAL STEPS
+//then i need to create story quests
+//and a way to get luck that is interesting
+//a way to get main characters.
+//and new dialogues and quests.
+
+
+//new passives
+//
+
+//MY GOAL
+//create npc behavior. they will spawn depending on your base state and they will work depending on what yuour base has avaiable.
+///you can build bases. expanding the pop increases the number of houses. 
+//create the economy for the city building
+///the player should see all the avaialab eresources in the top.
+///space for the npcs to spawn randomly in certain houses. the houses they spawn into should be consistent.
+
+//MY GOAL
+///Drop system created
+
+//MY GOAL
+//create an area where you can train in the city. when you leave the area you are locked but when you enter it you are allowed to use skills.
+//create 3 new passives
+//fix the turret
+
+//MY GOAL
+//improve the main menu
+///create the settings menu
+
+//MY GOAL
+///change the gunbox to work like zombie cod
+//create 2 new guns
+//create 2 new gun upgrades
+
+//MY GOAL
+///you can improve your perma stats.
+///it uses an extremely unique resources.
+//create 2 new enemies
+//create 3 new quests
+
+//MY GOAL
+///create system for pooling projetiles <- TEST MORE
+///create system for pooling enemies <- TEST MORE
+///create effect for the bullet
+
+//GOAL
+//fix the problems
+
+//GOAL
+///change how guns and abilities work <- FUrther testing
+
+//GOAL
+///create npc you can talk. they spawn in an empty house. empty house being a house that wasnt occupied by another especial npc. the houes occupied needs to be far enough from another occupied house
+///you can talk with those npcs from teh main base as well.
+//
+
+//GOAL
+//create dev tools for testers.
+//can contorl what can spawn, force spawn resource, gunchest, ability, forcespawn enemies, stop and set the round. 
+
+//GOAL
+//change the ui
+
+
 //CITY
 //how to make the city interesting?
 //we have character just walking around and working
@@ -1224,6 +1707,15 @@ using static System.Collections.Specialized.BitVector32;
 //improving buildings require pop as resource
 //create a minigame for a turret defense?
 //i want minigames in the city as well
+//pop resources: population you gain by completing missions but there is a cap limited by the main building. 
+//Pop, Food, Iron, Eletrical, Bless Stone, BodyEnhancer, Blueprints, 
+//Food is consumed by pop. not having enough food means you lose pop.
+//Iron is required for everything.
+//stell is required for more advanced stuff.
+//Blueprints are used for abilities and guns but they are rarer.
+//Eletrical components are used for abilities and certain guns and drops. unlucking things for the player to use in the stage.
+//Bless stone is used for sacred buildings. extremely rare.
+//Body enhnacer is used for for increasing stats
 //
 
 
@@ -1235,7 +1727,7 @@ using static System.Collections.Specialized.BitVector32;
 //it improves all gun stats.
 //some of these fellas can stack.
 //stats - damage, reloadspeed, magsize, 
-//and it gives one additional value :
+//and it gives one additional value_Level :
 //Headshot - first shot against target deals more damage.
 //Double mag - 50% of the magazine
 //explosive ammo - bullet deal damage in area.
@@ -1256,8 +1748,70 @@ using static System.Collections.Specialized.BitVector32;
 //you will have abilities to set pre game
 //you can choose cards, and those cards will spawn things in the game at every x turns.
 //you start with the ammo one.
+//
 
 //upgrade system
 //each gun must have ability passives.
 //this wont be passive otherwise it will show in ui.
 //so we create a "gunpassiveData" which it can hold and alter gunpassives.
+
+
+//TO DO
+//when you start the game all building are reset but for one, the main building
+//in the top all resources will appear. the pop resource will appear differnetly showing how much it has and how much it is using
+//when you interact with a building that hasnt been built it will show how much you require of pop.
+//if you have enough you can built and the building will come from the ground
+//you can upgrade the main building to increase the pop cap. you dont need to get the pop just the cap
+//you can upgrade the buildings having enough resources.
+//your base spawn npcs that walk around your base
+//the npcs visit the places based in what buildings are working, they will sit in front and talking around.
+
+
+//BUG FIND IN RODRIGO TEST
+///tab equip window is above pause.
+//reload instant not working ability
+///the ability units are black for some reason. tehy cannot be seen.
+//door in the left 
+//when you respawn your current gun
+//suicide is moving and dealing global damage
+//abilities 
+///getting stuck in the wall. spawner has collider in show 
+//going through wall. when dashing.
+//quests are not reseting
+//getting stuck
+//should move towards where the mouse is.
+
+
+//i need to change how weapons are found
+//i probably dont want the same gun in different tiers.
+//but i want guns to be improved. so perphaps i have two equal guns and the guy just replace the guns.
+//the player should have a list that is defined by the tier list, so the same system, but we add a especial list of guns that the player get from quests.
+//perpahps the tier system is not what i want. like what you should be able to do is instead have a quantity of guns and then you add the guns.
+//abilitiies should also have a list for ownedabiilties that work in the same way as espeecial
+//what about abilities?
+
+//first i will check the mainbase. if its level 0 then i will reset the whole city. if not then i will update every fella based in their own level.
+//
+
+
+//where to put the especial npcs? 
+//maybe they dont spawn in the map? they work as dialogue fellas that you can access in the mainbase
+//but how to make the base more massive? i want the base to grow and become big.
+//the way to do that is by adding a bunch of small houses to fit the pop isntead of just one. it will still be increased 
+//where do i place the houses and the especific buildings? the main buildings are also quite close.
+//the only reason you would explore the rest of the city is for minigames you can randomly find around the city.
+
+
+//what do i want in teh dialogue? its supposed to be quite simple and easy the only things it will happen is dialogue then followed by accepting a quest.
+//i want a quest system as well, but a quest system additional to the other quest system. this will be called story system
+//
+//
+
+//VERSION 0.6 -==--==--=-=-=-=-==-=--==-=-=-
+
+//NEW CONTENT
+//you are able to alter the run at the start. choosing harder modes, or modes where you cannot heal or other stuff.
+//vision fog. the player does not see things that visible for its character
+//get 3d models.
+//create save system, and save slots
+//

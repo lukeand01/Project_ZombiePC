@@ -4,22 +4,10 @@ using UnityEngine;
 
 public class LocalHandler_RoundHandler : MonoBehaviour
 {
-    //at the start of the game we show round and then start spawning.
-    //
+    
+    //first lets change the timer for calculatio and put it in the 
 
 
-    //we need control how many fellas will spawn per time.
-    //but they cant spawn all at the same time. there is an interval between the periods of spawn.
-    //
-
-
-    //we decided that every turn has an amount
-    //1 - 5; 2 - 8; 3 - 15
-    //and we decided every timer. the portals are random.
-    //we also need the amount we are going to be spawning. every interval 2 people till 5 is spawned.
-
-    //i dont want them to spawn at the same time. each should have some randomize.
-    //what we can do is that its given at the same time, but in the moment that they receive they roll a random timer. 
 
     LocalHandler _handler;
 
@@ -38,27 +26,47 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
     [SerializeField] List<EnemyData> currentTurnEnemySpawnedList = new(); //all the enemies that were spawned in this turn. we wait to get to zero to remove it.
     public int currentNumberForSpawnedEnemy;
+
+    List<RoundClass> newRoundList = new();
+
+
     private void Awake()
     {
         _handler = GetComponent<LocalHandler>();
+
+        portalCalculation_Total = 1;
+       
+
+        List<RoundClass> roundList = _handler._stageData.especialRoundList;
+
+        foreach (var item in roundList)
+        {
+            RoundClass round = new RoundClass(item.data, item.MinRoundAllowedToTrigger, item.minRoundPassedPerTrigger);
+            newRoundList.Add(round);
+        }
+
     }
     private void Update()
     {
         HandleTurn();
         CheckIfTurnEnded();
     }
+    private void FixedUpdate()
+    {
+        CheckEveryAllowedPortalDistance();
+    }
 
     public void StartRound()
     {
+
+       
         StartCoroutine(StartRoundProcess());
     }
-
-    //
 
     IEnumerator StartRoundProcess()
     {
         UIHandler.instance._playerUI.OpenRound_New();
-        UIHandler.instance._playerUI.UpdateRoundText_New(0, true);
+        UIHandler.instance._playerUI.UpdateRoundText_New(0, true, null);
         round = 0;
 
         yield return new WaitForSecondsRealtime(1f);
@@ -80,11 +88,23 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(0.2f);
 
-        
+        ClearRoundData();
+        CheckIfShouldChangeRoundData();
+
+        //we are going to pass the round a new visual
+        PlayerHandler.instance._playerAbility.PassedRound();
+
+        //at the start we check if there is a round already here.
+   
+
         round++;
 
+        Sprite roundSprite = null;
 
-        UIHandler.instance._playerUI.UpdateRoundText_New(round, false);
+        if (roundData != null) roundSprite = roundData.roundSprite;
+
+
+        UIHandler.instance._playerUI.UpdateRoundText_New(round, false, roundSprite);
 
         _handler.SetRound(round);
 
@@ -109,14 +129,64 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         isTurnRunning = true;
     }
 
+    RoundData roundData;
+    void ClearRoundData()
+    {
+        if(roundData != null)
+        {
+            roundData.OnRoundEnd();
+            roundData = null;
+        }
+
+    }
+
+    void CheckIfShouldChangeRoundData()
+    {
+        //i need to create a list for progressing the fella.
+
+
+        foreach (var item in newRoundList)
+        {
+            if( item.MinRoundAllowedToTrigger > _handler.round)
+            {
+                Debug.Log("not enough round to call this");
+                continue;
+            }
+
+            item.PassRound();
+
+            int roll = Random.Range(0, 101);
+
+            if(roll > item.chance)
+            {
+                if (item.CanTrigger())
+                {
+                    //then we announce that the next round will be this fella.
+                    item.data.OnRoundStart();
+                    roundData = item.data;
+                    return;
+                }
+            }
+
+        }
+
+
+    }
+
+
+    //but i also need a list for despawned fella. that once you receive you instantly assign to someone close.
+
+    public void ReceiveDespawnedEnemy(EnemyBase enemy)
+    {
+        //we spawn the same fella at a possible list.
+        int randomPortal = Random.Range(0, currentPortalCloseList.Count);
+        currentPortalCloseList[randomPortal].OrderRespawn(enemy);
+
+    }
+
+
     void SpawnEnemies()
     {
-
-        //there is an amount of fellas that i want to spawn every round and an amount every interval.
-
-        //i want to choose the fellas here.
-        //i need to know the portals here.
-        //
 
         if(intervalQuantityCurrent >= intervalQuantityTotal)
         {
@@ -136,6 +206,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         int safeBreak = 0;
 
         intervalQuantityCurrent++;
+
 
         int roll = Random.Range(0, 101);
         while (amountPerInterval > chosenEnemyList.Count)
@@ -174,11 +245,15 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         }
 
+        Debug.Log("chosen enemy " + chosenEnemyList.Count);
 
         foreach (var item in chosenEnemyList)
         {
             AddEnemy(item);
         }
+
+
+
 
         SendDataToPortals(chosenEnemyList);
         
@@ -187,45 +262,49 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     void SendDataToPortals(List<EnemyData> enemyList)
     {
         //we will randomly send to all portals.
-        List<Portal> availablePortalList = _handler.allowedPortal;
-        int lastPortal = -1; //i will try to randomize a bit more so that i doesnt repeat the same way too much.
 
-
+        //am i not sending the data?
 
         foreach (var item in enemyList)
         {
-           
-
-            int random = Random.Range(0, availablePortalList.Count);
-
-            int safeBreak = 0;
-
-            while (random == lastPortal)
+            int random = -1;
+            if (currentPortalCloseList.Count == 0 && currentPortalNotFarEnoughList.Count > 0)
             {
-                random = Random.Range(0, availablePortalList.Count);
-
-                safeBreak++;
-
-                if(safeBreak > 100)
-                {
-                    continue;
-                }
+                random = Random.Range(0, currentPortalNotFarEnoughList.Count);
+                currentPortalNotFarEnoughList[random].OrderSpawn(item);
+                return;
             }
 
-            availablePortalList[random].OrderSpawn(item);
-            lastPortal = random;    
+            int roll = Random.Range(0, 101);
 
+
+            if (roll >= 80 && currentPortalNotFarEnoughList.Count > 0)
+            {
+                //the its the not close enoguh list
+                random = Random.Range(0, currentPortalNotFarEnoughList.Count);
+                currentPortalNotFarEnoughList[random].OrderSpawn(item);
+                return;
+            }
+            else if(currentPortalCloseList.Count > 0)
+            {
+                //then its the close list.
+                random = Random.Range(0, currentPortalCloseList.Count);
+                currentPortalCloseList[random].OrderSpawn(item);
+                return;
+            }
+
+
+            Debug.Log("there was noone here");
+
+            //if it ever gets here 
+            random = Random.Range(0, _handler.allowedPortal.Count);
+            _handler.allowedPortal[random].OrderSpawn(item);
 
         }
 
     }
 
-
-    List<EnemyData> GetChosenEnemyList()
-    {
-        return null;
-    }
-
+    
 
     void HandleTurn()
     {
@@ -270,12 +349,11 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         if(currentTurnEnemySpawnedList.Count > 0)
         {
-           Debug.Log("enemies in scene");
+
             return;
         }
         if(intervalQuantityTotal > intervalQuantityCurrent)
         {
-           Debug.Log("there are spawn intervals left");
             return;
         }
 
@@ -295,6 +373,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
     public void AddEnemy(EnemyData data)
     {
+        Debug.Log("called");
         currentNumberForSpawnedEnemy += 1;
         currentTurnEnemySpawnedList.Add(data);
     }
@@ -317,13 +396,15 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         currentTurnEnemySpawnedList.RemoveAt(0);
     }
 
+    //i can make every enemy check how far it is. if there are perfoamcen problems then we will change
 
     #region GETTING VALUES FOR SPAWN
 
     //how many spawn inter5vals will be called per round
     int GetQuantityOfSpawnIntervals()
     {
-        //return 1;
+      
+        return 1;
         if(round >= 3)
         {
             return 4;
@@ -343,21 +424,25 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         }
         if(round > 20)
         {
-            return 9;
+            return 10;
         }
         return 3;
        
     }
     int GetAmountToSpawnPerInterval()
     {
-        //return 1;
 
-        if (round == 1) return 2;
-        if (round > 1 && round <= 5) return 6;
-        if(round > 10 && round <= 15) return 10;
-        if (round > 15) return 15;
-
-        return 1;
+        if (round <= 15)
+        {
+            // Exponential increase from round 1 to 15
+            return Mathf.RoundToInt(5 * Mathf.Pow(2, (round - 1) / 14f * _handler._stageData.enemyPerIntervalModifier));
+        }
+        else
+        {
+            // Smooth transition and slower increase from round 16 to 25
+            float initialEnemiesAt15 = 5 * Mathf.Pow(2, (15 - 1) / 14f * _handler._stageData.enemyPerIntervalModifier);
+            return Mathf.RoundToInt(initialEnemiesAt15 + (50 - initialEnemiesAt15) * (1 - Mathf.Exp(-0.2f * (round - 15))));
+        }
 
     }
     float GetIntervalBetweenSpawns()
@@ -381,6 +466,57 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     }
 
     #endregion
+
+
+    //i will check each portal from here.
+
+    [field:SerializeField] public List<Portal> currentPortalCloseList { get; private set; } = new();
+    [field: SerializeField] public List<Portal> currentPortalNotFarEnoughList { get; private set; } = new();
+
+    float portalCalculation_Current;
+    float portalCalculation_Total;
+
+    void CheckEveryAllowedPortalDistance()
+    {
+        //we check this list every 5 seconds.
+
+        if(portalCalculation_Total > portalCalculation_Current)
+        {
+            portalCalculation_Current += Time.fixedDeltaTime;
+            return;
+        }
+        else
+        {
+            portalCalculation_Current = 0;
+        }
+
+        Transform playerTransform = PlayerHandler.instance.transform;
+        currentPortalCloseList.Clear();
+        currentPortalNotFarEnoughList.Clear();
+
+        foreach (var item in _handler.allowedPortal)
+        {
+            float distance = Vector3.Distance(playerTransform.position, item.transform.position);
+
+            if(distance <= 40)
+            {
+                currentPortalCloseList.Add(item);
+                continue;
+            }
+
+            if(distance > 40 && distance < 60)
+            {
+                currentPortalNotFarEnoughList.Add(item);
+                continue;
+            }
+        }
+    }
+
+   
+
+    //i dont have access to it though.
+    //i cant get it through the data so where can i get it from?
+    //
 
 
 }

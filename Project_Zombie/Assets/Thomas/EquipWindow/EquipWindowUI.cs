@@ -16,10 +16,15 @@ public class EquipWindowUI : MonoBehaviour
     [Separator("Player Part")]
     [SerializeField] EquipWindowEquipUnit equipUnit_Gun_Player;
     [SerializeField] List<EquipWindowEquipUnit> equipUnit_Ability_List = new();
+    [SerializeField] List<EquipWindowEquipUnit> equipUnit_Drop_List = new(); 
 
+
+    //i also need to update this fella.
 
     public DescriptionWindow descriptionWindow {  get; private set; }
 
+
+    //
 
     private void Awake()
     {
@@ -28,6 +33,7 @@ public class EquipWindowUI : MonoBehaviour
         currentOpenOptionIndex = -1;
     }
 
+    
 
 
     private void Start()
@@ -135,11 +141,11 @@ public class EquipWindowUI : MonoBehaviour
     }
 
     #endregion
-
-    #region OPTION
+    #region OPTION AND CONTAINERS
     [Separator("OPTIONS")]
     [SerializeField] EquipWindowOptionButton equipWindowOptionButtonTemplate;
     [SerializeField] EquipWindowContainer equipWindownContainerTemplate;
+    [SerializeField] EquipWindowContainer equipWindownContainerTemplate_Quest; //we use this if the option is for quest because i need a different grid set up.
     [SerializeField] Transform equipWindownContainerForContainer;
     [SerializeField] MyGrid_New equipWindownContainerForButtons;
     [SerializeField] Transform equipWindowOptionPosRef_Open;
@@ -180,21 +186,39 @@ public class EquipWindowUI : MonoBehaviour
     {
         CreateOptionButton(EquipWindowType.Gun);
         CreateOptionButton(EquipWindowType.Ability);
-
-
-
+        CreateOptionButton(EquipWindowType.Trinket);
+        CreateOptionButton(EquipWindowType.Drop);
+        CreateOptionButton(EquipWindowType.Quest);
 
     }
 
     void CreateOptionButton(EquipWindowType equipType)
     {
+
+
+
         EquipWindowOptionButton newObject = Instantiate(equipWindowOptionButtonTemplate);
+
+       
+
+
         newObject.transform.SetParent(equipWindownContainerForButtons.transform);
         newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
         newObject.SetUp(equipType, this);
 
         //and we create a container as well.
-        EquipWindowContainer newContainer = Instantiate(equipWindownContainerTemplate, equipWindownContainerTemplate.transform.position, Quaternion.identity);
+        EquipWindowContainer newContainer = null;
+
+        if (equipType == EquipWindowType.Quest)
+        {
+            newContainer = Instantiate(equipWindownContainerTemplate_Quest, equipWindownContainerTemplate.transform.position, Quaternion.identity);
+        }
+        else
+        {
+            newContainer = Instantiate(equipWindownContainerTemplate, equipWindownContainerTemplate.transform.position, Quaternion.identity);
+        }
+        
+
         newContainer.transform.SetParent(equipWindownContainerForContainer);
         optionContainerList.Add(newContainer);
         newContainer.SetUp(equipType.ToString(), this);
@@ -210,10 +234,22 @@ public class EquipWindowUI : MonoBehaviour
     {
         optionContainerList[(int)EquipWindowType.Ability].UpdateContainerAbility(abilityList);
     }
+    public void UpdateOptionForStoryQuest(List<QuestClass> questList)
+    {
+        optionContainerList[(int)EquipWindowType.Quest].UpdateContainerQuest(questList);
+    }
+    public void UpdateOptionForTrinkets()
+    {
+        //optionContainerList[(int)EquipWindowType.Ability].UpdateContainerAbility(abilityList);
+    }
+    public void UpdateOptionForDrops()
+    {
+        //optionContainerList[(int)EquipWindowType.Ability].UpdateContainerAbility(abilityList);
+    }
 
+    //i need the thing to be different
 
     #endregion
-
 
     #region DRAG SYSTEM
 
@@ -348,11 +384,14 @@ public class EquipWindowUI : MonoBehaviour
 
 }
 
-//i need to hold somewhere the list of item the player has.
+//how am i spawning?
 
 
 public enum EquipWindowType
 {
     Gun = 0,
-    Ability = 1
+    Ability = 1,
+    Trinket = 2,
+    Drop = 3,
+    Quest = 4
 }

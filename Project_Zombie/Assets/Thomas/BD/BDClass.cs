@@ -57,7 +57,7 @@ public class BDClass
     }
     public void MakeValuePercentBasedInBase(float value)
     {
-        //Debug.Log("percent value " + value + " current stacks " + stackCurrent);
+        //Debug.Log("percent value_Level " + value_Level + " current stacks " + stackCurrent);
         statValue_PercentbasedOnBaseValue = value;
     }
     public void MakeValuePercentbasedInCurrent(float value)
@@ -163,7 +163,7 @@ public class BDClass
         return tickCurrent <= 0;
     }
 
-    //i need the original value for this otherwill we will increase the stack version.
+    //i need the original value_Level for this otherwill we will increase the stack version.
 
 
 
@@ -179,6 +179,7 @@ public class BDClass
         
         tempTotal = total;
         tempCurrent = tempTotal;
+
         MakeShowInUI();
         //CreateBDUnit();
         debugName += "IsTemp: " + total.ToString() + ";";
@@ -189,9 +190,11 @@ public class BDClass
         if (tempCurrent > 0)
         {
             tempCurrent -= Time.fixedDeltaTime;
-            UpdateFill(tempCurrent, tempTotal); 
+            UpdateFill(tempCurrent, tempTotal);
+
         }
         
+
     }
 
     public void ResetTemp()
@@ -289,7 +292,7 @@ public class BDClass
         UpdateBDUnitStack();
         ReapplyBD();
 
-        //each stack might represetn a value so we need to calculate that as well.
+        //each stack might represetn a value_Level so we need to calculate that as well.
     }
 
     void ReapplyBD()
@@ -303,7 +306,7 @@ public class BDClass
             //i want it to be 0.15 - 0.3 - 0.45 - 0.3 - 0.15
 
             //float newValue = GetValueMultipledByStackScale(statValue_PercentbasedOnBaseValue_Original);
-            //Debug.Log("new value for this " + newValue + " from current stack " + stackCurrent);
+            //Debug.Log("new value_Level for this " + newValue + " from current stack " + stackCurrent);
             //MakeValuePercentBasedInBase(newValue);
 
            MakeValuePercentBasedInBase(GetValueMultipledByStackScale(statValue_PercentbasedOnBaseValue_Original));
@@ -344,7 +347,7 @@ public class BDClass
             return value;
         }
 
-        //Debug.Log("raw value " + value);
+        //Debug.Log("raw value_Level " + value_Level);
         float modifier = stackScaleModifier * stackCurrent;
         //Debug.Log("this is the modifier " +  modifier); 
         float result = value * modifier;
@@ -360,7 +363,6 @@ public class BDClass
 
     #endregion
 
-
     #region UI
     BDUnit bd;
     bool showInUI; //no perma i want to show. only temp
@@ -368,6 +370,7 @@ public class BDClass
 
     public void CreateBDUnit(EntityStatCanvas canvas = null)
     {
+
         if (!showInUI) return;
         if (bd != null) return;
 
@@ -459,6 +462,53 @@ public class BDClass
 
     #endregion
 
+    #region PASSIVE EVENT
+
+    //what it does is that it never runs out.
+    //should i put them in a different place? or in the same as the other bd?
+    //
+
+    AbilityPassiveData dataAssignedToBD;
+    AbilityClass ability;
+
+    public BDClass(string id, AbilityClass ability)
+    {
+        this.id = id;
+        bdType = BDType.Passive;
+        dataAssignedToBD = ability.dataPassive;
+        this.ability = ability;
+
+
+    }
+
+    public void CallPassiveEvent()
+    {
+        Debug.Log("called passive");
+        dataAssignedToBD.Call(ability);
+        ResetTemp();
+    }
+
+    public bool IsNeverOut()
+    {
+        return dataAssignedToBD != null;
+    }
+
+    #endregion
+
+    #region ESPECIAL CONDITION
+    //perphaps
+    public EspecialConditionType especialConditionType { get; private set; }
+
+    public BDClass(string id, EspecialConditionType especialConditionType, float value)
+    {
+        this.id = id;   
+        bdType = BDType.EspecialCondition;
+        this.especialConditionType = especialConditionType;
+        statValueFlat = value;
+    }
+
+
+    #endregion
 
     bool IsPositive()
     {
@@ -520,13 +570,12 @@ public class BDClass
 
         return "";
     }
-
     float GetDamage()
     {
         if(damageType == BDDamageType.Bleed)
         {
-            float baseDamage = 5;
-            float percentDamage = damageable.GetTargetMaxHealth() * 0.02f;
+            float baseDamage = 15;
+            float percentDamage = damageable.GetTargetMaxHealth() * 0.08f;
             float total = baseDamage + percentDamage;
             float modifier = total * damageModifier;
             total += modifier;
@@ -535,8 +584,8 @@ public class BDClass
         }
         if(damageType == BDDamageType.Burn)
         {
-            float baseDamage = 5;
-            float percentDamage = damageable.GetTargetMaxHealth() * 0.05f;
+            float baseDamage = 15;
+            float percentDamage = damageable.GetTargetMaxHealth() * 0.09f;
             float total = baseDamage + percentDamage;
             float modifier = total * damageModifier;
             total += modifier;
@@ -558,7 +607,8 @@ public enum BDType
     Stun, //it used to be a boolean but now itsd the stun.
     Immune,
     Invisible,
-    SecretBulletMultipler
+    SecretBulletMultipler,
+    EspecialCondition //these are are mostly for the 
 }
 
 public enum BDDamageType 

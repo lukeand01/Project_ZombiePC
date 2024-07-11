@@ -18,6 +18,14 @@ MonoBehaviour:
   abilityIcon: {fileID: 21300000, guid: 9f69b220176e6964fbd87f5f158d45e3, type: 3}
   abilityStackMax: 0
   abilityTier: 0
-  abilityCooldown: 1
+  hasBeenFound: 1
+  additionalRollRequired: 0
+  abilityCooldown: 10
+  abilityRoundCooldown: 0
+  chargeDuration: 8
+  store: 0
+  <requirementToUnluck>k__BackingField:
+    requiredResourceList: []
+    requiredCityStoreLevelList: []
   fireBallTemplate: {fileID: 7641278870765861153, guid: 0a809c1c6ad8bb14189cfb5d64e36749, type: 3}
   damageModifier: 1

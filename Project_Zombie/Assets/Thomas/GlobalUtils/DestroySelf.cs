@@ -6,17 +6,27 @@ public class DestroySelf : MonoBehaviour
 {
     float current;
     float total;
-    public void SetUpDestroy(float total)
+    BulletScript bullet;
+    public void SetUpDestroy(float total, BulletScript bullet)
     {
         current = 0; 
         this.total = total;
+        this.bullet= bullet;
     }
 
     private void Update()
     {
         if(current >= total)
         {
-            Destroy(gameObject);
+            if (bullet != null)
+            {
+                GameHandler.instance._pool.Bullet_Release(bullet);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+            
         }
         else
         {

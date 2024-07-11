@@ -47,7 +47,7 @@ public class EquipWindowEquipUnit : ButtonBase
         inputText.text = "";
  
     }
-    
+       
 
     public AbilityActiveData abilityData { get; private set; }
 
@@ -104,6 +104,11 @@ public class EquipWindowEquipUnit : ButtonBase
 
     }
 
+
+    public void SetDrop(DropData data, EquipWindowUI handler)
+    {
+
+    }
 
 
     public override void OnPointerEnter(PointerEventData eventData)
@@ -174,30 +179,21 @@ public class EquipWindowEquipUnit : ButtonBase
 
 
             return;
-        }
-
-        if(draggingUnit.abilityData != null)
-        {
-            Debug.Log("it has ability " + abilityIndex);
-        }
+        }     
 
         if (draggingUnit.abilityData != null && abilityIndex != -1) 
         {
 
             //this is teh hover unit
             //i want the dragging unit to give stuff to this and then disappear
-
-            
-
             PlayerHandler.instance._playerAbility.ReplaceActiveAbility(draggingUnit.abilityData, abilityIndex);
             SetAbility(draggingUnit.abilityData, handler);
             draggingUnit.RemoveAbilityFromPlayer();
             
-
-
             return;
-        
+
         }
+
 
     }
 

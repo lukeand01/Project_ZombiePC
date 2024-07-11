@@ -30,7 +30,7 @@ public class EnemyMage : EnemyBase
         {
             new BehaviorChase(this),
             new BehaviorCheckSight(this, eyeArray),
-            new BehaviorAttack(this)
+            new BehaviorAttack_WaitForAttackToComplete(this)
         });
     }
 
@@ -41,14 +41,34 @@ public class EnemyMage : EnemyBase
         //in time it deals damage to area.
         //also create a warning for the player to see.
 
-        GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
-
-        Vector3 playerPosition = PlayerHandler.instance.transform.position;
-
-        AreaDamage newObject = Instantiate(areaDamageTemplate, playerPosition, Quaternion.identity);
-        newObject.SetUp(playerPosition, damageRadius, damageTimer, GetDamage(), 3);
-
-
+        StartCoroutine(AttackProcess());
         //base.CallAttack();
     }
+
+    IEnumerator AttackProcess()
+    {
+        SetIsAttack(true);
+        StopAgent();
+
+        yield return new WaitForSeconds(1);
+
+        //call the attack
+
+        for (int i = 0; i < 6; i++)
+        {
+            GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
+            Vector3 playerPosition = PlayerHandler.instance.transform.position;
+            AreaDamage newObject = Instantiate(areaDamageTemplate, playerPosition, Quaternion.identity);
+            newObject.SetUp(playerPosition, damageRadius, damageTimer, GetDamage(), 3);
+
+            yield return new WaitForSeconds(0.4f);
+        }
+
+
+        yield return new WaitForSeconds(2);
+
+        SetIsAttack(false);
+
+    }
+
 }

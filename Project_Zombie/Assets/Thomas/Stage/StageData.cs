@@ -19,16 +19,29 @@ public class StageData : ScriptableObject
     public Sprite stageSprite;
     public int stageIndex;
 
+    [Separator("ROUND SYSTEM")]
+    public float enemyPerIntervalModifier = 1; //the amount of fellas per interval.
+    public List<RoundClass> especialRoundList = new();
+
+
+    //i want here to be present the different tpyes. the normal type is not put because is the default
+    //
+
+    //should we control the time and amount of intervals?
 
     #region  ENEMIES
     [Separator("Enemy")]
     public List<EnemyChanceSpawnClass> classList = new();
+    //the enemies that can be spawned in this thing.
 
     //then we need to update them.
     public List<EnemyChanceSpawnClass> GetCompleteSpawnList(int level)
     {
         List<EnemyChanceSpawnClass> newList = GetAllowedEnemySpawnList(level);
         newList = GetUpdateEnemySpawnList(level, newList);
+
+
+
         return newList;
     }
 
@@ -162,7 +175,6 @@ public class StageData : ScriptableObject
         if(roll > 20)
         {
             //hten its normal bless
-            Debug.Log("bless " + questList_Bless.Count);
             List<int> alreadyUsedIndexList = new();
             List<QuestClass> questList = new();
             int brakeLimit = 0;

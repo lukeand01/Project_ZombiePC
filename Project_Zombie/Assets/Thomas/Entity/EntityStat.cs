@@ -37,6 +37,7 @@ public class EntityStat : MonoBehaviour
     {
         //if (gameObject.tag == "Player") return;
 
+
         if (Input.GetKeyDown(KeyCode.T))
         {
             DebugBleed();
@@ -54,7 +55,7 @@ public class EntityStat : MonoBehaviour
     private void FixedUpdate()
     {
         HandleBD();
-
+        
        
     }
 
@@ -69,6 +70,7 @@ public class EntityStat : MonoBehaviour
     [SerializeField] protected Dictionary<StatType, List<StatAlteredClass>> statAltered_PercentCurrent_Dictionary = new();
 
     
+    public Dictionary<StatType, float> GetStatBaseDictionary { get {  return statBaseDictionary; } }
 
     //the list for this should be unique for each thing.
 
@@ -132,6 +134,7 @@ public class EntityStat : MonoBehaviour
 
     void SetUpEmptyAlteredDictionary(List<StatType> refList)
     {
+        statAlteredDictionary.Clear();
         foreach (var item in refList)
         {
             statAlteredDictionary.Add(item, 0);
@@ -189,8 +192,20 @@ public class EntityStat : MonoBehaviour
 
             item.HandleTemp();
 
+
+            //we check here before.
+
+           
+
             if (item.IsTempDone())
             {
+                if (item.IsNeverOut())
+                {
+                    //and we inform to call the even
+                    item.CallPassiveEvent();
+                    continue;
+                }
+
                 if (item.IsStackable() && !item.LastStack())
                 {
 
@@ -227,7 +242,7 @@ public class EntityStat : MonoBehaviour
         //we should call an event to inform whoever is coonect to this 
         //also when we remove it we do stuff;
 
-
+        //i want a stat
 
         if (dictionaryForStacking.ContainsKey(bd.id))
         {
@@ -333,7 +348,11 @@ public class EntityStat : MonoBehaviour
     {
         float value = 0;
 
-
+        if (!statAltered_Flat_Dictionary.ContainsKey(_type))
+        {
+            statAltered_Flat_Dictionary.Add(_type, new List<StatAlteredClass>());
+        }
+        
 
         List<StatAlteredClass> statAltered_Flat_List = statAltered_Flat_Dictionary[_type];
 
@@ -342,12 +361,23 @@ public class EntityStat : MonoBehaviour
             value += item.value_Original;
         }
 
-        //this valyue is altered.
+
+        if (!statAltered_PercentBase_Dictionary.ContainsKey(_type))
+        {
+            statAltered_PercentBase_Dictionary.Add(_type, new List<StatAlteredClass>());
+        }
+
         List<StatAlteredClass> statAltered_PercentBase_List = statAltered_PercentBase_Dictionary[_type];
         float baseValue = statBaseDictionary[_type]; 
         foreach (var item in statAltered_PercentBase_List)
         {
             value += baseValue * item.value_Original;
+        }
+
+
+        if (!statAltered_PercentCurrent_Dictionary.ContainsKey(_type))
+        {
+            statAltered_PercentCurrent_Dictionary.Add(_type, new List<StatAlteredClass>());
         }
 
         List<StatAlteredClass> statAltered_PercentCurrent_List = statAltered_PercentCurrent_Dictionary[_type];
@@ -366,17 +396,24 @@ public class EntityStat : MonoBehaviour
 
         if(bd.statValueFlat != 0)
         {
+            if (!statAltered_Flat_Dictionary.ContainsKey(bd.statType))
+            {
+                statAltered_Flat_Dictionary.Add(bd.statType, new List<StatAlteredClass>());
+            }
+           
             statAltered_Flat_Dictionary[bd.statType].Add(new StatAlteredClass(bd.id, bd.statValueFlat));
         }
 
         if (bd.statValue_PercentbasedOnBaseValue != 0)
         {
+            if (!statAltered_PercentBase_Dictionary.ContainsKey(bd.statType))
+            {
+                statAltered_PercentBase_Dictionary.Add(bd.statType, new List<StatAlteredClass>());
+            }
             statAltered_PercentBase_Dictionary[bd.statType].Add(new StatAlteredClass(bd.id, bd.statValue_PercentbasedOnBaseValue));
         }
 
         float value = GetValueForAlteredDictionary(bd.statType);
-
-
 
         statAlteredDictionary[bd.statType] = value;
         _entityEvents.OnUpdateStat(bd.statType, GetTotalValue(bd.statType));
@@ -480,7 +517,7 @@ public class EntityStat : MonoBehaviour
     void RemoveStat(BDClass bd)
     {
         //this is flawed because many variable can change and fuck up everything.
-        //what we should do i form a list that carries a value and an id.
+        //what we should do i form a list that carries a value_Level and an id.
 
         if(bd.statValueFlat != 0)
         {
@@ -639,10 +676,36 @@ public class EntityStat : MonoBehaviour
 
         return value;
     }
-    
+
 
     #endregion
 
+    #region ESPECIAL CONDITION
+
+    EspecialConditionType _especialConditionType;
+
+    public float GetTotalEspecialConditionValue(EspecialConditionType especialCondition)
+    {
+        float value = 0;
+        foreach (var item in permaList)
+        {
+            if(item.bdType == BDType.EspecialCondition && item.especialConditionType == especialCondition)
+            {
+                value += item.statValueFlat;
+            }
+        }
+        foreach (var item in tempList)
+        {
+            if (item.bdType == BDType.EspecialCondition && item.especialConditionType == especialCondition)
+            {
+                value += item.statValueFlat;
+            }
+        }
+
+        return value;
+    }
+
+    #endregion
 
     public void ResetEntityStat()
     {
@@ -680,6 +743,8 @@ public class EntityStat : MonoBehaviour
     {
         _entityCanvas.CreateFadeUIForPower(powerName);
     }
+
+    public void CallDropFadedUI(string dropName) => _entityCanvas.CreateFadeUIForDrop(dropName);
 }
 
 //it can rece
@@ -698,6 +763,10 @@ public class StatClass
     [SerializeField] float initialValue;
     public float value { get { return initialValue; } }
 
+    public void AddToValue(float newValue)
+    {
+        initialValue += newValue;
+    }
 
 }
 

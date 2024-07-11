@@ -11,8 +11,10 @@ public class PlayerInventory : MonoBehaviour
     private void Awake()
     {
         handler = GetComponent<PlayerHandler>();
+        
     }
 
+    
     private void Start()
     {
         interactMask |= (1 << 7);
@@ -68,19 +70,26 @@ public class PlayerInventory : MonoBehaviour
 
         cityInventoryList.Clear();
         //we set the inventory.
-        //
+
 
 
         foreach (var item in refItemList)
         {
             ItemClass newItem = new ItemClass(item, 0);
             UIHandler.instance._CityUI.CreateResourceUnitForItem(newItem);
+
+            if (item.resourceType == ItemResourceType.Population)
+            {
+                newItem.SetPopUsage(0);
+            }
+
             cityInventoryList.Add(newItem);
             cityInventoryDictionary.Add(newItem.data, newItem); 
         }
 
     }
 
+   
     
 
     public void AddItemForStage(ItemClass item, bool appearInUI = true)
@@ -145,6 +154,8 @@ public class PlayerInventory : MonoBehaviour
             cityInventoryList[index].RemoveQuantity(_itemClass.quantity);
         }
     }
+
+    //the only problem that is that resounrce pop works differently.
 
     public bool HasEnoughItemForCity(ItemClass _itemClass)
     {
@@ -238,13 +249,37 @@ public class PlayerInventory : MonoBehaviour
 
             if (itemClass.quantity > rightClass.quantity)
             {
-                Debug.Log("not enough quantity ");
+
                 return false;
             }
 
         }
 
         return true;
+    }
+
+    public bool HasResourceWithName_City(string name)
+    {
+        foreach (var item in cityInventoryList)
+        {
+            if(item.data.name == name && item.quantity > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public void SpendResourceWithName_City(string name)
+    {
+        foreach (var item in cityInventoryList)
+        {
+            if(item.data.name == name)
+            {
+                item.RemoveQuantity(1);
+            }
+        }
     }
 
     public void SpendResourceListForCity(List<ResourceClass> resourceCostList)
@@ -391,4 +426,43 @@ public class PlayerInventory : MonoBehaviour
 
 
     #endregion
+
+    #region POPULATION
+
+    public int popMax { get; private set; }
+    public int popUse { get; private set; }
+
+    //pop is always the first in the city inventory.
+
+    public void SetPopulation(int newPopulation)
+    {
+        
+
+        popMax = newPopulation;
+        //then we update the ui.
+        cityInventoryList[0].SetPopCap(popMax);
+
+    }
+    public void SetPopulationUsage(int popUsage)
+    {
+        popUse = popUsage;
+        cityInventoryList[0].SetPopUsage(popUsage);
+    }
+
+    public bool HasPop(int cost)
+    {
+        ItemClass popItem = cityInventoryList[0];
+        int surplus = popItem.quantity - popItem.popUsage ;
+
+
+        return surplus >= cost;
+    }
+
+
+    #endregion
+
 }
+
+
+//i need something for pop here.
+//the way it works is that it sets a limit and then we calculate the cost of everyone else.

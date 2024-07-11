@@ -15,6 +15,7 @@ public class ItemData : ScriptableObject
 
     public virtual ItemGunData GetGun() {  return null; }
 
+    public virtual ItemResourceData GetResource() { return null; }
 }
 
 public enum TierType

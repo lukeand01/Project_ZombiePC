@@ -9,6 +9,7 @@ public class Door : MonoBehaviour, IInteractable
 
     [SerializeField] InteractCanvas _interactCanvas;
     [SerializeField] int doorPriceBase; //should multiply by some modifier.
+    int currentPrice;
     [SerializeField] Room[] roomToOpenArray;
 
     [Separator("CONDITIONS TO OPEN DOOR")]
@@ -59,7 +60,6 @@ public class Door : MonoBehaviour, IInteractable
 
         LocalHandler local = LocalHandler.instance;
 
-        Debug.Log("yo");
 
         if(local != null) 
         {
@@ -76,8 +76,18 @@ public class Door : MonoBehaviour, IInteractable
 
     public void InteractUI(bool isVisible)
     {
+
+
+       
+
+        float modifier = PlayerHandler.instance._entityStat.GetTotalEspecialConditionValue(EspecialConditionType.GatePriceModifier);
+        float reduction = doorPriceBase * modifier;
+        currentPrice = (int)(doorPriceBase - reduction);
+        currentPrice = Mathf.Clamp(currentPrice, 0, 9999);
+
         _interactCanvas.ControlInteractButton(isVisible);
-        _interactCanvas.ControlPriceHolder(doorPriceBase);
+        _interactCanvas.ControlPriceHolder(currentPrice);
+
     }
 
     public bool IsInteractable()

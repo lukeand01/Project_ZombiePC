@@ -16,7 +16,11 @@ public class PlayerHandler : MonoBehaviour
 
     public PlayerAbility _playerAbility { get; private set; }
 
+    public PlayerParty _playerParty { get; private set; }
+
     public PlayerStatTracker _playerStatTracker {  get; private set; }
+
+    public PlayerCamera _playerCamera {  get; private set; }
 
     public Rigidbody _rb {  get; private set; }
     
@@ -25,20 +29,24 @@ public class PlayerHandler : MonoBehaviour
 
     public Camera _cam { get; private set; }
 
-    public int playerGunRollLevel { get; private set; }
-    public int playerAbilityRollLevel {  get; private set; }
+
+    //the chance for the
+    //[Separator("REF HOLDERS")]
+    //[SerializeField] ItemTierHolder itemHolderGun;
+    //[SerializeField] ItemTierHolder itemHolderResource;
+    //[SerializeField] AbilityTierHolder abilityHolder;
 
 
-    [Separator("REF HOLDERS")]
-    [SerializeField] ItemTierHolder itemHolderGun;
-    [SerializeField] ItemTierHolder itemHolderResource;
-    [SerializeField] AbilityTierHolder abilityHolder;
-
-    [Separator("REF HOLDER FOR CITY")]
-    [SerializeField] CityData hqHolder; //what if i require more than just level. such as quests or other places in certain levels
 
 
-    LayerMask layerForBuilding;
+    //how should the ability work?
+    //maybe actually what we can do is that the gun 
+
+    //int he armory you see all the guns you can have, but unless you have already seen those guns they will remain a mystery.
+    
+    //from where i get the gun?
+    //guns should have difference spawn chances.
+    //
 
 
     private void Update()
@@ -51,19 +59,25 @@ public class PlayerHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            _playerResources.GainPoints(100);
+            //_playerResources.GainPoints(100);
+            BDClass bd = new BDClass("Test", EspecialConditionType.GatePriceModifier, 1);
+            bd.MakeTemp(50);
+            _entityStat.AddBD(bd);
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            _playerResources.SpendPoints(100);
+            //_playerResources.SpendPoints(100);
+            GameHandler.instance.cityDataHandler.cityArmory.AddGunWithIndex(3);
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            _playerAbility.ClearPassiveList();
+           // _playerAbility.ClearPassiveList();
         }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            _playerAbility.DebugIncreaseLevel();
+            //_playerAbility.DebugIncreaseLevel();
         }
 
         if (Input.GetKeyDown(KeyCode.G))
@@ -92,27 +106,7 @@ public class PlayerHandler : MonoBehaviour
 
 
 
-    }
 
-
-   public void ResetPlayer()
-    {
-        //inform the gun to drop all guns
-        //inform the stathandler to remove all bds
-        //reset the passives.
-
-        _entityStat.ResetEntityStat();      
-        _playerAbility.ResetPassiveAbilities();
-        _playerCombat.ResetPlayerCombat();
-        _playerStatTracker.ResetStatTracker();
-        _playerResources.ResetPlayerResource();
-        //also in the end we need to make sure that it always return tot eh base
-
-    }
-
-    void UpdateStatUI(StatType stat, float value)
-    {
-        UIHandler.instance._pauseUI.UpdateStat(stat, value);
     }
 
     private void Awake()
@@ -129,9 +123,6 @@ public class PlayerHandler : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        itemHolderGun.ResetAllDivisions();
-        itemHolderResource.ResetAllDivisions();
-        abilityHolder.SetHolder();
 
         _playerController = GetComponent<PlayerController>();
         _playerMovement = GetComponent<PlayerMovement>();
@@ -140,61 +131,83 @@ public class PlayerHandler : MonoBehaviour
         _playerResources = GetComponent<PlayerResources>();
         _playerAbility = GetComponent<PlayerAbility>();
         _playerStatTracker = GetComponent<PlayerStatTracker>();
+        _playerParty = GetComponent<PlayerParty>();
+        _playerCamera = GetComponent<PlayerCamera>();
 
         _entityEvents = GetComponent<EntityEvents>();
         _entityStat = GetComponent<EntityStat>();
 
         _rb = GetComponent<Rigidbody>();
 
-
-        SetPlayerAbilityRollLevel(1);
-        SetPlayerGunRollLevel(1);
        
         //layerForBuilding |= (1 << )
     }
 
-    #region GETTING ITENS AND CHANCE LISTS
-    public void SetPlayerAbilityRollLevel(int newValue)
+    public void ResetPlayer()
     {
-        playerAbilityRollLevel = newValue;
-        abilityHolder.GenerateNewChanceListBasedInLevel(newValue);
-        
-    }
-    public void SetPlayerGunRollLevel(int newValue)
-    {
-        playerGunRollLevel = newValue;
-        itemHolderGun.GenerateNewChanceListBasedInLevel(newValue);
+        //inform the gun to drop all guns
+        //inform the stathandler to remove all bds
+        //reset the passives.
+
+
+        _entityStat.ResetEntityStat();
+        _playerAbility.ResetPassiveAbilities();
+        _playerCombat.ResetPlayerCombat();
+        _playerStatTracker.ResetStatTracker();
+        _playerResources.ResetPlayerResource();
+
+        //also in the end we need to make sure that it always return tot eh base
+
     }
 
-    public List<ItemData> GetGunSpinningList()
+    void UpdateStatUI(StatType stat, float value)
     {
-        return itemHolderGun.GetRandomListWithAmount(8);
-    }
-    public ItemData GetGunChosen()
-    {
-        return itemHolderGun.GetChosenItem();
+        UIHandler.instance._pauseUI.UpdateStat(stat, value);
     }
 
-    public List<AbilityPassiveData> GetPassiveList()
-    {
-        return abilityHolder.GetPassiveChosenList(3);
-    }
 
+    #region ESPECIAL CONDITIONS
+    //we will take care of:
+    //doublepoints
+    //next gunbox is free.
+    //health regen a percent.
+    //
+
+    //i probably should put this in the thing.
 
 
     #endregion
 
-
-    public bool IsHoveringEmptySpace()
+    public void TryToCallExplosionCameraEffect(Transform enemyPos)
     {
+        float distance = Vector3.Distance(enemyPos.position, transform.position);
 
-        return false;
+        if(distance <= 25)
+        {
+            Vector3 explosionDir = transform.position - enemyPos.position;
+            explosionDir.Normalize();
+            _playerCamera.CallCameraRotation(explosionDir, distance);
+        }
+        else
+        {
+            Debug.Log("dont call explosion");
+        }
+
+
     }
 
 
+    public void PushPlayer(Vector3 pos, float strenght)
+    {
+        _rb.AddForce(pos * strenght, ForceMode.Impulse);
+    }
 
+}
 
-
-
+public enum EspecialConditionType
+{
+    PointsModifier,
+    GunBoxPriceModifier,
+    GatePriceModifier
 
 }

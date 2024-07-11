@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class AbilityClass
     public AbilityClass(int slotIndex) 
     { 
         this.slotIndex = slotIndex;
-    
+
     }
 
     public AbilityClass(AbilityClass refClass)
@@ -24,6 +25,7 @@ public class AbilityClass
         dataActive = refClass.dataActive;
         dataPassive = refClass.dataPassive;
 
+        
     }
 
 
@@ -70,11 +72,64 @@ public class AbilityClass
     float activeCooldownCurrent;
     float activeCooldownTotal;
 
+    int activeRoundCooldownCurrent;
+    int activeRoundCooldownTotal;
+
+    float chargeTotal;
+    float chargeCurrent;
+
     public AbilityClass(AbilityActiveData data)
     {
+        Debug.Log("this was called");
+
         dataActive = data;
         debugName = data.abilityName;
         activeCooldownTotal = data.abilityCooldown;
+        activeRoundCooldownTotal = data.abilityRoundCooldown;
+
+        chargeTotal = data.chargeDuration;
+        chargeCurrent = 0;
+
+        Debug.Log("this is the charge total " + chargeTotal);
+        //Debug.Log("normal cooldown " + activeCooldownTotal);
+        //Debug.Log("round cooldown " + activeRoundCooldownTotal);
+
+        if(activeRoundCooldownTotal != 0)
+        {
+            activeCooldownTotal = 0;
+        }
+    }
+
+    public bool ShouldCharge() => chargeTotal > 0;
+
+    public void Charge()
+    {
+        if (!IsActiveReady())
+        {
+            return;
+        }
+
+        if (chargeCurrent == 0)
+        {
+            dataActive.StartCharge(this);
+        }
+
+        chargeCurrent += Time.fixedDeltaTime;
+        UpdateChargeUI(chargeCurrent, chargeTotal);
+
+        if (chargeCurrent > chargeTotal)
+        {
+            StopCharge();
+            UseActive();
+        }
+
+    }
+    public void StopCharge()
+    {
+        UpdateChargeUI(0, 0);
+        chargeCurrent = 0;
+        dataActive.StopCharge(this);
+
     }
 
     public void SetActive(AbilityActiveData data)
@@ -92,14 +147,43 @@ public class AbilityClass
 
         debugName = data.abilityName;
         activeCooldownTotal = data.abilityCooldown;
+        activeRoundCooldownTotal = data.abilityRoundCooldown;
+
+        chargeTotal = data.chargeDuration;
+        chargeCurrent = 0;
+
+        if (activeRoundCooldownTotal != 0)
+        {
+            activeCooldownTotal = 0;
+        }
     }
 
+    public void ProgressRound()
+    {
+        //
+
+        if(activeCooldownTotal != 0)
+        {
+            activeCooldownCurrent = 0;
+            UICooldown(activeCooldownCurrent, activeCooldownTotal);
+        }
+        else if (activeRoundCooldownTotal != 0 && activeRoundCooldownCurrent > 0)
+        {
+            Debug.Log("got here");
+            activeRoundCooldownCurrent -= 1;
+            UICooldown(activeRoundCooldownCurrent, activeRoundCooldownTotal, true);
+        }
+
+    }
 
     public void UseActive()
     {
 
         //set new cooldown.
-        if (activeCooldownCurrent > 0) return;
+        if (!IsActiveReady())
+        {
+            return;
+        }
 
         bool isSuccess = dataActive.Call(this);
 
@@ -107,11 +191,48 @@ public class AbilityClass
         if (!isSuccess) return;
 
         float reducer = GetCooldownReducer();
-        activeCooldownTotal = dataActive.abilityCooldown - reducer;
-        activeCooldownCurrent = activeCooldownTotal;
+
+        if(activeCooldownTotal != 0)
+        {
+            activeCooldownTotal = dataActive.abilityCooldown - reducer;
+            activeCooldownTotal = Mathf.Clamp(activeCooldownTotal, 0.1f, Mathf.Infinity);
+            activeCooldownCurrent = activeCooldownTotal;
+
+        }
+        else if (activeRoundCooldownTotal != 0)
+        {
+            float reduction = (float)dataActive.abilityRoundCooldown - reducer;
+            reduction = Mathf.Clamp(reduction, 1, Mathf.Infinity);
+            reduction = Mathf.Ceil(reduction);
+            activeRoundCooldownTotal = (int)reduction;
+
+            activeRoundCooldownCurrent = activeRoundCooldownTotal;
+
+            UICooldown(activeRoundCooldownCurrent, activeRoundCooldownTotal, true);
+        }
 
         
 
+
+        //we use the same thing. but for the roundcooldown we round it up
+
+    }
+
+    bool IsActiveReady()
+    {
+        if(activeCooldownTotal != 0)
+        {
+            Debug.Log("1");
+            return activeCooldownCurrent <= 0;
+        }
+        
+        if(activeRoundCooldownTotal != 0)
+        {
+            return activeRoundCooldownCurrent <= 0;
+        }
+
+        Debug.Log("yo");
+        return false;
     }
 
     float GetCooldownReducer()
@@ -119,12 +240,24 @@ public class AbilityClass
         EntityStat stat = PlayerHandler.instance._entityStat;
         if(stat == null) return 0;
         float modifier = stat.GetTotalValue(StatType.SkillCooldown);
-        return dataActive.abilityCooldown * modifier;
+
+        float value = 0;
+
+        if (activeCooldownTotal != 0)
+        {
+            value = dataActive.abilityCooldown * modifier;  
+        }
+        else if (activeRoundCooldownTotal != 0)
+        {
+            value = dataActive.abilityRoundCooldown * modifier;
+        }
+
+        return value;
     }
 
     public void HandleActiveCooldown()
     {
-        if(activeCooldownCurrent > 0)
+        if(activeCooldownCurrent > 0 && activeCooldownTotal != 0)
         {
             activeCooldownCurrent -= Time.fixedDeltaTime;
             activeCooldownCurrent = Mathf.Clamp(activeCooldownCurrent, 0, activeCooldownTotal);
@@ -175,23 +308,29 @@ public class AbilityClass
 
     #region UI
 
-    public AbilityUnit _abilityUnit {  get; private set; }
+    [field:SerializeField]public AbilityUnit _abilityUnit {  get; private set; }
     public void SetUI(AbilityUnit _abilityUnit)
     {
-
+        if (this._abilityUnit != null) return;
         this._abilityUnit = _abilityUnit;
     }
 
     public void UpdateActiveUI()
     {
-
         if(_abilityUnit != null)
         {
-
             _abilityUnit.UpdateActiveUI();
         }
+        
     }
 
+    public void UpdateChargeUI(float current, float total)
+    {
+        if (_abilityUnit != null)
+        {
+            _abilityUnit.UpdateChargeFill(current, total);
+        }
+    }
     public void DestroyUI()
     {
         if (_abilityUnit != null)
@@ -200,11 +339,11 @@ public class AbilityClass
         }
     }
 
-    void UICooldown(float current, float total)
+    void UICooldown(float current, float total, bool displayAsInt = false)
     {
         if(_abilityUnit != null)
         {
-            _abilityUnit.UpdateCooldown(current, total);
+            _abilityUnit.UpdateCooldown(current, total, displayAsInt);
         }
     }
 
@@ -302,7 +441,18 @@ public class AbilityClass
 
         if (dataActive != null)
         {
-            return "Cooldown: " + activeCooldownTotal;
+            string endString = "";
+            if (activeCooldownTotal != 0)
+            {
+                endString = "Seconds";
+            }
+            else if (activeRoundCooldownTotal != 0)
+            {
+                endString = "Rounds";
+            }
+
+
+            return "Cooldown: " + activeCooldownTotal + endString;
         }
         if (dataPassive != null)
         {

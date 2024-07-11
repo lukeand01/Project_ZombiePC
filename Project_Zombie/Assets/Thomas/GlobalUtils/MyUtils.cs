@@ -6,6 +6,9 @@ using UnityEngine;
 
 public static class MyUtils 
 {
+
+    //it should show the base stat and when you increase 
+    //also there should be a cap limit.
     
     public static List<StatType> GetStatListRef()
     {
@@ -34,18 +37,33 @@ public static class MyUtils
         };
     }
 
+    //i shouldnt be able to improve all stats. 
+
+    public static List<StatType> GetStatRefList_ForBodyEnhancer()
+    {
+        return new List<StatType>()
+        {
+            StatType.Health,
+            StatType.Speed,
+            StatType.Damage,
+            StatType.DamageReduction,
+            StatType.Tenacity,
+            StatType.CritDamage,
+            StatType.CritChance,
+            StatType.SkillDamage,
+            StatType.ElementalPower
+        };
+    }
+
     public static List<ItemResourceType> GetResourceListRef()
     {
         return new List<ItemResourceType>()
         {
             ItemResourceType.Food,
             ItemResourceType.Iron,
-            ItemResourceType.Copper,
-            ItemResourceType.Eletrical_Components,
-            ItemResourceType.Uranium,
-            ItemResourceType.Rare_Cristals,
-            ItemResourceType.Zyo,
-            ItemResourceType.Anti_Matter
+            ItemResourceType.Eletrical_Component,
+            ItemResourceType.Population,
+            ItemResourceType.Crystals
         };
     }
 
@@ -222,7 +240,7 @@ public static class MyUtils
 
 
         //the last one is for the especial items.
-        float[] value = new float[5] { chanceTierList[0], chanceTierList[1], chanceTierList[2], chanceTierList[3], 4 + level};
+        float[] value = new float[5] { chanceTierList[0], chanceTierList[1], chanceTierList[2], chanceTierList[3], 1f};
 
 
 
@@ -403,5 +421,53 @@ public static class MyUtils
             new BDClass("GenericBuff", StatType.ReloadSpeed, 0, value, 0),
         };
 
+    }
+
+
+    public static int GetChanceBasedInLuckAndTier(int diff)
+    {
+        //if its the same then its the highest chance.
+        //the lowest the most chance.
+
+        //how the fuck is 99? enough to create three fellas.
+
+
+
+        if (diff == 0) //meaing the tier and the luck are the same
+        {
+            return 50;
+        }
+
+        if (diff == 1)
+        {
+            return 68;
+        }
+        if (diff == 2)
+        {
+            return 95;
+        }
+        if (diff > 2)
+        {
+            return 99;
+        }
+
+        if (diff == -1)
+        {
+            return 55;
+        }
+        if (diff == -2)
+        {
+            return 75;
+        }
+        if (diff == -3)
+        {
+            return 98; //then it goes back to being hard.
+        }
+        if (diff < -3) //this cannot be accessed. 
+        {
+            return 102; //then it goes back to being hard.
+        }
+
+        return 0;
     }
 }

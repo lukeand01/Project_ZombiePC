@@ -110,6 +110,7 @@ public class SceneLoaderHandler : MonoBehaviour
         if (PlayerHandler.instance != null)
         {
             //reset the abilities and guns.
+
             PlayerHandler.instance.ResetPlayer();
         }
 

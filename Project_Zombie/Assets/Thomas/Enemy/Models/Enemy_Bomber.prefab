@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 546299071952954081}
   - component: {fileID: 7553222644101540508}
   - component: {fileID: 4822962519630532301}
+  - component: {fileID: 8775377378696977513}
   m_Layer: 6
   m_Name: Graphic
   m_TagString: Untagged
@@ -83,6 +84,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8775377378696977513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004087607374606885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae645c9026ab0244ac1ae58365859f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2764875498580949589
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,6 +201,37 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &3819554728114794406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3415435754508614391}
+  m_Layer: 6
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3415435754508614391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3819554728114794406}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.33, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8737242986669779292}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4806469748567168364
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,7 +540,7 @@ Transform:
   m_GameObject: {fileID: 9133003073151161890}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.79, y: 0, z: 11}
+  m_LocalPosition: {x: 18.98, y: 1.5600001, z: 0.82999986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -505,6 +549,7 @@ Transform:
   - {fileID: 9130180755753296820}
   - {fileID: 2513117267713703769}
   - {fileID: 2908035481037469254}
+  - {fileID: 3415435754508614391}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5836984053236299478
@@ -569,8 +614,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: ec96d24a90754774ead430407778975b, type: 2}
   _enemyCanvas: {fileID: 6834306275441588316}
-  head: {fileID: 0}
+  head: {fileID: 3819554728114794406}
+  _entityEvents: {fileID: 3033546843830745045}
+  _entityStat: {fileID: 4552918841087862214}
+  agent: {fileID: 2798477937175354507}
   _abilityIndicatorCanvas: {fileID: 5741924468824182367}
+  _enemySightedByCamera: {fileID: 8775377378696977513}
   soundUnitTemplate: {fileID: 0}
   container: {fileID: 0}
 --- !u!114 &3033546843830745045
@@ -599,7 +648,83 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugInitialList: []
   _entityCanvas: {fileID: 6678462329970044364}
-  debugStatList: []
+  debugStatList:
+  - stat: 0
+    initialValue: 280
+  - stat: 1
+    initialValue: 3
+  - stat: 2
+    initialValue: 130
+  - stat: 3
+    initialValue: 0
+  - stat: 4
+    initialValue: 100
+  - stat: 5
+    initialValue: 30
+  - stat: 7
+    initialValue: 0
+  - stat: 6
+    initialValue: 0
+  - stat: 8
+    initialValue: 0
+  - stat: 9
+    initialValue: 0
+  - stat: 10
+    initialValue: 0
+  - stat: 11
+    initialValue: 0
+  - stat: 12
+    initialValue: 0
+  - stat: 13
+    initialValue: 0
+  - stat: 14
+    initialValue: 0
+  - stat: 15
+    initialValue: 0
+  - stat: 16
+    initialValue: 0
+  - stat: 17
+    initialValue: 0
+  - stat: 18
+    initialValue: 0
+  - stat: 0
+    initialValue: 280
+  - stat: 1
+    initialValue: 3
+  - stat: 2
+    initialValue: 130
+  - stat: 3
+    initialValue: 0
+  - stat: 4
+    initialValue: 100
+  - stat: 5
+    initialValue: 30
+  - stat: 7
+    initialValue: 0
+  - stat: 6
+    initialValue: 0
+  - stat: 8
+    initialValue: 0
+  - stat: 9
+    initialValue: 0
+  - stat: 10
+    initialValue: 0
+  - stat: 11
+    initialValue: 0
+  - stat: 12
+    initialValue: 0
+  - stat: 13
+    initialValue: 0
+  - stat: 14
+    initialValue: 0
+  - stat: 15
+    initialValue: 0
+  - stat: 16
+    initialValue: 0
+  - stat: 17
+    initialValue: 0
+  - stat: 18
+    initialValue: 0
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
   <IsInvisible>k__BackingField: 0
@@ -616,7 +741,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -752,6 +877,10 @@ PrefabInstance:
     - target: {fileID: 706202884058859384, guid: d7dc84e0c3ee0d34c9a87afd8347a443, type: 3}
       propertyPath: m_Name
       value: EnemyCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3173709435069548732, guid: d7dc84e0c3ee0d34c9a87afd8347a443, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8681370125369020326, guid: d7dc84e0c3ee0d34c9a87afd8347a443, type: 3}
       propertyPath: m_Pivot.x

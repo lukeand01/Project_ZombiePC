@@ -4,10 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class QuestUnit : ButtonBase
 {
+
+    //i will use this to show in other place. but also i want for more information on hover so i need to especify the type of fella.
+
     QuestClass _quest;
 
     [Separator("QUEST")]
@@ -15,6 +19,9 @@ public class QuestUnit : ButtonBase
     [SerializeField] TextMeshProUGUI descriptionText;
     [SerializeField] GameObject barHolder;
     [SerializeField] Image bar;
+
+    bool isStory = false;
+
 
     public void SetUp(QuestClass _quest)
     {
@@ -38,6 +45,10 @@ public class QuestUnit : ButtonBase
         UpdateUI();
     }
 
+    public void SetUp_Story()
+    {
+        isStory = true;
+    }
 
     public void UpdateUI()
     {
@@ -62,6 +73,27 @@ public class QuestUnit : ButtonBase
         yield return new WaitForSecondsRealtime(timer);
 
         transform.DOScale(1.2f, timer).SetUpdate(true);
+    }
+
+    //we show descriptor if it has the boolean for 
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        base.OnPointerEnter(eventData);
+
+        if (!isStory) return;
+
+        UIHandler.instance._DescriptionWindow.DescribeQuest(_quest, transform);
+
+    }
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        base.OnPointerExit(eventData);
+
+
+        if (!isStory) return;
+
+        UIHandler.instance._DescriptionWindow.StopDescription();
+
     }
 
     public void CompleteQuest()

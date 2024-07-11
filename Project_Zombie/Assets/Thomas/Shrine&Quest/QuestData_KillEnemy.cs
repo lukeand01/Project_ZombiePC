@@ -6,7 +6,7 @@ using UnityEngine;
 public class QuestData_KillEnemy : QuestData
 {
 
-    //maybe we randomize the value?
+    //maybe we randomize the value_Level?
     //or give a list of possible values.
     //should i set the reward here? 
     //what if i want to give random attributes tot he player?
@@ -14,7 +14,18 @@ public class QuestData_KillEnemy : QuestData
 
     public override void AddQuest(QuestClass _questClass)
     {
+
+        if (PlayerHandler.instance == null) return;
+
+        if(_questClass == null)
+        {
+            Debug.Log("the quest was null here");
+            return;
+        }
+
         base.AddQuest(_questClass);
+
+
 
         //we assign the right event here.
         PlayerHandler.instance._entityEvents.eventKilledEnemy += (enemy) => ProgressQuest(_questClass, enemy);

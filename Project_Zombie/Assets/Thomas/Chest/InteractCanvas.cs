@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +13,6 @@ public class InteractCanvas : MonoBehaviour
     [SerializeField] TextMeshProUGUI interactButtonText;
     [SerializeField] GameObject priceHolder;
     [SerializeField] TextMeshProUGUI priceText;
-
 
     private void Awake()
     {
@@ -52,6 +52,9 @@ public class InteractCanvas : MonoBehaviour
         priceHolder.SetActive(true);
         priceText.text = name;
     }
+
+    
+
 
     bool isDestroyed;
 

@@ -16,28 +16,27 @@ public class CityStoreUnit : ButtonBase
     [SerializeField] GameObject isBought;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] Image icon;
+    [SerializeField] GameObject unknownImage;
 
     CityCanvas handler;
 
     public string id { get; private set; }
+    bool cannotClick;
 
     private void Awake()
     {
         id = Guid.NewGuid().ToString();
     }
     #region GUN
-    public CityStoreArmoryClass armoryClass { get; private set; } = null;
     public ItemGunData gunData {  get; private set; }
     int index;
-    public void SetUpGun(CityStoreArmoryClass armoryClass, int index, CityCanvas handler, CityDataArmory armoryData)
+    public void SetUpGun(ItemGunData gunData, int index, CityCanvas handler, CityDataArmory armoryData)
     {
 
         //each fella will check two thigns
         //if the player has the gun
         //if the player cannot get the gun
-
-        this.armoryClass = armoryClass;
-        gunData = armoryClass.data;
+        this.gunData = gunData;
         this.index = index;
 
         nameText.text = gunData.itemName;
@@ -49,19 +48,29 @@ public class CityStoreUnit : ButtonBase
         isBought.SetActive(hasGun);
 
 
+        SetUnknown(gunData.HasBeenFound);
+
     }
     #endregion
 
     #region Ability
-    public AbilityActiveData abilityData { get; private set; }
-    public CityStoreLabClass labClass { get; private set; }
+    public AbilityActiveData activeData { get; private set; }
+    public AbilityPassiveData passiveData {  get; private set; }
+    //public CityStoreLabClass labClass { get; private set; }
     public CityDataLab labData {  get; private set; }
 
-    public void SetUpAbility(CityStoreLabClass labClass, int index, CityCanvas handler, CityDataLab labData)
+    public void SetUpAbility(AbilityBaseData abilityData, int index, CityCanvas handler, CityDataLab labData)
     {
         this.index = index;
-        abilityData = labClass.data;
-        this.labClass = labClass;
+
+        if (abilityData.GetActive())
+        {
+            activeData = abilityData.GetActive();
+        }
+        if (abilityData.GetPassive())
+        {
+            passiveData = abilityData.GetPassive();
+        }
 
 
         this.handler = handler;
@@ -71,12 +80,40 @@ public class CityStoreUnit : ButtonBase
         nameText.text = abilityData.abilityName;
         icon.sprite = abilityData.abilityIcon;
 
-        bool hasGun = labData.HasAbility(index);
+        bool hasGun = labData.HasAbility_Active(index);
         isBought.SetActive(hasGun);
 
+        SetUnknown(abilityData.HasBeenFound);
     }
 
     #endregion
+
+    #region DROP
+    DropData dropData;
+    public void SetDrop(DropData data, CityCanvas handler)
+    {
+        dropData = data;
+        this.handler = handler;
+
+        nameText.text = data.dropName;
+        icon.sprite = data.dropSprite;
+
+        isBought.SetActive(false);
+
+        SetUnknown(true);
+    }
+
+    #endregion
+
+    public void SetUnknown(bool isUnkown)
+    {
+        unknownImage.SetActive(!isUnkown);
+    }
+
+    public void SetCannotClick(bool cannotClick)
+    {
+        this.cannotClick = cannotClick;
+    }
 
     public void SetAsBought()
     {
@@ -87,6 +124,8 @@ public class CityStoreUnit : ButtonBase
     public override void OnPointerEnter(PointerEventData eventData)
     {
 
+        if (unknownImage.activeInHierarchy) return;
+
         base.OnPointerEnter(eventData);
         hover.SetActive(true);
         //inform the optin
@@ -94,14 +133,14 @@ public class CityStoreUnit : ButtonBase
         if (gunData != null)
         {
             UIHandler.instance._DescriptionWindow.DescribeGunData(gunData, transform);
-            UIHandler.instance._DescriptionWindow.StoreDescribeGun(armoryClass, isBought.activeInHierarchy);
+            UIHandler.instance._DescriptionWindow.StoreDescribeGun(gunData, isBought.activeInHierarchy);
             return;
         }
 
     }
     public override void OnPointerExit(PointerEventData eventData)
     {
-
+        if(unknownImage.activeInHierarchy) return;
         base.OnPointerExit(eventData);
         hover.SetActive(false);
         UIHandler.instance._DescriptionWindow.StopDescription();
@@ -109,6 +148,7 @@ public class CityStoreUnit : ButtonBase
 
     public override void OnPointerClick(PointerEventData eventData)
     {
+        if (cannotClick || unknownImage.activeInHierarchy) return;
         base.OnPointerClick(eventData);
         if (isBought.activeInHierarchy) return;
 

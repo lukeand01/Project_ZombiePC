@@ -28,3 +28,4 @@ MonoBehaviour:
   audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
   audio_Spawned: {fileID: 0}
   audio_Attack: {fileID: 8300000, guid: ef852f4dba9f9e34285d4227eb3883d0, type: 3}
+  shouldNotDespawnBecauseOfDistance: 1

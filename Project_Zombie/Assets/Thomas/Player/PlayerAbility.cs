@@ -10,13 +10,22 @@ public class PlayerAbility : MonoBehaviour
     [SerializeField] List<AbilityActiveData> debugAbilityActiveStartingList = new();
     [SerializeField] List<AbilityPassiveData> debugPassiveStartingList = new();
 
+    PlayerHandler handler;
 
     [field: SerializeField] public List<AbilityPassiveData> abilityList_CannotStack { get; private set; } = new();
     [field: SerializeField] public  List<AbilityPassiveData> abilityList_HigherChance { get; private set; } = new();
 
+    private void Awake()
+    {
+        handler = GetComponent<PlayerHandler>();
+    }
+
     private void Start()
     {
+        //this should only call once,
         SetAbility();
+
+
     }
     private void FixedUpdate()
     {
@@ -24,7 +33,18 @@ public class PlayerAbility : MonoBehaviour
     }
 
 
-    
+    void AddStartingAbilities()
+    {
+        //we might have a sitatuion where we alawyas have a new 
+
+
+        
+
+        foreach (var item in debugPassiveStartingList)
+        {
+            AddAbility(item);
+        }
+    }
 
     #region SET ABILITIES
     void SetAbility()
@@ -34,28 +54,21 @@ public class PlayerAbility : MonoBehaviour
             abilityActiveList.Add(new AbilityClass(i));
         }
 
-        foreach (var item in debugAbilityActiveStartingList)
-        {
-            AddAbility(item);
-        }
+        UIHandler.instance._AbilityUI.SetActiveAbilityUnits(abilityActiveList);
 
-        foreach(var item in abilityActiveList)
-        {
-            UIHandler.instance._AbilityUI.SetActiveAbilityUnits(abilityActiveList);
-        }
-
-        foreach (var item in debugPassiveStartingList)
-        {
-            AddAbility(item);
-        }
-
+            
 
         foreach (var item in abilityActiveList)
         {
             UIHandler.instance._EquipWindowUI.GetEquipForAbility(item);
         }
 
-        if(CityHandler.instance != null)
+        foreach (var item in debugAbilityActiveStartingList)
+        {
+            AddAbility(item);
+        }
+
+        if (CityHandler.instance != null)
         {
             CityHandler.instance.UpdateAbilityListUsingCurrentAbilities();
         }
@@ -197,9 +210,18 @@ public class PlayerAbility : MonoBehaviour
             return;
         }
         abilityActiveList[index].SetActive(data);
+
         if (CityHandler.instance != null)
         {
             CityHandler.instance.UpdateAbilityListUsingCurrentAbilities();
+        }
+    }
+
+    public void UpdateActiveAbility()
+    {
+        foreach (var item in abilityActiveList)
+        {
+            item.UpdateActiveUI();
         }
     }
     public void ReplaceSameAbility(AbilityClass ability)
@@ -274,14 +296,16 @@ public class PlayerAbility : MonoBehaviour
     public void ResetPassiveAbilities()
     {
         //we clear all passive abilities.
+
         foreach (var item in abilityPassiveList)
         {
             if (item.dataPassive == null) continue;
 
             if(item._abilityUnit != null)
             {
-                Destroy(item._abilityUnit.gameObject);
+                item._abilityUnit.DestroyItself();
             }
+
 
             item.RemovePassive();
         }
@@ -290,16 +314,81 @@ public class PlayerAbility : MonoBehaviour
 
         abilityList_CannotStack.Clear();
         abilityList_HigherChance.Clear();
+
+        AddStartingAbilities();
     }
+
+    
+    public void PassedRound()
+    {
+        //we reset the ability if its timer
+        //otherwise we progress the thing
+
+        foreach (var item in abilityActiveList)
+        {
+            item.ProgressRound();
+        }
+
+
+    }
+
+    int chargeIndex = -1;
 
     public void UseAbilityActive(int index)
     {
-        if (!abilityActiveList[index].IsEmpty())
+        if (chargeIndex != -1) return;
+
+        if (!abilityActiveList[index].IsEmpty() && !abilityActiveList[index].ShouldCharge())
         {
             //it first needs to be empty.
+            Debug.Log("use");
             abilityActiveList[index].UseActive();
+                    
         }
     }
+
+    public void StartChargeAbilityActive(int index)
+    {
+        if (handler._entityStat.isStunned)
+        {
+            //of if the character dies.
+            Debug.Log("stunned");
+            StopChargeAbilityActive(index);
+            return;
+        }
+        if (handler._playerResources.IsDead())
+        {
+            Debug.Log("dead");
+            StopChargeAbilityActive(index);
+            return;
+        }
+
+        if (chargeIndex != -1 && chargeIndex != index)
+        {
+            return;
+        }
+
+
+        if (!abilityActiveList[index].IsEmpty() && abilityActiveList[index].ShouldCharge())
+        {
+            //it first needs to be empty.
+            abilityActiveList[index].Charge();
+            chargeIndex = index;
+        }
+    }
+
+    public void StopChargeAbilityActive(int index)
+    {
+        if (chargeIndex != index) return;
+
+        if (!abilityActiveList[index].IsEmpty() && abilityActiveList[index].ShouldCharge())
+        {
+            //it first needs to be empty.
+            abilityActiveList[index].StopCharge();
+            chargeIndex = -1;
+        }
+    }
+
 
     void HandleAbilityActiveCooldown()
     {

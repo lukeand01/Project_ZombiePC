@@ -58,9 +58,11 @@ public class EnemySimpleRanged : EnemyBase
         Vector3 shootDir = PlayerHandler.instance.transform.position - transform.position;
 
         BulletScript newObject = Instantiate(bulletTemplate, shootingPos.position, Quaternion.identity);
+
+
         newObject.SetUp("SimpleRanged", shootDir);
         newObject.MakeEnemy();
-        newObject.MakeSpeed(10, 0, 0);
+        newObject.MakeSpeed(30, 0, 0);
         newObject.MakeDamage(GetDamage(), 0, 0);
 
 

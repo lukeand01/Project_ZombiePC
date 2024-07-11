@@ -43,6 +43,8 @@ public class PlayerMovement : MonoBehaviour
 
     #region MOVEMENT
     Vector3 lastDir;
+    //so a part of the 
+
 
     public void MovePlayer(Vector3 dirVector)
     {
@@ -53,11 +55,9 @@ public class PlayerMovement : MonoBehaviour
             lastDir = dirVector;
         }
 
-        float currentSpeed = stat.GetTotalValue(StatType.Speed);
+        float currentSpeed = stat.GetTotalValue(StatType.Speed) * 0.3f ;
 
         float giantModifier = currentSpeed * currentGiantPassiveEffect;
-
-
        //if the player is ever falling he cannot move or do anything.
 
         float moveModifier = 1;
@@ -65,6 +65,10 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movement = new Vector3(dirVector.x, 0, dirVector.y) * (currentSpeed - giantModifier) * moveModifier;
         Vector3 fallSpeed = new Vector3(0, handler._rb.velocity.y , 0);
         handler._rb.velocity = movement + fallSpeed;
+        //handler._rb.AddForce((movement + fallSpeed) * 200, ForceMode.Force);
+
+        //maybe increase a force to create the effect.
+
     }
 
     #endregion
@@ -164,7 +168,7 @@ public class PlayerMovement : MonoBehaviour
     {
         dashTotal = 1;
 
-        dashCooldownOriginal = 4;
+        dashCooldownOriginal = 10;
         dashCooldownTotal = dashCooldownOriginal;
         UIHandler.instance._AbilityUI.UpdateDashFill(dashCooldownCurrent, dashCooldownTotal);
     }
@@ -209,8 +213,8 @@ public class PlayerMovement : MonoBehaviour
         handler._entityStat.AddBD(bdClass);
 
         float startTime = Time.time;
-        float dashTime = 0.1f;
-        float dashSpeed = 85;
+        float dashTime = 0.06f;
+        float dashSpeed = 80;
 
 
 

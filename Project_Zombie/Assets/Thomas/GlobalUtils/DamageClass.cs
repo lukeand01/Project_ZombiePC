@@ -50,6 +50,9 @@ public class DamageClass
     DamageType damageType;
     public IDamageable attacker {  get; private set; }
 
+    public Transform projectilTransform { get; private set; }
+
+
     public float baseDamage { get; private set; }
     public float currentDamage { get; private set; } 
     public float pen {  get; private set; }
@@ -76,6 +79,8 @@ public class DamageClass
 
     public bool isExplosion {  get; private set; }
 
+    public Vector3 lastPos { get; private set; }
+
     #region MAKE
 
     public void MakeCannotDodge()
@@ -85,6 +90,10 @@ public class DamageClass
     public void MakeBlockFromFinishingEntity()
     {
         cannotFinishEntity = true;
+    }
+    public void MakePlayerPosWhenCreated(Vector3 pos)
+    {
+        lastPos = pos;  
     }
 
     public void MakeCritDamage(float critDamage)
@@ -189,7 +198,7 @@ public class DamageClass
 
 
        
-        //the pen ignores an amount. its always flat. each value
+        //the pen ignores an amount. its always flat. each value_Level
 
         if (isCrit)
         {

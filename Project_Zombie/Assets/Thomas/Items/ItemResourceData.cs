@@ -7,17 +7,16 @@ public class ItemResourceData : ItemData
 {
     public ItemResourceType resourceType;
 
-
+    public override ItemResourceData GetResource() => this;
+    
 }
 
 public enum ItemResourceType
 {
     Iron,
     Food,
-    Copper,
-    Eletrical_Components,
-    Uranium,
-    Rare_Cristals,
-    Zyo,
-    Anti_Matter
+    Eletrical_Component,
+    Population,
+    Crystals,
+    Body_Enhancer //this is usedd for improving your body.
 }

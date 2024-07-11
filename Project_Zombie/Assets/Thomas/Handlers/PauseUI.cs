@@ -14,6 +14,9 @@ public class PauseUI : MonoBehaviour
     //the player total stats.
     //it also needs settings.
 
+    //is there another place where the ability unit is set? or just pause because that should be the think
+
+
     GameObject holder;
 
     private void Awake()
@@ -62,12 +65,18 @@ public class PauseUI : MonoBehaviour
     }
 
     #region SETTINGS
-    [SerializeField] Settings _settings;
+
 
     public void OpenSettings()
     {
-        _settings.OpenSetting();
+        UIHandler.instance._settingsUI.OpenSetting();
     }
+
+    public void CloseSettings()
+    {
+        UIHandler.instance._settingsUI.CloseSetting();
+    }
+
     #endregion
 
     public bool IsPauseOn()
@@ -161,7 +170,7 @@ public class PauseUI : MonoBehaviour
     {
         List<StatType> statListRef = MyUtils.GetStatListRef();
 
-        //we will use this to get the value.
+        //we will use this to get the value_Level.
 
         EntityStat stat = PlayerHandler.instance._entityStat; 
 
@@ -212,7 +221,7 @@ public class PauseUI : MonoBehaviour
         newObject.transform.SetParent(passiveAbilityContainer);
         newObject.SetUpPassive(ability);
 
-
+        //Debug.Log("added an ability to the passive " + ability._abilityUnit.gameObject.name);
     }
     public void RemovePassive(AbilityClass ability)
     {

@@ -67,7 +67,7 @@ public class ChestUI : MonoBehaviour
     int blessCost = 0;
 
     //everytime you call a roll, it doubles. everytime you open a new 
-    //for now it will the same value. always.
+    //for now it will the same value_Level. always.
 
 
     #region GUN
@@ -92,7 +92,7 @@ public class ChestUI : MonoBehaviour
 
   
 
-    public void CallChestGun(List<ItemData> gunListForSpinning, ItemData chosenGun)
+    public void CallChestGun(List<ItemGunData> gunListForSpinning, ItemGunData chosenGun)
     {
         titleText.text = "SPINNING";
 
@@ -118,7 +118,7 @@ public class ChestUI : MonoBehaviour
         }
 
 
-        StartCoroutine(SpinningGunProcess(gunListForSpinning));
+        StartCoroutine(GetGunSpinningProcess(gunListForSpinning, chosenGun));
 
     }
 
@@ -136,40 +136,9 @@ public class ChestUI : MonoBehaviour
 
     //it need to be something different.
 
-    IEnumerator SpinningGunProcess(List<ItemData> gunListForSpinning)
+    IEnumerator GetGunSpinningProcess(List<ItemGunData> spinningProcess, ItemGunData chosenGun)
     {
-        gunButtonsHolder.SetActive(false);
-        int rotations = Random.Range(6, 10);
-        int current = 0;
-
-        gunSpinningHolder.transform.DOScale(0, 0).SetUpdate(true);
-
-        float timer = 0.15f;
-        float timerForScale = timer;
-
-        canSkipGun = true;
-
-        while(rotations > current)
-        {
-            int random = Random.Range(0, gunListForSpinning.Count);
-            gunSpinningImage.sprite = gunListForSpinning[random].itemIcon;
-
-            gunSpinningHolder.transform.DOScale(4.3f, timerForScale).SetUpdate(true);
-
-            yield return new WaitForSecondsRealtime(timer);
-
-            gunSpinningHolder.transform.DOScale(0, timerForScale).SetUpdate(true);
-
-            yield return new WaitForSecondsRealtime(timer);
-
-            current++;
-
-        }
-
-
-
-        GunReveal();
-
+        yield return null;
     }
 
     void GunReveal()
@@ -214,8 +183,8 @@ public class ChestUI : MonoBehaviour
         freeReroll_Gun = false;
         UpdateGunRollButton();
 
-        List<ItemData> spinningGunList = PlayerHandler.instance.GetGunSpinningList();
-        ItemData chosenGun = PlayerHandler.instance.GetGunChosen();
+        List<ItemGunData> spinningGunList = GameHandler.instance.cityDataHandler.cityArmory.GetGunSpinningList();
+        ItemGunData chosenGun = GameHandler.instance.cityDataHandler.cityArmory.GetGunChosen();
         CallChestGun(spinningGunList, chosenGun);
     }
 
@@ -397,7 +366,7 @@ public class ChestUI : MonoBehaviour
 
         if (!freeReroll_Ability) PlayerHandler.instance._playerResources.Bless_Lose(1);
         freeReroll_Ability = false;
-        List<AbilityPassiveData> passiveListForReroll = PlayerHandler.instance.GetPassiveList();
+        List<AbilityPassiveData> passiveListForReroll = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList();
         CallChestAbility(passiveListForReroll);
     }
 

@@ -8,8 +8,6 @@ public class PlayerController : MonoBehaviour
     public BlockClass block { get; private set; }
     public KeyClass key { get; private set; }
 
-
-
     private void Awake()
     {
         handler = GetComponent<PlayerHandler>();
@@ -25,16 +23,43 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        
-        
+        //instead we will update thing only if necessary.so for now it will be done in those two sides.
+        SetKeyBasedInSettings();
 
     }
+
+    public void SetKeyBasedInSettings()
+    {
+        SettingsData settingData = GameHandler.instance._settingsData;
+        key.CreateNewDictionaryFromSettings(settingData.keyList);
+    }
+    bool checkIfHoldingAbilityAfterPause;
 
     private void Update()
     {
 
+        if(Time.timeScale == 0)
+        {
+            checkIfHoldingAbilityAfterPause = true; 
+        }
 
-        
+        if(checkIfHoldingAbilityAfterPause && Time.timeScale != 0)
+        {
+            if (!Input.GetKey(key.GetKey(KeyType.Ability1)))
+            {
+                handler._playerAbility.StopChargeAbilityActive(0);
+            }
+            if (!Input.GetKey(key.GetKey(KeyType.Ability2)))
+            {
+                handler._playerAbility.StopChargeAbilityActive(1);
+            }
+            if (!Input.GetKey(key.GetKey(KeyType.Ability3)))
+            {
+                handler._playerAbility.StopChargeAbilityActive(2);
+            }
+
+            checkIfHoldingAbilityAfterPause = false;
+        }
 
         if (handler == null) return;
 
@@ -69,12 +94,20 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!block.HasBlock(BlockClass.BlockType.Combat))
+        if (block.HasBlock(BlockClass.BlockType.OnlyCharge))
         {
-            InputShoot();
-            InputReload();
-            InputSwap();
-            InputAbilityActive();
+            InputAbilityActive_Charge();
+            return;
+        }
+
+        if (!block.HasBlock(BlockClass.BlockType.Combat))
+        {                    
+           InputAbilityActive_Charge();
+           InputShoot();
+           InputReload();
+           InputSwap();
+           InputAbilityActive();
+
         }
         
 
@@ -218,23 +251,65 @@ public class PlayerController : MonoBehaviour
 
     void InputAbilityActive()
     {
+        //perhaps we need to check only if its holding.
         if (Input.GetKeyDown(key.GetKey(KeyType.Ability1)))
         {
             handler._playerAbility.UseAbilityActive(0);
             handler._entityEvents.OnHardInput();
         }
+        
         if (Input.GetKeyDown(key.GetKey(KeyType.Ability2)))
         {
             handler._playerAbility.UseAbilityActive(1);
             handler._entityEvents.OnHardInput();
         }
+        
+
+
+
         if (Input.GetKeyDown(key.GetKey(KeyType.Ability3)))
         {
             handler._playerAbility.UseAbilityActive(2);
             handler._entityEvents.OnHardInput();
         }
+        
 
     }
+
+    //after pause we need to reconect it to the thing.
+    void InputAbilityActive_Charge()
+    {
+        if (Input.GetKey(key.GetKey(KeyType.Ability1)))
+        {
+            handler._playerAbility.StartChargeAbilityActive(0);
+        }
+        
+        if (Input.GetKeyUp(key.GetKey(KeyType.Ability1)))
+        {
+            handler._playerAbility.StopChargeAbilityActive(0);
+        }
+
+
+        if (Input.GetKey(key.GetKey(KeyType.Ability2)))
+        {
+            handler._playerAbility.StartChargeAbilityActive(1);
+        }
+        if (Input.GetKeyUp(key.GetKey(KeyType.Ability2)))
+        {
+            handler._playerAbility.StopChargeAbilityActive(1);
+        }
+
+
+        if (Input.GetKey(key.GetKey(KeyType.Ability3)))
+        {
+            handler._playerAbility.StartChargeAbilityActive(2);
+        }
+        if (Input.GetKeyUp(key.GetKey(KeyType.Ability3)))
+        {
+            handler._playerAbility.StopChargeAbilityActive(2);
+        }
+    }
+
 
     LayerMask layerForMouseHover_Enemy;
     LayerMask layerForMouseHover_Ground;

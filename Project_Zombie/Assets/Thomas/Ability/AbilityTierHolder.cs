@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -80,6 +81,10 @@ public class AbilityTierHolder : ScriptableObject
         //tweaks to the logic
         //there should be a higher chance of getting something the player already has.
         //also should not be be able to show the player something he can no longer stack.
+
+        //we are not checking the stacked and we are giving too much priority
+
+
         float luck = 0;
 
         if(PlayerHandler.instance != null)
@@ -121,7 +126,15 @@ public class AbilityTierHolder : ScriptableObject
             if(rollForEspecial > spawnChanceForEspecial && passiveDataRefListEspecial.Count > 0 && indexListForEspecial.Count <= 0)
             {
                 //then we are going to pick a random from the espcial list to add.
+
+                
+
                 int randomEspecial = Random.Range(0, passiveDataRefListEspecial.Count);
+                if (forbiddenAbilityList.Contains(passiveDataRefListEspecial[randomEspecial]))
+                {
+                    continue;
+                }
+
                 newList.Add(passiveDataRefListEspecial[randomEspecial]);
                 indexListForEspecial.Add(randomEspecial);
                 continue;
@@ -195,6 +208,9 @@ public class AbilityTierHolder : ScriptableObject
         float[] GetChanceBasedInTier = MyUtils.GetChanceForTierBasedInLevel(level);
         List<AbilityChanceClass> newList = new();
 
+
+
+        //actually especial is individual
 
         //Debug.Log(dictionaryDividedByTier.Count);
 

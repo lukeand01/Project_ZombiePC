@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703afed9338cddc4a9a34afc67078b9c, type: 3}
   m_Name: CityData_Handler
   m_EditorClassIdentifier: 
-  cityArmory: {fileID: 11400000, guid: b14d6e4d8d63ea640b630d6478e90b13, type: 2}
-  cityLab: {fileID: 11400000, guid: 43107e323949dc44687139dae4d0adff, type: 2}
+  <cityArmory>k__BackingField: {fileID: 11400000, guid: b14d6e4d8d63ea640b630d6478e90b13, type: 2}
+  <cityMain>k__BackingField: {fileID: 11400000, guid: 3c9fb6156ff48d1469a3d17282ee82bf, type: 2}
+  <cityLab>k__BackingField: {fileID: 11400000, guid: 43107e323949dc44687139dae4d0adff, type: 2}
+  <cityDropLauncher>k__BackingField: {fileID: 11400000, guid: ee444431dc368ca45868a06b599b5524, type: 2}
+  <cityBodyEnhancer>k__BackingField: {fileID: 11400000, guid: 383185b1a90d8af4da77a08d8cdcf345, type: 2}
   cityStage: {fileID: 11400000, guid: 84da2ad19561fe44d9d3241448064e55, type: 2}
   ownedStageList: []

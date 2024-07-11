@@ -59,7 +59,7 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     }
 
 
-    public  void ControlMouseClick(bool choice)
+    public void ControlMouseClick(bool choice)
     {
         mouseClick.SetActive(choice);
     }

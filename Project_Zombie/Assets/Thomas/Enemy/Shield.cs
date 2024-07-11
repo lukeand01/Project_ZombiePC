@@ -13,9 +13,11 @@ public class Shield : MonoBehaviour, IDamageable
     private void Awake()
     {
         id = Guid.NewGuid().ToString();
+       
     }
     private void Start()
     {
+        enemyHoldingShield.SetShieldedPenetrationValue(howMuchPenIsRequiredToGoThrough);
         enemyHoldingShield.ControlEnemyImmunityToExplosion(true);
     }
 
@@ -62,6 +64,7 @@ public class Shield : MonoBehaviour, IDamageable
 
         if(damage.pen > howMuchPenIsRequiredToGoThrough)
         {
+            Debug.Log("this?");
             enemyHoldingShield.TakeDamage(damage);
             return;
         }

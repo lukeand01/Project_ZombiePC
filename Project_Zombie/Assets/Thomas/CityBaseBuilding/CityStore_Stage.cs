@@ -7,12 +7,11 @@ public class CityStore_Stage : CityStore
     [SerializeField] CityDataStage cityStageData;
 
 
+    public override CityData GetCityData => cityStageData;
+
     private void Start()
     {
-        //city 
         _cityCanvas.SetStage(cityStageData.cityStageClassList);
-
-
     }
 
     protected override void UpdateInteractUIName(string name)

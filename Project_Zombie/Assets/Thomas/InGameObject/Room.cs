@@ -9,7 +9,7 @@ public class Room : MonoBehaviour
     [SerializeField] Transform portalHolder;
     [SerializeField] Transform chestGunPos;
     public List<Portal> portalList = new();
-
+    [SerializeField] bool checkDebug;
 
     public string id {  get; private set; }
 
@@ -18,7 +18,6 @@ public class Room : MonoBehaviour
     private void Awake()
     {
         id = Guid.NewGuid().ToString();
-
 
         if (portalHolder == null) return;
         for (int i = 0; i < portalHolder.transform.childCount; i++)
@@ -34,7 +33,6 @@ public class Room : MonoBehaviour
 
     public void OpenRoom_Room()
     {
-        
         LocalHandler.instance.OpenRoom_LocalHandler(this, "From room");
         foreach (var item in portalList)
         {

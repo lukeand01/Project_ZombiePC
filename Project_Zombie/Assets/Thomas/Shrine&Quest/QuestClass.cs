@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -10,18 +11,33 @@ public class QuestClass
     //the quest creates a questclass.
     //it will store the progress.
     //but how do i decide the reward?
+    //i want to do a better dvision of those two to not wya to much information that i dont require.
 
-    [SerializeField] string editorName;
+    //is it worth?
     public string id { get; private set; }
-    [field: SerializeField] public QuestType questType { get; private set; }
+
+    [Separator("BASE")]
+    [SerializeField] string editorName;
     [field: SerializeField] public QuestData questData {  get; private set; }
     [field: SerializeField]public int amountTotal {  get; private set; }
-    [field: SerializeField] public float timerTotal { get; private set; }
+
 
     [SerializeField] List<Quest_RewardClass> rewardList = new(); //these are all the reawrds once you are done with this thing.
-    [SerializeField] List<Quest_RewardClass> punishList = new();
+   
 
-    
+    [Separator("Only for Stage")]
+    [SerializeField] List<Quest_RewardClass> punishList = new();
+    [field: SerializeField] public QuestType questType { get; private set; }
+    [field: SerializeField] public float timerTotal { get; private set; }
+
+    [Separator("Only for Story")]
+    [SerializeField] string questName;
+    [SerializeField][TextArea] string questDescription;
+    [SerializeField] string questGiverName;
+
+    public string GetQuestName { get { return questName; } }
+    public string GetDescription_Story { get { return questDescription; } }
+    public string GetQuestGiverName { get { return questGiverName; } }
 
     public int amountCurrent { get; private set; }
 
@@ -101,6 +117,7 @@ public class QuestClass
         {
             item.data.ReceiveReward(item);
         }
+
 
         OrderQuestUnitToEnd();
         RemoveQuestFromPlayer();

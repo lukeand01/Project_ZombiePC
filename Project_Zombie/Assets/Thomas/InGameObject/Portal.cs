@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Portal : MonoBehaviour
@@ -18,7 +19,7 @@ public class Portal : MonoBehaviour
     bool isBlocked; //this is for abilities that close the portal.
 
     [SerializeField] List<EnemyData> spawnQueueList = new();
-
+    List<EnemyBase> enemyDespawnedList = new();
     [SerializeField] ChestAbility chestAbilityTemplate;
     [SerializeField] Transform spawnPoint;
 
@@ -49,8 +50,15 @@ public class Portal : MonoBehaviour
         }
         else
         {
+            if(enemyDespawnedList.Count > 0)
+            {
+                SpawnDespawned();
+                return;
+            }
+
             if(spawnQueueList.Count > 0)
             {
+
                 Spawn(spawnQueueList[0]);
                 spawnQueueList.RemoveAt(0);
 
@@ -64,15 +72,11 @@ public class Portal : MonoBehaviour
     {
         return isRoomOpen && !isBlocked && spawnCurrent == 0;
     }
-    [SerializeField] EnemyData data;
-    [ContextMenu("DEBUG SPAWN")]
-    public void DebugSpawn()
-    {
-        Spawn(data);
-    }
+
 
     public void OrderSpawn(EnemyData enemy)
     {
+        Debug.Log("this was ordered to spawn");
 
         if (spawnQueueList.Count > 0)
         {
@@ -89,10 +93,14 @@ public class Portal : MonoBehaviour
     public void Spawn(EnemyData enemy)
     {
 
+
+
         int round = LocalHandler.instance.round;
-        EnemyBase newObject = Instantiate(enemy.enemyModel, spawnPoint.transform.position + Vector3.forward, Quaternion.identity);
+        // EnemyBase newObject = Instantiate(enemy.enemyModel, spawnPoint.transform.position + Vector3.forward, Quaternion.identity);
+        EnemyBase newObject = GameHandler.instance._pool.GetEnemy(enemy, spawnPoint.transform.position + Vector3.forward);
+
+        newObject.gameObject.name = enemy.name;
         newObject.SetStats(round);
-        newObject.SetChest(chestAbilityTemplate);
         chestAbilityTemplate = null;
 
         spawnTotal = Random.Range(1, 3);
@@ -102,10 +110,36 @@ public class Portal : MonoBehaviour
     }
 
 
+    public void OrderRespawn(EnemyBase enemy)
+    {
+        enemyDespawnedList.Add(enemy);  
+    }
+
+    void SpawnDespawned()
+    {
+        Debug.Log("portal Respawned");
+
+        enemyDespawnedList[0].transform.position = spawnPoint.transform.position + Vector3.forward;
+        enemyDespawnedList[0].gameObject.SetActive(true);
+        enemyDespawnedList.RemoveAt(0);
+
+        spawnTotal = Random.Range(1, 3);
+        spawnCurrent = spawnTotal;
+
+    }
+
     public void SetNextSpawnToCarryChest(ChestAbility chestAbilityTemplate)
     {
         this.chestAbilityTemplate = chestAbilityTemplate;
     }
+
+
+    //so as it stands its localhandler who tells who has the chest ability.
+    //but now what he should do is the following: check if should spawn ability, then check for ammo, then check for drop
+    //most of the time none of them should be spawned.
+
+    //
+
 
     public void OpenForSpawn()
     {

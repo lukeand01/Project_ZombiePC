@@ -7,7 +7,7 @@ using UnityEngine;
 public class AbilityPassiveDataArmor : AbilityPassiveData
 {
     //we create a list of all fellas that we add in the abilityclass.
-    //then we get the value by multiplying the value 
+    //then we get the value_Level by multiplying the value_Level 
 
     //
 

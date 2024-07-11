@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4332650928457768834}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.79, y: 0, z: 0}
+  m_LocalPosition: {x: 18.98, y: 1.5600001, z: 10.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -103,6 +103,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 3e284f2bbd3d3814abbc1dad525eff05, type: 2}
   _enemyCanvas: {fileID: 1522029419385902767}
   head: {fileID: 0}
+  _entityEvents: {fileID: 6467380131581242244}
+  _entityStat: {fileID: 8518542070326798338}
+  agent: {fileID: 7381293936052344184}
   _abilityIndicatorCanvas: {fileID: 0}
   soundUnitTemplate: {fileID: 0}
   container: {fileID: 0}
@@ -133,7 +136,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugInitialList: []
   _entityCanvas: {fileID: 8503005334753035888}
-  debugStatList: []
+  debugStatList:
+  - stat: 0
+    initialValue: 330
+  - stat: 1
+    initialValue: 6
+  - stat: 2
+    initialValue: 50
+  - stat: 3
+    initialValue: 0
+  - stat: 4
+    initialValue: 0
+  - stat: 5
+    initialValue: 0
+  - stat: 7
+    initialValue: 0
+  - stat: 6
+    initialValue: 0
+  - stat: 8
+    initialValue: 0
+  - stat: 9
+    initialValue: 0
+  - stat: 10
+    initialValue: 0
+  - stat: 11
+    initialValue: 0
+  - stat: 12
+    initialValue: 0
+  - stat: 13
+    initialValue: 0
+  - stat: 14
+    initialValue: 0
+  - stat: 15
+    initialValue: 0
+  - stat: 16
+    initialValue: 0
+  - stat: 17
+    initialValue: 0
+  - stat: 18
+    initialValue: 0
   <isStunned>k__BackingField: 0
   <IsImmune>k__BackingField: 0
   <IsInvisible>k__BackingField: 0
@@ -150,7 +191,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -256,6 +297,10 @@ PrefabInstance:
     - target: {fileID: 706202884058859384, guid: d7dc84e0c3ee0d34c9a87afd8347a443, type: 3}
       propertyPath: m_Name
       value: EnemyCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3173709435069548732, guid: d7dc84e0c3ee0d34c9a87afd8347a443, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8681370125369020326, guid: d7dc84e0c3ee0d34c9a87afd8347a443, type: 3}
       propertyPath: m_Pivot.x

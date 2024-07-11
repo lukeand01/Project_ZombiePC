@@ -21,6 +21,8 @@ public class UIHandler : MonoBehaviour
     [SerializeField] EndUI endUIRef;
     [SerializeField] QuestUI questUIRef;
     [SerializeField] MouseUI mouseUIRef;
+    [SerializeField] DialogueUI dialogueUIRef;
+    [SerializeField] Settings settingUIRef;
     public DebugUI debugui;
     #region GETTERS 
     public PlayerUI _playerUI { get {  return playerUIRef; } }
@@ -47,6 +49,10 @@ public class UIHandler : MonoBehaviour
     public QuestUI _QuestUI { get { return questUIRef; } }
 
     public MouseUI _MouseUI { get { return mouseUIRef; } }
+
+    public DialogueUI _DialogueUI { get { return dialogueUIRef; } }
+
+    public Settings _settingsUI { get { return settingUIRef; } }
     #endregion
 
     

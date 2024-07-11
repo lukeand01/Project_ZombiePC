@@ -15,12 +15,12 @@ MonoBehaviour:
   enemyName: Fighter
   enemyModel: {fileID: 2604708259153351174, guid: 715bce785190c5e49a4590dffe51270e, type: 3}
   attackRange: 3.5
-  attackSpeed: 0.7
+  attackSpeed: 0.6
   initialStatList:
   - stat: 0
     initialValue: 300
   - stat: 1
-    initialValue: 4.5
+    initialValue: 5.5
   - stat: 2
     initialValue: 80
   scaleStatList:

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1438558510869013232}
   - component: {fileID: 6997610093423266852}
   - component: {fileID: 574221070290019042}
+  - component: {fileID: 5455472546093622237}
   m_Layer: 0
   m_Name: GameHandler
   m_TagString: Untagged
@@ -48,6 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f8cab5e5b21d747b44a38b6213673a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <_settingsData>k__BackingField: {fileID: 11400000, guid: 576d277f09b0c3f49b06c269a9c019a4, type: 2}
+  <cityDataHandler>k__BackingField: {fileID: 11400000, guid: 9b3ec663edfe2af4dacccafa1a65f1bc, type: 2}
 --- !u!114 &1438558510869013232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +96,28 @@ MonoBehaviour:
   rotateImage: {fileID: 180465667124368333}
   rotateImageHolder: {fileID: 7841466181464853914}
   currentSceneIndex: 2
+--- !u!114 &5455472546093622237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869934527877858254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4107f1651bfcdb4287df882993d7aaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletScriptTemplate: {fileID: 1912603505503571018, guid: 03c593b7051d78e41968b090993b4855, type: 3}
+  enemyData_array:
+  - {fileID: 11400000, guid: 0d53dedb7d075c442b2c3be108b9eec5, type: 2}
+  - {fileID: 11400000, guid: ec96d24a90754774ead430407778975b, type: 2}
+  - {fileID: 11400000, guid: 3e284f2bbd3d3814abbc1dad525eff05, type: 2}
+  - {fileID: 11400000, guid: 804e4ac7c50f0124e97c176f17b9f5fd, type: 2}
+  - {fileID: 11400000, guid: 3839579ea0c928f4ea734d2f5de59aa5, type: 2}
+  - {fileID: 11400000, guid: cb9769c528a0d3b45b040e2334a19e2e, type: 2}
+  - {fileID: 11400000, guid: b5194f29f1993e84280f69cf372c338a, type: 2}
+  - {fileID: 11400000, guid: 8996d72b5f1f4cf4ab6669a787585898, type: 2}
 --- !u!1 &1870680248965442196
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,27 @@ public class AbilityBaseData : ScriptableObject
     public int abilityStackMax;
     public TierType abilityTier;
 
+    [Separator("ONLY TEMP GUNS")]
+    [SerializeField] bool hasBeenFound;
+    [SerializeField] int additionalRollRequired;
+
+    public bool HasBeenFound { get { return hasBeenFound; } }
+
+    public int GetAdditionalRollRequired {  get { return additionalRollRequired; } }
+
+    public void SetFound(bool hasBeenFound)
+    {
+        this.hasBeenFound = hasBeenFound;
+    }
+
+    public int storeIndex { get; private set; }
+
+    public void SetIndex(int index)
+    {
+        storeIndex = index;
+    }
+
+
     public virtual AbilityActiveData GetActive() => null;
     public virtual AbilityPassiveData GetPassive() => null;
 

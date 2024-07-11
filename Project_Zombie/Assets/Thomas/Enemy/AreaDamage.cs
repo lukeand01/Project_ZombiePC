@@ -52,7 +52,6 @@ public class AreaDamage : MonoBehaviour
     {
         //we check in this area and deal damage to those you cannot.
 
-        Debug.Log("deal damage");
 
         RaycastHit[] targets = Physics.SphereCastAll(transform.position, radius, Vector3.up, 0, targetLayer);
 

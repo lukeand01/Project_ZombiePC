@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586ed45482a7b49459c4a4d56809d9fa, type: 3}
+  m_Name: Enemy_ChargeShield
+  m_EditorClassIdentifier: 
+  enemyName: Shield
+  enemyModel: {fileID: 776300283627223439, guid: a91b1dd67b9fba248a0b377493a4e4bb, type: 3}
+  attackRange: 25
+  attackSpeed: 3
+  initialStatList:
+  - stat: 0
+    initialValue: 5000000
+  - stat: 1
+    initialValue: 0
+  - stat: 2
+    initialValue: 60
+  scaleStatList:
+  - stat: 0
+    initialValue: 30
+  audio_Hit: {fileID: 8300000, guid: 8e4851963e3ebde4b948020b48d7cd78, type: 3}
+  audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
+  audio_Spawned: {fileID: 0}
+  audio_Attack: {fileID: 8300000, guid: ef852f4dba9f9e34285d4227eb3883d0, type: 3}
+  shouldNotDespawnBecauseOfDistance: 0

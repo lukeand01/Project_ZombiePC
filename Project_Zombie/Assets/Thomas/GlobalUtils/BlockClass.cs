@@ -22,9 +22,7 @@ public class BlockClass
         blockNary.Add(id, block);
     }
 
-    
-
-
+   
     public bool HasBlock(BlockType block)
     {
         return blockNary.ContainsValue(block);
@@ -42,14 +40,15 @@ public class BlockClass
             blockNary.Remove(id);
         }
 
-
-
     }
 
     public void ClearBlock()
     {
         blockNary.Clear();
     }
+
+
+
 
     public enum BlockType
     {
@@ -61,7 +60,8 @@ public class BlockClass
         MouseSkill,
         KeySkill,
         Silence,
-        Pause
+        Pause,
+        OnlyCharge
 
 
     }

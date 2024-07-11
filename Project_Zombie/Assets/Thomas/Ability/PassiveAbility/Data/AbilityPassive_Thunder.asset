@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29d16154c36147a42aad5ba868440d6f, type: 3}
+  m_Name: AbilityPassive_Thunder
+  m_EditorClassIdentifier: 
+  abilityName: Thunder
+  abilityDescription: 'Attacks enemies '
+  abilityIcon: {fileID: 21300000, guid: 4184495d79c523148bd19006e6e88b2d, type: 3}
+  abilityStackMax: 10
+  abilityTier: 0
+  hasBeenFound: 0
+  additionalRollRequired: 0
+  _firstValue: 500
+  _secondValue: 0
+  detectionRadius: 5

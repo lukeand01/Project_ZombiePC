@@ -23,6 +23,9 @@ public class PlayerUI : MonoBehaviour
 
         originalPos = roundHolder.transform.position;
         originalPos_New = roundHolder.transform.position;
+
+
+        originalRoundSprite = roundIcon_New.sprite;
     }
     public void ControlUI(bool isVisible)
     {
@@ -228,6 +231,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI roundText_New;
     Vector3 originalPos_New;
 
+    Sprite originalRoundSprite;
+
     public void CloseRound_New()
     {
         roundHolder_New.transform.position = originalPos_New + new Vector3(0, Screen.height * 0.1f, 0);
@@ -240,11 +245,13 @@ public class PlayerUI : MonoBehaviour
         roundHolder.SetActive(false);
         roundHolder_New.SetActive(true);
         roundHolder_New.transform.DOMove(originalPos_New, 1.5f);
+
+        roundIcon_New.sprite = originalRoundSprite;
     }
 
 
 
-    public void UpdateRoundText_New(int newValue, bool isForce)
+    public void UpdateRoundText_New(int newValue, bool isForce, Sprite newImage)
     {
         StopAllCoroutines();
 
@@ -255,33 +262,43 @@ public class PlayerUI : MonoBehaviour
         }
 
 
-        StartCoroutine(UpdateRoundTextProcess(newValue));
+        StartCoroutine(UpdateRoundTextProcess(newValue, newImage));
     }
 
-    IEnumerator UpdateRoundTextProcess(int newValue)
+    IEnumerator UpdateRoundTextProcess(int newValue, Sprite newImage)
     {
         roundText_New.DOKill();
 
         float timer = 0.15f;
         roundText_New.DOFade(0, timer);
 
-        yield return new WaitForSecondsRealtime(timer);
+        yield return new WaitForSeconds(timer);
 
         roundText_New.text = newValue.ToString();
         roundText_New.DOFade(1, timer);
 
-        yield return new WaitForSecondsRealtime(timer);
+        yield return new WaitForSeconds(timer);
 
         roundText_New.DOFade(0, timer);
 
-        yield return new WaitForSecondsRealtime(timer);
+        if(newImage == null)
+        {
+            roundIcon_New.sprite = originalRoundSprite;
+        }
+        else
+        {
+            roundIcon_New.sprite = newImage;
+        }
+
+
+        yield return new WaitForSeconds(timer);
 
         roundText_New.DOFade(1, timer);
 
-        yield return new WaitForSecondsRealtime(timer);
+        yield return new WaitForSeconds(timer);
         roundText_New.DOFade(0, timer);
 
-        yield return new WaitForSecondsRealtime(timer);
+        yield return new WaitForSeconds(timer);
 
         roundText_New.DOFade(1, timer);
 

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 504891ee166dcc847847aa4c1b9e4845, type: 3}
+  m_Name: DropData_GunBoxPrice
+  m_EditorClassIdentifier: 
+  dropName: Gun Chest Price Reduction
+  dropSprite: {fileID: 21300000, guid: 86aefa2655c3f114ab27823c16e3f431, type: 3}
+  rollRequired: 5
+  dropModel: {fileID: 2453127917606108173, guid: 30f0b535fbabae340adc347d70bf18f2, type: 3}
+  priceModifier: 1
+  timer: 15

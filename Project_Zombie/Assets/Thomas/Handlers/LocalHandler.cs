@@ -41,6 +41,11 @@ public class LocalHandler : MonoBehaviour
             return;
         }
 
+
+        RoundSpawnModifier = 1;
+        spawnCap = 100;
+
+
         round = 1;
         GetNewSpawnList();
         StartLocalHandler();
@@ -54,6 +59,7 @@ public class LocalHandler : MonoBehaviour
         ChestGunHandle();
         ChestResourceHandle();
         ChestAbilityHandle();
+        ChestAmmoHandle();
         Shrine_Handle();
 
 
@@ -75,6 +81,10 @@ public class LocalHandler : MonoBehaviour
         if (roomArray.Length == 0) return;
 
 
+        PlayerHandler.instance._playerAbility.ResetPassiveAbilities();
+        PlayerHandler.instance._playerAbility.UpdateActiveAbility();
+
+
         spawnTotal = 4; //a larger time before they start appearing.
         spawnWaveQuantity = 1;
         //spawnCurrent = spawnTotal;
@@ -90,6 +100,7 @@ public class LocalHandler : MonoBehaviour
         ChestGunSpawn(true);
 
         ChestAbilitySet();
+        ChestAmmoSet();
         roomArray[0].OpenRoom_Room();
 
         PlayerHandler.instance.transform.position = spawnPos.position;
@@ -105,6 +116,16 @@ public class LocalHandler : MonoBehaviour
             StartCoroutine(RoundStartProcess());
         }
         
+    }
+
+    public void GetEnemyAndSpawninAnotherPortal(EnemyBase enemy)
+    {
+        //i turned off this enemybase
+
+        enemy.gameObject.SetActive(false);
+        _roundHandler.ReceiveDespawnedEnemy(enemy);
+        //then i will simply pass to another portal but instead of instatiating it will simply bring the fella to the right position and make it visible
+
     }
 
 
@@ -188,7 +209,6 @@ public class LocalHandler : MonoBehaviour
     Dictionary<string, Room> openRoomDictionary = new();
     public void OpenRoom_LocalHandler(Room room, string fromwhjere)
     {
-
         if (!openRoomDictionary.ContainsKey(room.id))
         {
             openRoomDictionary.Add(room.id, room);
@@ -217,10 +237,10 @@ public class LocalHandler : MonoBehaviour
     //everytime a fella is spawned and the fella has a cap we attack an event to its death so we can remove it.
     public Dictionary<string, int> dictionaryForEnemiesWithSpawnCap { get; private set; } = new();
     [field:SerializeField] public List<EnemyChanceSpawnClass> enemyChanceList { get; private set; } = new();
-
+    //is this the problem
     //every wave is spwaned
 
-    public List<Portal> allowedPortal { get; private set; } = new();
+    [field:SerializeField] public List<Portal> allowedPortal { get; private set; } = new();
 
     float spawnCurrent;
     float spawnTotal;
@@ -545,7 +565,7 @@ public class LocalHandler : MonoBehaviour
         //i cannot use a position that has already been used.
         //otherwise will have two chests in the same poalce.
 
-        Debug.Log("chest resource spawn");
+        //
 
         if (chestResourceSpawnPosArray.Length == 0) return;
         if (_stageData == null) return;
@@ -603,13 +623,15 @@ public class LocalHandler : MonoBehaviour
     }
     #endregion
 
-    #region CHEST ABILITY
+    #region SPAWN Chest Ability, Ammo and Drop
 
     [Separator("CHEST ABILITY")]
     [SerializeField] ChestAbility chestAbilityTemplate;
+    bool chestAbility_Ready;
+
 
     float chestAbilityTotal;
-    [SerializeField] float chestAbilityCurrent;
+    float chestAbilityCurrent;
 
     //its better to check directly here than to keep in the portal.
     //or other way to get abilities.
@@ -628,7 +650,7 @@ public class LocalHandler : MonoBehaviour
             return;
         }
 
-        UIHandler.instance.debugui.UpdateDEBUGUI(chestAbilityCurrent.ToString());
+        //UIHandler.instance.debugui.UpdateDEBUGUI(chestAbilityCurrent.ToString());
 
         if(chestAbilityCurrent > 0)
         {
@@ -636,15 +658,77 @@ public class LocalHandler : MonoBehaviour
         }
         else
         {
+            chestAbility_Ready = true;
+            chestAmmoCurrent = chestAbilityTotal;
+        }
 
-            int random = Random.Range(0, allowedPortal.Count);
-            allowedPortal[random].SetNextSpawnToCarryChest(chestAbilityTemplate);
+        //then we check here and then for drop. io think the chest spawn system should be better.
+        //because if i want to change how the spawn works this might not be as good.
+        //instead, when it dies it checks the localhandler if it has anything for it. this
 
-            chestAbilityCurrent = chestAbilityTotal;
+
+    }
+    public ChestAbility GetChestAbility()
+    {
+        if (chestAbility_Ready)
+        {
+            chestAbility_Ready = false;
+            return chestAbilityTemplate;
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
+
+    [Separator("CHEST AMMO")]
+    [SerializeField] Chest_Ammo chest_Ammo_Template;
+    bool chestAmmo_Ready;
+
+    float chestAmmoTotal;
+    float chestAmmoCurrent;
+
+    void ChestAmmoSet()
+    {
+        chestAmmoTotal = 5;
+        chestAmmoCurrent = 0;
+    }
+
+    void ChestAmmoHandle()
+    {
+        if (chestAmmoCurrent > 0)
+        {
+            chestAmmoCurrent -= Time.fixedDeltaTime;
+        }
+        else
+        {
+
+            chestAmmo_Ready = true;
+            chestAmmoCurrent = chestAmmoTotal;
         }
     }
 
+    public Chest_Ammo GetChestAmmo()
+    {
+        if (chestAmmo_Ready)
+        {
+            chestAmmo_Ready = false;
+            return chest_Ammo_Template;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    //[Separator("DROP")]
+
     //we get a random allowed
+    //we check if we should spawn. how to decide? we roll for each fella. if none come up then we ignore it.
+    //the chances are naturally low.
 
     #endregion
 
@@ -735,61 +819,43 @@ public class LocalHandler : MonoBehaviour
 
     #endregion
 
-    #region POWER
-    [Separator("POWER")]
-    [SerializeField] List<PowerObject> powerRefList = new();
-
-    float powerCurrent;
-    float powerTotal;
-
-
-    //power has to be a bit smarter
-    //i have to give ammo every x turns. every 3 turns the last enemy 
-    //
-
-    void Power_Set()
-    {
-        chestAbilityTotal = 35;
-        chestAbilityCurrent = chestAbilityTotal;
-    }
-
-    void Power_Handle()
-    {
-        if (allowedPortal.Count <= 0)
-        {
-
-            return;
-        }
-
-        if (powerCurrent > 0)
-        {
-            powerCurrent -= Time.fixedDeltaTime;
-        }
-        else
-        {
-
-            int random = Random.Range(0, allowedPortal.Count);
-            allowedPortal[random].SetNextSpawnToCarryChest(chestAbilityTemplate);
-
-            powerCurrent = powerTotal;
-        }
-    }
-
-    public bool ShouldSpawnAmmoPower()
-    {
-        return true;
-    }
-
-    //it is isnt given by the 
-
-    #endregion
 
     #region DROPS
 
 
 
     #endregion
+
+    #region ROUND TYPES LOGIC
+    public bool IsBloodMoon { get; private set; }
+
+    public void SetBloodMoonBool(bool isBloodMoon) => this.IsBloodMoon = isBloodMoon;
+
+    public float RoundSpawnModifier { get; private set; } = 1;
+
+    public void SetRoundSpawnModifier(float spawnModifier)
+    {
+        RoundSpawnModifier = spawnModifier;
+    }
+
+    public int spawnCap { get; private set; }
+    public void SetSpawnCap(int spawnCap)
+    {
+        this.spawnCap = spawnCap;
+    }
+
+    public bool CanSpawnAnotherEnemy()
+    {
+        //we check the number of enemies present so we dont spawn too much accidently.
+        return true;
+    }
+
+
+    #endregion
+
+
 }
+
 
 
 

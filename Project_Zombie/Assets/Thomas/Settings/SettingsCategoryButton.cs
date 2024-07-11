@@ -1,18 +1,47 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class SettingsCategoryButton : MonoBehaviour
+public class SettingsCategoryButton : ButtonBase
 {
-    // Start is called before the first frame update
-    void Start()
+    [Separator("SETTINGS")]
+    public SettingsType settingsIndex;
+
+    
+
+    Settings _settingsHandler;
+
+    public void SetUp(Settings _settingsHandler)
     {
-        
+        this._settingsHandler = _settingsHandler;
+        SetText(settingsIndex.ToString());
+
+        ControlMouseClick(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnPointerClick(PointerEventData eventData)
     {
-        
+        base.OnPointerClick(eventData);
+
+        _settingsHandler.SelectCategory((int)settingsIndex);
     }
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        base.OnPointerEnter(eventData);
+        ControlSelected(true);
+    }
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        base.OnPointerExit(eventData);
+        ControlSelected(false);
+    }
+
+    private void OnDisable()
+    {
+        ControlSelected(false);
+    }
+
 }

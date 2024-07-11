@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -46,7 +47,21 @@ public class EquipWindowContainer : MonoBehaviour
         }
     }
 
+    [Separator("QUEST")]
+    [SerializeField] QuestUnit questUnitTemplate;
+    
+    public void UpdateContainerQuest(List<QuestClass> questList)
+    {
+        DestroyChildren();
 
+        foreach (var item in questList)
+        {
+            QuestUnit newObject = Instantiate(questUnitTemplate);
+            newObject.SetUp(item);
+            newObject.SetUp_Story();
+            newObject.transform.SetParent(container);
+        }
+    }
    
     
     void DestroyChildren()

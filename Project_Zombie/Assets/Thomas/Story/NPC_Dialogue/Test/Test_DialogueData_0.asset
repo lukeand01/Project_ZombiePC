@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7eb04f64a3cc0d478449bd9be8427fe, type: 3}
+  m_Name: Test_DialogueData_0
+  m_EditorClassIdentifier: 
+  <dialogueList>k__BackingField:
+  - dialogueKeyForResponse: First
+    dialogueStringList:
+    - this is the dialogue. and i love talking so much!
+    - and this is the second line
+    - what do you say?
+    responseList:
+    - responseText: I love it
+      keyForResponse: loveit
+      response_trigger: 1
+      responseTrigger_Index: 0
+    - responseText: I hate it
+      keyForResponse: hateit
+      response_trigger: 2
+      responseTrigger_Index: 9
+    - responseText: Leave
+      keyForResponse: 
+      response_trigger: 0
+      responseTrigger_Index: 0
+  - dialogueKeyForResponse: loveit
+    dialogueStringList:
+    - I love it more!
+    responseList: []
+  - dialogueKeyForResponse: hateit
+    dialogueStringList:
+    - I hate it more!
+    responseList: []
+  especialID: 
+  shouldConnectToNormalDialogue: 0

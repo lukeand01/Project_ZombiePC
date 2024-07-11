@@ -11,6 +11,14 @@ public class ItemTierHolder : ScriptableObject
     //those divisions are: tier, type of weapons, type of damage,
 
 
+    //i dont think i will be using this anymore.
+    //the weapons you can get are related to the level of your armory.
+
+
+    //maybe i should just use the armory, the armory show
+
+
+
     [SerializeField] List<ItemData> itemDataRefList = new();
 
     public Dictionary<TierType, List<ItemData>> dictionaryDividedByTier = new();
@@ -50,7 +58,6 @@ public class ItemTierHolder : ScriptableObject
 
     }
 
-
     public List<ItemData> GetRandomListWithAmount(int amount)
     {
         List<ItemData> newList = new();
@@ -78,6 +85,8 @@ public class ItemTierHolder : ScriptableObject
         List<ItemChanceClass> chanceList = currentChanceListBasedInLevel;
         int roll = Random.Range(0, 101) + (int)(luck * 2);
         ItemData chosenItem = null;
+
+
 
         int safeBreak = 0;
 
@@ -109,7 +118,6 @@ public class ItemTierHolder : ScriptableObject
 
         return chosenItem;
     }
-
 
     //what i can do is that i build this fella everytime i change level. that way i dont need to worry about building it over and over again.
     public void GenerateNewChanceListBasedInLevel(int level)
@@ -228,7 +236,7 @@ public class ItemTierHolder : ScriptableObject
 }
 
 [System.Serializable]
-class ItemChanceClass
+public class ItemChanceClass
 {
     public ItemData data;
     public int chance;
@@ -243,5 +251,11 @@ class ItemChanceClass
         this.chance = chance;   
     }
 
+    public void DebugIncreaseChance(int increase)
+    {
+        //this is used for just one testing cenario.
 
+        chance += increase;
+
+    }
 }

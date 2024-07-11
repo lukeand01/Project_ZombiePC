@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -41,9 +42,36 @@ public class ResourceUnit : ButtonBase
         {
             return;
         }
+      
         icon.sprite = item.data.itemIcon;
         quantityText.text = item.quantity.ToString();
     }
+
+    public void UpdateUI_Pop()
+    {
+        if(item.data == null)
+        {
+            Debug.Log("no data here in pop");
+            return;
+        }
+
+        if(item.data.GetResource() == null)
+        {
+            Debug.Log("this pop is not even reosurce");
+            return;
+        }
+
+        if(item.data.GetResource().resourceType != ItemResourceType.Population)
+        {
+            Debug.Log("pop is called but this is not pop");
+            return;
+        }
+
+        icon.sprite = item.data.itemIcon;
+        quantityText.text = item.popUsage.ToString() + " / " + item.quantity.ToString();
+    }
+
+
 
 
     public override void OnPointerEnter(PointerEventData eventData)

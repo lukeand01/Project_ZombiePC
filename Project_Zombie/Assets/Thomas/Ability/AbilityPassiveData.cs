@@ -20,6 +20,11 @@ public class AbilityPassiveData : AbilityBaseData
     
     }
 
+    public virtual void Call(AbilityClass ability)
+    {
+
+    }
+
     protected void AddBDToPlayer(BDClass bd)
     {
         PlayerHandler.instance._entityStat.AddBD(bd);   

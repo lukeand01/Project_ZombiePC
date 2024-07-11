@@ -66,7 +66,10 @@ public class DescriptionWindow : MonoBehaviour
         tierText.text = ability.GetTierForDescription();
         descriptionText.text = ability.GetDescriptionForDescription();
         damageText.text = ability.GetDamageForDescription();
+
         cooldownText.text = ability.GetCooldownForDescription();
+
+        
     }
    public void DescribeAbilityData(AbilityActiveData ability, Transform posRef)
     {
@@ -174,6 +177,28 @@ public class DescriptionWindow : MonoBehaviour
         cooldownText.text = item.quantity.ToString();
     }
 
+    public void DescribeQuest(QuestClass quest, Transform posRef)
+    {
+        //we only are going to describe story quests.
+        //quests have a name
+        descriptionHolder.SetActive(true);
+        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
+        CloseStoreDescribe();
+
+        nameText.text = quest.GetQuestName;
+        typeText.text = "Story Quest";
+        tierText.text = quest.GetQuestGiverName;
+        descriptionText.text = quest.GetDescription_Story;
+
+        //i want to put the reward here.    
+        damageText.text = "";
+        cooldownText.text = quest.GetDescription_Reward();
+
+
+
+
+    }
+
 
     Vector3 GetScreenOffset(Vector3 posRef)
     {
@@ -215,11 +240,11 @@ public class DescriptionWindow : MonoBehaviour
         storeHolder.SetActive(false);
     }
 
-    public void StoreDescribeGun(CityStoreArmoryClass armory, bool isBought)
+    public void StoreDescribeGun(ItemGunData gunData, bool isBought)
     {
         storeHolder.SetActive(true);
         storeBoughtHolder.SetActive(isBought);
-        List<string> stringList = armory.GetStringPriceList();
+        List<string> stringList = gunData.GetStringPriceList();
 
         priceText.text = "Price: ";
 

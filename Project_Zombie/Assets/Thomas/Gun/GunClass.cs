@@ -202,7 +202,7 @@ public class GunClass
 
         cooldownTotal = GetGunTotalStat(StatType.FireRate);
 
-        //this value we will handle everything and then we will apply these values.
+        //this value_Level we will handle everything and then we will apply these values.
     }
 
     
@@ -248,18 +248,22 @@ public class GunClass
 
     #endregion
 
-
     #region AMMO
 
     public int ammoCurrent { get; private set; }
     public int ammoTotal { get; private set; }
     public int ammoReserve { get; private set; }
+    public int ammoReserveTotal { get; private set; }
 
     float ammoRefundProgress;
 
     public void RefundAmmo(float modifier)
     {
         float valueRestored = ammoTotal * modifier;
+
+  
+
+
         float valueForAmmo = 0;
 
         if (valueRestored >= 1)
@@ -270,7 +274,7 @@ public class GunClass
         {
             
             ammoRefundProgress += valueRestored;
-            Debug.Log("here? " + ammoRefundProgress);
+
 
             if (ammoRefundProgress >= 1)
             {
@@ -280,13 +284,17 @@ public class GunClass
         }
 
 
-
-        Debug.Log(valueRestored + " " + valueForAmmo + " " + ammoRefundProgress);
-
         ammoCurrent += (int)valueForAmmo;
         ammoCurrent = Mathf.Clamp(ammoCurrent, 0, ammoTotal);
     }
     
+    public void ReplenishReserveAmmoBasedInTotal(float modifier)
+    {
+        float valueRestored = ammoReserve * modifier;
+
+        ammoReserve += (int)valueRestored;
+        ammoReserve = Mathf.Clamp(ammoReserve, 0, ammoReserveTotal);
+    }
 
     public void MakeAmmoInfinite()
     {
@@ -335,6 +343,7 @@ public class GunClass
     public void RefreshReserveAmmo()
     {
         ammoReserve = ammoCurrent * 5;
+        ammoReserveTotal = ammoTotal * 7;
     }
 
     public bool HasReserveAmmo()
@@ -599,7 +608,6 @@ public class GunClass
     }
     //this can be changed only inside.
     #endregion
-
 
     #region ESPECIAL EVENTS
 

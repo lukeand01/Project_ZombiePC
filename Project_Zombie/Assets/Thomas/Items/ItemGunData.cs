@@ -23,9 +23,58 @@ public class ItemGunData : ItemData
      [SerializeField]AudioClip audio_Shoot;
      [SerializeField]AudioClip audio_Reload;
 
+    [Separator("STORE")]
+    [SerializeField] bool store;
+    [field:SerializeField] public bool isTemp { get; private set; }
+    [field: SerializeField] public RequirementToUnluckClass requirementToUnluck { get; private set; }
+
+
+    [field: SerializeField] public int additionalRollRequired { get; private set; }//if its found then we need to roll again.
+
+    
+
+
+    public List<string> GetStringPriceList()
+    {
+        List<ResourceClass> resourceList = requirementToUnluck.requiredResourceList;
+        List<string> stringList = new();
+
+
+        foreach (var item in resourceList)
+        {
+            string text = "";
+
+            text += item.data.itemName + ": ";
+            text += item.quantity.ToString();
+
+            stringList.Add(text);
+        }
+
+        return stringList;
+    }
+
+    [field:SerializeField] public int storeIndex {  get; private set; }
+
+    public void SetIndex(int index)
+    {
+        storeIndex = index;
+    }
+
+
     public AudioClip Get_Audio_Reload { get { return audio_Reload; } }
 
     //the reload is more complex buecause it needs to persist while the player is reloading and stop if the player is no longer reloading.
+
+    [Separator("ONLY TEMP GUNS")]
+    [SerializeField] bool hasBeenFound;
+
+    public bool HasBeenFound { get { return hasBeenFound; } }
+
+    public void SetHasBeenFound(bool hasBeenFound)
+    {
+        this.hasBeenFound = hasBeenFound;
+    }
+
 
 
     private void OnEnable()
@@ -49,11 +98,13 @@ public class ItemGunData : ItemData
         }
     }
 
+    public StatClass[] GetGunStatList() => gunBaseStat;
 
     //butllet per shot is modifier
     //also we should be able to get damage from it
     //i can just put those variables in the gun? but then i would need to double check everytime.
-    
+
+    IDamageable playerDamageable; //terrible solution, but it works for now.
 
     public void Shoot(GunClass gun, string ownerId, BulletScript bulletTemplate, Vector3 gunDir, List<BulletBehavior> newBulletBehaviorList)
     {
@@ -64,9 +115,12 @@ public class ItemGunData : ItemData
 
         PlayerCombat combat = PlayerHandler.instance._playerCombat;
 
+        if(playerDamageable == null)
+        {
+            playerDamageable = PlayerHandler.instance._playerResources;
+        }
 
         int goThroughPower = gun.GoThroughPower_Total;
-
 
 
         for (int i = 0; i < gun.bulletPerShot; i++)
@@ -78,15 +132,19 @@ public class ItemGunData : ItemData
 
 
 
-            BulletScript newBullet = Instantiate(bulletTemplate, gunPointPosition.position, Quaternion.identity);
+            BulletScript newBullet = GameHandler.instance._pool.GetBullet(gunPointPosition);
+
+
             newBullet.SetUp(ownerId, direction);
 
-
+            //
+            
             newBullet.MakeDamage(gun._DamageClass, 0, 0);
+            newBullet.MakePlayerDamageableRef(playerDamageable);
             newBullet.MakeSpeed(50, 0, 0);
             newBullet.MakeCollision(goThroughPower);
 
-            
+
 
             newBullet.MakeBulletBehavior(newBulletBehaviorList);
         }

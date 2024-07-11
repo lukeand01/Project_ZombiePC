@@ -48,7 +48,7 @@ public class BehaviorAttack : Sequence2
         }
 
 
-        return base.Evaluate();
+
     }
 
 
