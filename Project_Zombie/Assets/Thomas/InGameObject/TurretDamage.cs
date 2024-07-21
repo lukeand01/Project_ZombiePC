@@ -18,37 +18,26 @@ public class TurretDamage : Turret
         base.SetUp();
     }
 
-
-    private void FixedUpdate()
+    protected override void FixedUpdateFunction()
     {
-        //there is a strong inconsitency in turret raycast. need to find another way to solve this. because the thing is failiing to shoot right.
+        base.FixedUpdateFunction();
 
+        LookForTarget1();
+        return;
 
-        //it will go as following:
-        //the turret checks if there are enemies close enough.
-        //then we use that list. we check everyone to find someone we have a clear line of sight. if we do, we set target
-        //once we have the target we rotate to the target.
-        //once the turret is lined to the turret then we start shooting
-        //we keep checking if the target is dead or if its out of sight
-        //we loop
-
-
-        if(targetObject != null)
+        if (targetObject != null)
         {
             //
-            Debug.Log("spotted fella");
-            RotateToTarget();
-            CheckIfTargetIsNull();
-
         }
         else
         {
+            Debug.Log("look for targets");
             graphic.transform.Rotate(new Vector3(0, 0, 0.2f));
-            LookForTarget();
+            
         }
 
 
-       
+
         if (targetObject == null)
         {
             //in this case we just keep moving around
@@ -58,8 +47,47 @@ public class TurretDamage : Turret
 
         Vector3 direction = targetObject.transform.position - transform.position;
         Debug.DrawLine(head.transform.position, direction * 5000, Color.red);
+    }
+
+
+    //change this
+    //i dont want to be checking every frame for it.
+    //we check only if we find no one, but when we do we only become interested on it.
+    //we arealdyu doing but there is no coinsistence
+    //
+
+    void LookForTarget1()
+    {
+        //we will check t
+        RaycastHit[] targetsAround = Physics.SphereCastAll(transform.position, range, Vector2.up, 50, enemyLayer);
+
+        foreach (var item in targetsAround)
+        {
+            //we will get the first to be the right one because its generaly the closest.
+            if (IsInSight(item.collider.transform))
+            {
+
+                Debug.Log("something caught in sight");
+                IDamageable damageable = item.collider.GetComponent<IDamageable>();
+
+                if (damageable == null) continue;
+
+                Debug.Log("caught right");
+                target = damageable;
+                targetObject = item.collider.gameObject;
+                return;
+
+            }
+            else
+            {
+                Debug.Log("not caught");
+            }
+
+        }
 
     }
+
+
 
 
     void LookForTarget()
@@ -78,18 +106,20 @@ public class TurretDamage : Turret
 
             Ray ray = new Ray(transform.position, direction);
             
+            
+
             if (Physics.Raycast(ray, out RaycastHit hit, range, targetLayer))
             {
                 
 
                 if(hit.collider.gameObject.layer == 9)
                 {
-                    Debug.Log("WALL: aiming for this  " + item.collider.name + " and got this " + hit.collider.name);
+                    //Debug.Log("WALL: aiming for this  " + item.collider.name + " and got this " + hit.collider.name);
                     continue;
                 }
                 else
                 {
-                    Debug.Log("this is not a wall " + item.collider.name);
+                    //Debug.Log("this is not a wall " + item.collider.name);
                 }
                 
 
@@ -138,11 +168,33 @@ public class TurretDamage : Turret
             return;
         }
 
+
+        if (IsInSight(null))
+        {
+            Debug.Log("still on sight");
+        }
+        else
+        {
+            Debug.Log("not on sight anymore");
+            target = null;
+            targetObject = null;
+            return;
+        }
+
+
+        if (target.IsDead())
+        {
+            target = null;
+            targetObject = null;
+        }
+
+        return;
         Vector3 direction = targetObject.transform.position - transform.position;
 
         Ray ray = new Ray(head.transform.position, direction);
 
-        //here we try to check 
+        //i think this raycast is screwing it, i need more relibable 
+        //i need to shioot a bunch of raycast to make sure. one iss not reliable enough.
 
         if (Physics.Raycast(ray, out RaycastHit hit, range, targetLayer))
         {

@@ -10,6 +10,7 @@ public class DashUnit : ButtonBase
     [SerializeField] Image fillImage;
     [SerializeField] TextMeshProUGUI cooldownText;
     [SerializeField] GameObject selected;
+    [SerializeField] GameObject cannotUse;
 
     public void UpdateCooldown(float current, float total)
     {
@@ -21,6 +22,11 @@ public class DashUnit : ButtonBase
 
 
     }
+    
+    public void ControlCannotUse(bool choice)
+    {
+        cannotUse.SetActive(choice);
+    }
 
     private void Update()
     {
@@ -28,6 +34,8 @@ public class DashUnit : ButtonBase
         {
             selected.SetActive(false);
         }
+
+
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

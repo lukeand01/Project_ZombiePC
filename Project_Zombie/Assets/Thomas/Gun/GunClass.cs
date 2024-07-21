@@ -29,6 +29,8 @@ public class GunClass
         ammoTotal = ammoCurrent;
         RefreshReserveAmmo();
 
+
+
         cooldownTotal = data.GetValue(StatType.FireRate);
 
         bulletBehaviorList = data.bulletBehaviorList;
@@ -39,10 +41,17 @@ public class GunClass
         debugShowData = data;
 
         isInUpgradeStation = false;
+
+
+        ItemGunDataCharge itemGunCharge = data.GetGunCharge();
+
+        if(itemGunCharge != null )
+        {
+            gunCharge_Total = itemGunCharge.chargeDuration;
+        }
     }
 
-   
-
+  
     void SetInitialValues(EntityStat _stat)
     {
         //we have to update the values here
@@ -69,8 +78,6 @@ public class GunClass
         //update the 
         _events.eventUpdateStat += UpdateStat;
     }
-
-
 
     public void ResetGunClass()
     {
@@ -619,6 +626,40 @@ public class GunClass
             PlayerHandler.instance._playerCombat.Shield_Recharge_Percent(value);
         }
     }
+
+    #endregion
+
+    #region  CHARGE WEAPONS
+
+    float gunCharge_Total;
+    float gunCharge_Current;
+
+
+    public void StopChargeGun()
+    {
+        gunCharge_Current = 0;
+    }
+
+    public float[] GetProgressValues()
+    {
+        float[] floatArray = new float[2];
+        floatArray[0] = gunCharge_Current;
+        floatArray[1] = gunCharge_Total;
+        return floatArray;
+    }
+
+    public bool IsGunChargeReady() => gunCharge_Current >= gunCharge_Total;
+
+    public bool IsGunCharge() => gunCharge_Total > 0;
+
+    public void HandleGunCharge()
+    {
+        if (data == null) return;
+
+        gunCharge_Current += Time.fixedDeltaTime;
+
+    }
+
 
     #endregion
 

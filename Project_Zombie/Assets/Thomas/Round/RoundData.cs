@@ -34,15 +34,15 @@ public class RoundClass
 
     [Range(0,101)]public int chance;
 
-    public int MinRoundAllowedToTrigger;
-    public int minRoundPassedPerTrigger;
+    public int MinimalRoundToTrigger;
+    public int RoundsPassedPerTrigger;
     int currentRoundsPassed; 
 
     public RoundClass(RoundData data, int minAllowed, int minPassed)
     {
         this.data = data;
-        MinRoundAllowedToTrigger = minAllowed;
-        minRoundPassedPerTrigger = minPassed;
+        MinimalRoundToTrigger = minAllowed;
+        RoundsPassedPerTrigger = minPassed;
     }
 
     public void PassRound()
@@ -52,7 +52,7 @@ public class RoundClass
 
     public bool CanTrigger()
     {
-        bool isSuccess = currentRoundsPassed >= minRoundPassedPerTrigger;
+        bool isSuccess = currentRoundsPassed >= RoundsPassedPerTrigger;
 
         if(isSuccess)
         {

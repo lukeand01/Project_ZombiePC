@@ -12,7 +12,7 @@ public class RoundData_IncreaseSpawn : RoundData
         base.OnRoundStart();
 
         LocalHandler.instance.SetSpawnCap(150);
-        LocalHandler.instance.SetRoundSpawnModifier(1.3f);
+        LocalHandler.instance.SetRoundSpawnModifier(0.3f);
     }
 
     public override void OnRoundEnd()
@@ -20,7 +20,7 @@ public class RoundData_IncreaseSpawn : RoundData
         base.OnRoundEnd();
 
         LocalHandler.instance.SetSpawnCap(100);
-        LocalHandler.instance.SetRoundSpawnModifier(1);
+        LocalHandler.instance.SetRoundSpawnModifier(0);
     }
 
 }

@@ -33,10 +33,13 @@ public class AbilityPassiveDataReloadSpeed : AbilityPassiveData
         PlayerHandler.instance._entityEvents.eventKilledEnemy -= RefundReload;
     }
 
-    void RefundReload(EnemyBase enemy)
+    void RefundReload(EnemyBase enemy, bool wasPlayer)
     {
         //we just tell the player to refund the ammo of the current weapon.
         //it should be based in the level. so we need to find the ability in the player and use that level.
+
+        if (!wasPlayer) return;
+
         PlayerHandler.instance._playerCombat.RefundCurrentAmmo();
 
     }

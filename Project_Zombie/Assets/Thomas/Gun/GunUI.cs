@@ -118,4 +118,9 @@ public class GunUI : MonoBehaviour
         ownedGunShowUnits[index].UpdateAmmo(ammo);
     }
 
+    public void UpdateChargeInOwnedGunShowUnit(int index, float current, float total)
+    {
+        ownedGunShowUnits[index].UpdateChargeImage(current, total);
+    }
+
 }

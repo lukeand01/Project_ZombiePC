@@ -28,9 +28,14 @@ public class AbilityPassiveDataLuck : AbilityPassiveData
         PlayerHandler.instance._entityEvents.eventOpenChest -= OpenChest;
     }
 
-    void OpenChest()
+    void OpenChest(ChestType chest)
     {
         //we just give the player something additiioanl.
+        if(chest == ChestType.ChestResource)
+        {
+
+        }
+
         Debug.Log("gained the additional resource");
     }
 

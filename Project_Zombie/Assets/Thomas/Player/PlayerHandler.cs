@@ -155,7 +155,8 @@ public class PlayerHandler : MonoBehaviour
         _playerCombat.ResetPlayerCombat();
         _playerStatTracker.ResetStatTracker();
         _playerResources.ResetPlayerResource();
-
+        _playerCamera.ResetPlayerCamera();
+        _playerMovement.ResetPlayerMovement();
         //also in the end we need to make sure that it always return tot eh base
 
     }
@@ -178,7 +179,7 @@ public class PlayerHandler : MonoBehaviour
 
     #endregion
 
-    public void TryToCallExplosionCameraEffect(Transform enemyPos)
+    public void TryToCallExplosionCameraEffect(Transform enemyPos, float callModifier)
     {
         float distance = Vector3.Distance(enemyPos.position, transform.position);
 
@@ -186,7 +187,7 @@ public class PlayerHandler : MonoBehaviour
         {
             Vector3 explosionDir = transform.position - enemyPos.position;
             explosionDir.Normalize();
-            _playerCamera.CallCameraRotation(explosionDir, distance);
+            _playerCamera.CallCameraRotation(explosionDir, distance, callModifier );
         }
         else
         {
@@ -196,10 +197,35 @@ public class PlayerHandler : MonoBehaviour
 
     }
 
-
     public void PushPlayer(Vector3 pos, float strenght)
     {
         _rb.AddForce(pos * strenght, ForceMode.Impulse);
+    }
+
+    public void CallDeathByFalling()
+    {
+        //here we will get the player camera to do something.
+        //we wait and then we call the screen
+
+        StopAllCoroutines();
+        StartCoroutine(DeathByFallingProcess());
+
+    }
+
+    IEnumerator DeathByFallingProcess()
+    {
+        _playerController.block.AddBlock("Falling", BlockClass.BlockType.Complete);
+
+        _playerCamera.SetCamera(CameraPositionType.FallDeath, 2, 2);
+
+        _rb.velocity = new Vector3(0, _rb.velocity.y, 0);
+
+
+        yield return new WaitForSeconds(1.5f); //then we kill the player
+
+        _playerResources.Die(true);
+
+        _playerController.block.RemoveBlock("Falling");
     }
 
 }

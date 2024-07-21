@@ -119,6 +119,8 @@ public class CityData_BodyEnhancer : CityData
                 return 0.1f;
             case StatType.ElementalPower:
                 return 0.1f;
+            case StatType.Leadership:
+                return 0.1f; 
         }
 
         Debug.LogError("should never get here " + stat);

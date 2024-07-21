@@ -11,6 +11,16 @@ public class CityStore_MainBase : CityStore
     {
         PlayerParty party = PlayerHandler.instance._playerParty;
 
+        if(party == null)
+        {
+            Debug.Log("party was null");
+        }
+        if(party.npcList == null)
+        {
+            Debug.Log("no npc list");
+        }
+        
+
         _cityData.Initialize();
 
         UIHandler.instance._EquipWindowUI.UpdateOptionForStoryQuest(_cityData.storyQuestList_Active);

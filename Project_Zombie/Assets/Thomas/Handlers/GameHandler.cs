@@ -12,10 +12,10 @@ public class GameHandler : MonoBehaviour
     public PoolHandler _pool { get; private set; }
 
     [field:SerializeField] public SettingsData _settingsData { get; private set; }
-
     [field: SerializeField] public CityDataHandler cityDataHandler { get; private set; }
 
 
+    //
     //we have the cityhandler here. always.
 
 

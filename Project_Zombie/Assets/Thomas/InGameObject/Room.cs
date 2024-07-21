@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ public class Room : MonoBehaviour
     [SerializeField] Transform portalHolder;
     [SerializeField] Transform chestGunPos;
     public List<Portal> portalList = new();
+    [SerializeField] Transform[] gapWalls; //
     [SerializeField] bool checkDebug;
 
     public string id {  get; private set; }
@@ -36,8 +38,14 @@ public class Room : MonoBehaviour
         LocalHandler.instance.OpenRoom_LocalHandler(this, "From room");
         foreach (var item in portalList)
         {
-            item.OpenForSpawn();
-            
+            item.OpenForSpawn();       
+        }
+
+        foreach (var item in gapWalls)
+        {
+            //move all gapwalls down.
+            item.DOLocalMoveY(transform.localPosition.y - 8, 3);
+            item.DOScale(0, 5);
         }
     }
 

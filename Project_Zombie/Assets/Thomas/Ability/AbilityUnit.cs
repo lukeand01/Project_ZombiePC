@@ -46,10 +46,11 @@ public class AbilityUnit : ButtonBase
 
     public void SetUpActive(AbilityClass ability, int index)
     {
+        gameObject.name = "ActiveUnit " + Random.Range(0, 100).ToString();
         ability.SetUI(this);
         _abilityClass = ability;
         keycodeText.text = (index + 1).ToString();
-        gameObject.name = Random.Range(0, 100).ToString();
+        
 
 
 
@@ -74,12 +75,12 @@ public class AbilityUnit : ButtonBase
         _abilityClass = ability;
         _abilityPassiveData = ability.dataPassive;
 
-
+        gameObject.name = "PassiveUnit " + Random.Range(0, 1000).ToString();
         ability.SetUI(this);
         
        
         empty.SetActive(false);
-        gameObject.name = Random.Range(0, 1000).ToString();
+        
 
 
         icon.sprite = _abilityPassiveData.abilityIcon;

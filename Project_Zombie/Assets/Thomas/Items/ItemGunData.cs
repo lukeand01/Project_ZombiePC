@@ -106,7 +106,7 @@ public class ItemGunData : ItemData
 
     IDamageable playerDamageable; //terrible solution, but it works for now.
 
-    public void Shoot(GunClass gun, string ownerId, BulletScript bulletTemplate, Vector3 gunDir, List<BulletBehavior> newBulletBehaviorList)
+    public virtual void Shoot(GunClass gun, string ownerId, BulletScript bulletTemplate, Vector3 gunDir, List<BulletBehavior> newBulletBehaviorList)
     {
         //the shoot behavior.
         //we can change and replcae the behavior so its better for the class to keep it.
@@ -155,6 +155,11 @@ public class ItemGunData : ItemData
         //i need to receive
     }
 
+    public virtual void CallCharge(ItemClass item)
+    {
+        //we do nothing here.
+    }
+
     public float GetValue(StatType stat)
     {
         foreach (var item in gunBaseStat)
@@ -180,5 +185,7 @@ public class ItemGunData : ItemData
     }
 
     public override ItemGunData GetGun() { return this; }
+
+    public virtual ItemGunDataCharge GetGunCharge() { return null; }
 }
 

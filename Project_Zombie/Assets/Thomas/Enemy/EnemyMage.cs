@@ -58,17 +58,32 @@ public class EnemyMage : EnemyBase
         {
             GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
             Vector3 playerPosition = PlayerHandler.instance.transform.position;
-            AreaDamage newObject = Instantiate(areaDamageTemplate, playerPosition, Quaternion.identity);
-            newObject.SetUp(playerPosition, damageRadius, damageTimer, GetDamage(), 3);
 
-            yield return new WaitForSeconds(0.4f);
+            float value = 1.8f;
+            float x = Random.Range(-value, value);
+            float z = Random.Range(-value, value);
+            Vector3 offset = new Vector3(x, 0, z);
+
+            AreaDamage newObject =  GameHandler.instance._pool.GetAreaDamage(transform);
+
+            
+            AreaDamageVSXType type = AreaDamageVSXType.Fireball_Explosion;
+            Debug.Log("here " + type);
+            newObject.SetUp(playerPosition + offset, damageRadius, damageTimer, GetDamage(), 3, 0.1f,type);
+
+            float timerRandom = Random.Range(0.6f, 1);
+
+            yield return new WaitForSeconds(timerRandom);
         }
 
+        float cooldownRandom = Random.Range(1.2f, 2);
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(cooldownRandom);
 
         SetIsAttack(false);
 
     }
+
+    //the animation needs to fade. otherwise it looks weird.
 
 }

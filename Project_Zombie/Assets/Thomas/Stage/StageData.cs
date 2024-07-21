@@ -79,8 +79,12 @@ public class StageData : ScriptableObject
 
         foreach (var item in targetList)
         {
-            float chance = item.baseChanceToSpawn + item.chancePerLevelToSpawn * level;
-            chance = Mathf.Clamp(chance, item.chanceSpawnMinCap, item.chanceSpawnMaxCap);
+
+            float chanceScale = (item.chancePerLevelToSpawn * level);
+            chanceScale = Mathf.Clamp(chanceScale, item.chanceSpawnMinCap, item.chanceSpawnMaxCap);
+
+            float chance = item.baseChanceToSpawn + chanceScale;
+
             EnemyChanceSpawnClass enemySpawn = new EnemyChanceSpawnClass(item.data, chance, item.maxAllowedAtAnyTime);
             newList.Add(enemySpawn);
         }
@@ -258,5 +262,5 @@ public class EnemyChanceSpawnClass
     [Range(0, 100)] public float chanceSpawnMaxCap;
     [Range(0,100)] public float chanceSpawnMinCap;  
 
-    [Range(0, 15)]public int maxAllowedAtAnyTime; //you can never spawn more creatures than the allowed. 0 means there is no need to check this.
+    [Range(0, 100)]public int maxAllowedAtAnyTime; //you can never spawn more creatures than the allowed. 0 means there is no need to check this.
 }

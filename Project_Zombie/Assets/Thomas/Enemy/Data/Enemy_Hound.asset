@@ -20,9 +20,9 @@ MonoBehaviour:
   - stat: 0
     initialValue: 300
   - stat: 1
-    initialValue: 6
+    initialValue: 10
   - stat: 2
-    initialValue: 50
+    initialValue: 120
   scaleStatList:
   - stat: 0
     initialValue: 30
@@ -30,3 +30,6 @@ MonoBehaviour:
   audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
   audio_Spawned: {fileID: 0}
   audio_Attack: {fileID: 8300000, guid: ef852f4dba9f9e34285d4227eb3883d0, type: 3}
+  shouldNotDespawnBecauseOfDistance: 0
+  canIgnoreAlly: 0
+  canTurnAlly: 0

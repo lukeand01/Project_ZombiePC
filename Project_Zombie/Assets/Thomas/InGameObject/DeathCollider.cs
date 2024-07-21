@@ -4,20 +4,28 @@ using UnityEngine;
 
 public class DeathCollider : MonoBehaviour
 {
-
+    [SerializeField] bool isItFall;
     private void OnTriggerEnter(Collider other)
     {
 
 
         if (other.tag != "Player") return;
 
-        PlayerHandler.instance._playerResources.Die(true);
+
+        if (isItFall)
+        {
+            //
+
+
+        }
+        else
+        {
+
+        }
+
+        PlayerHandler.instance.CallDeathByFalling();
         //
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("gsdgd");
-    }
 
 }

@@ -23,16 +23,22 @@ public class Portal : MonoBehaviour
     [SerializeField] ChestAbility chestAbilityTemplate;
     [SerializeField] Transform spawnPoint;
 
+    [SerializeField] GameObject graphic;
+    Vector3 originalPos;
+
     LocalHandler handler;
+
+    bool isSpawning;
 
     private void Start()
     {
         handler = LocalHandler.instance;
+        originalPos = transform.position;
     }
 
     private void Awake()
     {
-        spawnTotal = Random.Range(2, 6);
+        spawnTotal = Random.Range(0.5f, 3.5f);
     }
 
     private void FixedUpdate()
@@ -42,32 +48,31 @@ public class Portal : MonoBehaviour
             Debug.Log("spawn total");
             return;
         }
+        if (isSpawning) return;
 
-        if(spawnCurrent > 0)
+        if (spawnCurrent > 0)
         {
             spawnCurrent -= Time.fixedDeltaTime;
 
         }
         else
         {
-            if(enemyDespawnedList.Count > 0)
+            if (enemyDespawnedList.Count > 0)
             {
                 SpawnDespawned();
                 return;
             }
 
-            if(spawnQueueList.Count > 0)
+            if (spawnQueueList.Count > 0)
             {
 
-                Spawn(spawnQueueList[0]);
-                spawnQueueList.RemoveAt(0);
-
+                StartCoroutine(SpawnProcess());
                 //this will hlep spawn things at different times.
             }
         }
     }
 
-    
+
     public bool CanSpawn()
     {
         return isRoomOpen && !isBlocked && spawnCurrent == 0;
@@ -76,7 +81,7 @@ public class Portal : MonoBehaviour
 
     public void OrderSpawn(EnemyData enemy)
     {
-        Debug.Log("this was ordered to spawn");
+
 
         if (spawnQueueList.Count > 0)
         {
@@ -93,7 +98,7 @@ public class Portal : MonoBehaviour
     public void Spawn(EnemyData enemy)
     {
 
-
+        //we dont spawn this if it has passed hte cpa.
 
         int round = LocalHandler.instance.round;
         // EnemyBase newObject = Instantiate(enemy.enemyModel, spawnPoint.transform.position + Vector3.forward, Quaternion.identity);
@@ -108,7 +113,38 @@ public class Portal : MonoBehaviour
 
         newObject.eventDied += handler.EnemyDied;
     }
+    [ContextMenu("yo")]
+    public void Yo()
+    {
+        StartCoroutine(SpawnProcess());
+    }
+    IEnumerator SpawnProcess()
+    {
+        //we shake this thing a bit
+        //
 
+        isSpawning = true;
+
+        int rounds = 25;
+        float timer = 1.5f / rounds;
+
+        float randomValue = 0.08f;
+
+        for (int i = 0; i < rounds; i++)
+        {
+            float randomX = Random.Range(-randomValue, randomValue);
+            float randomY = 0;
+
+            transform.position = originalPos + transform.right * randomX ;
+            yield return new WaitForSeconds(timer);
+        }
+
+        //this wont work
+
+        Spawn(spawnQueueList[0]);
+        spawnQueueList.RemoveAt(0);
+        isSpawning = false;
+    }
 
     public void OrderRespawn(EnemyBase enemy)
     {

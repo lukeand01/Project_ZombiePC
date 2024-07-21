@@ -17,7 +17,7 @@ public class OwnedGunShowUnit : ButtonBase
     [SerializeField] GameObject select_ForPause;
     [SerializeField] TextMeshProUGUI ammoText;
     [SerializeField] GameObject holder;
-
+    [SerializeField] Image chargeImage;
     GunClass gun;
 
 
@@ -26,6 +26,8 @@ public class OwnedGunShowUnit : ButtonBase
     private void Awake()
     {
         holder.SetActive(false);
+
+        chargeImage.fillAmount = 0;
     }
     public void SetUp(GunClass gun)
     {
@@ -100,6 +102,12 @@ public class OwnedGunShowUnit : ButtonBase
     private void OnDisable()
     {
         select_ForPause.SetActive(false);
+    }
+
+
+    public void UpdateChargeImage(float current, float total)
+    {
+        chargeImage.fillAmount = current / total;
     }
 
 }

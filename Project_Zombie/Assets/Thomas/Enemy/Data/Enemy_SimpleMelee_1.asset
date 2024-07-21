@@ -18,9 +18,9 @@ MonoBehaviour:
   attackSpeed: 0.7
   initialStatList:
   - stat: 0
-    initialValue: 1500
+    initialValue: 150
   - stat: 1
-    initialValue: 4
+    initialValue: 4.5
   - stat: 2
     initialValue: 60
   scaleStatList:
@@ -31,3 +31,5 @@ MonoBehaviour:
   audio_Spawned: {fileID: 0}
   audio_Attack: {fileID: 8300000, guid: ef852f4dba9f9e34285d4227eb3883d0, type: 3}
   shouldNotDespawnBecauseOfDistance: 0
+  canIgnoreAlly: 0
+  canTurnAlly: 1

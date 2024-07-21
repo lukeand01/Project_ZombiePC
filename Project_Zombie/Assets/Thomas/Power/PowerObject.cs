@@ -14,7 +14,7 @@ public class PowerObject : MonoBehaviour
 
 
         powerData.ActivatePower();
-        PlayerHandler.instance._entityStat.CallPowerFadeUI(powerData.powerName);
+        PlayerHandler.instance._entityStat.CallPowerFadeUI(powerData.powerName, Color.green);
         Destroy(gameObject);
 
     }

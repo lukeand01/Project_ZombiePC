@@ -1,0 +1,185 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da27fa4b0876f44b8e5e45c07f88236, type: 3}
+  m_Name: StageData_Test_2 1
+  m_EditorClassIdentifier: 
+  stageName: Second test stage
+  stageSprite: {fileID: 21300000, guid: b7a0e32ec056b004f8bd38557256d7d3, type: 3}
+  stageIndex: 4
+  enemyPerIntervalModifier: 1
+  especialRoundList:
+  - data: {fileID: 11400000, guid: 975042fc1d408324b82735ceb9cf0f44, type: 2}
+    chance: 15
+    MinimalRoundToTrigger: 5
+    RoundsPassedPerTrigger: 5
+  - data: {fileID: 11400000, guid: 71666c2b93acfd844959a09e19e81fa1, type: 2}
+    chance: 15
+    MinimalRoundToTrigger: 5
+    RoundsPassedPerTrigger: 5
+  - data: {fileID: 11400000, guid: 3ad3749596a9cc341809f4c71c447808, type: 2}
+    chance: 15
+    MinimalRoundToTrigger: 5
+    RoundsPassedPerTrigger: 5
+  classList:
+  - Id: Shield
+    data: {fileID: 11400000, guid: 2fbf11cfa4229494b91e1e4c61ce3256, type: 2}
+    min: 0
+    max: 0
+    baseChanceToSpawn: 100
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 0
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 1
+  itemChanceList:
+  - data: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+    chance: 60
+    minAmount: 20
+    maxAmount: 30
+  - data: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+    chance: 20
+    minAmount: 5
+    maxAmount: 15
+  questList_Bless:
+  - editorName: Kill 50
+    <questData>k__BackingField: {fileID: 11400000, guid: 611bffb8d57567d42bd8268b9b0013ab, type: 2}
+    <amountTotal>k__BackingField: 50
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+    <questType>k__BackingField: 0
+    <timerTotal>k__BackingField: 0
+    questName: 
+    questDescription: 
+    questGiverName: 
+  - editorName: Kill 75
+    <questData>k__BackingField: {fileID: 11400000, guid: 611bffb8d57567d42bd8268b9b0013ab, type: 2}
+    <amountTotal>k__BackingField: 75
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+    <questType>k__BackingField: 0
+    <timerTotal>k__BackingField: 0
+    questName: 
+    questDescription: 
+    questGiverName: 
+  - editorName: Kill 100
+    <questData>k__BackingField: {fileID: 11400000, guid: 611bffb8d57567d42bd8268b9b0013ab, type: 2}
+    <amountTotal>k__BackingField: 100
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+    <questType>k__BackingField: 0
+    <timerTotal>k__BackingField: 0
+    questName: 
+    questDescription: 
+    questGiverName: 
+  - editorName: Find 30 Ability Chest
+    <questData>k__BackingField: {fileID: 11400000, guid: be1af02e4b56dfa48b776f2f657851c2, type: 2}
+    <amountTotal>k__BackingField: 30
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+    <questType>k__BackingField: 0
+    <timerTotal>k__BackingField: 0
+    questName: 
+    questDescription: 
+    questGiverName: 
+  - editorName: Find 30 Resource chests
+    <questData>k__BackingField: {fileID: 11400000, guid: 5be057b33aa511f49bde47bbdbb5a221, type: 2}
+    <amountTotal>k__BackingField: 30
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+    <questType>k__BackingField: 0
+    <timerTotal>k__BackingField: 0
+    questName: 
+    questDescription: 
+    questGiverName: 
+  - editorName: Get 1500 Points
+    <questData>k__BackingField: {fileID: 11400000, guid: 8238fe88a88707549994714a07540ed3, type: 2}
+    <amountTotal>k__BackingField: 1500
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+    <questType>k__BackingField: 0
+    <timerTotal>k__BackingField: 0
+    questName: 
+    questDescription: 
+    questGiverName: 
+  - editorName: Spend 1500 Points
+    <questData>k__BackingField: {fileID: 11400000, guid: 07089837bc16d4d45926baac4e556847, type: 2}
+    <amountTotal>k__BackingField: 1500
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+    <questType>k__BackingField: 0
+    <timerTotal>k__BackingField: 0
+    questName: 
+    questDescription: 
+    questGiverName: 
+  - editorName: KIll 10 Mages
+    <questData>k__BackingField: {fileID: 11400000, guid: 91558d8b176fdb7499af9f3f68f1a779, type: 2}
+    <amountTotal>k__BackingField: 10
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+    <questType>k__BackingField: 0
+    <timerTotal>k__BackingField: 0
+    questName: 
+    questDescription: 
+    questGiverName: 
+  - editorName: KIll 3 Giants
+    <questData>k__BackingField: {fileID: 11400000, guid: 902f3f21cff4ca24192b30eec92f7eb0, type: 2}
+    <amountTotal>k__BackingField: 3
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+    <questType>k__BackingField: 0
+    <timerTotal>k__BackingField: 0
+    questName: 
+    questDescription: 
+    questGiverName: 
+  questList_Challenge:
+  - editorName: Kill 75 in 50
+    <questData>k__BackingField: {fileID: 11400000, guid: 611bffb8d57567d42bd8268b9b0013ab, type: 2}
+    <amountTotal>k__BackingField: 75
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 15
+    punishList: []
+    <questType>k__BackingField: 2
+    <timerTotal>k__BackingField: 50
+    questName: 
+    questDescription: 
+    questGiverName: 
+  questList_Curse:
+  - editorName: Kill 200
+    <questData>k__BackingField: {fileID: 11400000, guid: 611bffb8d57567d42bd8268b9b0013ab, type: 2}
+    <amountTotal>k__BackingField: 200
+    rewardList:
+    - <data>k__BackingField: {fileID: 11400000, guid: 9090fb80b7a52ba419995a1659225dd9, type: 2}
+      <value>k__BackingField: 5
+    punishList: []
+    <questType>k__BackingField: 1
+    <timerTotal>k__BackingField: 0
+    questName: 
+    questDescription: 
+    questGiverName: 

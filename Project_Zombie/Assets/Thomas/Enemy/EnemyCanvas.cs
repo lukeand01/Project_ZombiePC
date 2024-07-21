@@ -12,6 +12,7 @@ public class EnemyCanvas : MonoBehaviour
     Camera mainCam;
     [SerializeField] FadeUI fadeTemplate;
     [SerializeField] Transform damageContainer;
+    List<FadeUI> fadeUnitList = new();
 
     Vector3 sameTarget;
 
@@ -51,6 +52,20 @@ public class EnemyCanvas : MonoBehaviour
         healthHolder.SetActive(false);
     }
 
+    public void ResetFadeList()
+    {
+        
+        foreach (var item in fadeUnitList)
+        {
+            if(item != null)
+            {
+                Destroy(item.gameObject);
+            }        
+        }
+
+        fadeUnitList.Clear();
+    }
+
     public void CreateDamagePopUp(float damage, DamageType damageType, bool isCrit)
     {
         FadeUI newObject = Instantiate(fadeTemplate);
@@ -65,6 +80,8 @@ public class EnemyCanvas : MonoBehaviour
 
         newObject.ChangeHeightModifier(1.8f);
         newObject.ChangeColorModifier(1);
+
+        
 
         if (isCrit)
         {
@@ -84,7 +101,7 @@ public class EnemyCanvas : MonoBehaviour
 
 
         newObject.SetUp(damage.ToString("f1") + additional, Color.red);
-
+        fadeUnitList.Add(newObject);
     }
 
     public void CreateShieldPopUp()
@@ -109,6 +126,8 @@ public class EnemyCanvas : MonoBehaviour
 
         newObject.SetUp("SHIELD", Color.black);
 
+        fadeUnitList.Add(newObject);
+
     }
 
     [Separator("HEALTH")]
@@ -126,6 +145,8 @@ public class EnemyCanvas : MonoBehaviour
 
     public void UpdateDuration(float current, float total)
     {
+        if (durationHolder == null) return;
+        durationHolder.SetActive(total > 0);
         durationFill.fillAmount = current / total;
     }
 

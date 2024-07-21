@@ -1,5 +1,7 @@
 
 
+using DG.Tweening;
+using MyBox;
 using System.Collections;
 using UnityEngine;
 
@@ -18,12 +20,20 @@ public class PlayerCamera : MonoBehaviour
 
         handler = GetComponent<PlayerHandler>();
 
+        
+        speed = 65;
+    }
+
+    private void Start()
+    {
         originalRotation = cam.transform.localRotation;
 
         originalFOVValue = cam.fieldOfView;
         ActualFOVvalue = originalFOVValue;
         currentFOVValue = ActualFOVvalue;
-        speed = 65;
+
+
+        SetCamera(CameraPositionType.Default, 0, 0);
     }
 
     private void Update()
@@ -34,6 +44,11 @@ public class PlayerCamera : MonoBehaviour
     private void FixedUpdate()
     {
         HandleFOVControl();
+    }
+
+    public void ResetPlayerCamera()
+    {
+        SetCamera(CameraPositionType.Default, 0, 0); //we instantly set the camera to the right position
     }
 
     #region DETECT WALLS
@@ -105,21 +120,21 @@ public class PlayerCamera : MonoBehaviour
     [ContextMenu("CALL CAMERA ROTATION")]
     public void DebugCallRotation()
     {
-        CallCameraRotation(Vector3.right, debugDistance);
+        CallCameraRotation(Vector3.right, debugDistance, 1);
     }
 
 
-    public void CallCameraRotation(Vector3 dir, float distanceStrenght)
+    public void CallCameraRotation(Vector3 dir, float distanceStrenght, float modifier)
     {
         if(shakeCoroutine != null)
         {
             StopCoroutine(shakeCoroutine);
         }
 
-        shakeCoroutine = StartCoroutine(ShakeCameraProcess(dir, distanceStrenght));
+        shakeCoroutine = StartCoroutine(ShakeCameraProcess(dir, distanceStrenght, modifier));
     }
 
-    public float GetValue(float x)
+    public float GetValueForCameraShake(float x)
     {
         if (x <= 2)
         {
@@ -132,11 +147,11 @@ public class PlayerCamera : MonoBehaviour
         else
         {
             // Linear interpolation between 2 and 0.1
-            return 1.2f - ((x - 2f) * (1.2f - 0.1f) / (25f - 2f));
+            return 1.2f - ((x - 2f) * (1.2f - 0.1f) / (25f - 2f)) ;
         }
     }
 
-    IEnumerator ShakeCameraProcess(Vector3 dir, float distanceStrenght)
+    IEnumerator ShakeCameraProcess(Vector3 dir, float distanceStrenght, float modifier)
     {
 
         //50 is the tolarable distance. meaning that at 50 the impact is 0.1
@@ -146,7 +161,7 @@ public class PlayerCamera : MonoBehaviour
        
         float elapsed = 0.0f;
         float duration = 0.4f;
-        float magnitude = GetValue(distanceStrenght);
+        float magnitude = GetValueForCameraShake(distanceStrenght) * modifier; 
 
         Vector3 dirWeight = dir * 3;
 
@@ -206,6 +221,34 @@ public class PlayerCamera : MonoBehaviour
 
     #endregion
 
+    #region MOVE CAMERA TO ESPECIAL POSITIONS
+
+    //and very importantly we need to rest the camera to the original position
+    //default position, fall position, presentation position
+    //we need to reset shake camera as well.
+    //
+    [SerializeField] CameraPositionClass[] cameraPositionClassArray;
+
+    public void SetCamera(CameraPositionType _type,float moveSpeed, float rotationSpeed)
+    {
+        //we set teh camera to the thing.     
+        //we set it here.
+
+        Transform refTransform = cameraPositionClassArray[(int)_type]._transform;
+
+        cam.DOKill();
+        cam.transform.DOLocalMove(refTransform.localPosition, moveSpeed).SetEase(Ease.Linear);
+        cam.transform.DOLocalRotate(refTransform.localRotation.eulerAngles, rotationSpeed).SetEase(Ease.Linear);
+
+        originalRotation = refTransform.localRotation;
+
+    }
+
+    //so for now at the start we call it and also at reset.
+    
+
+    #endregion
+
     private void OnDrawGizmosSelected()
     {
         //Gizmos.color = Color.yellow;
@@ -213,4 +256,18 @@ public class PlayerCamera : MonoBehaviour
 
         //Gizmos.DrawLine(cam.transform.position, transform.position - cam.transform.position);
     }
+}
+
+public enum CameraPositionType
+{
+    Default = 0,
+    FallDeath = 1,
+    Presentation = 2
+}
+[System.Serializable]
+public class CameraPositionClass
+{
+    [field: SerializeField] public CameraPositionType _type { get; private set; }
+    [field: SerializeField] public Transform _transform { get; private set; }
+
 }

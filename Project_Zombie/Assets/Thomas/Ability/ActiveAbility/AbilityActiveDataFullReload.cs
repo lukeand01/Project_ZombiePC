@@ -13,6 +13,7 @@ public class AbilityActiveDataFullReload : AbilityActiveData
         //full reload and damage around the player.
 
         PlayerHandler.instance._playerCombat.FullInstantReload();
+        PlayerHandler.instance._entityStat.CallPowerFadeUI("Full Reload", Color.yellow);
 
         return true;
     }

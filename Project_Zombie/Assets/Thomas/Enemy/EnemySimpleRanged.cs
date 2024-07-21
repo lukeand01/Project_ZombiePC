@@ -45,7 +45,7 @@ public class EnemySimpleRanged : EnemyBase
 
     public override void CallAttack()
     {
-        Debug.Log("call attack");
+
 
         //but can only attack if we facing the target.
         if (!canShoot)

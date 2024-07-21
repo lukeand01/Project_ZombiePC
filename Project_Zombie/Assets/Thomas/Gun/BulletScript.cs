@@ -210,12 +210,12 @@ public class BulletScript : MonoBehaviour
         }
 
 
-        if (isEnemy && other.gameObject.tag == "Enemy")
+        if (isEnemy && other.gameObject.tag == "Enemy" && other.gameObject.layer != 8)
         {
             canMove = true;
             return;
         }
-        if (!isEnemy && other.gameObject.tag == "Player")
+        if (!isEnemy && other.gameObject.tag == "Player" || !isEnemy && other.gameObject.layer == 8)
         {
             canMove = true;
             return;

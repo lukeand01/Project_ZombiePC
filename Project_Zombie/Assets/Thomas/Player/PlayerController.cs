@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour
         */
 
 
-        Vector3 targetDirection = getMouseDirection();
+        Vector3 targetDirection = GetMouseDirection();
 
         if (targetDirection != Vector3.zero)
         {
@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(key.GetKey(KeyType.Shoot)))
         {
-            Vector3 shootDir = getMouseDirection();
+            Vector3 shootDir = GetMouseDirection();
 
             if(shootDir != Vector3.zero)
             {
@@ -313,7 +313,7 @@ public class PlayerController : MonoBehaviour
 
     LayerMask layerForMouseHover_Enemy;
     LayerMask layerForMouseHover_Ground;
-    Vector3 getMouseDirection()
+    public Vector3 GetMouseDirection()
     {
         
         if (handler._cam == null)

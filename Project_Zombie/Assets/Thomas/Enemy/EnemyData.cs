@@ -27,4 +27,12 @@ public class EnemyData : ScriptableObject
     [Separator("INFO ABOUT GAME SPAWN")]
     public bool shouldNotDespawnBecauseOfDistance;
 
+
+    [Separator("INFO ABOUT ALLY")]
+    [SerializeField] bool canIgnoreAlly;
+    [SerializeField] bool canTurnAlly; //
+
+    public bool CanIgnoreAlly { get { return canIgnoreAlly; } }
+    public bool CanTurnAlly { get { return canTurnAlly; } }
+
 }

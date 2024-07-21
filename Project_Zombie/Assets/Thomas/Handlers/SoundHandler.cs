@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SoundHandler : MonoBehaviour
 {
-    [SerializeField] SoundUnit soundTemplate_Spatial;
-    [SerializeField] SoundUnit soundTemplate_global;
+    [SerializeField] SoundUnit soundTemplate;
+
    public void CreateSfx(AudioClip clip, Transform pos = null)
     {
         if(clip == null)
@@ -15,14 +15,14 @@ public class SoundHandler : MonoBehaviour
 
         if(pos != null)
         {
-            SoundUnit newObject = Instantiate(soundTemplate_Spatial);
-            newObject.SetUp(clip);
+            SoundUnit newObject = GameHandler.instance._pool.GetSound(pos);
+            newObject.SetUp(clip, true);
             newObject.transform.position = pos.position;
         }
         else
         {
-            SoundUnit newObject = Instantiate(soundTemplate_global);
-            newObject.SetUp(clip);
+            SoundUnit newObject = GameHandler.instance._pool.GetSound(transform);
+            newObject.SetUp(clip, false);
         }
 
     }

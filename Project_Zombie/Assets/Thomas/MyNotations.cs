@@ -1600,28 +1600,197 @@ using static System.Collections.Specialized.BitVector32;
 
 ///first i will create the eye
 ///need to create a fakelist for the round
-//need to pass the new graphic for the round ui
-//need to create a list for spawns. and decided the chances for spawning from the especial list.
-//then we test the effect of bloodmoon
-//i want to stress test the spawn cap.
+///need to pass the new graphic for the round ui
+///need to create a list for spawns. and decided the chances for spawning from the especial list.
+///Tthen we test the effect of bloodmoon
+///i want to stress test the spawn cap. 
 
-//we are having problem with with spawning. fix it
+//we are having problem with with spawning. fix it. why is it spawning 6 and hwy is it not passing to the portals.
 //
+
+//PROBLEMS
+//first the the value is not spawning correctly.
+//second its not feeling good for some reason.
+//why the thing is spawning.;
+//sometimes the bullets are stuck in the air, waiting for - if the bullet is not moving then we destroy it.
+//the cap for enemy spawn is not working?
+//also cant spawn giant? problem with pooling
+
+
+//Passive ideas:
+//killing an enemy has a chance of converting that enemy as an ally
+//Summon an ally after every ability use.
+//damage bd can crit.
+//can fly for certain durations.
+//when enemies are killed they explode.
+//increase damage percent.
+//increase damage flat.
+
+//create a stat called leadership that influences any allies damage and health.
+
+//TEMP GUN IDEA
+//Laser gun. once you shoot it charges and fire a beam that last a few seconds.
+//Laser rifle. it charges and shoot a nomral bullet.
+//Sword. swip in front
+//
+
 
 //GOAL STEPS
 //then i will create two new passives (Thunder, )
 //then i will create the turret
-//then i will create a new enemy ()
+///then i will create a new enemy ()
 //the reload ability was not working
-//you could charge through walls
+//you could dash through walls
 //decided what to do with the gaps
 //and fix the player falling and dying.
+//create an effect for the portal spawning enemy.
+
+//foir now the perfomance seems alright. i need to focus in the other parts till i get in troulb ewith it
+
+///fix reloadability. create a pop up when you use this ability.
+///create an effect for the portal spawning.
+//Laser gun and laser rifle
+///can dash through walls and gates?
+//can stand in the gaps outside of the map
+///test the mage offset.
+///should not be able to dash if you are already over teh wall.
+
+//i will test the charge tomorrow.
+
+//what am i going to do with these gaps? i want them for gameplay
+
 
 //GOAL STEPS
-//create 2 new guns
+///i want the ability to fly as well.
+///also the button for return no longer working
+///make falling a bit better. instead of idrect death, you see the character falling and the camera moves.
+///can raise and lower barrier allowign for you to dash through it. those barrier will be opened by opening the right gates.
+///check for abilities resetting on death
+//check to reset quests on death
+//check for stucks
+///the dash ui shows the direction of the dash and if its facing a wall it shows a x
+
+
+//GOAL STEPS
+//create 2 new guns (laser, )
 //create 2 new gun passives
-//create another enemy
-//create 2 more shrine quests.
+///create another enemy
+///create 2 more shrine quests.
+
+//GOAL STEPS
+///create the system for creating zombies through dead enemies.
+//create the turret system. 
+///create ui for allies. show their decay.
+///creaste teh system where enemies are able to target allies
+//make leadership stat influence them
+///suddenly cannot reload weapons anymore
+//there should be a limit to how many converted you can have?
+///not only the player can trigger 
+
+//GOAL STEPS
+
+
+//also need more variable to choosing target. 
+//certain enemies wont target anyone but the target.
+//you cant keep changing targets.
+
+
+//need to do a bit of a rewriting for the enemy targer dewtection
+//make sure that it can deal with ally and players.
+
+//so i want to change how they target
+
+//GOAL
+//add effect for explosions (mage, artillery, bomber, and fireball)
+///also add shake effect from them as well.
+///not show the flyholder if you dont have it.
+//get different projectiles in the poolhandler. enemy and fireball
+///need to test if the cap is working for spawning
+///also reduce the amount of roll reducec per failed spawn
+///make so that a spawn with 0 chance cannot be spawned.
+///camera shake is erupting the camera.
+
+//GOAL
+///fix the giant
+//finish the turret
+//for fireball projectil: make it so you can see it growing while you charge it, and also put it in the pool, also creat teh eexplosion
+///create teh vsx for burning in enemies.
+///the bd are not cleared from dead enemies.
+///the game reloads with the weapons reloaded.
+///the ranged enemy is stuck? no projectile. 
+///fix the giant attack. its not being called.
+
+
+//ranged is taking too long to shoot
+//and took long to adjust position.
+
+//GOAL
+///for some reason i swapned the main gun for the temp gun
+//turn on the drop system
+
+
+//GOAL
+//create the Beserker, that shows its attack with indicator and rapidly charges. on arrival it does something.
+//shield charges, but sloy, but doesnt show
+//
+
+
+//the problem with the spaw. i should put a cap list somewhere else.
+//need a way to spreadn better the fellas in the portal.
+
+//TESTING REPORT #1
+///simple melee was spawned but couldnt move
+//hound did a weird thing going around the ability chest.
+///not spawning everyone. not able to chec
+///when you restart the weapon doesnt start reloaded (ammo)
+///for some reason i swapned the main gun for the temp gun
+///fix the gun stats. shootspeed, magazine and reload speed are the worse.
+///the wallgap are connected to wrong doors.
+//turn on the drop system
+///not show the fly holder
+//only the same abilities? is there a reason for it?
+///bullet not flying from ranged enemmy. it got stuck
+///the bd are not cleared from dead enemies.
+///hound need to be much faster
+///giant is stuck for some reaosn. giants are spamming audio sounds as well.
+//still the problem that the round text is invisible somtimes
+///should not spawn enemies that have a 0 zero chance to spawn
+///mages should have bigger cooldowns between attacks. otherwise they just keep spawning, and the random should be a bit more
+//the character should be slow at the start. 
+//the shield enemies are just breaking, they should have more time between spot and charging. 
+//the game is creating weird situations where one portal is taking too long to spawn everything it was given
+//
+
+//DESIGN SUGGESTION REPORT 1#
+//create stage {} that create random bolders around
+//the goal is to create stage minigames - such as bus, carts,
+//next version create mini-bosses that follow the player. mini-bosses have several moves.
+//create events that lock rooms
+//create traps. area that require to wait for the right moment that have traps in the floor and stuff like that.
+//spawning things cost a lot. need to create pooling for other things as well.
+//what if you dont have dash at the start?
+//should i use dots for certain things like bullets? the perfomance is lowering too much
+
+
+//TESTING REPORT #2
+//for some reason when the ranger shoot that bullet gets thrown to the bullet pool. solution is to fix the bullet pool problem.
+//
+
+//DESIGN SUGGESTION REPORT 2#
+//normal ranged bullet are a bit bigger and slower.
+//
+
+
+//first goal is to actually create an ally that can be targetted by enemies.
+
+//more shrine quests: 
+//open doors
+//find resource boxes
+//find ability boxes
+//crit x times
+//kill 3 giants
+//mine x resources
+//spend x points
 
 //GOAL STEPS
 //create training area.
@@ -1639,9 +1808,6 @@ using static System.Collections.Specialized.BitVector32;
 //a way to get main characters.
 //and new dialogues and quests.
 
-
-//new passives
-//
 
 //MY GOAL
 //create npc behavior. they will spawn depending on your base state and they will work depending on what yuour base has avaiable.
@@ -1670,7 +1836,7 @@ using static System.Collections.Specialized.BitVector32;
 //MY GOAL
 ///you can improve your perma stats.
 ///it uses an extremely unique resources.
-//create 2 new enemies
+///create 2 new enemies
 //create 3 new quests
 
 //MY GOAL
@@ -1769,14 +1935,14 @@ using static System.Collections.Specialized.BitVector32;
 
 //BUG FIND IN RODRIGO TEST
 ///tab equip window is above pause.
-//reload instant not working ability
+///reload instant not working ability
 ///the ability units are black for some reason. tehy cannot be seen.
 //door in the left 
-//when you respawn your current gun
-//suicide is moving and dealing global damage
+//when you respawn your current gun. what that means?
+///suicide is moving and dealing global damage
 //abilities 
 ///getting stuck in the wall. spawner has collider in show 
-//going through wall. when dashing.
+///going through wall. when dashing.
 //quests are not reseting
 //getting stuck
 //should move towards where the mouse is.
@@ -1813,5 +1979,11 @@ using static System.Collections.Specialized.BitVector32;
 //you are able to alter the run at the start. choosing harder modes, or modes where you cannot heal or other stuff.
 //vision fog. the player does not see things that visible for its character
 //get 3d models.
+//animatio  systems
 //create save system, and save slots
-//
+//use dots with some parts of the game. like bullets and parts of enemies.
+//bosses and mini-bosses.
+//create a new round type where there is boulder constantly falling down
+//create a new map: there is an energe generator. there is a cart you can use to go to other places. 
+//create a better fade ui for misc messages
+//create enemy lancer, it has a shield and a lancer. it show an ability indcator for the lance attack, which is middle range.

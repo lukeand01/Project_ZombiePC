@@ -43,6 +43,8 @@ public class ChestResource : ChestBase
             LocalHandler.instance.ChestResourceDestroy(index);
         }
 
+        PlayerHandler.instance._entityEvents.OnOpenChest(ChestType.ChestResource);
+
         Destroy(gameObject);
     }
 

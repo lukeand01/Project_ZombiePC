@@ -55,10 +55,18 @@ public class AbilityUI : MonoBehaviour
     [Separator("DASH")]
     [SerializeField] DashUnit dashUnit;
 
+    public DashUnit GetDashUnit { get { return dashUnit; } }    
+
     public void UpdateDashFill(float current, float total)
     {
         dashUnit.UpdateCooldown(current, total); 
     }
+
+
+    [Separator("FLY")]
+    [SerializeField] FlyUnit flyUnit;
+
+    public FlyUnit GetFlyUnit { get { return flyUnit; } }
 
 
     void ClearUI(Transform targetContainer)

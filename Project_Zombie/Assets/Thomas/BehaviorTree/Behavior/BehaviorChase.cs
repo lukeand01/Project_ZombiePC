@@ -12,22 +12,38 @@ public class BehaviorChase : Sequence2
     Transform playerTransform;
     LayerMask allyLayer;
     LayerMask wallAndPlayerLayer;
+    LayerMask enemyLayer;
     EnemyBase enemy;
     EnemyData enemyData;
+
+    float updateAgent_Total;
+    float updateAgent_Current;
+
+    float updateCheckForAlly_Total;
+    float updateCheckForAlly_Current;
 
     public BehaviorChase(EnemyBase enemy)
     {
         this.enemy = enemy;
         enemyData = enemy.GetData();
 
+        updateAgent_Total = 0.06f;
+        updateAgent_Current = updateAgent_Total;
+
+        updateCheckForAlly_Total = 0.08f;
+        updateCheckForAlly_Current = updateCheckForAlly_Total;
 
         playerTransform = PlayerHandler.instance.transform;
 
         allyLayer |= (1 << 8);
 
+        enemyLayer |= (1 << 6);
+
         wallAndPlayerLayer |= (1 << 3);
         wallAndPlayerLayer |= (1 << 7);
         wallAndPlayerLayer |= (1 << 9);
+
+
     }
 
 
@@ -44,56 +60,45 @@ public class BehaviorChase : Sequence2
         }
 
 
-        //in here we simply check around. if you find any other ally then we are target that.
-        //also if player is invisible 
+        Transform currentTarget = null;
 
 
 
-        Transform currentTarget = playerTransform;
-        bool isTargettingAlly = false;
-        //we need to check the surrounding to see if we find allies.
-
-
-        if(Physics.SphereCast(enemy.transform.position, 15, Vector3.forward, out RaycastHit hit, 100, allyLayer))
+        if (enemy.IsAlly)
         {
-            Debug.Log("yo");
-
-            if(hit.collider != null)
-            {
-                float playerDistance = Vector3.Distance(currentTarget.transform.position, enemy.transform.position);
-                float targetDistance = Vector3.Distance(hit.collider.transform.position, enemy.transform.position);
-
-                if(playerDistance > targetDistance)
-                {
-                    Debug.Log("found ally");
-                    currentTarget = hit.collider.transform;
-                    isTargettingAlly = true;
-                }
-
-            }
-
+            currentTarget = GetTargetAsAlly();
         }
         else
         {
-            //Debug.Log("found nothing");
+            currentTarget = GetTargetAsEnemy();
         }
 
+        if (currentTarget == null)
+        {
+            //Debug.Log("no target");
+            return NodeState.Failure;
+        }
+        else
+        {
+            //Debug.Log("other side");
+        }
+
+        //we will cut here
 
 
-        bool isPlayerDead = PlayerHandler.instance._playerResources.IsDead();
 
-        if (isPlayerDead && !isTargettingAlly) return NodeState.Failure;
+        //we need to set this less often.
+        if (updateAgent_Current > updateAgent_Total)
+        {
+            enemy.SetNewtarget(currentTarget.gameObject);
+            enemy.SetDestinationForPathfind(currentTarget.position);
+            updateAgent_Current = 0;
+        }
+        else
+        {
+            updateAgent_Current += Time.deltaTime;
+        }
 
-        bool isPlayerInvisible = PlayerHandler.instance._entityStat.IsInvisible;
-
-        if (isPlayerInvisible && !isTargettingAlly) return NodeState.Failure;
-
-        //we check if there are allies in range.
-
-
-
-        enemy.SetNewtarget(currentTarget.gameObject);
-        enemy.SetDestinationForPathfind(currentTarget.position);
 
         float distanceFromCurrentTarget = Vector3.Distance(currentTarget.position, enemy.transform.position);
 
@@ -104,6 +109,7 @@ public class BehaviorChase : Sequence2
         {
             //then we call this and apss to the next
             //then we force right at way for the enemy to stop
+
             return NodeState.Success;
         }
         else
@@ -113,4 +119,110 @@ public class BehaviorChase : Sequence2
         
         
     }
+
+
+
+    Transform GetTargetAsEnemy()
+    {
+        Transform currentTarget = null;
+
+
+        if (updateCheckForAlly_Current > 0)
+        {
+            updateCheckForAlly_Current -= Time.fixedDeltaTime;
+
+            return null;
+
+        }
+
+        updateCheckForAlly_Current = updateCheckForAlly_Total;
+
+
+            RaycastHit[] allies = Physics.SphereCastAll(enemy.transform.position, 20, Vector2.up, 50, allyLayer);
+
+
+            if (allies.Length > 0)
+            {
+
+                float playerDistance = Vector3.Distance(PlayerHandler.instance.transform.position, enemy.transform.position);
+                float targetDistance = Vector3.Distance(allies[0].collider.transform.position, enemy.transform.position);
+
+                if (playerDistance > targetDistance)
+                {
+                    updateCheckForAlly_Current = updateCheckForAlly_Total;
+                    return allies[0].collider.transform;
+
+                }
+                else
+                {
+                    //Debug.Log("not distance");
+                }
+
+
+            }
+            else
+            {
+                //Debug.Log("no allies");
+            }
+
+            updateCheckForAlly_Current = updateCheckForAlly_Total;
+
+        
+
+
+
+        if (currentTarget != null)
+        {
+
+
+        }
+        else
+        {
+            bool isPlayerDead = PlayerHandler.instance._playerResources.IsDead();
+
+            if (isPlayerDead) return null;
+
+            bool isPlayerInvisible = PlayerHandler.instance._entityStat.IsInvisible;
+
+            if (isPlayerInvisible) return null;
+
+            return PlayerHandler.instance.transform;
+            //we check if there are allies in range.
+
+        }
+
+
+        return currentTarget;
+    }
+    Transform GetTargetAsAlly()
+    {
+        Transform currentTarget = null;
+
+        if (enemy.HasEnemyCurrentTarget()) return enemy.targetObject.transform;
+       
+        if (updateCheckForAlly_Current > 0)
+        {
+            updateCheckForAlly_Current -= Time.fixedDeltaTime;
+        }
+        else
+        {
+            RaycastHit[] allies = Physics.SphereCastAll(enemy.transform.position, 20, Vector2.up, 50, enemyLayer);
+
+            if (allies.Length > 0)
+            {
+                return allies[0].transform;
+
+
+            }
+            
+
+            updateCheckForAlly_Current = updateCheckForAlly_Total;
+
+        }
+
+        return null;
+    }
+
+    //i will put here 
+
 }

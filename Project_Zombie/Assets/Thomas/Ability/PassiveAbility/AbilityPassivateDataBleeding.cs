@@ -48,7 +48,6 @@ public class AbilityPassivateDataBleeding : AbilityPassiveData
 
         int roll = Random.Range(0, 101);
 
-        Debug.Log("called this");
 
         if(bleedChance > roll)
         {

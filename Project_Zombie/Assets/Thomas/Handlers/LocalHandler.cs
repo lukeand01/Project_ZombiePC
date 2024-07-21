@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LocalHandler : MonoBehaviour
@@ -22,7 +23,7 @@ public class LocalHandler : MonoBehaviour
     [SerializeField] Transform spawnPos;
     //we may give an ability chest with an enemy
 
-
+    
 
     private void Awake()
     {
@@ -31,6 +32,8 @@ public class LocalHandler : MonoBehaviour
 
         _roundHandler = GetComponent<LocalHandler_RoundHandler>();
 
+
+       
     }
 
     private void Start()
@@ -42,7 +45,7 @@ public class LocalHandler : MonoBehaviour
         }
 
 
-        RoundSpawnModifier = 1;
+        RoundSpawnModifier = 0;
         spawnCap = 100;
 
 
@@ -237,6 +240,8 @@ public class LocalHandler : MonoBehaviour
     //everytime a fella is spawned and the fella has a cap we attack an event to its death so we can remove it.
     public Dictionary<string, int> dictionaryForEnemiesWithSpawnCap { get; private set; } = new();
     [field:SerializeField] public List<EnemyChanceSpawnClass> enemyChanceList { get; private set; } = new();
+
+
     //is this the problem
     //every wave is spwaned
 
@@ -435,7 +440,6 @@ public class LocalHandler : MonoBehaviour
             return;
         }
 
-        Debug.Log("add");
 
         if (dictionaryForEnemiesWithSpawnCap.ContainsKey(enemySpawnClass.data.name))
         {
@@ -451,6 +455,9 @@ public class LocalHandler : MonoBehaviour
     public bool CanStackEnemy(EnemyChanceSpawnClass enemySpawnClass)
     {
         if (!dictionaryForEnemiesWithSpawnCap.ContainsKey(enemySpawnClass.data.name)) return true;
+
+        Debug.Log("Curren stack " + dictionaryForEnemiesWithSpawnCap[enemySpawnClass.data.name] + " yo : " + enemySpawnClass.maxAllowedAtAnyTime);
+
         return dictionaryForEnemiesWithSpawnCap[enemySpawnClass.data.name] < enemySpawnClass.maxAllowedAtAnyTime;
     }
 
@@ -853,7 +860,22 @@ public class LocalHandler : MonoBehaviour
 
     #endregion
 
+    public List<EnemyChanceSpawnClass> especialList { get; private set; } = new();
+    public int preferenceForEspecialList { get; private set; }
 
+    //everytime we are to spawn we check if there is anything in this list
+    //
+
+    public void SetEspecialList(List<EnemyChanceSpawnClass> especialList, int preferenceForEspecialList)
+    {
+        this.especialList = especialList;
+        this.preferenceForEspecialList = preferenceForEspecialList;
+    }
+    public void ResetEspecialList()
+    {
+        especialList.Clear();
+        preferenceForEspecialList = 0;
+    }
 }
 
 

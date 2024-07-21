@@ -19,7 +19,7 @@ public class EnemyBase : Tree, IDamageable
     [SerializeField] protected GameObject head;
     [SerializeField] EntityEvents _entityEvents; //these are just a bunch of events that might interest this entity.
     [SerializeField] EntityStat _entityStat; //
-
+    [SerializeField] MeshRenderer _rend;
 
     float healthCurrent;
     float healthTotal;
@@ -30,6 +30,11 @@ public class EnemyBase : Tree, IDamageable
 
     public void SetIsAttack(bool isAttacking) => this.isAttacking = isAttacking;
 
+
+    private void OnDestroy()
+    {
+        Debug.Log("destroyed this enemy? " + gameObject.name);
+    }
     private void Awake()
     {
         shieldedPenetrationValue = -1;
@@ -49,6 +54,11 @@ public class EnemyBase : Tree, IDamageable
         base.UpdateFunction();
 
         CheckIfShouldBeDespawned();
+    }
+
+    private void FixedUpdate()
+    {
+        HandleDuration();
     }
 
     protected virtual void AwakeFunction()
@@ -94,7 +104,17 @@ public class EnemyBase : Tree, IDamageable
     {
         gameObject.SetActive(false);
         isDead = false;
+
+        _enemyCanvas.UpdateDuration(0, 0);
         //but also turn on the collider.
+
+        _entityStat.ResetEntityStat();
+
+
+        if(_enemyCanvas != null)
+        {
+            _enemyCanvas.ResetFadeList();
+        }
 
         if(_abilityIndicatorCanvas != null)
         {
@@ -139,9 +159,9 @@ public class EnemyBase : Tree, IDamageable
 
             if (isBloodMoon)
             {
-                BDClass bd_Health = new BDClass("BloodMoon_Health", StatType.Health, 0, 0, 0.25f);
-                BDClass bd_Damage = new BDClass("BloodMoon_Damage", StatType.Damage, 0, 0.35f, 0);
-                BDClass bd_Speed = new BDClass("BloodMoon_Speed", StatType.Speed, 5, 0, 0);
+                BDClass bd_Health = new BDClass("BloodMoon_Health", StatType.Health, 0, 1f, 0);
+                BDClass bd_Damage = new BDClass("BloodMoon_Damage", StatType.Damage, 0, 0.45f, 0);
+                BDClass bd_Speed = new BDClass("BloodMoon_Speed", StatType.Speed, 0, 0.45f, 0);
 
                 _entityStat.AddBD(bd_Health);
                 _entityStat.AddBD(bd_Damage);
@@ -278,8 +298,15 @@ public class EnemyBase : Tree, IDamageable
 
         if(healthCurrent <= 0)
         {
+            bool wasPlayer = false;
+
+            if(damageRef.attacker != null)
+            {
+                if (damageRef.attacker.GetID() == "Player") wasPlayer = true;
+            }
+
             //death
-            Die();
+            Die(wasPlayer);
             GameHandler.instance._soundHandler.CreateSfx(data.audio_Dead,transform);
         }
         else
@@ -296,10 +323,24 @@ public class EnemyBase : Tree, IDamageable
         _enemyCanvas.CreateShieldPopUp();
     }
 
-    protected void Die()
+    protected void Die(bool wasKilledByPlayer = true)
     {
-        isDead = true;
+
+
+        PlayerHandler.instance._entityEvents.OnKillEnemy(this, wasKilledByPlayer);
+        
+
+       
         PlayerHandler.instance._playerResources.GainPoints(5);
+
+        if (preventNextDeath)
+        {
+            preventNextDeath = false;
+            return;
+        }
+
+        isDead = true;
+  
 
 
         LocalHandler.instance.RemoveEnemyFromSpawnList(data);
@@ -307,17 +348,8 @@ public class EnemyBase : Tree, IDamageable
         HandleWhatDeathShouldDrop();
 
         PlayerHandler.instance._playerStatTracker.ChangeStatTracker(StatTrackerType.EnemiesKilled, 1);
-        PlayerHandler.instance._entityEvents.OnKillEnemy(this);
+        
         OnDied(data);
-
-        //when this fella dies we remove t
-        //he the canvas 
-
-
-
-        Vector3 posBeforeInde = _enemyCanvas.transform.position;
-        _enemyCanvas.transform.SetParent(null); //no parent. but it should be ordered to destroy itself once there are no more childnre in the damagepopcontainer.
-        _enemyCanvas.MakeDestroyItself(posBeforeInde);
 
 
         GameHandler.instance._pool.Enemy_Release(data, this);
@@ -482,11 +514,14 @@ public class EnemyBase : Tree, IDamageable
         float distanceForAttack = Vector3.Distance(targetObject.transform.position, transform.position);
         GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
 
+
+
         //we will check any fellas in front 
 
-     
+        
         if(data.attackRange >= distanceForAttack) 
         {
+
             //if the player is still in range then we attack.
             DamageClass damage = GetDamage();
             damage.MakeAttacker(this);
@@ -518,7 +553,6 @@ public class EnemyBase : Tree, IDamageable
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         return Quaternion.Angle(transform.rotation, targetRotation) <= rotationAngle;
     }
-
 
     public bool IsStunned()
     {
@@ -561,6 +595,73 @@ public class EnemyBase : Tree, IDamageable
 
     #endregion
 
+    #region MADE ALLY
+
+    public bool IsAlly { get; private set; }
+    [Separator("ALLY")]
+    [SerializeField] Material _allyMaterial;
+    bool preventNextDeath;
+
+    float duration_Current;
+    float duration_Total;
+
+    [ContextMenu("FORCE IT ALLY")]
+    public void ForceAlly()
+    {
+        MakeAlly(5);
+    }
+
+
+    public void MakeAlly(float duration)
+    {
+        //we have to change the behavior.
+
+        StopAgent();
+
+        duration_Total = duration;
+        duration_Current = duration_Total;
+
+        IsAlly = true;
+        gameObject.layer = 8;
+        _rend.material = _allyMaterial;
+
+        //recover health
+
+        healthCurrent = healthTotal;
+        _enemyCanvas.UpdateHealth(healthCurrent, healthTotal);
+
+    }
+
+    void HandleDuration()
+    {
+        if (duration_Total <= 0) return;
+        if(duration_Current > 0)
+        {
+            duration_Current -= Time.fixedDeltaTime;
+            _enemyCanvas.UpdateDuration(duration_Current, duration_Total);
+        }
+        else
+        {
+            GameHandler.instance._pool.Enemy_Release(data, this);
+            _enemyCanvas.UpdateDuration(duration_Current, duration_Total);
+        }
+    }
+
+    public bool HasEnemyCurrentTarget()
+    {
+        if (targetObject == null) return false;
+
+        return targetObject.gameObject.layer == 6;
+    }
+
+    public void PreventDeath()
+    {
+        Debug.Log("yo");
+        preventNextDeath = true;
+    }
+
+    #endregion
+
 
 
     [Separator("SOUND FOR ENEMY")]
@@ -574,10 +675,10 @@ public class EnemyBase : Tree, IDamageable
             Debug.Log("sound assets missing in " + gameObject.name);
             return;
         }
-        SoundUnit newObject = Instantiate(soundUnitTemplate);
+        SoundUnit newObject = GameHandler.instance._pool.GetSound(transform);
         newObject.transform.SetParent(container);
         newObject.transform.localPosition = Vector3.zero;
-        newObject.SetUp(clip);
+        newObject.SetUp(clip, true);
     }
 
 

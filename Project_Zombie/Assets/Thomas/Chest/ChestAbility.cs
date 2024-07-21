@@ -28,6 +28,7 @@ public class ChestAbility : ChestBase
         _chestUI.SetChest(this);
         _chestUI.CallChestAbility(passiveList);
 
+        PlayerHandler.instance._entityEvents.OnOpenChest(ChestType.ChestAbility);
 
         Destroy(gameObject);
     }

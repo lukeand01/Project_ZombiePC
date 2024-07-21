@@ -65,7 +65,9 @@ public class PlayerCombat : MonoBehaviour
     private void FixedUpdate()
     {
         HandleShield();
+        HandleGunCharge();
 
+        
 
         //TESTING
 
@@ -159,6 +161,9 @@ public class PlayerCombat : MonoBehaviour
         gunList[0].data.AddGunPassives();
 
         ShieldRemove(-1);
+
+        gunList[0].ReloadGunForFree();
+
     }
 
     public void ControlGunHolderVisibility(bool isVisible)
@@ -329,13 +334,13 @@ public class PlayerCombat : MonoBehaviour
 
     public void OrderSwapGun()
     {
-
-
         UnselectCurrentGunModel();
 
         bool done = false;
 
         int lastGun = currentGunIndex;
+
+        CancelCharge();
 
         while (!done)
         {
@@ -378,8 +383,9 @@ public class PlayerCombat : MonoBehaviour
         {
             GameHandler.instance._soundHandler.CreateSfx(audio_Swap);
         }
-
+        
         CancelReload();
+
 
         _gunUI.ChangeOwnedGunShowUnit(currentGunIndex);
         SwapGunModel();
@@ -452,9 +458,10 @@ public class PlayerCombat : MonoBehaviour
 
         if (!gunList[currentGunIndex].CanReload() || !gunList[currentGunIndex].HasReserveAmmo())
         {
-            Debug.Log("not allowed to reload");
             return;
         }
+
+        CancelCharge();
 
         StopCoroutine(nameof(ReloadProcess));
         reloadProcess = StartCoroutine(ReloadProcess());
@@ -735,7 +742,6 @@ public class PlayerCombat : MonoBehaviour
     #endregion
 
 
-
     void HandleListCooldown()
     {
         foreach (var item in gunList)
@@ -816,9 +822,22 @@ public class PlayerCombat : MonoBehaviour
         keepShootingIfCanHold = true;
 
 
-        gunList[currentGunIndex].Shoot(shootDir, forcedBulletBehaviorList);
-        _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
-        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
+        //we are also going to chgeck if this is charge. if it is we dont shoot right now.
+
+        if (gunList[currentGunIndex].data.GetGunCharge() != null)
+        {
+            //we clal the thing to start charging.
+            StartCharge();
+        }
+        else
+        {
+
+            gunList[currentGunIndex].Shoot(shootDir, forcedBulletBehaviorList);
+            _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
+            _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
+        }
+
+
         
     }
 
@@ -884,6 +903,82 @@ public class PlayerCombat : MonoBehaviour
     #endregion
 
 
-   
+    #region GUN CHARGE
+    bool isCharging;
+
+    public void CallCharge()
+    {
+        //here we order the gun charge to happen.
+        //it can only be the current weapon so we will check that.
+        Vector3 currentMousePos = handler._playerController.GetMouseDirection();
+
+        gunList[currentGunIndex].Shoot(currentMousePos, forcedBulletBehaviorList);
+        _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
+        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
+
+        CancelCharge();
+    }
+
+    public void StartCharge()
+    {
+        if (isCharging)
+        {
+            Debug.Log("caught 1");
+            return;
+        }
+        if(gunList[currentGunIndex] == null)
+        {
+            Debug.Log("caught 1 ");
+            return;
+        }
+        if (!gunList[currentGunIndex].IsGunCharge())
+        {
+            Debug.Log("caught 2");
+            return;
+        }
+
+        Debug.Log("told it to start charging");
+        isCharging = true;
+
+    }
+
+    public void CancelCharge()
+    {
+        if (gunList[currentGunIndex] != null)
+        {
+
+            isCharging = false;
+            _gunUI.UpdateChargeInOwnedGunShowUnit(currentGunIndex, 0, 1);
+            gunList[currentGunIndex].StopChargeGun();
+        }
+    }
+
+    void HandleGunCharge()
+    {
+        //here we will call the gun.
+        if (!isCharging) return;
+
+        if (gunList[currentGunIndex] != null)
+        {
+            Debug.Log("handle gun charge");
+
+            gunList[currentGunIndex].HandleGunCharge();
+            float[] floatArray  = gunList[currentGunIndex].GetProgressValues();
+
+            _gunUI.UpdateChargeInOwnedGunShowUnit(currentGunIndex, floatArray[0], floatArray[1]);
+
+            if (gunList[currentGunIndex].IsGunChargeReady())
+            {
+                //we call the shot using info from player controller.
+                CallCharge();
+            }
+
+        }
+
+    }
+
+
+
+    #endregion
 }
 

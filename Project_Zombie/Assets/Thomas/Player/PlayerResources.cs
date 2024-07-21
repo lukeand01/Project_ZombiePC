@@ -93,7 +93,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageClass damage)
     {
-        Debug.Log("take damage");
+
         if (debugCannotTakeDamage) return;
 
         if(handler._entityStat.IsImmune)
@@ -172,7 +172,10 @@ public class PlayerResources : MonoBehaviour, IDamageable
     public void Die(bool hasFallen = false)
     {
 
-        Debug.Log("has revive " + hasRevive);
+
+
+        handler._playerCombat.CancelCharge();
+
 
         if (hasRevive && !hasFallen)
         {
@@ -308,7 +311,8 @@ public class PlayerResources : MonoBehaviour, IDamageable
     {
         float modifier = handler._entityStat.GetTotalEspecialConditionValue(EspecialConditionType.PointsModifier);
         float additionalValue = value * modifier;
-       
+
+        handler._entityEvents.OnChangedPoints(value);
 
         points += value + (int)additionalValue;
         UIHandler.instance._playerUI.UpdatePoint(points, value);
@@ -318,6 +322,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
     public void SpendPoints(int value)
     {
         points -= value;
+        handler._entityEvents.OnChangedPoints(-value);
         UIHandler.instance._playerUI.UpdatePoint(points, -value);
     }
 

@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turret : MonoBehaviour, IDamageable
+public class Turret : AllyBase
 {
-    //this will look fro the right target, aim and shoot.
-    //there may be certain behaviors.
-    //how to define the certain behaviors?
+    //how are things here?
+    //this should also use the bullet pooling
+
+
+
 
 
     [SerializeField] protected BulletScript bulletTemplate;
@@ -30,14 +32,14 @@ public class Turret : MonoBehaviour, IDamageable
     [SerializeField] protected GameObject graphic;
     [SerializeField] protected GameObject head;
     [SerializeField] protected Transform gunPointTransform;
-
+    [SerializeField] Transform[] eyeArray;
     private void Awake()
     {
         enemyLayer |= (1 << 6);
 
         targetLayer |= (1 << 6);
         targetLayer |= (1 << 9);
-        targetLayer |= (1 << 7);
+        //targetLayer |= (1 << 7);
     }
 
     public virtual void SetUp()
@@ -46,6 +48,11 @@ public class Turret : MonoBehaviour, IDamageable
 
 
 
+    }
+
+    private void FixedUpdate()
+    {
+        Debug.Log("in sight " + IsInSight(enemyteste.transform));
     }
 
 
@@ -61,10 +68,9 @@ public class Turret : MonoBehaviour, IDamageable
         //it either targets player for now it will always target 
     }
 
-    private void Update()
-    {
-        
-    }
+    //first what i must do. first i will make sure the enemy are able to target allies.
+
+ 
 
     void LookForTarget()
     {
@@ -75,46 +81,50 @@ public class Turret : MonoBehaviour, IDamageable
 
     }
 
-    #region DAMAGEABLE
-    public void TakeDamage(DamageClass damage)
+    protected bool IsInSight(Transform targetTransform)
     {
-        
+        int amountFound = 0;
+        foreach (var item in eyeArray)
+        {
+            Vector3 targetPos = targetTransform.position - item.position; //.normalized;
+            Ray ray = new Ray(item.position, targetPos);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 50, targetLayer))
+            {
+                if(hit.collider.gameObject.layer == 6)
+                {
+                    //
+                    amountFound++;
+                }
+                if(hit.collider.gameObject.layer == 9)
+                {
+                   
+                }
+            }
+            else
+            {
+                
+            }
+        }
+
+        Debug.Log(amountFound);
+        return amountFound >= 2;
     }
 
-    public void ApplyBD(BDClass bd)
+    [SerializeField] EnemyBase enemyteste;
+    private void OnDrawGizmosSelected()
     {
-        
-    }
+        Vector3 targetPos = enemyteste.transform.position - eyeArray[0].position; //.normalized;
+        Ray ray = new Ray(eyeArray[0].position, targetPos);
+        Gizmos.DrawRay(ray);
 
-    public string GetID()
-    {
-        return "";
-    }
+        Vector3 targetPos_1 = enemyteste.transform.position - eyeArray[1].position; //.normalized;
+        Ray ray_1 = new Ray(eyeArray[1].position, targetPos_1);
+        Gizmos.DrawRay(ray_1);
 
-    public bool IsDead()
-    {
-        return false;
-    }
+        Vector3 targetPos_2 = enemyteste.transform.position - eyeArray[2].position; //.normalized;
+        Ray ray_2 = new Ray(eyeArray[2].position, targetPos_2);
+        Gizmos.DrawRay(ray_2);
 
-    public float GetTargetMaxHealth()
-    {
-        return 0;
     }
-
-    public float GetTargetCurrentHealth()
-    {
-        return 0;
-    }
-
-    public void RestoreHealth(float value)
-    {
-        //
-    }
-
-    public GameObject GetObjectRef()
-    {
-        return gameObject;
-    }
-
-    #endregion
 }

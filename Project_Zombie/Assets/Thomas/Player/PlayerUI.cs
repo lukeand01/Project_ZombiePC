@@ -36,6 +36,13 @@ public class PlayerUI : MonoBehaviour
     {
         mouseIcon.transform.position = Input.mousePosition;
 
+        if (!isFlashing)
+        {
+            var alpha = roundText_New.color.a;
+            alpha = 1;
+            roundText_New.color = new Color(roundText_New.color.r, roundText_New.color.g, roundText_New.color.b, alpha);          
+        }
+
         HealthHandle();
         PointHandle();
         BlessHandle();
@@ -229,6 +236,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] GameObject roundHolder_New;
     [SerializeField] Image roundIcon_New;
     [SerializeField] TextMeshProUGUI roundText_New;
+    [SerializeField] Image roundBackground;
     Vector3 originalPos_New;
 
     Sprite originalRoundSprite;
@@ -249,24 +257,26 @@ public class PlayerUI : MonoBehaviour
         roundIcon_New.sprite = originalRoundSprite;
     }
 
-
+    bool isFlashing;
 
     public void UpdateRoundText_New(int newValue, bool isForce, Sprite newImage)
     {
         StopAllCoroutines();
-
+        isFlashing = false;
         if (isForce)
         {
             roundText_New.text = newValue.ToString();
             return;
         }
-
-
+        
+        roundText_New.DOFade(1, 0);
         StartCoroutine(UpdateRoundTextProcess(newValue, newImage));
     }
 
     IEnumerator UpdateRoundTextProcess(int newValue, Sprite newImage)
     {
+        isFlashing = true;
+
         roundText_New.DOKill();
 
         float timer = 0.15f;
@@ -284,11 +294,15 @@ public class PlayerUI : MonoBehaviour
         if(newImage == null)
         {
             roundIcon_New.sprite = originalRoundSprite;
+            roundBackground.DOColor(Color.black, 0.3f);
         }
         else
         {
             roundIcon_New.sprite = newImage;
+            roundBackground.DOColor(Color.red, 0.3f);
         }
+
+        
 
 
         yield return new WaitForSeconds(timer);
@@ -301,6 +315,9 @@ public class PlayerUI : MonoBehaviour
         yield return new WaitForSeconds(timer);
 
         roundText_New.DOFade(1, timer);
+
+        isFlashing = false;
+
 
 
     }

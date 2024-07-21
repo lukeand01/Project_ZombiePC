@@ -82,7 +82,15 @@ public class ChestGun : ChestBase
     public override bool IsInteractable()
     {
 
-       int freeSpaceIndex = PlayerHandler.instance._playerCombat.GetGunEmptySlot();
+        if (isShowing && !isDone)
+        {
+            return false;
+        }
+
+        return base.IsInteractable();
+
+
+        int freeSpaceIndex = PlayerHandler.instance._playerCombat.GetGunEmptySlot();
         
 
         if(freeSpaceIndex == -1)
@@ -94,12 +102,7 @@ public class ChestGun : ChestBase
         }
 
 
-        if (isShowing && !isDone)
-        {
-            return false;
-        }
 
-        return base.IsInteractable();
     }
 
     //when yoiu interact you start the effect;
@@ -122,6 +125,8 @@ public class ChestGun : ChestBase
             Destroy(gunHolder.transform.GetChild(i).gameObject);
         }
 
+        gunHolder.SetActive(true);
+
         foreach (var item in spinningGunList)
         {
             //spawn the model and put it here.
@@ -138,7 +143,7 @@ public class ChestGun : ChestBase
         float timer = 4;
 
         gunHolder.transform.DOKill();
-        gunHolder.transform.DOLocalMoveY(gunHolder.transform.localPosition.y + 4, timer).SetUpdate(true).SetEase(Ease.Linear);
+        gunHolder.transform.DOLocalMoveY(gunHolder.transform.localPosition.y + 4, timer).SetEase(Ease.Linear);
 
         int safeBreak = 0;
 
@@ -160,10 +165,9 @@ public class ChestGun : ChestBase
             safeBreak++;
             if (safeBreak > 1000) break;
 
-            yield return new WaitForSecondsRealtime(0.3f);
+            yield return new WaitForSeconds(0.3f);
         }
 
-        Debug.Log("never done");
         isDone = true;
         StartCoroutine(CancelProcess());
     }
@@ -172,12 +176,12 @@ public class ChestGun : ChestBase
     {
         //we wait a bit
         Debug.Log("cancel process called");
-        yield return new WaitForSecondsRealtime(5); //after a time. and i need to inform the player of that time. it starts going down when its over
+        yield return new WaitForSeconds(5); //after a time. and i need to inform the player of that time. it starts going down when its over
 
         float timer = 2;
 
         gunHolder.transform.DOKill();
-        var gunMovemetTween = gunHolder.transform.DOLocalMoveY(0, timer).SetUpdate(true).SetEase(Ease.Linear);
+        var gunMovemetTween = gunHolder.transform.DOLocalMoveY(0, timer).SetEase(Ease.Linear);
 
         int safeBreak = 0;
 
@@ -188,7 +192,7 @@ public class ChestGun : ChestBase
             safeBreak++;
             if (safeBreak > 1000) break;
 
-            yield return new WaitForSecondsRealtime(0.01f);
+            yield return new WaitForSeconds(0.01f);
         }
 
         gunHolder.SetActive(false);
@@ -201,6 +205,23 @@ public class ChestGun : ChestBase
 
     void GetGun()
     {
+        //
+
+
+        int indexCurrentlyUsing = PlayerHandler.instance._playerCombat.GetCurrentGunIndex;
+        int index = PlayerHandler.instance._playerCombat.GetGunEmptySlot();
+
+        if (index != -1 )
+        {
+            indexCurrentlyUsing = index;
+        }
+
+
+        if(indexCurrentlyUsing == 0)
+        {
+            PlayerHandler.instance._entityStat.CallPowerFadeUI("Change Gun to swap", Color.red, 0.5f);
+            return;
+        }
 
         Debug.Log("get gun");
         //we stop all process.
@@ -212,8 +233,12 @@ public class ChestGun : ChestBase
 
         //then we play animation.
 
-        int indexCurrentlyUsing = PlayerHandler.instance._playerCombat.GetCurrentGunIndex;
+
+        //so we can only get this 
+
+        
         PlayerHandler.instance._playerCombat.ReceiveTempGunToReplace(chosenGun, indexCurrentlyUsing);
+        LocalHandler.instance.ChestGunUse();
     }
 
     public override void ProgressChest()

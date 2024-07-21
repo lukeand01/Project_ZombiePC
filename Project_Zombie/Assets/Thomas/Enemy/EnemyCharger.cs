@@ -46,7 +46,6 @@ public class EnemyCharger : EnemyBase
 
     //behavior we have is walk.
     //then when in range then we check if we can see the player.
-    //
 
     Sequence2 GetBehavior()
     {
@@ -73,6 +72,10 @@ public class EnemyCharger : EnemyBase
         StopAllCoroutines();
         StartCoroutine(ChargeProcess1());
        
+
+        //what do i want to with that?
+        //the shield, moves forward without warning but much slower,
+        //assassin show they are going to attack and they do it extremely fast.
 
 
 
@@ -114,10 +117,11 @@ public class EnemyCharger : EnemyBase
 
         yield return new WaitForSeconds(1.5f);
 
+
         gameObject.layer = 12;
         _chargeCollider.gameObject.SetActive(true);
 
-        Debug.Log("started moving");
+
         //we are going to rotate while we stop the agent.
         float startTime = Time.time;
         float dashTime = 2.5f;

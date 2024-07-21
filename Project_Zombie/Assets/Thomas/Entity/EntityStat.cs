@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,8 @@ public class EntityStat : MonoBehaviour
     [SerializeField] EntityStatCanvas _entityCanvas;
     EntityEvents _entityEvents;
 
+
+    //
     private void Awake()
     {
         if(debugInitialList.Count > 0) 
@@ -243,6 +246,8 @@ public class EntityStat : MonoBehaviour
         //also when we remove it we do stuff;
 
         //i want a stat
+
+        TryToStartBDGraphical(bd);
 
         if (dictionaryForStacking.ContainsKey(bd.id))
         {
@@ -477,6 +482,9 @@ public class EntityStat : MonoBehaviour
     public void RemoveBDWithIndex(int index, List<BDClass> targetList)
     {
         BDClass bd = targetList[index];
+
+        TryToCancelBDGraphical(bd);
+
         targetList.RemoveAt(index);
         bd.RemoveBDUnit();
 
@@ -610,6 +618,42 @@ public class EntityStat : MonoBehaviour
 
     #endregion
 
+    #region BD GRAPHICAL
+    [Separator("BD GRAPHICAL")]
+    [SerializeField] Transform bdGraphicalHolder;
+
+
+
+    void TryToStartBDGraphical(BDClass bd)
+    {
+        if (bdGraphicalHolder == null) return;
+
+        if(bd.bdType == BDType.Damage && bd.damageType == BDDamageType.Burn)
+        {
+            ControlBDGraphical((int)BdGraphicalType.Fire, true);
+        }
+    }
+
+    void TryToCancelBDGraphical(BDClass bd)
+    {
+        if (bdGraphicalHolder == null) return;
+
+        if (bd.bdType == BDType.Damage && bd.damageType == BDDamageType.Burn)
+        {
+            ControlBDGraphical((int)BdGraphicalType.Fire, false);
+        }
+    }
+
+    void ControlBDGraphical(int index, bool isActive)
+    {
+        bdGraphicalHolder.GetChild(index).gameObject.SetActive(isActive);
+    }
+
+   
+
+
+    #endregion
+
     #region DEBUG
     [ContextMenu("DEBUG STUN")]
     public void DebugStun()
@@ -728,6 +772,7 @@ public class EntityStat : MonoBehaviour
         
     }
 
+    #region CALL FADE UI
     public void CallDodgeFadeUI()
     {
         if (_entityCanvas == null) return;
@@ -739,12 +784,16 @@ public class EntityStat : MonoBehaviour
         _entityCanvas.CreateFadeUIForRecoverHealth(value);
     }
 
-    public void CallPowerFadeUI(string powerName)
+    public void CallPowerFadeUI(string powerName, Color fadeColor, float duration = 1)
     {
-        _entityCanvas.CreateFadeUIForPower(powerName);
+        _entityCanvas.CreateFadeUIForPower(powerName, fadeColor, duration);
     }
 
     public void CallDropFadedUI(string dropName) => _entityCanvas.CreateFadeUIForDrop(dropName);
+    #endregion
+
+
+
 }
 
 //it can rece
@@ -769,6 +818,13 @@ public class StatClass
     }
 
 }
+public enum BdGraphicalType 
+{ 
+    Nothing,
+    Fire = 0
+
+}
+
 
 [System.Serializable]
 public class StatAlteredClass
@@ -801,6 +857,7 @@ public enum StatType
     Speed,
     Damage,
     DamageReduction,
+    Leadership,
     Tenacity,
     Pen,
     CritChance,

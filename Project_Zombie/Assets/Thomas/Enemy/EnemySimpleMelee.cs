@@ -6,11 +6,12 @@ public class EnemySimpleMelee : EnemyBase
 {
     [SerializeField] bool shouldOnlyMoveWhenFacing;
 
+
+    //
+
     protected override void AwakeFunction()
     {
-        base.AwakeFunction();
-
-        
+        base.AwakeFunction();     
 
     }
 

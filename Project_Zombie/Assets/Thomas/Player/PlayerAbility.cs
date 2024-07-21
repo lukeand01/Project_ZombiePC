@@ -297,6 +297,8 @@ public class PlayerAbility : MonoBehaviour
     {
         //we clear all passive abilities.
 
+
+
         foreach (var item in abilityPassiveList)
         {
             if (item.dataPassive == null) continue;

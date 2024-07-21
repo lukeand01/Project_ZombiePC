@@ -28,7 +28,7 @@ public class BDClass
 
     public BDClass(string id, StatType statType, float valueFlat, float valuePercentBase, float valuePercentCurrent)
     {
-        debugName = $"id: {id}; stat: {statType}; valueFlat: {valueFlat}; valuePercent {valuePercentBase}; ";
+        debugName = $"id: {id}; stat: {statType}; valueFlat: {valueFlat}; valuePercentBase {valuePercentBase}; ValuePercentCurrent {valuePercentCurrent}";
 
 
 

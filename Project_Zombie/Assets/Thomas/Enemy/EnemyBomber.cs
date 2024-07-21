@@ -55,7 +55,7 @@ public class EnemyBomber : EnemyBase
 
         DamageClass damage = GetDamage();
 
-        PlayerHandler.instance.TryToCallExplosionCameraEffect(transform);
+        PlayerHandler.instance.TryToCallExplosionCameraEffect(transform, 1);
 
 
         foreach (var item in targets)
@@ -67,7 +67,7 @@ public class EnemyBomber : EnemyBase
             //push it from teh palyer too
         }
 
-        Die();
+        Die(false);
        
     }
 

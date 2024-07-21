@@ -71,6 +71,7 @@ public class EnemyGiant : EnemyBase
             return;
         }
 
+        Debug.Log("called attack");
 
         float distanceForAttack = Vector3.Distance(targetObject.transform.position, transform.position);
 
@@ -79,6 +80,9 @@ public class EnemyGiant : EnemyBase
             //then it causes damage and causes stun in player.
             DamageClass damage = GetDamage();
             targetIdamageable.TakeDamage(damage);
+
+            BDClass bd = new BDClass("Giant_Stun", BDType.Stun, 1.2f);
+            targetIdamageable.ApplyBD(bd);
 
         }
         

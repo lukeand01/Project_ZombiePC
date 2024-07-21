@@ -112,7 +112,7 @@ public class EntityStatCanvas : MonoBehaviour
     #endregion
 
     #region POWER
-    public void CreateFadeUIForPower(string powerName)
+    public void CreateFadeUIForPower(string powerName, Color fadeColor, float duration = 1)
     {
         FadeUI newObject = Instantiate(fadeTemplate);
         newObject.transform.SetParent(recoverHealthPos);
@@ -124,11 +124,11 @@ public class EntityStatCanvas : MonoBehaviour
 
         newObject.transform.localPosition = Vector3.zero + new Vector3(0, 35, 0) + new Vector3(x, z, 0);
         newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
-        newObject.SetUp(powerName.ToString(), Color.yellow);
+        newObject.SetUp(powerName.ToString(), fadeColor);
+        newObject.ChangeColorModifier(duration);
     }
 
 
-    
     public void CreateFadeUIForDrop(string dropName)
     {
         FadeUI newObject = Instantiate(fadeTemplate);

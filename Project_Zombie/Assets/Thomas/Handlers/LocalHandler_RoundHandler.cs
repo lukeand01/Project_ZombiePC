@@ -1,10 +1,12 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class LocalHandler_RoundHandler : MonoBehaviour
 {
-    
+
     //first lets change the timer for calculatio and put it in the 
 
 
@@ -18,11 +20,11 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     [SerializeField] int amountPerInterval;
 
     float intervalTimerCurrent;
-    [SerializeField]float intervalTimerTotal; //this is the time we are going to spwan an amount.
+    [SerializeField] float intervalTimerTotal; //this is the time we are going to spwan an amount.
 
     int intervalQuantityTotal; //the number of times we will have interval spawns.
-    [SerializeField]int intervalQuantityCurrent;
-    
+    [SerializeField] int intervalQuantityCurrent;
+
 
     [SerializeField] List<EnemyData> currentTurnEnemySpawnedList = new(); //all the enemies that were spawned in this turn. we wait to get to zero to remove it.
     public int currentNumberForSpawnedEnemy;
@@ -35,15 +37,19 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         _handler = GetComponent<LocalHandler>();
 
         portalCalculation_Total = 1;
-       
+
 
         List<RoundClass> roundList = _handler._stageData.especialRoundList;
 
         foreach (var item in roundList)
         {
-            RoundClass round = new RoundClass(item.data, item.MinRoundAllowedToTrigger, item.minRoundPassedPerTrigger);
+            RoundClass round = new RoundClass(item.data, item.MinimalRoundToTrigger, item.RoundsPassedPerTrigger);
             newRoundList.Add(round);
         }
+
+        //i want to simulate teh calculation ehre.
+
+
 
     }
     private void Update()
@@ -54,12 +60,14 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     private void FixedUpdate()
     {
         CheckEveryAllowedPortalDistance();
+
+
     }
 
     public void StartRound()
     {
 
-       
+
         StartCoroutine(StartRoundProcess());
     }
 
@@ -79,7 +87,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(NextRoundProcess());
-        
+
     }
 
     IEnumerator NextRoundProcess()
@@ -95,7 +103,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         PlayerHandler.instance._playerAbility.PassedRound();
 
         //at the start we check if there is a round already here.
-   
+
 
         round++;
 
@@ -109,6 +117,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         _handler.SetRound(round);
 
         _handler.GetNewSpawnList();
+        SetDictionaryForStacking();
 
         yield return new WaitForSecondsRealtime(1);
 
@@ -121,7 +130,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         intervalTimerCurrent = intervalTimerTotal * 0.7f;
 
 
-        if(round % 5 == 0)
+        if (round % 5 == 0)
         {
             PlayerHandler.instance._playerCombat.RefreshAllReserveAmmo();
         }
@@ -132,7 +141,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     RoundData roundData;
     void ClearRoundData()
     {
-        if(roundData != null)
+        if (roundData != null)
         {
             roundData.OnRoundEnd();
             roundData = null;
@@ -147,9 +156,9 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         foreach (var item in newRoundList)
         {
-            if( item.MinRoundAllowedToTrigger > _handler.round)
+            if (item.MinimalRoundToTrigger > _handler.round)
             {
-                Debug.Log("not enough round to call this");
+
                 continue;
             }
 
@@ -157,14 +166,19 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
             int roll = Random.Range(0, 101);
 
-            if(roll > item.chance)
+            if (item.chance > roll)
             {
                 if (item.CanTrigger())
                 {
+                    //Debug.Log("can trigger");
                     //then we announce that the next round will be this fella.
                     item.data.OnRoundStart();
                     roundData = item.data;
                     return;
+                }
+                else
+                {
+                    //Debug.Log("cannot trigger");
                 }
             }
 
@@ -188,7 +202,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     void SpawnEnemies()
     {
 
-        if(intervalQuantityCurrent >= intervalQuantityTotal)
+        if (intervalQuantityCurrent >= intervalQuantityTotal)
         {
             Debug.Log("can no longer spawn in this turn");
             return;
@@ -199,32 +213,62 @@ public class LocalHandler_RoundHandler : MonoBehaviour
             return;
         }
 
-        //maybe we order the respawn through here.
-        //
+
+        //we are chopsen the enemies here.
+        //if an enemy has 0 chance fo spawning i dont it.
+        //then i need to check for 
+
 
         List<EnemyData> chosenEnemyList = new();
         int safeBreak = 0;
 
         intervalQuantityCurrent++;
 
+        bool triedEspecialList = false;
 
         int roll = Random.Range(0, 101);
         while (amountPerInterval > chosenEnemyList.Count)
         {
             safeBreak++;
-            if (safeBreak > 1000)
+            if (safeBreak > 2000)
             {
-                //Debug.LogError("Safe break for choose enemies");
-                return;
+                Debug.LogError("Safe break for choose enemies " + chosenEnemyList.Count);
+                break;
             }
 
             //check each fella against the raindom.
-            int random = Random.Range(0, _handler.enemyChanceList.Count);
-            EnemyChanceSpawnClass enemyChance = _handler.enemyChanceList[random];
 
-            if (!_handler.CanStackEnemy(enemyChance))
+            EnemyChanceSpawnClass enemyChance = null;
+
+
+            //for especial lists we ignore stack enemy.
+            //how to do this? maybe we can add an additional fella.
+
+            int especialRandom = Random.Range(0, 101);
+
+            if (_handler.especialList.Count > 0 && _handler.preferenceForEspecialList > especialRandom && !triedEspecialList)
             {
-                Debug.Log("cannot add more of this fella " + enemyChance.data.enemyName);
+                //then we are going to check this fella here.
+                //but if it fails next time we dont check this.
+                int random = Random.Range(0, _handler.especialList.Count);
+                enemyChance = _handler.especialList[random];
+
+            }
+            else
+            {
+                int random = Random.Range(0, _handler.enemyChanceList.Count);
+                enemyChance = _handler.enemyChanceList[random];
+            }
+
+            //Debug.Log("enemy chance list " + _handler.enemyChanceList.Count);
+            triedEspecialList = false;
+
+
+
+            if (!CanStack(enemyChance))
+            {
+                //Debug.Log("cannot add more of this fella " + enemyChance.data.enemyName);
+                if (_handler.preferenceForEspecialList > especialRandom) triedEspecialList = true;
                 continue;
             }
             else
@@ -232,20 +276,25 @@ public class LocalHandler_RoundHandler : MonoBehaviour
                 //Debug.Log("can add this fella");
             }
 
-            if (enemyChance.totalChanceSpawn >= roll)
+
+
+            if (enemyChance.totalChanceSpawn >= roll && enemyChance.totalChanceSpawn > 0)
             {
                 chosenEnemyList.Add(enemyChance.data);
-                _handler.AddToStackDictionary(enemyChance);
+                TryToAddFromDictionary(enemyChance.data.name);
                 //we check if we should put in the dictionary
             }
             else
             {
-                roll -= 10;
+                roll -= 2;
             }
 
         }
 
-        Debug.Log("chosen enemy " + chosenEnemyList.Count);
+        //Debug.Log("got to the end " + );
+
+        Debug.Log("here");
+
 
         foreach (var item in chosenEnemyList)
         {
@@ -253,10 +302,8 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         }
 
 
-
-
         SendDataToPortals(chosenEnemyList);
-        
+
     }
 
     void SendDataToPortals(List<EnemyData> enemyList)
@@ -265,6 +312,9 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         //am i not sending the data?
 
+
+
+
         foreach (var item in enemyList)
         {
             int random = -1;
@@ -272,7 +322,8 @@ public class LocalHandler_RoundHandler : MonoBehaviour
             {
                 random = Random.Range(0, currentPortalNotFarEnoughList.Count);
                 currentPortalNotFarEnoughList[random].OrderSpawn(item);
-                return;
+                // Debug.Log("no currentportal");
+                continue;
             }
 
             int roll = Random.Range(0, 101);
@@ -283,18 +334,20 @@ public class LocalHandler_RoundHandler : MonoBehaviour
                 //the its the not close enoguh list
                 random = Random.Range(0, currentPortalNotFarEnoughList.Count);
                 currentPortalNotFarEnoughList[random].OrderSpawn(item);
-                return;
+                //Debug.Log("chosen currentportal not far enough");
+                continue;
             }
-            else if(currentPortalCloseList.Count > 0)
+            else if (currentPortalCloseList.Count > 0)
             {
                 //then its the close list.
+                // Debug.Log("current portal close list");
                 random = Random.Range(0, currentPortalCloseList.Count);
                 currentPortalCloseList[random].OrderSpawn(item);
-                return;
+                continue;
             }
 
 
-            Debug.Log("there was noone here");
+            // Debug.Log("there was noone here");
 
             //if it ever gets here 
             random = Random.Range(0, _handler.allowedPortal.Count);
@@ -304,7 +357,6 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
     }
 
-    
 
     void HandleTurn()
     {
@@ -328,58 +380,63 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         else
         {
             intervalTimerCurrent += Time.deltaTime;
-            
+
         }
 
     }
 
     void CheckIfTurnEnded()
     {
-        if(!isTurnRunning)
+        if (!isTurnRunning)
         {
-           // Debug.Log("cant check because turn is not running");
+            // Debug.Log("cant check because turn is not running");
             return;
         }
 
-        if(round == 0)
+        if (round == 0)
         {
-           // Debug.Log("round is 0 still");
+            // Debug.Log("round is 0 still");
             return;
         }
 
-        if(currentTurnEnemySpawnedList.Count > 0)
+        if (currentTurnEnemySpawnedList.Count > 0)
         {
 
             return;
         }
-        if(intervalQuantityTotal > intervalQuantityCurrent)
+        if (intervalQuantityTotal > intervalQuantityCurrent)
         {
             return;
         }
 
-        if(intervalTimerTotal > intervalTimerCurrent)
+        if (intervalTimerTotal > intervalTimerCurrent)
         {
             //Debug.Log("its counting the interval yet");
             return;
         }
 
 
-        if(currentTurnEnemySpawnedList.Count == 0)
+        if (currentTurnEnemySpawnedList.Count == 0)
         {
             //Debug.Log("this round is over");
             NextTurn();
         }
     }
 
+
+
+
     public void AddEnemy(EnemyData data)
     {
-        Debug.Log("called");
         currentNumberForSpawnedEnemy += 1;
         currentTurnEnemySpawnedList.Add(data);
     }
     public void RemoveEnemy(EnemyData data)
     {
         currentNumberForSpawnedEnemy -= 1;
+
+        TryToRemoveFromDictionary(data.name);
+
         for (int i = 0; i < currentTurnEnemySpawnedList.Count; i++)
         {
             if (currentTurnEnemySpawnedList[i].name == data.name)
@@ -388,7 +445,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
                 return;
             }
         }
-        if(currentTurnEnemySpawnedList.Count <= 0)
+        if (currentTurnEnemySpawnedList.Count <= 0)
         {
             return;
         }
@@ -403,47 +460,68 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     //how many spawn inter5vals will be called per round
     int GetQuantityOfSpawnIntervals()
     {
-      
+
         return 1;
-        if(round >= 3)
+
+        if (round >= 3)
         {
             return 4;
         }
 
-        if(round > 5 && round <= 9)
+        if (round > 5 && round <= 9)
         {
             return 6;
         }
-        if(round > 10 && round <= 14)
+        if (round > 10 && round <= 14)
         {
             return 7;
         }
-        if(round > 15 && round <= 19)
+        if (round > 15 && round <= 19)
         {
             return 8;
         }
-        if(round > 20)
+        if (round > 20)
         {
             return 10;
         }
         return 3;
-       
+
     }
     int GetAmountToSpawnPerInterval()
     {
+        int value = 0;
 
-        if (round <= 15)
+        if (round <= 10)
         {
-            // Exponential increase from round 1 to 15
-            return Mathf.RoundToInt(5 * Mathf.Pow(2, (round - 1) / 14f * _handler._stageData.enemyPerIntervalModifier));
+            // Linear interpolation from 5 at round 1 to 40 at round 10
+            value = Mathf.RoundToInt(5 + ((40 - 5) / 9f) * (round - 1));
+        }
+        else if (round <= 15)
+        {
+            // Linear interpolation from 40 at round 10 to 80 at round 15
+            value = Mathf.RoundToInt(40 + ((80 - 40) / 5f) * (round - 10));
+        }
+        else if (round <= 25)
+        {
+            // Exponential interpolation from 80 at round 15 to 150 at round 25
+            float startValue = 80;
+            float endValue = 150;
+            float exponent = (round - 15) / 10f;
+            value = Mathf.RoundToInt(startValue * Mathf.Pow((endValue / startValue), exponent));
         }
         else
         {
-            // Smooth transition and slower increase from round 16 to 25
-            float initialEnemiesAt15 = 5 * Mathf.Pow(2, (15 - 1) / 14f * _handler._stageData.enemyPerIntervalModifier);
-            return Mathf.RoundToInt(initialEnemiesAt15 + (50 - initialEnemiesAt15) * (1 - Mathf.Exp(-0.2f * (round - 15))));
+            // Beyond round 25, use exponential growth based on the last known values
+            float startValue = 150;
+            float exponent = (round - 25) / 10f;
+            value = Mathf.RoundToInt(startValue * Mathf.Pow(1.5f, exponent));
         }
 
+
+        float additionalSpawnValue = value * _handler.RoundSpawnModifier;
+
+
+        return value + (int)additionalSpawnValue;
     }
     float GetIntervalBetweenSpawns()
     {
@@ -457,7 +535,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         {
             return 1;
         }
-        if (round > 10 )
+        if (round > 10)
         {
             return 0.5f;
         }
@@ -469,8 +547,9 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
 
     //i will check each portal from here.
+    #region CHECKING FOR PORTALS IN DISTANCE
 
-    [field:SerializeField] public List<Portal> currentPortalCloseList { get; private set; } = new();
+    [field: SerializeField] public List<Portal> currentPortalCloseList { get; private set; } = new();
     [field: SerializeField] public List<Portal> currentPortalNotFarEnoughList { get; private set; } = new();
 
     float portalCalculation_Current;
@@ -480,7 +559,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     {
         //we check this list every 5 seconds.
 
-        if(portalCalculation_Total > portalCalculation_Current)
+        if (portalCalculation_Total > portalCalculation_Current)
         {
             portalCalculation_Current += Time.fixedDeltaTime;
             return;
@@ -498,13 +577,13 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         {
             float distance = Vector3.Distance(playerTransform.position, item.transform.position);
 
-            if(distance <= 40)
+            if (distance <= 40)
             {
                 currentPortalCloseList.Add(item);
                 continue;
             }
 
-            if(distance > 40 && distance < 60)
+            if (distance > 40 && distance < 60)
             {
                 currentPortalNotFarEnoughList.Add(item);
                 continue;
@@ -512,7 +591,75 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         }
     }
 
-   
+    #endregion
+
+
+    #region FOR STACKING 
+    Dictionary<string, int> dictionaryForEnemyStacking = new();
+
+    //every round we reset this
+
+    void SetDictionaryForStacking()
+    {
+        //we clear it and we check
+        dictionaryForEnemyStacking.Clear();
+        //then we create a new list from it
+
+        foreach (var item in _handler.enemyChanceList)
+        {
+            if(item.maxAllowedAtAnyTime != 0)
+            {
+                dictionaryForEnemyStacking.Add(item.data.name, 0);
+                //Debug.Log("Placed this here " + item.data.name);
+            }
+        }
+
+
+    }
+
+    bool CanStack(EnemyChanceSpawnClass enemySpawnClass)
+    {
+        if (!dictionaryForEnemyStacking.ContainsKey(enemySpawnClass.data.name))
+        {
+            //Debug.Log("not contains");
+            return true;
+        }
+
+
+        return dictionaryForEnemyStacking[enemySpawnClass.data.name] < enemySpawnClass.maxAllowedAtAnyTime;
+    }
+
+    void TryToAddFromDictionary(string key)
+    {
+        if (dictionaryForEnemyStacking.ContainsKey(key))
+        {
+            int value = dictionaryForEnemyStacking[key] + 1;
+            dictionaryForEnemyStacking[key] = value;
+            
+            //Debug.Log("key 2 " + key);
+            //Debug.Log("added this fella " + dictionaryForEnemyStacking[key]);
+        }
+        else
+        {
+            //there is nothing to add here.
+        }
+    }
+    void TryToRemoveFromDictionary(string key)
+    {
+        if (dictionaryForEnemyStacking.ContainsKey(key))
+        {
+            int value = dictionaryForEnemyStacking[key] - 1;
+            value = Mathf.Clamp(value, 0, 999);
+            dictionaryForEnemyStacking[key] = value;
+        }
+        else
+        {
+            
+        }
+    }
+
+
+    #endregion
 
     //i dont have access to it though.
     //i cant get it through the data so where can i get it from?

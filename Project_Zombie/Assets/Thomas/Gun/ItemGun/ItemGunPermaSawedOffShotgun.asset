@@ -29,7 +29,7 @@ MonoBehaviour:
     initialValue: 0
   - stat: 8
     initialValue: 1.1
-  - stat: 9
+  - stat: 10
     initialValue: 3
   - stat: 10
     initialValue: 0.2
@@ -41,3 +41,11 @@ MonoBehaviour:
   goThroughPower: 0
   audio_Shoot: {fileID: 8300000, guid: 2203773368e4340d98c114f55c2dd7fd, type: 3}
   audio_Reload: {fileID: 8300000, guid: eb5685b26a6494994af389a3293064e8, type: 3}
+  store: 0
+  <isTemp>k__BackingField: 0
+  <requirementToUnluck>k__BackingField:
+    requiredResourceList: []
+    requiredCityStoreLevelList: []
+  <additionalRollRequired>k__BackingField: 0
+  <storeIndex>k__BackingField: 2
+  hasBeenFound: 0

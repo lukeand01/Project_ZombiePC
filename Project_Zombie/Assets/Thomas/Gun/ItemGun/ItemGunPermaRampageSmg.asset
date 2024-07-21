@@ -29,9 +29,9 @@ MonoBehaviour:
     initialValue: 0
   - stat: 8
     initialValue: 1
-  - stat: 9
-    initialValue: 19
   - stat: 10
+    initialValue: 19
+  - stat: 9
     initialValue: 0.1
   gunModel: {fileID: 758834203172537232, guid: 6edc56f095065bd4a9cf0b19b26922d2, type: 3}
   bulletTemplate: {fileID: 1912603505503571018, guid: 03c593b7051d78e41968b090993b4855, type: 3}
@@ -41,3 +41,11 @@ MonoBehaviour:
   goThroughPower: 0
   audio_Shoot: {fileID: 8300000, guid: 2203773368e4340d98c114f55c2dd7fd, type: 3}
   audio_Reload: {fileID: 8300000, guid: eb5685b26a6494994af389a3293064e8, type: 3}
+  store: 0
+  <isTemp>k__BackingField: 0
+  <requirementToUnluck>k__BackingField:
+    requiredResourceList: []
+    requiredCityStoreLevelList: []
+  <additionalRollRequired>k__BackingField: 0
+  <storeIndex>k__BackingField: 1
+  hasBeenFound: 1

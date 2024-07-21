@@ -313,12 +313,21 @@ public class AbilityClass
     {
         if (this._abilityUnit != null) return;
         this._abilityUnit = _abilityUnit;
+
+        if(dataPassive != null)
+        {
+            //Debug.Log("this is the ability unit " +  _abilityUnit.name + " for passive " + dataPassive.abilityName);
+        }
+
+        
     }
 
     public void UpdateActiveUI()
     {
         if(_abilityUnit != null)
         {
+
+
             _abilityUnit.UpdateActiveUI();
         }
         
@@ -335,6 +344,7 @@ public class AbilityClass
     {
         if (_abilityUnit != null)
         {
+            Debug.Log("called to destroy this " + _abilityUnit.gameObject.name);
             _abilityUnit.DestroyItself();
         }
     }

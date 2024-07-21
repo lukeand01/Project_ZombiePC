@@ -19,16 +19,12 @@ public class EntityEvents : MonoBehaviour
     public void OnHealed() => eventHealed?.Invoke();
 
     public Action eventHardInput; //movement, dash, shooting
-    public void OnHardInput()
-    {
-        eventHardInput?.Invoke();
-    }
+    public void OnHardInput() => eventHardInput?.Invoke();
 
-    public Action eventOpenChest; //movement, dash, shooting
-    public void OnOpenChest()
-    {
-        eventOpenChest?.Invoke();
-    }
+
+
+    public Action<ChestType> eventOpenChest; //movement, dash, shooting
+    public void OnOpenChest(ChestType _chest) => eventOpenChest?.Invoke(_chest);
 
     public Action eventHasDodged; 
     public void OnHasDodged()
@@ -37,10 +33,10 @@ public class EntityEvents : MonoBehaviour
     }
 
 
-    public Action<EnemyBase> eventKilledEnemy; 
-    public void OnKillEnemy(EnemyBase enemy)
+    public Action<EnemyBase, bool> eventKilledEnemy; 
+    public void OnKillEnemy(EnemyBase enemy, bool wasPlayer)
     {
-        eventKilledEnemy?.Invoke(enemy);
+        eventKilledEnemy?.Invoke(enemy, wasPlayer);
     }
     
 
@@ -56,10 +52,28 @@ public class EntityEvents : MonoBehaviour
         eventReloadedGun?.Invoke(data);
     }
 
+    public Action eventMinedResource;
+    public void OnMinedResource()
+    {
+        eventMinedResource?.Invoke();
+    }
+
+    public Action<int> eventChangedPoints;
+    public void OnChangedPoints(int value) => eventChangedPoints?.Invoke(value);
+
+
+
     private void OnDestroy()
     {
         eventUpdateStat = delegate { }; 
     }
 
 
+}
+public enum ChestType
+{
+    ChestResource,
+    ChestAbility,
+    ChestGun,
+    ChestShrine
 }
