@@ -30,10 +30,15 @@ public class EnemyBase : Tree, IDamageable
 
     public void SetIsAttack(bool isAttacking) => this.isAttacking = isAttacking;
 
+    const int POINTS_PERHIT = 5;
+    const int POINTS_PERKILL = 50;
+
+    bool isLocked;
 
     private void OnDestroy()
     {
-        Debug.Log("destroyed this enemy? " + gameObject.name);
+       // Debug.Log("destroyed this enemy? " + gameObject.name);
+        PlayerHandler.instance._entityEvents.eventLockEntity -= ControlLocked;
     }
     private void Awake()
     {
@@ -45,6 +50,7 @@ public class EnemyBase : Tree, IDamageable
 
     protected override void UpdateFunction()
     {
+        if (isLocked) return;
 
         if (_entityStat.isStunned)
         {
@@ -58,6 +64,7 @@ public class EnemyBase : Tree, IDamageable
 
     private void FixedUpdate()
     {
+        if (isLocked) return;
         HandleDuration();
     }
 
@@ -78,8 +85,19 @@ public class EnemyBase : Tree, IDamageable
 
     }
 
+    void ControlLocked(bool isLocked)
+    {
+        this.isLocked = isLocked;
+
+        if (isLocked) StopAgent();
+    }
+
+
     protected virtual void StartFunction()
     {
+
+        PlayerHandler.instance._entityEvents.eventLockEntity += ControlLocked;
+
 
         if (!alreadySetStat)
         {
@@ -221,7 +239,7 @@ public class EnemyBase : Tree, IDamageable
 
     public void TakeDamage(DamageClass damageRef)
     {
-        //Debug.Log("took damage");
+
         if (isDead) return;
 
        
@@ -289,6 +307,8 @@ public class EnemyBase : Tree, IDamageable
         float damageValue = damage.GetDamage(reduction, totalHealth, isCrit);
 
 
+        _entityEvents.CallDelegate_DealDamageToEntity(ref damageValue);
+
         healthCurrent -= damageValue;
         PlayerHandler.instance._playerStatTracker.ChangeStatTracker(StatTrackerType.DamageDealt, damageValue);
         _enemyCanvas.CreateDamagePopUp(damageValue, DamageType.Physical, isCrit);
@@ -311,7 +331,7 @@ public class EnemyBase : Tree, IDamageable
         }
         else
         {
-            PlayerHandler.instance._playerResources.GainPoints(1);
+            PlayerHandler.instance._playerResources.GainPoints(POINTS_PERHIT);
             GameHandler.instance._soundHandler.CreateSfx(data.audio_Hit, transform);
         }
 
@@ -331,7 +351,7 @@ public class EnemyBase : Tree, IDamageable
         
 
        
-        PlayerHandler.instance._playerResources.GainPoints(5);
+        PlayerHandler.instance._playerResources.GainPoints(POINTS_PERKILL);
 
         if (preventNextDeath)
         {
@@ -370,28 +390,27 @@ public class EnemyBase : Tree, IDamageable
             //we spawn at the exact position
             //we are goingt to raycast down to get the 
 
-            RaycastHit hit;
-
-            bool success = Physics.Raycast(head.transform.position, Vector3.down, out hit, 250, groundLayer);
-
-
-            if (success && hit.collider != null)
-            {
-                Instantiate(_chestAbility, hit.point, Quaternion.identity);
-            }
-            else
-            {
-                Debug.Log("yo");
-            }
-
-            return;
-
+                RaycastHit hit;
+                bool success = Physics.Raycast(head.transform.position, Vector3.down, out hit, 250, groundLayer);
+                if (success && hit.collider != null)
+                {
+                    Instantiate(_chestAbility, hit.point, Quaternion.identity);
+                }
+                else
+                {
+                    Debug.Log("yo");
+                }
+                return;
+            
+            
         }
 
         Chest_Ammo _chestAmmo = LocalHandler.instance.GetChestAmmo();
 
         if(_chestAmmo != null )
         {
+
+
             RaycastHit hit;
 
             bool success = Physics.Raycast(head.transform.position, Vector3.down, out hit, 250, groundLayer);
@@ -431,7 +450,6 @@ public class EnemyBase : Tree, IDamageable
 
         //then we check if the roll was sucess.
 
-        Debug.Log("dropped nothing");
     }
     public float GetTargetMaxHealth()
     {

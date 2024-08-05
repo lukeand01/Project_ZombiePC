@@ -7,7 +7,8 @@ public class AllyBase : MonoBehaviour, IDamageable
 {
     [Separator("ALLY BASE - ")]
     [SerializeField] EnemyCanvas _canvas;
-
+    [SerializeField] float initialHealth;
+    [SerializeField] float initialDuration;
     private void FixedUpdate()
     {
         FixedUpdateFunction();
@@ -16,6 +17,11 @@ public class AllyBase : MonoBehaviour, IDamageable
     protected virtual void FixedUpdateFunction()
     {
         HandleDuration();
+    }
+
+    public void SetUp_Ally_WithBaseValues()
+    {
+        SetUp_Ally(initialHealth, initialDuration);
     }
 
     public void SetUp_Ally(float health, float duration)
@@ -104,9 +110,14 @@ public class AllyBase : MonoBehaviour, IDamageable
         }
         else
         {
-            Destroy(gameObject);
+            CallEndDuration();
         }
 
+    }
+
+    protected virtual void CallEndDuration()
+    {
+        Destroy(gameObject);
     }
 
     #endregion

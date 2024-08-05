@@ -278,7 +278,7 @@ public class PlayerCombat : MonoBehaviour
 
 
         //Debug.Log("received wepaon " + data.itemName);
-        //Debug.Log("to replace " + ownedGunList[index].data.itemName);
+        //Debug.Log("to replace " + ownedGunList[currentBulletIndex].data.itemName);
 
         GameObject spawnedModel = CreateGunModel(data);
         spawnedModel.transform.rotation = Quaternion.Euler(0,-90,0);
@@ -694,7 +694,7 @@ public class PlayerCombat : MonoBehaviour
 
         //the gun never left.
         //but now we are going to call it back
-        //but i need to know what index i did this.
+        //but i need to know what currentBulletIndex i did this.
 
         //we need to find the fella 
         int indexToUse = 0;

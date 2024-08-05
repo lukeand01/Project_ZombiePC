@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InteractCanvas : MonoBehaviour
 {
@@ -62,6 +63,51 @@ public class InteractCanvas : MonoBehaviour
     {
         isDestroyed = true;
     }
+
+
+    #region MERCHANT
+    [Separator("MERCHANT")]
+    [SerializeField] Image merchantHolder;
+    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] TextMeshProUGUI descriptionText;
+    [SerializeField] Image iconImage;
+
+    public void StartMerchant(int price, string _name, string _description, Sprite _icon, Color backgroundColor)
+    {
+        ControlInteractButton(true);
+
+        if(price == 0)
+        {
+            priceHolder.SetActive(false);
+        }
+        else
+        {
+            ControlPriceHolder(price);
+        }
+
+        
+        merchantHolder.gameObject.SetActive(true);
+
+        merchantHolder.color = backgroundColor;
+
+        nameText.text = _name;
+        descriptionText.text = _description;
+        iconImage.sprite = _icon;
+
+    }
+    
+    public void StopMerchant()
+    {
+        ControlInteractButton(false);
+        priceHolder.SetActive(false);
+        merchantHolder.gameObject.SetActive(false);
+    }
+
+
+
+
+    #endregion
+
 }
 
 

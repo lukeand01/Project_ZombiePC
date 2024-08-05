@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static EntityEvents;
 using static UnityEngine.ParticleSystem;
 
 public class PlayerResources : MonoBehaviour, IDamageable
@@ -87,12 +88,16 @@ public class PlayerResources : MonoBehaviour, IDamageable
         {
 
             healthTotal = _value;
-            UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal);
+            UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal, 0);
         }
     }
 
+
+
     public void TakeDamage(DamageClass damage)
     {
+       
+
 
         if (debugCannotTakeDamage) return;
 
@@ -129,7 +134,8 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
         float damageValue = damage.GetDamage(reduction, totalHealth, isCrit);
 
-        
+        handler._entityEvents.CallDelegate_DamageTaken(ref damageValue);
+
 
         handler._playerStatTracker.ChangeStatTracker(StatTrackerType.DamageTaken, damageValue);
 
@@ -139,7 +145,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
         healthCurrent -= damageAfterShield;
         healthCurrent = Mathf.Clamp(healthCurrent, 0, healthTotal);
-        UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal);
+        UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal, damageAfterShield);
         handler._entityEvents.OnDamageTaken();
 
         if (healthCurrent <= 0)
@@ -155,17 +161,22 @@ public class PlayerResources : MonoBehaviour, IDamageable
     {
         //call a pop 
 
+
         
         handler._entityStat.CallRecoverHealthFadeUI(value);
         healthCurrent += value;
-        healthCurrent = Mathf.Clamp(healthCurrent, 0, healthTotal);
-        UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal);
+        handler._entityEvents.CallDelegate_Healed(ref healthCurrent);
+    
+        healthCurrent = Mathf.Clamp(healthCurrent, 0, healthTotal);      
+        UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal, 0);
         handler._entityEvents.OnHealed();
     }
 
     public void RestoreHealthBasedInPercent(float percent)
     {
+        Debug.Log("yo");
         float value = healthTotal * percent;
+
         RestoreHealth(value);
     }
 

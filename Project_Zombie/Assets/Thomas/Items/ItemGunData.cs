@@ -132,7 +132,7 @@ public class ItemGunData : ItemData
 
 
 
-            BulletScript newBullet = GameHandler.instance._pool.GetBullet(gunPointPosition);
+            BulletScript newBullet = GameHandler.instance._pool.GetBullet(0, gunPointPosition);
 
 
             newBullet.SetUp(ownerId, direction);

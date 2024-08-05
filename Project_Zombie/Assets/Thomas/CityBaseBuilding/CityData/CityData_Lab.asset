@@ -88,6 +88,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 958f978de04d66641b78a361ff76cfe2, type: 2}
   - {fileID: 11400000, guid: 864f0c6b826e6034eaf947f81340d8b3, type: 2}
   - {fileID: 11400000, guid: 6f7e2f5c5f6cefa4ea4b3b8a6ccdad0b, type: 2}
+  abilityRefList_Curse:
+  - {fileID: 11400000, guid: 65222d3ed8a51ea4e9bd5e90953583b2, type: 2}
+  - {fileID: 11400000, guid: 158664e987d7d51458ffae337760d3e4, type: 2}
+  - {fileID: 11400000, guid: 89d13ad9f8ea4e742aad1e588be11115, type: 2}
   ownedAbilityIndexList_Active: 00000000
   ownedAbilityIndexList_Passive: 
   foundPassiveAbilityIndexList: 

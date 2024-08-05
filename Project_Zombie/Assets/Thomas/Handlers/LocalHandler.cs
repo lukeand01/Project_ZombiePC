@@ -23,7 +23,9 @@ public class LocalHandler : MonoBehaviour
     [SerializeField] Transform spawnPos;
     //we may give an ability chest with an enemy
 
-    
+   
+
+   
 
     private void Awake()
     {
@@ -48,6 +50,7 @@ public class LocalHandler : MonoBehaviour
         RoundSpawnModifier = 0;
         spawnCap = 100;
 
+        GameHandler.instance._pool.CompleteReset();
 
         round = 1;
         GetNewSpawnList();
@@ -55,6 +58,9 @@ public class LocalHandler : MonoBehaviour
 
         UIHandler.instance.ControlUI(false);
         PlayerHandler.instance._playerController.block.RemoveBlock("City");
+
+        
+        SpawnPaidInGameObjects();
     }
 
     private void FixedUpdate()
@@ -204,7 +210,6 @@ public class LocalHandler : MonoBehaviour
     }
 
     #endregion
-
     
     #region ROOM
     [SerializeField] Room[] roomArray;
@@ -677,7 +682,10 @@ public class LocalHandler : MonoBehaviour
     }
     public ChestAbility GetChestAbility()
     {
-        if (chestAbility_Ready)
+
+        int roll = Random.Range(0, 101);
+
+        if (chestAbility_Ready && roll > 99)
         {
             chestAbility_Ready = false;
             return chestAbilityTemplate;
@@ -719,7 +727,9 @@ public class LocalHandler : MonoBehaviour
 
     public Chest_Ammo GetChestAmmo()
     {
-        if (chestAmmo_Ready)
+        int roll = Random.Range(0, 101);
+
+        if (chestAmmo_Ready &&  roll > 99)
         {
             chestAmmo_Ready = false;
             return chest_Ammo_Template;
@@ -826,7 +836,6 @@ public class LocalHandler : MonoBehaviour
 
     #endregion
 
-
     #region DROPS
 
 
@@ -860,6 +869,7 @@ public class LocalHandler : MonoBehaviour
 
     #endregion
 
+    #region ESPECIAL LIST
     public List<EnemyChanceSpawnClass> especialList { get; private set; } = new();
     public int preferenceForEspecialList { get; private set; }
 
@@ -876,6 +886,217 @@ public class LocalHandler : MonoBehaviour
         especialList.Clear();
         preferenceForEspecialList = 0;
     }
+
+    #endregion
+
+    #region SPAWN Paid Objects (Sentry, Flying sentries, HealthFountain, AbilityBox,)
+
+    //health fountains spawn at the start.
+    //sentries spawn at start
+    //flying sentries spawn at periods.
+    //ability boxes 
+
+    [Separator("PAID OBJECTS")]
+    [SerializeField] HealthFountain[] _healthFountainArray;
+    [SerializeField] TurretToBuy[] _turretBuyArray;
+    [SerializeField] TurretToBuy_Flying[] _turretBuyFlyArray;
+    [SerializeField] ChestAbility[] _chestAbilityArray;
+
+    void SpawnPaidInGameObjects()
+    {
+        ResetPaidObjects();
+
+        SpawnFountains();
+        SpawnSentries();
+
+        PlayerHandler.instance._entityEvents.eventPassedRound -= SpawnFlyingSentries;
+        PlayerHandler.instance._entityEvents.eventPassedRound -= SpawnPaidAbilityBoxes;
+
+        PlayerHandler.instance._entityEvents.eventPassedRound += SpawnFlyingSentries;
+        PlayerHandler.instance._entityEvents.eventPassedRound += SpawnPaidAbilityBoxes;
+    }
+
+    void SpawnFountains()
+    {
+        //there are positions. we will enable a number of fountains
+        List<int> indexList = new();
+
+        int safeBreak = 0;
+
+        int amount = Random.Range(2, 3);
+        for (int i = 0; i < amount;)
+        {
+            safeBreak++;
+            if(safeBreak > 1000)
+            {
+                break;
+            }
+
+
+            int random = Random.Range(0, _healthFountainArray.Length);
+
+            if (!indexList.Contains(random))
+            {
+                _healthFountainArray[random].gameObject.SetActive(true);
+                indexList.Add(random);
+                i++;
+            }
+
+        }
+
+    }
+
+    void SpawnSentries()
+    {
+        List<int> indexList = new();
+
+        int safeBreak = 0;
+
+        int amount = Random.Range(2, 3);
+        for (int i = 0; i < amount;)
+        {
+            safeBreak++;
+            if (safeBreak > 1000)
+            {
+                break;
+            }
+
+
+            int random = Random.Range(0, _turretBuyArray.Length);
+
+            if (!indexList.Contains(random))
+            {
+                _turretBuyArray[random].gameObject.SetActive(true);
+                indexList.Add(random);
+                i++;
+            }
+
+        }
+    }
+
+    void SpawnFlyingSentries()
+    {
+        //every turn we check this.
+
+        int roll = Random.Range(0, 101);
+
+        if (20 < roll) return;
+
+        int quantityActive = 0;
+
+        foreach (var item in _turretBuyFlyArray)
+        {
+            if (item == null) continue;
+
+            if (item.gameObject.activeInHierarchy)
+            {
+                quantityActive++;
+            }
+        }
+
+        if(quantityActive >= 2)
+        {
+            return;
+        }
+
+        //then we get a random fella to make it active.
+
+        bool done = false;
+
+        int safeBreak = 0;
+
+        while (!done)
+        {
+            safeBreak++;
+
+            if (safeBreak > 1000) break;
+
+            int random = Random.Range(0, _turretBuyFlyArray.Length);
+
+            if (_turretBuyFlyArray[random ] == null)
+            {
+                Debug.Log("this is the random i tried " + random);
+                return;
+            }
+
+            if (!_turretBuyFlyArray[random].gameObject.activeInHierarchy)
+            {
+                done = true;
+                _turretBuyFlyArray[random].gameObject.SetActive(true);
+            }
+        }
+
+
+    }
+
+    void SpawnPaidAbilityBoxes()
+    {
+        //every turn we check this.
+        int roll = Random.Range(0, 101);
+
+
+        if (30 < roll) return;
+
+
+
+        int quantityActive = 0;
+
+        foreach (var item in _chestAbilityArray)
+        {
+            if (item.gameObject.activeInHierarchy)
+            {
+                quantityActive++;
+            }
+        }
+
+        if (quantityActive >= 2)
+        {
+            return;
+        }
+
+
+        bool done = false;
+
+        int safeBreak = 0;
+
+        while (!done)
+        {
+            safeBreak++;
+
+            if (safeBreak > 1000) break;
+
+            int random = Random.Range(0, _chestAbilityArray.Length);
+
+            if (!_chestAbilityArray[random].gameObject.activeInHierarchy)
+            {
+                done = true;
+                _chestAbilityArray[random].gameObject.SetActive(true);
+            }
+        }
+
+    }
+
+    void ResetPaidObjects()
+    {
+        foreach (var item in _healthFountainArray)
+        {
+            item.gameObject.SetActive(false);
+        }
+        foreach (var item in _turretBuyArray)
+        {
+            item.gameObject.SetActive(false);
+        }
+        foreach (var item in _turretBuyFlyArray)
+        {
+            item.gameObject.SetActive(false);
+        }
+        foreach (var item in _chestAbilityArray)
+        {
+            item.gameObject.SetActive(false);
+        }
+    }
+
+    #endregion
 }
 
 

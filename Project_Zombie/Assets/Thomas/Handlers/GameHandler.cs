@@ -1,7 +1,10 @@
+using DG.Tweening;
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameHandler : MonoBehaviour
 {
@@ -13,6 +16,9 @@ public class GameHandler : MonoBehaviour
 
     [field:SerializeField] public SettingsData _settingsData { get; private set; }
     [field: SerializeField] public CityDataHandler cityDataHandler { get; private set; }
+
+
+
 
 
     //
@@ -64,6 +70,13 @@ public class GameHandler : MonoBehaviour
         cityDataHandler.cityBodyEnhancer.Initalize();
     }
 
+    private void Update()
+    {
+        if (rotateImageHolder.activeInHierarchy)
+        {
+            rotateImageHolder.transform.Rotate(new Vector3(0, 0, 1));
+        }
+    }
 
     //i need to set this thing. by taking the stuff 
 
@@ -82,6 +95,101 @@ public class GameHandler : MonoBehaviour
         timeModifier = 1;
     }
 
+
+    #endregion
+
+
+    #region FADE SCREEN
+    [Separator("UI")]
+    [SerializeField] Image loadScreen;
+    [SerializeField] TextMeshProUGUI tipText;
+    [SerializeField] TextMeshProUGUI titleText;
+    [SerializeField] Image rotateImageBackground;
+    [SerializeField] Image rotateImage;
+    [SerializeField] GameObject rotateImageHolder;
+
+
+
+    public IEnumerator LowerCurtainProcess_Simple(float duration)
+    {
+        //we basically disable all these fellas.
+
+        loadScreen.gameObject.SetActive(true);
+
+        tipText.DOFade(0, 0).SetUpdate(true);
+        titleText.DOFade(0, 0).SetUpdate(true);
+        rotateImageBackground.DOFade(0, 0).SetUpdate(true);
+        rotateImage.DOFade(0, 0).SetUpdate(true);
+
+        loadScreen.DOFade(1, duration).SetUpdate(true);
+        yield return new WaitForSeconds(duration);
+    }
+
+    public IEnumerator RaiseCurtainProcess_Simple(float duration)
+    {
+        
+        loadScreen.DOFade(0, duration).SetUpdate(true);
+        yield return new WaitForSeconds(duration);
+        loadScreen.gameObject.SetActive(false);
+    }
+
+
+    public IEnumerator LowerCurtainProcess()
+    {
+        //i need to load everyone and decided before that the text.
+
+        float duration = 0.3f;
+
+
+        loadScreen.gameObject.SetActive(true);
+        loadScreen.DOFade(1, duration).SetUpdate(true);
+        tipText.DOFade(1, duration).SetUpdate(true);
+        titleText.DOFade(1, duration).SetUpdate(true);
+        rotateImageBackground.DOFade(1, duration).SetUpdate(true);
+        rotateImage.DOFade(1, duration).SetUpdate(true);
+
+
+        tipText.text = "Tip: " + GetRandomTip();
+
+        yield return new WaitUntil(() => loadScreen.color.a >= 1);
+
+    }
+    public IEnumerator RaiseCurtainProcess()
+    {
+        float duration = 0.3f;
+
+        loadScreen.DOFade(0, duration).SetUpdate(true);
+        tipText.DOFade(0, duration).SetUpdate(true);
+        titleText.DOFade(0, duration).SetUpdate(true);
+        rotateImageBackground.DOFade(0, duration).SetUpdate(true);
+        rotateImage.DOFade(0, duration).SetUpdate(true);
+
+        tipText.text = "Tip: " + GetRandomTip();
+
+        yield return new WaitUntil(() => loadScreen.color.a == 0);
+        loadScreen.gameObject.SetActive(false);
+    }
+
+    public void UpdateText(string text)
+    {
+        titleText.text = text;
+    }
+
+    string GetRandomTip()
+    {
+        string[] tips =
+        {
+            "Tip 1",
+            "Tip 2",
+            "Voce sabia q se o seu nome e rodrigo vc e gay?",
+            "Tip 3"
+        };
+
+        int random = Random.Range(0, tips.Length);
+
+
+        return tips[random];
+    }
 
     #endregion
 

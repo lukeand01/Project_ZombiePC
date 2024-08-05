@@ -24,10 +24,6 @@ public class StageData : ScriptableObject
     public List<RoundClass> especialRoundList = new();
 
 
-    //i want here to be present the different tpyes. the normal type is not put because is the default
-    //
-
-    //should we control the time and amount of intervals?
 
     #region  ENEMIES
     [Separator("Enemy")]

@@ -73,7 +73,7 @@ public class EquipWindowEquipUnit : ButtonBase
     }
     public void SetAbilitySlotIndex(int index)
     {
-        //Log("index slot " + index.ToString() + " was called " + gameObject.name);
+        //Log("currentBulletIndex slot " + currentBulletIndex.ToString() + " was called " + gameObject.name);
 
         inputText.gameObject.SetActive(true);
         inputText.text = (index + 1).ToString();

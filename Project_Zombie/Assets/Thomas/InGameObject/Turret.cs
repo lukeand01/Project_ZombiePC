@@ -33,6 +33,11 @@ public class Turret : AllyBase
     [SerializeField] protected GameObject head;
     [SerializeField] protected Transform gunPointTransform;
     [SerializeField] Transform[] eyeArray;
+
+    bool cannotShoot;
+
+    TurretToBuy _turretBuy;
+
     private void Awake()
     {
         enemyLayer |= (1 << 6);
@@ -40,6 +45,10 @@ public class Turret : AllyBase
         targetLayer |= (1 << 6);
         targetLayer |= (1 << 9);
         //targetLayer |= (1 << 7);
+
+        attackCooldownTotal = 1.5f;
+
+        SetUp_Ally(50, 35);
     }
 
     public virtual void SetUp()
@@ -50,11 +59,24 @@ public class Turret : AllyBase
 
     }
 
-    private void FixedUpdate()
+    public void SetTurretBuy(TurretToBuy _turretBuy)
     {
-        Debug.Log("in sight " + IsInSight(enemyteste.transform));
+        this._turretBuy = _turretBuy;   
     }
 
+    private void FixedUpdate()
+    {
+        //Debug.Log("in sight " + IsInSight(enemyteste.transform));
+
+        if (cannotShoot) return;
+
+        FixedUpdateFunction();
+    }
+
+    public void ControlCannotShoot(bool cannotShoot)
+    {
+        this.cannotShoot = cannotShoot; 
+    }
 
     public void SetDamage(DamageClass damage)
     {
@@ -68,37 +90,143 @@ public class Turret : AllyBase
         //it either targets player for now it will always target 
     }
 
-    //first what i must do. first i will make sure the enemy are able to target allies.
+    public void CallDurationToStart(float duration)
+    {
+        StartCoroutine(DurationToStartProcess(duration));
+    }
+    IEnumerator DurationToStartProcess(float duration)
+    {
+        yield return new WaitForSeconds(duration);
 
- 
+        //we start
+        ControlCannotShoot(false);
+        SetUp_Ally_WithBaseValues();
 
-    void LookForTarget()
+    }
+
+    protected override void CallEndDuration()
+    {
+        if(_turretBuy != null)
+        {
+            _turretBuy.StopSentry();
+            return;
+        }
+
+        base.CallEndDuration();
+    }
+
+    protected void LookForTarget()
     {
         //we ciclecast in area around.
         //we shoot a raycast in all found. starting from the closests to the farthest.
         //we turn to the target. and once we stop rotating we start shooting.
         //we change the target only once that original is dead or out of range.
 
+        RaycastHit[] targetsAround = Physics.SphereCastAll(transform.position, range, Vector2.up, 50, enemyLayer);
+
+        foreach (var item in targetsAround)
+        {
+            //we will get the first to be the right one because its generaly the closest.
+            if (IsInSight(item.collider.transform))
+            {
+
+                IDamageable damageable = item.collider.GetComponent<IDamageable>();
+
+                if (damageable == null) continue;
+
+                target = damageable;
+                targetObject = item.collider.gameObject;
+                return;
+
+            }
+            else
+            {
+                Debug.Log("not caught");
+            }
+
+        }
+
+        target = null;
+        targetObject = null;
+
+
     }
+
+
+    protected void CheckIfTargetIsNull()
+    {
+
+        float distanceFromTarget = Vector3.Distance(transform.position, targetObject.transform.position);
+
+        if (distanceFromTarget > range)
+        {
+            target = null;
+            targetObject = null;
+            return;
+        }
+
+
+        if (!IsInSight(targetObject.transform))       
+        {
+            target = null;
+            targetObject = null;
+            return;
+        }
+
+        if (!targetObject.activeInHierarchy)
+        {
+            target = null;
+            targetObject = null;
+            return;
+        }
+
+        if (target.IsDead())
+        {
+            target = null;
+            targetObject = null;
+        }
+
+
+    }
+
+
+    protected Quaternion RotateToTarget()
+    {
+        Vector3 direction = targetObject.transform.position - transform.position;
+        Vector3 directionNormalized = direction.normalized;
+
+        //transform.LookAt(targetObject.transform.position);
+
+        Quaternion targetRotation = Quaternion.LookRotation(directionNormalized);
+        graphic.transform.rotation = Quaternion.Slerp(graphic.transform.rotation, targetRotation, 15 * Time.deltaTime);
+
+
+        return targetRotation;
+    }
+
+    //perphap 
 
     protected bool IsInSight(Transform targetTransform)
     {
         int amountFound = 0;
         foreach (var item in eyeArray)
         {
-            Vector3 targetPos = targetTransform.position - item.position; //.normalized;
+            Vector3 targetPos = (targetTransform.position - item.position).normalized;
+            targetPos.y = 0;
+
             Ray ray = new Ray(item.position, targetPos);
 
             if (Physics.Raycast(ray, out RaycastHit hit, 50, targetLayer))
             {
-                if(hit.collider.gameObject.layer == 6)
+                //Debug.Log("caught " + hit.collider.gameObject.layer);
+                //Debug.Log("caught " + hit.collider.gameObject.name);
+                if (hit.collider.gameObject.layer == 6)
                 {
-                    //
                     amountFound++;
                 }
                 if(hit.collider.gameObject.layer == 9)
                 {
-                   
+
                 }
             }
             else
@@ -107,24 +235,14 @@ public class Turret : AllyBase
             }
         }
 
-        Debug.Log(amountFound);
+        //Debug.Log(amountFound);
         return amountFound >= 2;
     }
 
-    [SerializeField] EnemyBase enemyteste;
-    private void OnDrawGizmosSelected()
-    {
-        Vector3 targetPos = enemyteste.transform.position - eyeArray[0].position; //.normalized;
-        Ray ray = new Ray(eyeArray[0].position, targetPos);
-        Gizmos.DrawRay(ray);
-
-        Vector3 targetPos_1 = enemyteste.transform.position - eyeArray[1].position; //.normalized;
-        Ray ray_1 = new Ray(eyeArray[1].position, targetPos_1);
-        Gizmos.DrawRay(ray_1);
-
-        Vector3 targetPos_2 = enemyteste.transform.position - eyeArray[2].position; //.normalized;
-        Ray ray_2 = new Ray(eyeArray[2].position, targetPos_2);
-        Gizmos.DrawRay(ray_2);
-
-    }
+    
 }
+
+
+
+
+//

@@ -84,6 +84,15 @@ MonoBehaviour:
     chanceSpawnMaxCap: 60
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 15
+  - Id: Hound
+    data: {fileID: 11400000, guid: 2fbf11cfa4229494b91e1e4c61ce3256, type: 2}
+    min: 5
+    max: 0
+    baseChanceToSpawn: 25
+    chancePerLevelToSpawn: 0
+    chanceSpawnMaxCap: 60
+    chanceSpawnMinCap: 0
+    maxAllowedAtAnyTime: 10
   itemChanceList:
   - data: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
     chance: 60

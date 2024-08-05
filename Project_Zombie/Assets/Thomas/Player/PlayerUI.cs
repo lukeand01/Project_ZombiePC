@@ -26,6 +26,14 @@ public class PlayerUI : MonoBehaviour
 
 
         originalRoundSprite = roundIcon_New.sprite;
+
+        timerForTeleport_OriginalPosition = timerForTeleportHolder.transform.position;
+        timerForTeleportHolder.SetActive(false);
+        timerForTeleportHolder.transform.position += new Vector3(0, Screen.height * 0.1f, 0);
+
+
+        damageWarnImage.DOFade(0, 0);
+
     }
     public void ControlUI(bool isVisible)
     {
@@ -38,9 +46,12 @@ public class PlayerUI : MonoBehaviour
 
         if (!isFlashing)
         {
+           
             var alpha = roundText_New.color.a;
             alpha = 1;
-            roundText_New.color = new Color(roundText_New.color.r, roundText_New.color.g, roundText_New.color.b, alpha);          
+            roundText_New.color = new Color(roundText_New.color.r, roundText_New.color.g, roundText_New.color.b, alpha);
+
+           // Debug.Log("yo");
         }
 
         HealthHandle();
@@ -75,6 +86,7 @@ public class PlayerUI : MonoBehaviour
     [Separator("HEALTH")]
     [SerializeField] Image healthBar;
     [SerializeField] TextMeshProUGUI healthText;
+    [SerializeField] Image damageWarnImage;
 
     float healthTotal;
     float healthCurrent;
@@ -82,16 +94,25 @@ public class PlayerUI : MonoBehaviour
 
     float speed;
 
-    public void UpdateHealth(float current, float total)
+    public void UpdateHealth(float current, float total, float damage)
     {
         healthTotal = total;
         healthCurrent = current;
 
+        if(damage > 0)
+        {
+            if(damageCoroutine != null)
+            {
+                StopCoroutine(damageCoroutine);
+            }
+
+            damageCoroutine = StartCoroutine(DamageImageProcess());
+        }
     }
 
     public void ForceUpdateHealth(float current, float total)
     {
-        UpdateHealth(current, total);
+        UpdateHealth(current, total,0);
         healthTemporary = current;
     }
 
@@ -116,6 +137,20 @@ public class PlayerUI : MonoBehaviour
 
     }
 
+
+    Coroutine damageCoroutine;
+    IEnumerator DamageImageProcess()
+    {
+        float time = 0.1f;
+        damageWarnImage.DOKill();
+        damageWarnImage.DOFade(0.3f, time).SetEase(Ease.Linear);
+        yield return new WaitForSeconds(time);
+        damageWarnImage.DOFade(0, time).SetEase(Ease.Linear);
+
+
+    }
+
+
     #endregion
 
 
@@ -129,18 +164,36 @@ public class PlayerUI : MonoBehaviour
     float pointTemporary;
     float pointSpeed;
 
+    float pointTimer_Current;
+    [SerializeField] float pointTimer_Total;
+
     void PointHandle()
     {
+
+        //here is the problem. we need to count a timer and then call it, but call it only 1 at a time.
+
+       
+
+        
+
         if (pointCurrent != pointTemporary)
         {
+            if (pointTimer_Current > 0)
+            {
+                pointTimer_Current -= Time.deltaTime * pointSpeed;
+                return;
+            }
+
             if (pointCurrent > pointTemporary)
             {
-                pointTemporary += Time.deltaTime * pointSpeed;
+                pointTemporary += 1;
             }
             if (pointCurrent < pointTemporary)
             {
-                pointTemporary -= Time.deltaTime * pointSpeed;
+                pointTemporary -= 1;
             }
+
+            pointTimer_Current = pointTimer_Total;
         }
 
         pointText.text = "Points: " + pointTemporary.ToString("f0");
@@ -259,36 +312,46 @@ public class PlayerUI : MonoBehaviour
 
     bool isFlashing;
 
+    Coroutine roundTextCoroutine;
+
     public void UpdateRoundText_New(int newValue, bool isForce, Sprite newImage)
     {
-        StopAllCoroutines();
-        isFlashing = false;
+        //Debug.Log("functuin was called");
+        
+        if(roundTextCoroutine != null)
+        {
+            StopCoroutine(roundTextCoroutine);
+        }
+
         if (isForce)
         {
+            //Debug.Log("force was called");
             roundText_New.text = newValue.ToString();
+            roundText_New.DOFade(1, 0);
             return;
         }
+
+        //Debug.Log("started this");
         
-        roundText_New.DOFade(1, 0);
-        StartCoroutine(UpdateRoundTextProcess(newValue, newImage));
+       roundTextCoroutine = StartCoroutine(UpdateRoundTextProcess(newValue, newImage));
     }
 
     IEnumerator UpdateRoundTextProcess(int newValue, Sprite newImage)
     {
+
         isFlashing = true;
 
-        roundText_New.DOKill();
-
         float timer = 0.15f;
+        roundText_New.DOKill();
         roundText_New.DOFade(0, timer);
 
         yield return new WaitForSeconds(timer);
-
+        Debug.Log("1");
         roundText_New.text = newValue.ToString();
         roundText_New.DOFade(1, timer);
 
         yield return new WaitForSeconds(timer);
-
+        Debug.Log("2");
         roundText_New.DOFade(0, timer);
 
         if(newImage == null)
@@ -302,24 +365,22 @@ public class PlayerUI : MonoBehaviour
             roundBackground.DOColor(Color.red, 0.3f);
         }
 
-        
-
-
+       
         yield return new WaitForSeconds(timer);
-
+        Debug.Log("3");
         roundText_New.DOFade(1, timer);
 
         yield return new WaitForSeconds(timer);
         roundText_New.DOFade(0, timer);
-
+        Debug.Log("4");
         yield return new WaitForSeconds(timer);
 
         roundText_New.DOFade(1, timer);
 
+        Debug.Log("end");
+
+
         isFlashing = false;
-
-
-
     }
 
 
@@ -423,5 +484,60 @@ public class PlayerUI : MonoBehaviour
 
     #endregion
 
+
+    #region TIMER FOR TELEPORT
+    [Separator("TIMER FOR TELEPORT")]
+    [SerializeField] GameObject timerForTeleportHolder;
+    [SerializeField] TextMeshProUGUI timerForTeleportText;
+
+    Vector3 timerForTeleport_OriginalPosition;
+
+    
+
+    public void ShowTimerForTeleport()
+    {
+        timerForTeleportHolder.SetActive(true);
+        timerForTeleportHolder.transform.DOMoveY(timerForTeleport_OriginalPosition.y, 0.5f);
+
+    }
+
+
+    public void HideTimerForTeleport()
+    {        
+        timerForTeleportHolder.transform.DOMoveY(timerForTeleport_OriginalPosition.y + Screen.height * 0.1f, 0.25f);
+    }
+
+    Coroutine warnCoroutine;
+
+    public void UpdateTimerForTeleport(int timer)
+    {
+        timerForTeleportText.text = timer.ToString("F0");   
+        if(timer < 10)
+        {
+            if(warnCoroutine != null)
+            {
+                StopCoroutine(warnCoroutine);   
+            }
+            StartCoroutine(WarnTimerProcess());
+
+        }
+        else
+        {
+            timerForTeleportText.color = Color.white;
+        }
+    }
+
+    IEnumerator WarnTimerProcess()
+    {
+        float duration = 0.4f;
+        timerForTeleportText.DOKill();
+        timerForTeleportText.transform.DOScale(1.2f, duration);
+        timerForTeleportText.DOColor(Color.red, duration * 0.5f);
+        yield return new WaitForSeconds(duration);
+        timerForTeleportText.transform.DOScale(1f, duration);
+        timerForTeleportText.DOColor(Color.white, duration * 0.5f);
+    }
+
+    #endregion
 
 }

@@ -130,7 +130,7 @@ public class EquipWindowUI : MonoBehaviour
 
     public EquipWindowEquipUnit GetEquipForAbility(AbilityClass ability)
     {
-        //i need the index for the thing which will not change
+        //i need the currentBulletIndex for the thing which will not change
 
         EquipWindowEquipUnit equipUnit = equipUnit_Ability_List[ability.slotIndex];
 

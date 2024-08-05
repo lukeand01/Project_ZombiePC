@@ -345,7 +345,6 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = false;
             fly_Collider.gameObject.SetActive(false);
-            Debug.Log("being called");
             _flyUnit.gameObject.SetActive(false);
             return;
         }

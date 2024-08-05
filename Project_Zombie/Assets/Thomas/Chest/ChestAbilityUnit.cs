@@ -20,6 +20,9 @@ public class ChestAbilityUnit : ButtonBase
     [SerializeField] TextMeshProUGUI stackText;
     [SerializeField] TextMeshProUGUI descriptionText;
 
+
+
+
     ChestUI _chestUI;
 
     AbilityPassiveData data;

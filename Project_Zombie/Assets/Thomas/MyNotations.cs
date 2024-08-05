@@ -106,7 +106,7 @@
 ///show all weapons you have and which one is currently being used. show the current ammo all weapons have.
 ///there is a weird problem that swapping guns are not working.
 ///fix the gun rotation
-///fix the gun swaping to wrong index.
+///fix the gun swaping to wrong currentBulletIndex.
 
 
 //NEXT GOAL
@@ -784,7 +784,7 @@ using static System.Collections.Specialized.BitVector32;
 ///show all weapons you have and which one is currently being used. show the current ammo all weapons have.
 ///there is a weird problem that swapping guns are not working.
 ///fix the gun rotation
-///fix the gun swaping to wrong index.
+///fix the gun swaping to wrong currentBulletIndex.
 ///creat the chest ability ui
 ///three options for ability.
 ///you need to roll for these abiity and its based on their tier.
@@ -1332,7 +1332,7 @@ using static System.Collections.Specialized.BitVector32;
 
 //PROBLEMS
 ///the buttons from the holder are duplicating
-///the units are not updating. thats because its only getting the actual list and once i change the index list i am not updating the actual list.
+///the units are not updating. thats because its only getting the actual list and once i change the currentBulletIndex list i am not updating the actual list.
 ///the problem the guns are not appearing in the equip tab
 ///for some reason the owned gun list is duplicating one item three times.
 
@@ -1732,7 +1732,87 @@ using static System.Collections.Specialized.BitVector32;
 //GOAL
 //create the Beserker, that shows its attack with indicator and rapidly charges. on arrival it does something.
 //shield charges, but sloy, but doesnt show
+
+
+//now thgat i am back what was i doing?
+//creat ethe shield enemy and charge enemy.
+//turn on the drop system
+///now the enemies are not being cleared after reseting the thing. i dont know why. but it should be an easy fix.
+///try to spread the enemies a bit, just a bit. the rule is that you cannot choose the same in a row.
+//i need to get the right number of points.
+
+//i want the player to be able to open the gate first level.
+//but i want to give an option between rushing and playing it safe. what can i spend money earlier on?
+//but in the early game you can buy sentries, allies, you can buy certain boxes. or they come out of enemies free.
 //
+//spend money to regen health
+//you can unluck places you can buy stuff, for your weapons of for abilities with points
+
+
+//so the next part toi realse this version is to create the mechanics for points
+
+
+//GOAL
+///Sentry (i still need this)
+///a little bot that flies aruond the player. cannot bet target, but shoots the zombies.
+///create random boxes, random bots that cost money to be used
+///can spend money to regen health, it is consumed and takes some time to regen
+///create a way to go to a different place, which you will return in time.
+///in this area you have a seller that sells you a abilities or weapons upgrades. they cost points and are extremely expensives.
+///they can also sell Curses, which are powerful passives that also have drawbacks.
+///create the enemy that has a shield, and biggest functions is to try and annoy you by blocking your hits.
+//create teh charge enemy, that i will jump at where the player is at and try to disrupt the player somehow.
+///i need a system for spawning the random fountain, random guns, random sentries, random abilities
+///the ability boxes need to be able to respawn, the sentries as well.
+///fix the problem about the money not correctly updating.
+//the weaponupgrade are also shown in the armory, and show what has been found and you can get more by upgrading armory. and from quests. 
+///curses go in different lists, you cannot be offered the same curse. so we must be able to check for it.
+///also the curses should go in a different box for the player to see.
+//give some dialogue for the merchant
+//activate drop system
+///create pool system for turret flying
+
+
+
+
+
+//THE LAST THING TO DO IT AFTER TESTING AND FIXES
+//create testing tools
+//can control spawn
+
+
+
+//shield enemy will be just a regular enemy with a shield.
+//the charge enemy might spawn with shield and might now.
+//i will focus in the charge.
+//this guy will be a knight. he has a shield and he shows his charge, then he quickly charge.
+//and the basic enemies might gain a shield as well, but they wont charge.
+
+
+//problems
+//i dont weird rotation for the thing. maybe its not world canvas.
+
+//
+
+
+//actually i need to create teleporter buit i also need one that has timer.]
+
+//now i need to create the timer for teleport once triggered it will forcefully teleport the player
+//
+//and then i will create the seller
+
+
+
+//what you must do to unluck the teleporter?
+//it must be an achievemtn which the player must progress towards.
+//
+
+//it will be a random seller every time
+//it can sell abilities, gun upgrades or curses.
+//there will always be three options right in front of the merchant
+//you can talk with the merchant as well
+//each of the options are alwayws random
+
 
 
 //the problem with the spaw. i should put a cap list somewhere else.
@@ -1779,6 +1859,31 @@ using static System.Collections.Specialized.BitVector32;
 //DESIGN SUGGESTION REPORT 2#
 //normal ranged bullet are a bit bigger and slower.
 //
+
+
+//TESTING REPORT #3
+//Fix the player shooting enemy projectiles <= 
+//find a way to warn the player has been shot <= 
+//the fly turret is not targetting the simple enemy 1
+//sometimes the roudn text is invisible. <= 
+//respawning after too far from the player is causing problems. this is causing to break the rounds because the enemies are not respawning <=
+//maybe shift the camera to see below better.  <= 
+//the fly ui should be invisible if the player does not have fly
+//ability chests and turrets are destroying themselvs.
+//fix the drop
+//chest ammo is not interact and it should be trigger. it should float above the ground and rotate <=
+//do the same thing for the power. differ the two some way.
+//assign the canvas for the chest ability <=
+//the dog has too little rotation <= 
+//the round text is not insta.
+//the drop is dropping too much
+
+
+//
+
+
+//DESIGN SUGGESTION REPORT 3#
+
 
 
 //first goal is to actually create an ally that can be targetted by enemies.

@@ -43,7 +43,7 @@ public class ParticleMenu : MonoBehaviour {
 		if(currentGO != null)
 			Destroy (currentGO);
 
-		// ..spawn the relevant game object based on the array of potential game objects, according to the current index (position in the array)
+		// ..spawn the relevant game object based on the array of potential game objects, according to the current currentBulletIndex (position in the array)
 		currentGO = Instantiate (particleSystems[currentIndex].particleSystemGO, spawnLocation.position + particleSystems[currentIndex].particlePosition, Quaternion.Euler(particleSystems[currentIndex].particleRotation)) as GameObject;
 
 		// only activate the gun GameObject if the current effect is a weapon effect

@@ -17,6 +17,7 @@ public class CityDataLab : CityData
     [Separator("REF LISTS")]
     [SerializeField] List<AbilityActiveData> abilityRefList_Active = new(); //this will be all abilities
     [SerializeField] List<AbilityPassiveData> abilityRefList_Passive = new(); //this will be the reference for all passive abilities.
+    [SerializeField] List<AbilityPassiveData> abilityRefList_Curse = new(); //for now i will keep them here.
 
     [Separator("INDEX LIST")]
     [SerializeField] List<int> ownedAbilityIndexList_Active = new(); //what the player owns. we use this to create the list. but only for active.
@@ -226,7 +227,6 @@ public class CityDataLab : CityData
 
     #endregion
 
-
     #region GETTING PASSIVE FOR STAGE
     //as we progress the game we should have a higher chance to get better passives rather than the same for all.
     //
@@ -310,6 +310,58 @@ public class CityDataLab : CityData
     }
 
     #endregion
+
+    #region CURSE
+
+    public List<AbilityPassiveData> GetCurseAbilities(int quantity = 3)
+    {
+        //teh player always has all abilities.
+
+        List<AbilityPassiveData> curseList = new();
+        List<int> alreadyChosenIndexList = new();
+
+
+        List<AbilityClass> alreadyOnwedList = PlayerHandler.instance._playerAbility.abilityCurseList;
+
+        //also have to check if 
+
+        int safeBreak = 0;
+
+        while(curseList.Count < quantity)
+        {
+            if(safeBreak > 1000)
+            {
+                return curseList;
+            }
+
+            safeBreak++;
+
+            int random = Random.Range(0, abilityRefList_Curse.Count);
+
+            if (alreadyChosenIndexList.Contains(random)) continue;
+
+            if (HasCurseInThisList(alreadyOnwedList, abilityRefList_Curse[random])) continue;
+
+            alreadyChosenIndexList.Add(random);
+            curseList.Add(abilityRefList_Curse[random]);
+
+        }
+
+        return curseList;
+
+    }
+
+    bool HasCurseInThisList(List<AbilityClass> abilityList, AbilityPassiveData data)
+    {
+        foreach (var item in abilityList)
+        {
+            if (item.dataPassive.name == data.name) return true;
+        }
+        return false;
+    }
+
+    #endregion
+
 }
 [System.Serializable]
 public class CityStoreLabClass_DividedByLevel

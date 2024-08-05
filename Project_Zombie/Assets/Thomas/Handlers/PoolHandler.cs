@@ -7,7 +7,7 @@ using UnityEngine.Pool;
 public class PoolHandler : MonoBehaviour
 {
 
-    //we will use this to pool enemies and bullet and maybe other stuff later.
+    //we will use this to pool enemies and turretFly and maybe other stuff later.
 
     //also need other bullets to be put here as well.
 
@@ -17,30 +17,59 @@ public class PoolHandler : MonoBehaviour
         CreateEnemyPool();
         CreateSoundPool();
         CreateAreaDamagePool();
+        CreateTurretFlyPool();
+    }
+
+
+    public void CompleteReset()
+    {
+        Audio_Reset();
+        Bullet_Reset();
+        DamageArea_Reset();
+        Enemy_Reset();
+        TurretFly_Reset();
     }
 
     #region BULLET
     [Separator("BULLET")]
-    [SerializeField] BulletScript bulletScriptTemplate;
+    [SerializeField] BulletScript[] bulletScriptTemplateArray;
     [SerializeField] Transform bulletContainer;
-    private ObjectPool<BulletScript> pool_Bullet;
+    List<ObjectPool<BulletScript>> pool_Bullet_List  = new();
+    int currentBulletIndex;
+    //
 
-    public BulletScript GetBullet(Transform pos)
+    public BulletScript GetBullet(int index,Transform pos)
     {
-        BulletScript newBullet = pool_Bullet.Get();
+        this.currentBulletIndex = index;
+        BulletScript newBullet = pool_Bullet_List[index].Get();
+        
         newBullet.transform.position = pos.position;
         newBullet.gameObject.SetActive(true);
 
         return newBullet;
     }
 
+    void Bullet_Reset()
+    {
+        for (int i = 0; i < bulletContainer.childCount; i++)
+        {
+            var item = bulletContainer.GetChild(i).gameObject;
+            item.SetActive(false);
+        }
+    }
     void CreateBulletPool()
-    {        
-        pool_Bullet = new ObjectPool<BulletScript>(Bullet_Create, null, Bullet_ReturnToPool, defaultCapacity: 300);
+    {
+
+
+        for (int i = 0; i < bulletScriptTemplateArray.Length; i++)
+        {
+            pool_Bullet_List.Add(new ObjectPool<BulletScript>(Bullet_Create, null, Bullet_ReturnToPool, defaultCapacity: 300));
+        }
+
 
     }
 
-    //i should be able to set the difference for the bullet.
+    //i should be able to set the difference for the turretFly.
     //like the material is given
 
     void Bullet_ReturnToPool(BulletScript bullet)
@@ -53,26 +82,84 @@ public class PoolHandler : MonoBehaviour
 
     BulletScript Bullet_Create()
     {
-        var bullet = Instantiate(bulletScriptTemplate);
-        //
+        var bullet = Instantiate(bulletScriptTemplateArray[currentBulletIndex]);
         bullet.transform.SetParent(bulletContainer);
         bulletContainer.gameObject.name = "BulletContainer " + bulletContainer.childCount.ToString();
         return bullet;
     }
 
-    public void Bullet_Release(BulletScript bullet)
+    public void Bullet_Release(int index, BulletScript bullet)
     {
-        pool_Bullet.Release(bullet);
+        pool_Bullet_List[index].Release(bullet);
     }
 
 
 
     #endregion
 
+    #region FLY TURRETS
+    [Separator("FLY TURRETS")]
+    [SerializeField] TurretFlying turretFlyTemplate;
+    [SerializeField] Transform turretFlyContainer;
+    private ObjectPool<TurretFlying> pool_TurretFly;
+
+
+    public TurretFlying GetTurretFly(Transform pos)
+    {
+        TurretFlying newTurret = pool_TurretFly.Get();
+        newTurret.transform.position = pos.position;
+        newTurret.gameObject.SetActive(true);
+
+        return newTurret;
+    }
+
+    void TurretFly_Reset()
+    {
+        for (int i = 0; i < turretFlyContainer.childCount; i++)
+        {
+            var item = turretFlyContainer.GetChild(i).gameObject;
+            item.SetActive(false);
+        }
+    }
+    void CreateTurretFlyPool()
+    {
+        pool_TurretFly = new ObjectPool<TurretFlying>(TurretFly_Create, null, TurretFly_ReturnToPool, defaultCapacity: 15);
+
+    }
+
+    //i should be able to set the difference for the turretFly.
+    //like the material is given
+
+    void TurretFly_ReturnToPool(TurretFlying turretFly)
+    {
+        turretFly.ResetToReturnToPool();
+        turretFly.gameObject.SetActive(false);
+        turretFly.transform.position = Vector3.zero;
+        //i need to return this to the player as well.
+    }
+
+    TurretFlying TurretFly_Create()
+    {
+        var bullet = Instantiate(turretFlyTemplate);
+        //
+        bullet.transform.SetParent(turretFlyContainer);
+        turretFlyContainer.gameObject.name = "TurretFlyContainer " + turretFlyContainer.childCount.ToString();
+        return bullet;
+    }
+
+    public void TurretFly_Release(TurretFlying turretFly)
+    {
+        pool_TurretFly.Release(turretFly);
+    }
+
+    #endregion
+
+
     #region ENEMY
     [Separator("ENEMY")]
     [SerializeField] EnemyData[] enemyData_array;
     [SerializeField] Transform enemyContainer;
+    List<EnemyBase> enemySpawnedList = new();
     Dictionary<EnemyData, ObjectPool<EnemyBase>> pool_Enemy_Dictionary = new();
 
     EnemyData targetData;
@@ -92,6 +179,16 @@ public class PoolHandler : MonoBehaviour
         }
     }
 
+
+    void Enemy_Reset()
+    {
+        for (int i = 0; i < enemyContainer.childCount; i++)
+        {
+            var item = enemyContainer.GetChild(i).gameObject;
+            item.SetActive(false);
+        }
+    }
+
     public EnemyBase GetEnemy(EnemyData data, Vector3 pos)
     {
 
@@ -99,11 +196,8 @@ public class PoolHandler : MonoBehaviour
 
         EnemyBase newEnemy = pool_Enemy_Dictionary[data].Get();
 
-
         newEnemy.transform.position = pos;
         newEnemy.gameObject.SetActive(true);
-
-
 
         return newEnemy;
     }
@@ -124,9 +218,12 @@ public class PoolHandler : MonoBehaviour
 
     public void Enemy_Release(EnemyData data, EnemyBase enemy)
     {
-        Debug.Log("release");
+
         pool_Enemy_Dictionary[data].Release(enemy);
     }
+
+    
+
 
     #endregion
 
@@ -136,7 +233,14 @@ public class PoolHandler : MonoBehaviour
     [SerializeField] Transform soundContainer;
     ObjectPool<SoundUnit> pool_Sound;
 
-
+    void Audio_Reset()
+    {
+        for (int i = 0; i < soundContainer.childCount; i++)
+        {
+            var item = soundContainer.GetChild(i).gameObject;
+            item.SetActive(false);
+        }
+    }
     void CreateSoundPool()
     {
         pool_Sound = new ObjectPool<SoundUnit>(Sound_Create, null, Sound_ReturnToPool, defaultCapacity: 150);
@@ -186,6 +290,15 @@ public class PoolHandler : MonoBehaviour
     {
         pool_AreaDamage = new ObjectPool<AreaDamage>(AreaDamage_Create, null, AreaDamage_ReturnToPool, defaultCapacity: 150);
 
+    }
+
+    void DamageArea_Reset()
+    {
+        for (int i = 0; i < damageContainer.childCount; i++)
+        {
+            var item = damageContainer.GetChild(i).gameObject;
+            item.SetActive(false);
+        }
     }
 
     public AreaDamage GetAreaDamage(Transform pos)

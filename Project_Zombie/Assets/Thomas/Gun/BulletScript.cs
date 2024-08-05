@@ -47,7 +47,7 @@ public class BulletScript : MonoBehaviour
         canMove = true;
         _collider.enabled = true;
         //none of them have range.
-        _destroySelf.SetUpDestroy(7, this);
+        _destroySelf.SetUpDestroy(isEnemy, 7, this);
     }
     public void MakeEnemy()
     {
@@ -68,8 +68,15 @@ public class BulletScript : MonoBehaviour
     {
         if (!canMove) return;
         //the bullet keeps on moving. 
+       
+
+        transform.position += dir.normalized * speed * Time.fixedDeltaTime;
+    }
+
+    void TEST()
+    {
         RaycastHit hit;
-       bool isWall = Physics.Raycast(transform.position, dir.normalized, out hit, 500, _layer);
+        bool isWall = Physics.Raycast(transform.position, dir.normalized, out hit, 500, _layer);
 
 
 
@@ -77,29 +84,26 @@ public class BulletScript : MonoBehaviour
         {
 
             //we check the distance and if its low enough we assume its going to hit anyway
-            if(hit.distance <= 0.5f) //if we are at this distance we will assume hit already.
+            if (hit.distance <= 0.2f) //if we are at this distance we will assume hit already.
             {
                 //so what we must do instead  because if its a shield then we should stop.
                 canMove = false;
-                
+
                 //have to check 
 
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
 
-                if(damageable != null)
+                if (damageable != null)
                 {
                     CalculateDamageable(damageable);
                 }
-                
+
 
                 return;
             }
 
         }
-
-        transform.position += dir.normalized * speed * Time.fixedDeltaTime;
     }
-
 
     #region DAMAGE
 
@@ -174,6 +178,7 @@ public class BulletScript : MonoBehaviour
 
     void CalculateDamageable(IDamageable damageable)
     {
+
         if (damageable.GetID() == ownedID)
         {
 
@@ -189,6 +194,7 @@ public class BulletScript : MonoBehaviour
 
             foreach (var item in bulletBehaviorList)
             {
+
                 item.ApplyContact(damageable, damage);
             }
 
@@ -227,7 +233,7 @@ public class BulletScript : MonoBehaviour
  
         if(damage == null)
         {
-            Debug.Log("no damage here");
+            //Debug.Log("no damage here");
         }
 
         if (damageable != null)
@@ -240,7 +246,12 @@ public class BulletScript : MonoBehaviour
     {
         if (bounceCurrent >= bounceTotal)
         {
-            GameHandler.instance._pool.Bullet_Release(this);
+            int index = 0;
+
+            if (isEnemy) index = 1;
+
+
+            GameHandler.instance._pool.Bullet_Release(index, this);
         }
         else
         {
@@ -255,7 +266,12 @@ public class BulletScript : MonoBehaviour
             //Debug.Log("Destroyed. total and current " + collisionsAllowedTotal + " : " + collisionsAllowedCurrent);
             canMove = false;
             _collider.enabled = false;
-            GameHandler.instance._pool.Bullet_Release(this);
+
+            int index = 0;
+
+            if (isEnemy) index = 1;
+
+            GameHandler.instance._pool.Bullet_Release(index,this);
         }
         else
         {

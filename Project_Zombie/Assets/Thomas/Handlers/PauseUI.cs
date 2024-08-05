@@ -47,6 +47,7 @@ public class PauseUI : MonoBehaviour
         }
         else
         {
+            CheckContainers();
             GameHandler.instance.PauseGame();
             PlayerHandler.instance._playerController.block.AddBlock("Pause", BlockClass.BlockType.Partial);
             descriptionWindow.StopDescription();
@@ -213,6 +214,41 @@ public class PauseUI : MonoBehaviour
     [Separator("Set Passive")]
     [SerializeField] AbilityUnit abilityUnitTemplate;
     [SerializeField] Transform passiveAbilityContainer;
+    [SerializeField] Transform curseAbilityContainer;
+    [SerializeField] GameObject buttonOptionHolder;
+
+    //this only shows 
+
+
+    public void OpenContainer(int choice)
+    {
+
+        if(choice == 0)
+        {
+            passiveAbilityContainer.gameObject.SetActive(true);
+            curseAbilityContainer.gameObject.SetActive(false);
+        }
+        else
+        {
+            passiveAbilityContainer.gameObject.SetActive(false);
+            curseAbilityContainer.gameObject.SetActive(true);
+        }
+
+
+    }
+
+    void CheckContainers()
+    {
+        if(curseAbilityContainer.childCount > 0)
+        {
+            buttonOptionHolder.SetActive(true);
+        }
+        else
+        {
+            buttonOptionHolder.SetActive(false);
+            OpenContainer(0);
+        }
+    }
     //then we create a list so we can update stuff without changing everything.
     List<AbilityUnit> abilityUnitList = new();   
     public void AddPassive(AbilityClass ability)
@@ -223,6 +259,15 @@ public class PauseUI : MonoBehaviour
 
         //Debug.Log("added an ability to the passive " + ability._abilityUnit.gameObject.name);
     }
+
+    public void AddCurse(AbilityClass ability)
+    {
+        //we will put this in another
+        AbilityUnit newObject = Instantiate(abilityUnitTemplate);
+        newObject.transform.SetParent(curseAbilityContainer);
+        newObject.SetUpPassive(ability);
+    }
+
     public void RemovePassive(AbilityClass ability)
     {
 

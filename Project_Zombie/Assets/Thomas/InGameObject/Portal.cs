@@ -29,11 +29,25 @@ public class Portal : MonoBehaviour
     LocalHandler handler;
 
     bool isSpawning;
+    bool isLocked;
+
 
     private void Start()
     {
         handler = LocalHandler.instance;
         originalPos = transform.position;
+
+        PlayerHandler.instance._entityEvents.eventLockEntity += ControlLocked;
+    }
+
+    private void OnDestroy()
+    {
+        PlayerHandler.instance._entityEvents.eventLockEntity -= ControlLocked;
+    }
+
+    void ControlLocked(bool isLocked)
+    {
+        this.isLocked = isLocked;
     }
 
     private void Awake()
@@ -153,7 +167,6 @@ public class Portal : MonoBehaviour
 
     void SpawnDespawned()
     {
-        Debug.Log("portal Respawned");
 
         enemyDespawnedList[0].transform.position = spawnPoint.transform.position + Vector3.forward;
         enemyDespawnedList[0].gameObject.SetActive(true);

@@ -81,9 +81,9 @@ public class AbilityPassiveData : AbilityBaseData
         return new List<float>() { _firstValue, _secondValue};
     }
 
-    
 
 
+    public virtual bool IsCursed() => false;
     public override AbilityPassiveData GetPassive() => this;   
 }
 

@@ -6,6 +6,7 @@ public class PlayerAbility : MonoBehaviour
 {
     [SerializeField] List<AbilityClass> abilityActiveList = new();
     [SerializeField] List<AbilityClass> abilityPassiveList = new();
+    public List<AbilityClass> abilityCurseList { get; private set; } = new();
 
     [SerializeField] List<AbilityActiveData> debugAbilityActiveStartingList = new();
     [SerializeField] List<AbilityPassiveData> debugPassiveStartingList = new();
@@ -92,7 +93,18 @@ public class PlayerAbility : MonoBehaviour
 
         if (dataPassive != null)
         {
-            AddAbilityPassive(dataPassive);
+
+            if (dataPassive.IsCursed())
+            {
+
+                AddAbilityPassive_Cursed(dataPassive);
+            }
+            else
+            {
+                AddAbilityPassive(dataPassive);
+            }
+
+            
             return;
         }
 
@@ -168,6 +180,15 @@ public class PlayerAbility : MonoBehaviour
             }
         }
 
+    }
+
+    void AddAbilityPassive_Cursed(AbilityPassiveData data)
+    {
+
+        AbilityClass passiveAbility = new AbilityClass(data);
+        passiveAbility.AddPassive();
+        abilityCurseList.Add(passiveAbility);
+        UIHandler.instance._pauseUI.AddCurse(passiveAbility);
     }
 
 
@@ -297,7 +318,19 @@ public class PlayerAbility : MonoBehaviour
     {
         //we clear all passive abilities.
 
+        foreach (var item in abilityCurseList)
+        {
+            if (item.dataPassive == null) continue;
 
+            if (item._abilityUnit != null)
+            {
+                item._abilityUnit.DestroyItself();
+            }
+
+            item.RemovePassive();
+        }
+
+        abilityCurseList.Clear();
 
         foreach (var item in abilityPassiveList)
         {

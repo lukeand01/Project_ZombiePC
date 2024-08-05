@@ -111,7 +111,7 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
         return data;
     }
 
-    //i need to know the index of the weapon.
+    //i need to know the currentBulletIndex of the weapon.
     void StartStation()
     {
         hasGun = true;

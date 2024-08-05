@@ -10,13 +10,12 @@ using UnityEngine.UI;
 public class SceneLoaderHandler : MonoBehaviour
 {
 
-    [Separator("UI")]
-    [SerializeField] Image loadScreen;
-    [SerializeField] TextMeshProUGUI tipText;
-    [SerializeField] TextMeshProUGUI titleText;
-    [SerializeField] Image rotateImageBackground;
-    [SerializeField] Image rotateImage;
-    [SerializeField] GameObject rotateImageHolder;
+    GameHandler handler;
+
+    private void Awake()
+    {
+        handler = GetComponent<GameHandler>();
+    }
 
 
     [Separator("Scene")]
@@ -28,20 +27,7 @@ public class SceneLoaderHandler : MonoBehaviour
     const int LOADINGSCREEN_INDEX = 1;
     const int CITY_INDEX = 2;
 
-    private void Start()
-    {
-        
-        
-    }
-
-
-    private void Update()
-    {
-        if (rotateImageHolder.activeInHierarchy)
-        {
-            rotateImageHolder.transform.Rotate(new Vector3(0, 0, 1));
-        }
-    }
+    
     public void LoadMainMenu()
     {
 
@@ -78,19 +64,20 @@ public class SceneLoaderHandler : MonoBehaviour
 
         if(index == 0)
         {
-            titleText.text = "Loading City";
+            handler.UpdateText("Loading City"); 
         }
         else if(stage != null)
         {
-            titleText.text = "Loading " + stage.stageName;
+            handler.UpdateText("Loading " + stage.stageName); 
         }
         else
         {
-            titleText.text = "Nothing";
+            handler.UpdateText("Nothing");
+
         }
 
 
-        yield return StartCoroutine(LowerCurtainProcess());
+        yield return StartCoroutine(handler.LowerCurtainProcess());
 
 
         yield return StartCoroutine(LoadProcess(index));
@@ -114,7 +101,7 @@ public class SceneLoaderHandler : MonoBehaviour
             PlayerHandler.instance.ResetPlayer();
         }
 
-        yield return StartCoroutine(RaiseCurtainProcess());
+        yield return StartCoroutine(handler.RaiseCurtainProcess());
 
         PlayerHandler.instance._playerController.block.ClearBlock();
 
@@ -164,57 +151,9 @@ public class SceneLoaderHandler : MonoBehaviour
         currentSceneIndex = index;
     }
 
-    IEnumerator LowerCurtainProcess()
-    {
-        //i need to load everyone and decided before that the text.
-
-        float duration = 0.3f;
-        
-
-        loadScreen.gameObject.SetActive(true);
-        loadScreen.DOFade(1, duration).SetUpdate(true);
-        tipText.DOFade(1, duration).SetUpdate(true);
-        titleText.DOFade(1, duration).SetUpdate(true);
-        rotateImageBackground.DOFade(1, duration).SetUpdate(true);
-        rotateImage.DOFade(1, duration).SetUpdate(true);
+    
 
 
-        tipText.text = "Tip: " + GetRandomTip();
-
-        yield return new WaitUntil(() => loadScreen.color.a >= 1);
-
-    }
-    IEnumerator RaiseCurtainProcess()
-    {
-        float duration = 0.3f;
-
-        loadScreen.DOFade(0, duration).SetUpdate(true);
-        tipText.DOFade(0, duration).SetUpdate(true);
-        titleText.DOFade(0, duration).SetUpdate(true);
-        rotateImageBackground.DOFade(0, duration).SetUpdate(true);
-        rotateImage.DOFade(0, duration).SetUpdate(true);
-
-        tipText.text = "Tip: " + GetRandomTip();
-
-        yield return new WaitUntil(() => loadScreen.color.a == 0);
-        loadScreen.gameObject.SetActive(false);
-    }
-
-
-    string GetRandomTip()
-    {
-        string[] tips =
-        {
-            "Tip 1",
-            "Tip 2",
-            "Voce sabia q se o seu nome e rodrigo vc e gay?",
-            "Tip 3"
-        };
-
-        int random = Random.Range(0, tips.Length);  
-
-
-        return tips[random];
-    }
+    
 }
 

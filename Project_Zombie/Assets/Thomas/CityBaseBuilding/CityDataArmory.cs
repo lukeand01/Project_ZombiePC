@@ -64,7 +64,7 @@ public class CityDataArmory : CityData
 
     public void AddGunWithIndex(int index)
     {
-        //use this to add a gun to the index.
+        //use this to add a gun to the currentBulletIndex.
         if(!ownedGunIndexList.Contains(index))
         {
             ownedGunIndexList.Add(index);
@@ -206,7 +206,7 @@ public class CityDataArmory : CityData
 
     void GenerateFoundGunList()
     {
-        //we use the index gun to tell what temp guns have already been found.
+        //we use the currentBulletIndex gun to tell what temp guns have already been found.
         //we inform the right weapons that they have already been found.
         foreach (var item in foundPermaGunIndexList)
         {

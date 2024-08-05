@@ -13,6 +13,8 @@ public class Shield : MonoBehaviour, IDamageable
     private void Awake()
     {
         id = Guid.NewGuid().ToString();
+
+        
        
     }
     private void Start()

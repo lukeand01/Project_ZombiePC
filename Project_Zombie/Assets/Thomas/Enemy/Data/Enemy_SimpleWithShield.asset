@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 586ed45482a7b49459c4a4d56809d9fa, type: 3}
-  m_Name: Enemy_ChargeShield
+  m_Name: Enemy_SimpleWithShield
   m_EditorClassIdentifier: 
   enemyName: Shield
-  enemyModel: {fileID: 776300283627223439, guid: a91b1dd67b9fba248a0b377493a4e4bb, type: 3}
+  enemyModel: {fileID: 278639468025176753, guid: 3a0e16b25f6b02b4c87daaaf77b28753, type: 3}
   attackRange: 25
   attackSpeed: 3
   initialStatList:
   - stat: 0
     initialValue: 150
   - stat: 1
-    initialValue: 0
+    initialValue: 5
   - stat: 2
     initialValue: 60
   scaleStatList:

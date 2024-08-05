@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EntityEvents : MonoBehaviour
 {
@@ -9,14 +11,25 @@ public class EntityEvents : MonoBehaviour
     public Action<StatType, float> eventUpdateStat;
     public void OnUpdateStat(StatType type, float value) => eventUpdateStat?.Invoke(type, value);
 
+
     public Action<IDamageable, DamageClass> eventDamagedEntity;
     public void OnDamagedEntity(IDamageable damageable, DamageClass damageClassBeingUsed) => eventDamagedEntity?.Invoke(damageable, damageClassBeingUsed);
 
     public Action eventDamageTaken;
     public void OnDamageTaken() => eventDamageTaken?.Invoke();
 
+
+    //so this is the fella
+
+
+
+
     public Action eventHealed;
-    public void OnHealed() => eventHealed?.Invoke();
+    public void OnHealed()
+    {
+
+        eventHealed?.Invoke();
+    }
 
     public Action eventHardInput; //movement, dash, shooting
     public void OnHardInput() => eventHardInput?.Invoke();
@@ -26,10 +39,14 @@ public class EntityEvents : MonoBehaviour
     public Action<ChestType> eventOpenChest; //movement, dash, shooting
     public void OnOpenChest(ChestType _chest) => eventOpenChest?.Invoke(_chest);
 
+
     public Action eventHasDodged; 
     public void OnHasDodged()
     {
         eventHasDodged?.Invoke();
+
+
+      
     }
 
 
@@ -62,13 +79,61 @@ public class EntityEvents : MonoBehaviour
     public void OnChangedPoints(int value) => eventChangedPoints?.Invoke(value);
 
 
+    public Action eventPassedRound;
+    public void OnPassedRound() => eventPassedRound?.Invoke();
+
+    public Action<bool> eventLockEntity;
+    public void OnLockEntity(bool isLocked) => eventLockEntity?.Invoke(isLocked);
+
+
 
     private void OnDestroy()
     {
         eventUpdateStat = delegate { }; 
     }
 
+    #region DELEGATES 
 
+    public delegate void DelegateDamageTaken<T>(ref T modifier);
+
+    public DelegateDamageTaken<float> eventDelegate_DamageTaken;
+
+     public void CallDelegate_DamageTaken(ref float modifier)
+    {
+        if (eventDelegate_DamageTaken != null)
+        {
+            eventDelegate_DamageTaken(ref modifier);
+        }
+    }
+
+
+    public delegate void DelegateDealDamageToEntity<T>(ref T totalValue);
+
+    public DelegateDealDamageToEntity<float> eventDelegate_DealDamageToEntity;
+
+     public void CallDelegate_DealDamageToEntity(ref float modifier)
+    {
+        if (eventDelegate_DealDamageToEntity != null)
+        {
+            eventDelegate_DealDamageToEntity(ref modifier);
+        }
+    }
+
+
+
+    public delegate void DelegateHealed<T>(ref T totalValue);
+
+    public DelegateHealed<float> eventDelegate_Healed;
+
+    public void CallDelegate_Healed(ref float modifier)
+    {
+        if (eventDelegate_Healed != null)
+        {
+            eventDelegate_Healed(ref modifier);
+        }
+    }
+
+    #endregion
 }
 public enum ChestType
 {

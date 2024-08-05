@@ -7,7 +7,7 @@ public class CityStore_Armory : CityStore
 {
 
     //at the start we will get alist of the weappons that the armory has.
-    //then we need to inform what weapons the player has of those through a index list.
+    //then we need to inform what weapons the player has of those through a currentBulletIndex list.
     [Separator("DATA")]
     [SerializeField] CityDataArmory dataForArmory;
 

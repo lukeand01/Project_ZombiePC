@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5786ac3c90f2207448dfd9c695c9c2e2, type: 3}
+  m_Name: CurseAbility_FeebleButAgile
+  m_EditorClassIdentifier: 
+  abilityName: Feeble but Agile
+  abilityDescription: get a 50% chance to dodge but every hit that you dont dodge
+    has a small chance of stunning you.
+  abilityIcon: {fileID: 21300000, guid: b7e1fe03b9dc30b48bf7f004c5c12cca, type: 3}
+  abilityStackMax: 0
+  abilityTier: 0
+  hasBeenFound: 0
+  additionalRollRequired: 0
+  _firstValue: 0
+  _secondValue: 0

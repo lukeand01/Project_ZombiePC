@@ -30,6 +30,15 @@ public class PlayerHandler : MonoBehaviour
     public Camera _cam { get; private set; }
 
 
+    [SerializeField] GameObject graphicHolder;
+    [SerializeField] Transform _head;
+
+    public void ControlGraphicHolderVisibility(bool isVisible)
+    {
+        graphicHolder.SetActive(isVisible);
+    }
+
+
     //the chance for the
     //[Separator("REF HOLDERS")]
     //[SerializeField] ItemTierHolder itemHolderGun;
@@ -178,6 +187,39 @@ public class PlayerHandler : MonoBehaviour
 
 
     #endregion
+
+    #region FLY TURRETS
+
+    [SerializeField] List<TurretFlying> turretFlyList = new();
+
+    public void AddTurretFly(TurretFlying _turretFly)
+    {
+        //in case we need to remove
+
+
+        _turretFly.SetRefPoint(_head);
+        _turretFly.SetUp_Ally(50, 50);
+        _turretFly.SetUp();
+        turretFlyList.Add(_turretFly);
+    }
+
+    public void RemoveTurretFly(string id)
+    {
+        for (int i = 0; i < turretFlyList.Count; i++)
+        {
+            if (turretFlyList[i].id == id)
+            {
+                turretFlyList.RemoveAt(i);
+                return;
+            }
+        }
+    }
+
+    //need to warn to remove itself.
+
+    #endregion
+
+
 
     public void TryToCallExplosionCameraEffect(Transform enemyPos, float callModifier)
     {

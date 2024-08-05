@@ -73,8 +73,11 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
     IEnumerator StartRoundProcess()
     {
+        
         UIHandler.instance._playerUI.OpenRound_New();
         UIHandler.instance._playerUI.UpdateRoundText_New(0, true, null);
+
+
         round = 0;
 
         yield return new WaitForSecondsRealtime(1f);
@@ -101,7 +104,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         //we are going to pass the round a new visual
         PlayerHandler.instance._playerAbility.PassedRound();
-
+        PlayerHandler.instance._entityEvents.OnPassedRound();
         //at the start we check if there is a round already here.
 
 
@@ -135,7 +138,12 @@ public class LocalHandler_RoundHandler : MonoBehaviour
             PlayerHandler.instance._playerCombat.RefreshAllReserveAmmo();
         }
 
+       
         isTurnRunning = true;
+
+        yield return new WaitForSeconds(2);
+
+        //UIHandler.instance._playerUI.UpdateRoundText_New(round, true, roundSprite); //we are doing this to force it, hopefully fix the problem
     }
 
     RoundData roundData;
@@ -193,9 +201,28 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     public void ReceiveDespawnedEnemy(EnemyBase enemy)
     {
         //we spawn the same fella at a possible list.
-        int randomPortal = Random.Range(0, currentPortalCloseList.Count);
-        currentPortalCloseList[randomPortal].OrderRespawn(enemy);
 
+        if(currentPortalCloseList.Count > 0)
+        {
+            int randomPortal = Random.Range(0, currentPortalCloseList.Count);
+            currentPortalCloseList[randomPortal].OrderRespawn(enemy);
+            return;
+        }
+
+        if(currentPortalNotFarEnoughList.Count > 0)
+        {
+            int randomPortal = Random.Range(0, currentPortalNotFarEnoughList.Count);
+            currentPortalNotFarEnoughList[randomPortal].OrderRespawn(enemy);
+            return;
+        }
+        
+        
+
+        
+
+
+        //the problem is that we might not have the current portal close list.
+        //if thats the case we check for the next.
     }
 
 
@@ -293,7 +320,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         //Debug.Log("got to the end " + );
 
-        Debug.Log("here");
+
 
 
         foreach (var item in chosenEnemyList)

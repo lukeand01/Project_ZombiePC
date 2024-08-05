@@ -9,7 +9,7 @@ public class ChestBase : MonoBehaviour, IInteractable
     string id;
     protected bool isLocked;
     [Separator("CHESTBASE")]
-    [SerializeField] InteractCanvas interactCanvas;
+    [SerializeField] protected InteractCanvas interactCanvas;
 
 
     private void Awake()
@@ -30,7 +30,6 @@ public class ChestBase : MonoBehaviour, IInteractable
     public virtual void InteractUI(bool isVisible)
     {
         interactCanvas.ControlInteractButton(isVisible);
-
 
         //this makes the gunchest update the price.
 
