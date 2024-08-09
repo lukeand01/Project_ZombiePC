@@ -13,14 +13,14 @@ public class Turret : AllyBase
 
     [SerializeField] protected BulletScript bulletTemplate;
 
-    [SerializeField] protected List<StatClass> scaleClass = new(); //each uses it the way it wants.
+    [SerializeField] protected List<StatClass> statList = new(); //each uses it the way it wants.
 
     [SerializeField] protected float range;
 
     protected GameObject targetObject;
     protected IDamageable target;
 
-    DamageClass damage;
+    protected DamageClass damage;
 
     protected float attackCooldownCurrent;
     protected float attackCooldownTotal;
@@ -46,9 +46,23 @@ public class Turret : AllyBase
         targetLayer |= (1 << 9);
         //targetLayer |= (1 << 7);
 
-        attackCooldownTotal = 1.5f;
-
+        attackCooldownTotal = GetStat(StatType.FireRate);
+        damage = new DamageClass(GetStat(StatType.Damage));
         SetUp_Ally(50, 35);
+    }
+
+    float GetStat(StatType _stat)
+    {
+        float value = 0;
+        foreach (var item in statList)
+        {
+            if(item.stat == _stat)
+            {
+                value += item.value;
+            }
+        }
+
+        return value;
     }
 
     public virtual void SetUp()
@@ -115,7 +129,7 @@ public class Turret : AllyBase
         base.CallEndDuration();
     }
 
-    protected void LookForTarget()
+    protected virtual void LookForTarget()
     {
         //we ciclecast in area around.
         //we shoot a raycast in all found. starting from the closests to the farthest.
@@ -123,15 +137,16 @@ public class Turret : AllyBase
         //we change the target only once that original is dead or out of range.
 
         RaycastHit[] targetsAround = Physics.SphereCastAll(transform.position, range, Vector2.up, 50, enemyLayer);
-
+        //Debug.Log("targets found " + targetsAround.Length);
         foreach (var item in targetsAround)
         {
+            //Debug.Log(item.collider.name);
             //we will get the first to be the right one because its generaly the closest.
+
             if (IsInSight(item.collider.transform))
             {
 
                 IDamageable damageable = item.collider.GetComponent<IDamageable>();
-
                 if (damageable == null) continue;
 
                 target = damageable;
@@ -141,7 +156,7 @@ public class Turret : AllyBase
             }
             else
             {
-                Debug.Log("not caught");
+
             }
 
         }
@@ -206,7 +221,7 @@ public class Turret : AllyBase
 
     //perphap 
 
-    protected bool IsInSight(Transform targetTransform)
+    protected virtual bool IsInSight(Transform targetTransform)
     {
         int amountFound = 0;
         foreach (var item in eyeArray)
@@ -216,7 +231,9 @@ public class Turret : AllyBase
 
             Ray ray = new Ray(item.position, targetPos);
 
-            if (Physics.Raycast(ray, out RaycastHit hit, 50, targetLayer))
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 50, targetLayer))
             {
                 //Debug.Log("caught " + hit.collider.gameObject.layer);
                 //Debug.Log("caught " + hit.collider.gameObject.name);
@@ -233,9 +250,14 @@ public class Turret : AllyBase
             {
                 
             }
+
+            if(hit.collider != null)
+            {
+                Debug.Log("hit was found " + hit.collider.name);
+            }
+
         }
 
-        //Debug.Log(amountFound);
         return amountFound >= 2;
     }
 

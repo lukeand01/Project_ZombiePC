@@ -103,8 +103,16 @@ public class PlayerCombat : MonoBehaviour
         gunList = new GunClass[] { new GunClass(), new GunClass(), new GunClass() };
         currentGunIndex = 0;
 
+        //when we do this we should add any fella who might the starting 
+        //
+
+        //Debug.Log("store index " + debugGunDataPerma.storeIndex);
+
         if(debugGunDataPerma != null)
         {
+            //i will info the citydatahandler.
+
+            GameHandler.instance.cityDataHandler.cityArmory.AddGunWithIndex(debugGunDataPerma.storeIndex);
             ReceivePermaGun(debugGunDataPerma);
         }
         if(debugGunDataTemp1 != null)
@@ -191,10 +199,12 @@ public class PlayerCombat : MonoBehaviour
     #region RECEIVE
     public void ReceivePermaGun(ItemGunData gun)
     {
+
+
         //we replace the first one.
         if (gunList[0].data != null)
         {
-            //then we just adad the gun to the first
+            //then we just adad the data to the first
             gunList[0].data.RemoveGunPassives();
             Destroy(gunList[0].gunModel);
         }
@@ -230,10 +240,12 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
-    public void ReceiveTempGunIfEmptySlot(ItemGunData gun)
+    public void ReceiveTempGunIfEmptySlot(ItemGunData data)
     {
         //if there is no empty space the player shouldKeepChecking choose.
         int emptyIndex = GetGunEmptySlot();
+
+        data.SetHasBeenFound(true);
 
         if(emptyIndex == -1)
         {
@@ -248,8 +260,8 @@ public class PlayerCombat : MonoBehaviour
         }
 
 
-        GameObject spawnedModel = CreateGunModel(gun);
-        gunList[emptyIndex] = new GunClass(handler, gun, spawnedModel);
+        GameObject spawnedModel = CreateGunModel(data);
+        gunList[emptyIndex] = new GunClass(handler, data, spawnedModel);
         UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[emptyIndex], emptyIndex);
 
         UpdateSecretValues();
@@ -263,7 +275,7 @@ public class PlayerCombat : MonoBehaviour
     public void ReceiveTempGunToReplace(ItemGunData data, int index)
     {
 
-
+        data.SetHasBeenFound(true);
 
         if (gunList.Length <= 0)
         {
@@ -682,7 +694,7 @@ public class PlayerCombat : MonoBehaviour
         Destroy(gunList[currentGunIndex].gunModel);
         UIHandler.instance.gunUI.ClearOwnedGunUnit(currentGunIndex);
 
-        //then we move to the next gun
+        //then we move to the next data
         OrderSwapGun();
 
     }
@@ -692,7 +704,7 @@ public class PlayerCombat : MonoBehaviour
         //we put them in either 1 or 2. whatever is 
 
 
-        //the gun never left.
+        //the data never left.
         //but now we are going to call it back
         //but i need to know what currentBulletIndex i did this.
 
@@ -908,7 +920,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void CallCharge()
     {
-        //here we order the gun charge to happen.
+        //here we order the data charge to happen.
         //it can only be the current weapon so we will check that.
         Vector3 currentMousePos = handler._playerController.GetMouseDirection();
 
@@ -955,7 +967,7 @@ public class PlayerCombat : MonoBehaviour
 
     void HandleGunCharge()
     {
-        //here we will call the gun.
+        //here we will call the data.
         if (!isCharging) return;
 
         if (gunList[currentGunIndex] != null)

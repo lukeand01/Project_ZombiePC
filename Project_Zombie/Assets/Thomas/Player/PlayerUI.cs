@@ -44,15 +44,9 @@ public class PlayerUI : MonoBehaviour
     {
         mouseIcon.transform.position = Input.mousePosition;
 
-        if (!isFlashing)
-        {
-           
-            var alpha = roundText_New.color.a;
-            alpha = 1;
-            roundText_New.color = new Color(roundText_New.color.r, roundText_New.color.g, roundText_New.color.b, alpha);
 
-           // Debug.Log("yo");
-        }
+        HandleDamageFlash();
+        HandleRoundText();
 
         HealthHandle();
         PointHandle();
@@ -101,12 +95,7 @@ public class PlayerUI : MonoBehaviour
 
         if(damage > 0)
         {
-            if(damageCoroutine != null)
-            {
-                StopCoroutine(damageCoroutine);
-            }
-
-            damageCoroutine = StartCoroutine(DamageImageProcess());
+            StartDamageFlash();
         }
     }
 
@@ -137,23 +126,31 @@ public class PlayerUI : MonoBehaviour
 
     }
 
+    bool isDamageFlashing;
 
-    Coroutine damageCoroutine;
-    IEnumerator DamageImageProcess()
+    void StartDamageFlash()
     {
         float time = 0.1f;
         damageWarnImage.DOKill();
         damageWarnImage.DOFade(0.3f, time).SetEase(Ease.Linear);
-        yield return new WaitForSeconds(time);
-        damageWarnImage.DOFade(0, time).SetEase(Ease.Linear);
 
+        isDamageFlashing = true;
+    }
+
+
+    void HandleDamageFlash()
+    {
+        if (isDamageFlashing && damageWarnImage.color.a == 0.3f)
+        {
+            isDamageFlashing = false;
+            damageWarnImage.DOFade(0, 0.1f);
+        }
 
     }
 
 
+
     #endregion
-
-
 
     #region POINTS
     [Separator("POINTS")]
@@ -314,15 +311,22 @@ public class PlayerUI : MonoBehaviour
 
     Coroutine roundTextCoroutine;
 
+    [ContextMenu("TEST ROUND")]
+    public void Debug_RoundText()
+    {
+        UpdateRoundText_New(5, false, null);
+    }
+    [ContextMenu("TEST ROUND_1")]
+    public void Debug_RoundText_1()
+    {
+        UpdateRoundText_New(10, false, null);
+    }
+
     public void UpdateRoundText_New(int newValue, bool isForce, Sprite newImage)
     {
-        //Debug.Log("functuin was called");
-        
-        if(roundTextCoroutine != null)
-        {
-            StopCoroutine(roundTextCoroutine);
-        }
 
+
+        //Debug.Log("functuin was called");
         if (isForce)
         {
             //Debug.Log("force was called");
@@ -332,9 +336,78 @@ public class PlayerUI : MonoBehaviour
         }
 
         //Debug.Log("started this");
-        
-       roundTextCoroutine = StartCoroutine(UpdateRoundTextProcess(newValue, newImage));
+        StartRoundText(newValue, 6, newImage, 0.18f);
+       //roundTextCoroutine = StartCoroutine(UpdateRoundTextProcess(newValue, newImage));
     }
+
+    int amountRotations_Total = 0;
+    int amountRotations_Current = 0;
+
+    int newRoundValue = -1;
+    Sprite newImage;
+
+
+    float timer;
+
+    void StartRoundText(int newRoundValue, int amountRotations_Total, Sprite newImage, float timer)
+    {
+        isFlashing = true;
+        this.newRoundValue = newRoundValue; 
+        this.amountRotations_Total = amountRotations_Total;
+        amountRotations_Current = 0;
+        this.newImage = newImage;
+        this.timer = timer;
+    }
+
+    void HandleRoundText()
+    {
+        if (!isFlashing)
+        {
+            return;
+        }
+
+        if(roundText_New.color.a == 1)
+        {
+            roundText_New.DOKill();
+            roundText_New.DOFade(0, timer).SetEase(Ease.Linear);
+                
+            amountRotations_Current ++;
+        }
+        if (roundText_New.color.a == 0)
+        {
+
+            if (newRoundValue != -1)
+            {
+                roundText_New.text = newRoundValue.ToString();
+                newRoundValue = -1;
+            }
+
+            if (newImage == null)
+            {
+                roundIcon_New.sprite = originalRoundSprite;
+                roundBackground.DOColor(Color.black, 0.3f).SetEase(Ease.Linear);
+            }
+            else
+            {
+                roundIcon_New.sprite = newImage;
+                roundBackground.DOColor(Color.red, 0.3f).SetEase(Ease.Linear);
+            }
+
+            roundText_New.DOKill();
+            roundText_New.DOFade(1, timer).SetEase(Ease.Linear);
+
+            amountRotations_Current++;
+        }
+
+        if (amountRotations_Current >= amountRotations_Total || amountRotations_Total == 0)
+        {
+            roundText_New.DOFade(1, timer).SetEase(Ease.Linear);
+            isFlashing = false;
+        }
+
+    }
+
+
 
     IEnumerator UpdateRoundTextProcess(int newValue, Sprite newImage)
     {
@@ -346,12 +419,12 @@ public class PlayerUI : MonoBehaviour
         roundText_New.DOFade(0, timer);
 
         yield return new WaitForSeconds(timer);
-        Debug.Log("1");
+
         roundText_New.text = newValue.ToString();
         roundText_New.DOFade(1, timer);
 
         yield return new WaitForSeconds(timer);
-        Debug.Log("2");
+
         roundText_New.DOFade(0, timer);
 
         if(newImage == null)
@@ -367,17 +440,17 @@ public class PlayerUI : MonoBehaviour
 
        
         yield return new WaitForSeconds(timer);
-        Debug.Log("3");
+
         roundText_New.DOFade(1, timer);
 
         yield return new WaitForSeconds(timer);
         roundText_New.DOFade(0, timer);
-        Debug.Log("4");
+
         yield return new WaitForSeconds(timer);
 
         roundText_New.DOFade(1, timer);
 
-        Debug.Log("end");
+
 
 
         isFlashing = false;

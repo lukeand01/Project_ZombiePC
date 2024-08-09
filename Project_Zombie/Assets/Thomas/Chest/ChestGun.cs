@@ -197,9 +197,9 @@ public class ChestGun : ChestBase
 
         gunHolder.SetActive(false);
 
-        isShowing = false;
-        isDone = false;
 
+        isDone = false;
+        EndGunShow();
 
     }
 
@@ -236,9 +236,15 @@ public class ChestGun : ChestBase
 
         //so we can only get this 
 
+        EndGunShow();
         
         PlayerHandler.instance._playerCombat.ReceiveTempGunToReplace(chosenGun, indexCurrentlyUsing);
         LocalHandler.instance.ChestGunUse();
+    }
+
+    void EndGunShow()
+    {
+        isShowing = false;
     }
 
     public override void ProgressChest()

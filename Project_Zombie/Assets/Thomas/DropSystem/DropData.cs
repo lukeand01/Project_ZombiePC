@@ -33,6 +33,10 @@ public class DropData : ScriptableObject
 
     }
 
+    public virtual void RemoveDrop()
+    {
+
+    }
 }
 public class DropClass 
 {

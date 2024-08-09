@@ -200,7 +200,6 @@ public class BDClass
     public void ResetTemp()
     {
         tempCurrent = tempTotal;
-
     }
 
     public float GetTempDurationForDescription()
@@ -495,6 +494,30 @@ public class BDClass
 
     #endregion
 
+    #region DROP PASSIVES
+
+    DropData _drop;
+
+    public BDClass(string id, DropData _drop)
+    {
+        this.id = id;
+        bdType = BDType.event_Drop;
+       this._drop = _drop;
+
+
+    }
+
+    public void EndEvent_Drop()
+    {
+        
+    }
+
+    //i have to subscribe and then remove.
+
+
+    #endregion
+
+
     #region ESPECIAL CONDITION
     //perphaps
     public EspecialConditionType especialConditionType { get; private set; }
@@ -608,7 +631,8 @@ public enum BDType
     Immune,
     Invisible,
     SecretBulletMultipler,
-    EspecialCondition //these are are mostly for the 
+    EspecialCondition, //these are are mostly for the 
+    event_Drop
 }
 
 public enum BDDamageType 

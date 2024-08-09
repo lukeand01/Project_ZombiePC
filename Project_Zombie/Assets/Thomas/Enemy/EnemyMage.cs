@@ -24,6 +24,14 @@ public class EnemyMage : EnemyBase
         base.UpdateFunction();
     }
 
+    public override void ResetEnemyForPool()
+    {
+        base.ResetEnemyForPool();
+
+        SetIsAttack(false);
+        StopAllCoroutines();
+    }
+
     Sequence2 GetBehavior()
     {
         return new Sequence2(new List<Node>

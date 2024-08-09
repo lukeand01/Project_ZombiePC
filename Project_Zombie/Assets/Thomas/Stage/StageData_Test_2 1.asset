@@ -31,7 +31,7 @@ MonoBehaviour:
     RoundsPassedPerTrigger: 5
   classList:
   - Id: Shield
-    data: {fileID: 11400000, guid: 2fbf11cfa4229494b91e1e4c61ce3256, type: 2}
+    data: {fileID: 11400000, guid: 804e4ac7c50f0124e97c176f17b9f5fd, type: 2}
     min: 0
     max: 0
     baseChanceToSpawn: 100

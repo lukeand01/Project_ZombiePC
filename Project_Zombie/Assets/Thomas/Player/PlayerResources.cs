@@ -321,14 +321,17 @@ public class PlayerResources : MonoBehaviour, IDamageable
     public void GainPoints(int value)
     {
         float modifier = handler._entityStat.GetTotalEspecialConditionValue(EspecialConditionType.PointsModifier);
+
+
         float additionalValue = value * modifier;
+        int totalPoints = value + (int)additionalValue;
 
-        handler._entityEvents.OnChangedPoints(value);
 
-        points += value + (int)additionalValue;
-        UIHandler.instance._playerUI.UpdatePoint(points, value);
+        points += totalPoints;
+        handler._entityEvents.OnChangedPoints(totalPoints);
+        UIHandler.instance._playerUI.UpdatePoint(points, totalPoints);
 
-        handler._playerStatTracker.ChangeStatTracker(StatTrackerType.PointsGained, value);
+        handler._playerStatTracker.ChangeStatTracker(StatTrackerType.PointsGained, totalPoints);
     }
     public void SpendPoints(int value)
     {

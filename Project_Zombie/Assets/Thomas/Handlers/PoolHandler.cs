@@ -170,7 +170,7 @@ public class PoolHandler : MonoBehaviour
         {
             if(item.enemyModel == null)
             {
-                Debug.Log("no model here");
+                Debug.Log("no model here " + item.name);
                 continue;
             }
 

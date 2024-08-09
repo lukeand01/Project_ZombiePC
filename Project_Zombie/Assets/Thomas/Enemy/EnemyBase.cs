@@ -37,7 +37,11 @@ public class EnemyBase : Tree, IDamageable
 
     private void OnDestroy()
     {
-       // Debug.Log("destroyed this enemy? " + gameObject.name);
+       
+       Debug.Log("destroyed this enemy? " + gameObject.name);
+
+        LocalHandler.instance.RemoveEnemyFromSpawnList(data);
+
         PlayerHandler.instance._entityEvents.eventLockEntity -= ControlLocked;
     }
     private void Awake()
@@ -265,7 +269,6 @@ public class EnemyBase : Tree, IDamageable
 
                 if(angle < 65)
                 {
-                    Debug.Log("front");
 
                     //and not call 
 

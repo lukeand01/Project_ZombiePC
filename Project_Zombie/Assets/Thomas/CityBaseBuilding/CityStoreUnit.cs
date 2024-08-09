@@ -32,10 +32,7 @@ public class CityStoreUnit : ButtonBase
     int index;
     public void SetUpGun(ItemGunData gunData, int index, CityCanvas handler, CityDataArmory armoryData)
     {
-
-        //each fella will check two thigns
-        //if the player has the gun
-        //if the player cannot get the gun
+     
         this.gunData = gunData;
         this.index = index;
 
@@ -44,11 +41,18 @@ public class CityStoreUnit : ButtonBase
 
         this.handler = handler;
 
-        bool hasGun = armoryData.HasGun(index);
-        isBought.SetActive(hasGun);
+        bool hasGun = armoryData.HasGun(gunData.storeIndex);
+        isBought.SetActive(hasGun && !gunData.isTemp);
 
+        if (hasGun)
+        {
+            gunData.SetHasBeenFound(true);
+        }
 
         SetUnknown(gunData.HasBeenFound);
+
+       //if(!gunData.isTemp) Debug.Log("GunUnit " + gunData.name + " hasgun: " + hasGun + "; HasBeenFound: " + gunData.HasBeenFound);
+
 
     }
     #endregion

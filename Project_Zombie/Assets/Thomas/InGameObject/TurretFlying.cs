@@ -18,12 +18,14 @@ public class TurretFlying : Turret
 
     float angle = 0;
 
-
+    Transform[] playerEyeArray;
     public string id { get; private set; }
 
     private void Start()
     {
         id = Guid.NewGuid().ToString();
+
+        playerEyeArray = PlayerHandler.instance.eyeArray;
     }
 
     protected override void CallEndDuration()
@@ -95,13 +97,14 @@ public class TurretFlying : Turret
         if (targetObject != null)
         {
             //         
+            //Debug.Log("yo");
             Quaternion targetRotation = RotateToTarget();
             CheckIfShouldShoot(targetRotation);
             CheckIfTargetIsNull();
         }
         else
         {
-
+            //Debug.Log("not yo");
             graphic.transform.Rotate(new Vector3(0, 0.5f, 0));
             LookForTarget();
         }
@@ -141,4 +144,48 @@ public class TurretFlying : Turret
             attackCooldownCurrent -= Time.deltaTime;
         }
     }
+
+    protected override bool IsInSight(Transform targetTransform)
+    {
+
+        //the only different is that this will use the player´s eyearray.
+
+        int amountFound = 0;
+        foreach (var item in playerEyeArray)
+        {
+            Vector3 targetPos = (targetTransform.position - item.position).normalized;
+            targetPos.y = 0;
+
+            Ray ray = new Ray(item.position, targetPos);
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 50, targetLayer))
+            {
+                //Debug.Log("caught " + hit.collider.gameObject.layer);
+                //Debug.Log("caught " + hit.collider.gameObject.name);
+                if (hit.collider.gameObject.layer == 6)
+                {
+                    amountFound++;
+                }
+                if (hit.collider.gameObject.layer == 9)
+                {
+
+                }
+            }
+            else
+            {
+
+            }
+
+           
+
+        }
+
+        return amountFound >= 2;
+    }
+
 }
+
+
+//instead of shooting from the turret we should shoot from the player this one here.

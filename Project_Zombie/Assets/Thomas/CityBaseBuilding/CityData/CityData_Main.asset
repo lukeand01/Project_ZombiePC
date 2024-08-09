@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f4f525fee86b5745a9e40a442066eab, type: 3}
   m_Name: CityData_Main
   m_EditorClassIdentifier: 
-  <cityStoreLevel>k__BackingField: 1
+  <cityStoreLevel>k__BackingField: 5
   <popRequirement>k__BackingField: 0
   <resourcePopRef>k__BackingField: {fileID: 11400000, guid: 5557f4efc84e59844861b35c4006e011, type: 2}
   <requirementToIncreaseLevelList>k__BackingField:
@@ -21,6 +21,36 @@ MonoBehaviour:
       <quantity>k__BackingField: 150
     - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
       <quantity>k__BackingField: 200
+    requiredCityStoreLevelList: []
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+      <quantity>k__BackingField: 500
+    requiredCityStoreLevelList: []
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+      <quantity>k__BackingField: 500
+    requiredCityStoreLevelList: []
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+      <quantity>k__BackingField: 500
+    requiredCityStoreLevelList: []
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+      <quantity>k__BackingField: 500
+    requiredCityStoreLevelList: []
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+      <quantity>k__BackingField: 500
     requiredCityStoreLevelList: []
   - requiredResourceList:
     - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
@@ -43,3 +73,5 @@ MonoBehaviour:
     questDescription: This was a quest given by the test npc. kill a 500 enemies
       and you will get a cool ass weapon.
     questGiverName: Npc teste
+  indexList_ActiveQuests: 
+  indexList_CompletedQuests: 

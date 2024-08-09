@@ -60,8 +60,8 @@ public class PlayerMovement : MonoBehaviour
     {
         ResetFly();
 
-        flyUse_Total = flyUse_Initial;
-        flyCooldwon_Total = flyCooldown_Initial;
+        //flyUse_Total = flyUse_Initial;
+        //flyCooldwon_Total = flyCooldown_Initial;
 
     }
 
@@ -229,7 +229,7 @@ public class PlayerMovement : MonoBehaviour
         //a short period you cannot control the char and a short period
         //if there is a wall in front we stop it.
 
-        GameHandler.instance._soundHandler.CreateSfx(audio_Dash);
+        //GameHandler.instance._soundHandler.CreateSfx(audio_Dash);
 
         handler._playerController.block.AddBlock("Dash", BlockClass.BlockType.Partial);
         BDClass bdClass = new BDClass("Dash", BDType.Immune, 0);
@@ -262,7 +262,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        Debug.Log("ey");
+
         handler._rb.velocity = Vector3.zero;
         handler._playerController.block.RemoveBlock("Dash");
         handler._entityStat.RemoveBdWithID("Dash");
@@ -325,9 +325,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool isGrounded;
 
 
-    //
-
-
     public bool hasFly { get { return flyUse_Total > 0; } }
 
     public void SetFlying(float flyUse, float flyCooldown)
@@ -339,7 +336,6 @@ public class PlayerMovement : MonoBehaviour
     }
     void HandleGrounded()
     {
-
 
         if (!hasFly)
         {

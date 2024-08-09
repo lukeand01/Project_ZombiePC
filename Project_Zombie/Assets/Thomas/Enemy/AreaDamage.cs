@@ -62,7 +62,6 @@ public class AreaDamage : MonoBehaviour
     private void FixedUpdate()
     {
 
-        Debug.Log(IsAnimationPlaying());
 
         if (isDone )
         {
@@ -146,7 +145,7 @@ public class AreaDamage : MonoBehaviour
         }
         if (_vsxType == AreaDamageVSXType.Nothing)
         {
-            Debug.Log("this?");
+
             return;
         }
 

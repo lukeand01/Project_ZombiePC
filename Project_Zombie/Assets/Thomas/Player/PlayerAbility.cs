@@ -66,6 +66,7 @@ public class PlayerAbility : MonoBehaviour
 
         foreach (var item in debugAbilityActiveStartingList)
         {
+            GameHandler.instance.cityDataHandler.cityLab.BuyAbilityWithIndex_Active(item.storeIndex);
             AddAbility(item);
         }
 
@@ -136,6 +137,7 @@ public class PlayerAbility : MonoBehaviour
         //but we have to check if there is already one and if we need to add.
         int index = GetTargetAbilityIndex(data, abilityPassiveList);
 
+        data.SetFound(true);
 
         if(index != -1)
         {
@@ -184,7 +186,7 @@ public class PlayerAbility : MonoBehaviour
 
     void AddAbilityPassive_Cursed(AbilityPassiveData data)
     {
-
+        data.SetFound(true);
         AbilityClass passiveAbility = new AbilityClass(data);
         passiveAbility.AddPassive();
         abilityCurseList.Add(passiveAbility);

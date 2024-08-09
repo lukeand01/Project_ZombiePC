@@ -150,25 +150,24 @@ public class StageData : ScriptableObject
         if(questList_Curse.Count <= 0)
         {
             roll += 11;
-            Debug.Log("there is no curse");
+
         }
         if (questList_Challenge.Count <= 0)
         {
             roll += 11;
-            Debug.Log("there is no challege");
+ 
         }
 
         if (roll >= 0 && roll <= 10 )
         {
             //then its curse
-            Debug.Log("curse");
+
             int roll_Curse = Random.Range(0, questList_Curse.Count);
             return new List<QuestClass>() { questList_Curse[roll_Curse], null, null };
 
         }
         if(roll > 10 && roll <= 20)
         {
-            Debug.Log("challenge");
             int roll_Challenge = Random.Range(0, questList_Challenge.Count);
             return new List<QuestClass>() { questList_Challenge[roll_Challenge], null, null };
         }

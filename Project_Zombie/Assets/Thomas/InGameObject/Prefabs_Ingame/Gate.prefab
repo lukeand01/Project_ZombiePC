@@ -236,6 +236,10 @@ MonoBehaviour:
   interactButtonText: {fileID: 7838324153320984430}
   priceHolder: {fileID: 4950238449367760602}
   priceText: {fileID: 5230426744361375280}
+  merchantHolder: {fileID: 0}
+  nameText: {fileID: 0}
+  descriptionText: {fileID: 0}
+  iconImage: {fileID: 0}
 --- !u!1 &3227253589958066078
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,7 +676,7 @@ GameObject:
   - component: {fileID: 6634294597752495247}
   - component: {fileID: 77447970757007274}
   m_Layer: 9
-  m_Name: Graphic
+  m_Name: Graphic_Gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

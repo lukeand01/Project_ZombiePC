@@ -29,6 +29,8 @@ public class CityUI : MonoBehaviour
    
     public void CreateResourceUnitForItem(ItemClass item)
     {
+
+        //Debug.Log("created for this fella " + item.data.itemName);
         ResourceUnit newObject = Instantiate(resourceUnitTemplate);
         newObject.SetUp(item);
         newObject.transform.SetParent(resourceContainer);

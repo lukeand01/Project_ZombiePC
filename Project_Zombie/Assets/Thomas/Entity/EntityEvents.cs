@@ -133,6 +133,19 @@ public class EntityEvents : MonoBehaviour
         }
     }
 
+
+    public delegate void DelegateChangedPoints<T>(ref T totalValue);
+
+    public DelegateChangedPoints<float> eventDelegate_ChangedPoints;
+
+    public void CallDelegate_ChangedPoints(ref float modifier)
+    {
+        if (eventDelegate_ChangedPoints != null)
+        {
+            eventDelegate_ChangedPoints(ref modifier);
+        }
+    }
+
     #endregion
 }
 public enum ChestType

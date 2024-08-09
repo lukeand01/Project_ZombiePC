@@ -6,26 +6,26 @@ using UnityEngine;
 
 public class LocalHandler : MonoBehaviour
 {
-    
+
     //the portals are doubling the initial and not adding the next ones.
 
 
 
-    
+
     public static LocalHandler instance;
 
     LocalHandler_RoundHandler _roundHandler;
 
-    [field: SerializeField] public StageData _stageData {  get; private set; }
+    [field: SerializeField] public StageData _stageData { get; private set; }
 
     [SerializeField] bool debug_doNotSpawn;
 
     [SerializeField] Transform spawnPos;
     //we may give an ability chest with an enemy
 
-   
 
-   
+
+
 
     private void Awake()
     {
@@ -35,7 +35,7 @@ public class LocalHandler : MonoBehaviour
         _roundHandler = GetComponent<LocalHandler_RoundHandler>();
 
 
-       
+
     }
 
     private void Start()
@@ -59,7 +59,7 @@ public class LocalHandler : MonoBehaviour
         UIHandler.instance.ControlUI(false);
         PlayerHandler.instance._playerController.block.RemoveBlock("City");
 
-        
+
         SpawnPaidInGameObjects();
     }
 
@@ -82,7 +82,7 @@ public class LocalHandler : MonoBehaviour
             HandleRound();
         }
 
-        
+
     }
 
     public void StartLocalHandler()
@@ -105,7 +105,7 @@ public class LocalHandler : MonoBehaviour
         chestResourceTotal = Random.Range(35, 60);
         chestResourceCurrent = chestResourceTotal;
 
-        
+
         ChestGunSpawn(true);
 
         ChestAbilitySet();
@@ -124,7 +124,7 @@ public class LocalHandler : MonoBehaviour
         {
             StartCoroutine(RoundStartProcess());
         }
-        
+
     }
 
     public void GetEnemyAndSpawninAnotherPortal(EnemyBase enemy)
@@ -141,7 +141,7 @@ public class LocalHandler : MonoBehaviour
     [SerializeField] bool useNewRoundSystem;
 
     #region ROUND 
-    public int round { get; private set; }
+    [field: SerializeField] public int round { get; private set; }
 
     float roundCurrent;
     float roundTotal;
@@ -685,7 +685,7 @@ public class LocalHandler : MonoBehaviour
 
         int roll = Random.Range(0, 101);
 
-        if (chestAbility_Ready && roll > 99)
+        if (chestAbility_Ready && roll > 92)
         {
             chestAbility_Ready = false;
             return chestAbilityTemplate;
@@ -729,7 +729,7 @@ public class LocalHandler : MonoBehaviour
     {
         int roll = Random.Range(0, 101);
 
-        if (chestAmmo_Ready &&  roll > 99)
+        if (chestAmmo_Ready &&  roll > 92)
         {
             chestAmmo_Ready = false;
             return chest_Ammo_Template;
@@ -1043,6 +1043,7 @@ public class LocalHandler : MonoBehaviour
 
         foreach (var item in _chestAbilityArray)
         {
+            if(item == null) continue;
             if (item.gameObject.activeInHierarchy)
             {
                 quantityActive++;
@@ -1066,6 +1067,8 @@ public class LocalHandler : MonoBehaviour
             if (safeBreak > 1000) break;
 
             int random = Random.Range(0, _chestAbilityArray.Length);
+
+            if (_chestAbilityArray[random] == null) continue;
 
             if (!_chestAbilityArray[random].gameObject.activeInHierarchy)
             {

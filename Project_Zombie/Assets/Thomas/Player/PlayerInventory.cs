@@ -75,6 +75,7 @@ public class PlayerInventory : MonoBehaviour
 
         foreach (var item in refItemList)
         {
+
             ItemClass newItem = new ItemClass(item, 0);
             UIHandler.instance._CityUI.CreateResourceUnitForItem(newItem);
 
@@ -447,6 +448,7 @@ public class PlayerInventory : MonoBehaviour
     {
         popUse = popUsage;
         cityInventoryList[0].SetPopUsage(popUsage);
+
     }
 
     public bool HasPop(int cost)

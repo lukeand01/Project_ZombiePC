@@ -35,28 +35,28 @@ MonoBehaviour:
     min: 0
     max: 0
     baseChanceToSpawn: 60
-    chancePerLevelToSpawn: 0
+    chancePerLevelToSpawn: -5
     chanceSpawnMaxCap: 80
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 0
   - Id: Simple Melee 2
     data: {fileID: 11400000, guid: cb9769c528a0d3b45b040e2334a19e2e, type: 2}
-    min: 0
+    min: 3
     max: 0
-    baseChanceToSpawn: 40
-    chancePerLevelToSpawn: 0
-    chanceSpawnMaxCap: 60
+    baseChanceToSpawn: 35
+    chancePerLevelToSpawn: 5
+    chanceSpawnMaxCap: 80
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 15
   - Id: Simple Ranged
     data: {fileID: 11400000, guid: 8996d72b5f1f4cf4ab6669a787585898, type: 2}
     min: 3
     max: 0
-    baseChanceToSpawn: 25
+    baseChanceToSpawn: 30
     chancePerLevelToSpawn: 0
     chanceSpawnMaxCap: 0
     chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 10
+    maxAllowedAtAnyTime: 5
   - Id: Mage
     data: {fileID: 11400000, guid: 804e4ac7c50f0124e97c176f17b9f5fd, type: 2}
     min: 6
@@ -84,11 +84,11 @@ MonoBehaviour:
     chanceSpawnMaxCap: 60
     chanceSpawnMinCap: 0
     maxAllowedAtAnyTime: 15
-  - Id: Hound
+  - Id: Simple Shield
     data: {fileID: 11400000, guid: 2fbf11cfa4229494b91e1e4c61ce3256, type: 2}
     min: 5
     max: 0
-    baseChanceToSpawn: 25
+    baseChanceToSpawn: 20
     chancePerLevelToSpawn: 0
     chanceSpawnMaxCap: 60
     chanceSpawnMinCap: 0

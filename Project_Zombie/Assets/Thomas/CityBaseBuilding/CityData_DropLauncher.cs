@@ -42,6 +42,9 @@ public class CityData_DropLauncher : CityData
 
     void GenerateAvailableList()
     {
+
+        currentAvailableDropList.Clear();
+
         //avai
         for (int i = 0; i < cityStoreLevel; i++)
         {
@@ -79,11 +82,11 @@ public class CityData_DropLauncher : CityData
     public DropData GetDropData()
     {
 
-        int tries = cityStoreLevel * 3;
+        int tries = cityStoreLevel * 2;
 
         for (int i = 0; i < tries; i++)
         {
-            int roll = Random.Range(0, 200);
+            int roll = Random.Range(0, 500);
             int random = Random.Range(0, currentAvailableDropList.Count);
 
             var item = currentAvailableDropList[random]; 

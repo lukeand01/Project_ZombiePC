@@ -24,7 +24,7 @@ public class SoundUnit : MonoBehaviour
         _source.clip = clip;
         _source.Play();
 
-
+        _source.volume = 0.05f;
 
     }
 

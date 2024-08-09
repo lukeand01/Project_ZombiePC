@@ -274,7 +274,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6438614466162076281, guid: 80994087e6ea4ad4daa2f3ce6f2faf78, type: 3}
       propertyPath: initialDuration
-      value: 10
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6438614466162076281, guid: 80994087e6ea4ad4daa2f3ce6f2faf78, type: 3}
+      propertyPath: statList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6438614466162076281, guid: 80994087e6ea4ad4daa2f3ce6f2faf78, type: 3}
+      propertyPath: statList.Array.data[0].stat
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6438614466162076281, guid: 80994087e6ea4ad4daa2f3ce6f2faf78, type: 3}
+      propertyPath: statList.Array.data[1].stat
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6438614466162076281, guid: 80994087e6ea4ad4daa2f3ce6f2faf78, type: 3}
+      propertyPath: statList.Array.data[0].initialValue
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6438614466162076281, guid: 80994087e6ea4ad4daa2f3ce6f2faf78, type: 3}
+      propertyPath: statList.Array.data[1].initialValue
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 6465597430140010470, guid: 80994087e6ea4ad4daa2f3ce6f2faf78, type: 3}
       propertyPath: m_Layer

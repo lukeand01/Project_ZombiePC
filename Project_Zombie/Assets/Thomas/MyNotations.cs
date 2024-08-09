@@ -1862,27 +1862,93 @@ using static System.Collections.Specialized.BitVector32;
 
 
 //TESTING REPORT #3
-//Fix the player shooting enemy projectiles <= 
-//find a way to warn the player has been shot <= 
+///Fix the player shooting enemy projectiles <= 
+///find a way to warn the player has been shot <= 
 //the fly turret is not targetting the simple enemy 1
-//sometimes the roudn text is invisible. <= 
-//respawning after too far from the player is causing problems. this is causing to break the rounds because the enemies are not respawning <=
+///sometimes the roudn text is invisible. <= 
+///respawning after too far from the player is causing problems. this is causing to break the rounds because the enemies are not respawning <=
 //maybe shift the camera to see below better.  <= 
-//the fly ui should be invisible if the player does not have fly
+//the fly ui should be invisible if the player does not have fly <= 
 //ability chests and turrets are destroying themselvs.
-//fix the drop
-//chest ammo is not interact and it should be trigger. it should float above the ground and rotate <=
+//fix the drop; dropping it too much
+///chest ammo is not interact and it should be trigger. it should float above the ground and rotate <=
 //do the same thing for the power. differ the two some way.
-//assign the canvas for the chest ability <=
+///assign the canvas for the chest ability <=
 //the dog has too little rotation <= 
-//the round text is not insta.
-//the drop is dropping too much
+///the round text is insta. should not be
+///shield not working
+//the damage flash is getting stuck. <=
+///the dog pathfind is weird. it shouod turn much faster.
+
+//TESTING REPORT 4#
+//i think the damage ui should be a bit higher
+//the enemy projectile stopped? why?
+///i want the shield attack to still throw the player
+///the shield enemy is throwing the player but it should not yet
+//the enemy mage stopped attacking? i think its because i destroyed an enemy for some reason. 
+///the damage flash. maybe the mage caused it? nope. 
+//the enemy projectile should haev shadow to help dodging it.
+///the round text is turning invisible once again.
+///the round is not passing? at least not showing that its passing.
 
 
+///yellow chest disappear in the second buy. instant without giving the weapon. maybe it didnt reset right
+///the chest crashed hte game. why are they exploding? the turret should shoot faster but last little.
+//shift the camera better? the player being attacked from outside vision from basic ranged is not ideal.
+///double points is not working. use the double point event.
+///flying is being enabled at random points
+
+
+
+//have to start checking the interactions between city and stage
+//check if itens beinn found are appearing as found.
 //
+
+//the mage is not working and i suspect it has something to do with reusing the same mage.
+
+//the chances to spawn the ability box are not good. too low. there should be more of them. 
+//also there should be more random boxes around
+
+
+///i need to do something about the shield rotation.
+//
+
+//i have to not use courotine for those two things
+//
+
+//Fix some things
+///the drop launcher is duplicating its stuff
+///it is not showing the pop in the resource tab
+///not updating pop resource 
+///remove the fucking dash sound
+///make sure that the weapon you start with is added to your library.
+///we are allowed to buy a gun that we already have. should show what guns you already have. 
+//same things for the ability.
+///change the name of the store ui.
+//buy the ability but it doesnt appear in the inventory.
+
+
+
 
 
 //DESIGN SUGGESTION REPORT 3#
+//the player should win points by passing a round as well?
+//
+
+
+//PASSIVE IDEAS
+//Allies last 10% more and have 10% more health. every 3 levels increase the quantity of allies you can have by 1.
+//Spawn a flaming torch that keep moving around you. each increases damage of the fireball. every 3 increase the quantity of fireballs by 1.
+//
+
+
+//ACTIVE IDEAS
+//Spawn an ally. he has no limit duration.
+//spawn a ranged ally.
+//Blocks against ranged attacks.
+
+
+
 
 
 
@@ -2080,15 +2146,22 @@ using static System.Collections.Specialized.BitVector32;
 
 //VERSION 0.6 -==--==--=-=-=-=-==-=--==-=-=-
 
-//NEW CONTENT
+//NEW CONTENT (Start date: ; End date: ;)
 //you are able to alter the run at the start. choosing harder modes, or modes where you cannot heal or other stuff.
 //vision fog. the player does not see things that visible for its character
 //get 3d models.
 //animatio  systems
+//create sound system
 //create save system, and save slots
-//use dots with some parts of the game. like bullets and parts of enemies.
+//use dots with some parts of the game. like bullets and parts of enemies. (ONLY IF THERE ARE PERFOMANCE PROBLEMS)
 //bosses and mini-bosses.
 //create a new round type where there is boulder constantly falling down
+//round type where 
 //create a new map: there is an energe generator. there is a cart you can use to go to other places. 
 //create a better fade ui for misc messages
 //create enemy lancer, it has a shield and a lancer. it show an ability indcator for the lance attack, which is middle range.
+//each ability has one out of three Coins. which are gained when obtaining an original ability. three of those can be traded in the 
+//can talk with the merchant and use bless to reroll the abilities, or to show the especial abilities, which are bought with those especial coins.
+//enemy spawned should be improved. because currently as long as you keep killing the enemy it will keep spawning the same especial. make a limit per round instead.
+//Buy UI. need to be improved. also all the things should have a description.
+//pressing escape when the settings in on the screen makes only the settings close

@@ -20,19 +20,19 @@ MonoBehaviour:
   bulletOffset: 8
   gunBaseStat:
   - stat: 2
-    initialValue: 30
-  - stat: 5
-    initialValue: 0
+    initialValue: 60
   - stat: 6
-    initialValue: 5
-  - stat: 7
     initialValue: 0
+  - stat: 7
+    initialValue: 5
   - stat: 8
-    initialValue: 1.1
+    initialValue: 0
+  - stat: 9
+    initialValue: 2
   - stat: 10
     initialValue: 3
-  - stat: 10
-    initialValue: 0.2
+  - stat: 11
+    initialValue: 0.4
   gunModel: {fileID: 758834203172537232, guid: 6edc56f095065bd4a9cf0b19b26922d2, type: 3}
   bulletTemplate: {fileID: 1912603505503571018, guid: 03c593b7051d78e41968b090993b4855, type: 3}
   <bulletBehaviorList>k__BackingField:

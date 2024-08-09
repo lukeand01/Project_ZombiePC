@@ -9,17 +9,32 @@ public class DropData_DoublePoints : DropData
     [Separator("Points")]
     [SerializeField] float pointModifier;
     [SerializeField] float timer ;
+
+
+
     public override void CallDrop()
     {
-        //create a bd that does that.
+        base.CallDrop();
 
-        //i want a bd that can call an event.
-
-        //we just add a bd
 
         BDClass bd = new BDClass("Drop_DoublePoints", EspecialConditionType.PointsModifier, pointModifier);
         bd.MakeTemp(timer);
+        bd.MakeShowInUI();
         PlayerHandler.instance._entityStat.AddBD(bd);
 
+
+
+
+    }
+    //assign an event here would be easier.
+
+    void IncreasePoints()
+    {
+
+    }
+
+    public override void RemoveDrop()
+    {
+        base.RemoveDrop();
     }
 }

@@ -428,7 +428,7 @@ public class CityHandler_CityBuildingHandler
         int popSpend = 0;
 
 
-        UpdatePopGraphic();
+        UpdatePopGraphic_RegularHouses();
 
         for (int i = 1; i < especialCityStoreList.Count; i++)
         {
@@ -439,6 +439,9 @@ public class CityHandler_CityBuildingHandler
 
         if (popSpend > popFromMainBuilding)
         {
+            //
+
+
             Debug.LogError("pop spend should never be more than the current pop");
             return;
         }
@@ -452,13 +455,14 @@ public class CityHandler_CityBuildingHandler
 
     }
 
-    void UpdatePopGraphic()
+    void UpdatePopGraphic_RegularHouses()
     {
         //here we update the number of houses that should be showing.
 
         //3 for each fella.
         int houseQuantityBasedInLevel = especialCityStoreList[0].GetCityData.cityStoreLevel * 3;
 
+        //Debug.Log("update pop " + houseQuantityBasedInLevel);
         
         //need to clear everyone
 
@@ -476,7 +480,6 @@ public class CityHandler_CityBuildingHandler
         {
             if (i >= housingCityStoreList.Count)
             {
-                Debug.Log("no more houses to make it appear");
                 return;
             }
 

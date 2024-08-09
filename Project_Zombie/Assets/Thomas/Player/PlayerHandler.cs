@@ -1,4 +1,5 @@
 using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,9 +30,27 @@ public class PlayerHandler : MonoBehaviour
 
     public Camera _cam { get; private set; }
 
-
+    [Separator("BODY PARTS REF")]
     [SerializeField] GameObject graphicHolder;
     [SerializeField] Transform _head;
+    [field:SerializeField]public Transform[] eyeArray { get; private set; }
+
+
+    [SerializeField] DropData _dropData;
+
+    private void FixedUpdate()
+    {
+        CallDebug();
+    }
+
+    public void CallDebug()
+    {
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            _dropData.CallDrop();
+        }
+    }
+
 
     public void ControlGraphicHolderVisibility(bool isVisible)
     {
@@ -66,44 +85,8 @@ public class PlayerHandler : MonoBehaviour
             _cam = Camera.main;
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            //_playerResources.GainPoints(100);
-            BDClass bd = new BDClass("Test", EspecialConditionType.GatePriceModifier, 1);
-            bd.MakeTemp(50);
-            _entityStat.AddBD(bd);
-
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            //_playerResources.SpendPoints(100);
-            GameHandler.instance.cityDataHandler.cityArmory.AddGunWithIndex(3);
-
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-           // _playerAbility.ClearPassiveList();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            //_playerAbility.DebugIncreaseLevel();
-        }
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            BDClass bd = new BDClass("Debug", StatType.Damage, 0.5f, 0, 0);
-            bd.MakeTemp(15);
-            _entityStat.AddBD(bd);
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            BDClass bd = new BDClass("DebugSpeeed", StatType.Speed, 0f, -0.5f, 0);
-            bd.MakeTemp(15);
-            _entityStat.AddBD(bd);
-
-        }
+     
+        
 
 
     }

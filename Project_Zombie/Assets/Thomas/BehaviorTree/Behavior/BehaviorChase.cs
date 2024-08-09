@@ -27,7 +27,7 @@ public class BehaviorChase : Sequence2
         this.enemy = enemy;
         enemyData = enemy.GetData();
 
-        updateAgent_Total = 0.06f;
+        updateAgent_Total = 0.03f;
         updateAgent_Current = updateAgent_Total;
 
         updateCheckForAlly_Total = 0.08f;

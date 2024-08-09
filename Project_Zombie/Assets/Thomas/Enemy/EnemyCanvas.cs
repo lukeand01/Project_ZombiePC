@@ -74,7 +74,7 @@ public class EnemyCanvas : MonoBehaviour
         float modifierX = 0;
         float modifierY = 35;
         float x = Random.Range(-modifierX, modifierX);
-        float y = Random.Range(0, modifierY) + 50;
+        float y = Random.Range(0, modifierY) + 80;
 
         Vector3 offset = new Vector3(x, y, 0);
 

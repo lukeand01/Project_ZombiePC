@@ -13,19 +13,17 @@ MonoBehaviour:
   m_Name: Enemy_SimpleWithShield
   m_EditorClassIdentifier: 
   enemyName: Shield
-  enemyModel: {fileID: 278639468025176753, guid: 3a0e16b25f6b02b4c87daaaf77b28753, type: 3}
-  attackRange: 25
-  attackSpeed: 3
+  enemyModel: {fileID: 7302270500928993984, guid: 3a0e16b25f6b02b4c87daaaf77b28753, type: 3}
+  attackRange: 2
+  attackSpeed: 0.8
   initialStatList:
   - stat: 0
-    initialValue: 150
+    initialValue: 500
   - stat: 1
     initialValue: 5
   - stat: 2
     initialValue: 60
-  scaleStatList:
-  - stat: 0
-    initialValue: 30
+  scaleStatList: []
   audio_Hit: {fileID: 8300000, guid: 8e4851963e3ebde4b948020b48d7cd78, type: 3}
   audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
   audio_Spawned: {fileID: 0}

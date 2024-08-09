@@ -64,28 +64,17 @@ public class Merchant : Story_EspecialNpc
         //we roll here.
 
         //CreateAbilityMerchant();
-        CreateCurseMerchant();
 
-        return;
+
         int roll = Random.Range(0, 101);
 
-
-        if(roll > 0 && roll <= 75)
+        if(roll < 85)
         {
             CreateAbilityMerchant();
-            return;
         }
-
-        if(roll > 75 && roll <= 95)
-        {
-            CreateWeaponMerchant();
-            return;
-        }
-
-        if(roll > 95)
+        else
         {
             CreateCurseMerchant();
-            return;
         }
 
     }

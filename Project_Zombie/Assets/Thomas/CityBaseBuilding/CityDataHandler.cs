@@ -21,7 +21,10 @@ public class CityDataHandler : ScriptableObject
     public List<StageData> ownedStageList = new(); //stages we can actually go
 
 
+    public void ResetAllCityStores()
+    {
 
+    }
 
 }
 

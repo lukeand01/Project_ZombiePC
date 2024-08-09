@@ -40,19 +40,6 @@ public class EntityStat : MonoBehaviour
     {
         //if (gameObject.tag == "Player") return;
 
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            DebugBleed();
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            DebugStun();
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            DebugSpeed();
-        }
     }
 
     private void FixedUpdate()

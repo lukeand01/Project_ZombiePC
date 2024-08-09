@@ -145,6 +145,7 @@ public class CityCanvas : MonoBehaviour
 
     public void SetEspecialNpcs(List<Story_NpcData> npcList, int especialNpcLimit)
     {
+        nameText.text = "Main Building";
 
         TryCreateContainer(0, "Especial Contacts");
         ClearContainer(0);
@@ -198,6 +199,8 @@ public class CityCanvas : MonoBehaviour
         //maybe at the start of each game we simply get the saved values and assign them to the player.
         //and it become an invisible bd. that cannot be altered. but should be able to be removed with id.
         //
+
+        nameText.text = "Body Enhancer";
 
         TryCreateContainer_Stat(0, "Stats");
         ClearContainer(0);

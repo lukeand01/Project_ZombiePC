@@ -33,8 +33,6 @@ public class FlyUnit : ButtonBase
 
         fillImage_Use .fillAmount = current / total;
 
-        
-
         fillImage_Cooldown.gameObject.SetActive(false);
         fillImage_Use.gameObject.SetActive(true);
         //we change the color based in 

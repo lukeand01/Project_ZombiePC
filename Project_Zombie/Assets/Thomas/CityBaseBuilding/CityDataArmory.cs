@@ -165,7 +165,7 @@ public class CityDataArmory : CityData
             if (!indexOfGunsAddedNowToAvaialable.Contains(item.storeIndex))
             {
                 //then we add.
-                Debug.Log("we dont have it in the list");
+                //Debug.Log("we dont have it in the list");
                 item.SetHasBeenFound(true);
                 currentGunAvailableArmoryList.Add(item);
             }
@@ -196,6 +196,8 @@ public class CityDataArmory : CityData
     public bool HasGun(int index)
     {
         //but the problem is that we can confuse things between the two lists. the best would be to have all in one list.
+ 
+
         return ownedGunIndexList.Contains(index);
     }
     #endregion
