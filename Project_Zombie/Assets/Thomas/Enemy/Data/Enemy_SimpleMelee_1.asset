@@ -15,15 +15,26 @@ MonoBehaviour:
   enemyName: Scratcher
   enemyModel: {fileID: 7099369015076163779, guid: 318c50c56ab9dbb458cef7e546235184, type: 3}
   attackRange: 3.5
-  attackSpeed: 0.7
+  AttackAnimationSpeed: 1
+  attackRest: 0
+  <damageType>k__BackingField: 0
   initialStatList:
   - stat: 0
-    initialValue: 150
+    initialValue: 1500
   - stat: 1
-    initialValue: 5
+    initialValue: 3
   - stat: 2
     initialValue: 60
   scaleStatList: []
+  enemyResistanceList:
+  - <_damageType>k__BackingField: 0
+    <_value>k__BackingField: 0
+  - <_damageType>k__BackingField: 1
+    <_value>k__BackingField: 0
+  - <_damageType>k__BackingField: 2
+    <_value>k__BackingField: 0
+  - <_damageType>k__BackingField: 3
+    <_value>k__BackingField: 0
   audio_Hit: {fileID: 8300000, guid: 8e4851963e3ebde4b948020b48d7cd78, type: 3}
   audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
   audio_Spawned: {fileID: 0}

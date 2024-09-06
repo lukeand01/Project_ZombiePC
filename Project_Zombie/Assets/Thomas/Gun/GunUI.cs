@@ -1,3 +1,4 @@
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,12 +24,13 @@ public class GunUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI currentAmmoText;
     [SerializeField] TextMeshProUGUI reserveAmmoText;
     [SerializeField] Image reloadFillImage;
-    [SerializeField] Image gunPortrait;
+    [SerializeField] GameObject reloadHolder;
     [SerializeField] TextMeshProUGUI gunTitleText;
-    public void UpdateGunPortrait(Sprite icon)
-    {
-        gunPortrait.sprite = icon;  
-    }
+
+    [Separator("SWAP")]
+    [SerializeField] GameObject swapHolder;
+    [SerializeField] Image swapFillImage;
+
 
     public void UpdateGunTitle(string name)
     {
@@ -69,29 +71,55 @@ public class GunUI : MonoBehaviour
 
     public void UpdateReloadFill(float current, float total)
     {
+        reloadHolder.SetActive(total > 0);
+        swapHolder.SetActive(false);
 
-        reloadFillImage.gameObject.SetActive(total > 0);
         reloadFillImage.fillAmount = current / total;
     }
 
+    public void UpdateSwapFill(float current, float total)
+    {
+        reloadHolder.SetActive(false);
+        swapHolder.SetActive(total > 0);
+
+        swapFillImage.fillAmount = current / total;
+    }
 
     [SerializeField] OwnedGunShowUnit[] ownedGunShowUnits;
-    OwnedGunShowUnit currentOwnedGunShowUnit;
 
+    private void Start()
+    {
+        for (int i = 0; i < ownedGunShowUnits.Length; i++)
+        {
+            var item = ownedGunShowUnits[i];
+            item.UpdateKeyText(i + 1);
+        }
+    }
 
     private void Update()
     {
         //UIHandler.instance.debugui.UpdateDEBUGUI("This is visible " + ownedGunShowUnits[1].gameObject.activeInHierarchy);
     }
 
-    public void SetOwnedGunUnit(GunClass gun, int index)
+    public void UpdateGunShowUnit()
     {
+        foreach (var item in ownedGunShowUnits)
+        {
+            item.UpdateUI();
+        }
+    }
+
+    public void SetOwnedGunUnit(GunClass gun_Perma, GunClass gun_Temp, int index)
+    {
+
+
         ownedGunShowUnits[index].gameObject.SetActive(true);
-        ownedGunShowUnits[index].SetUp(gun);
+        ownedGunShowUnits[index].SetUp(gun_Perma, gun_Temp);
     }
 
     public void ClearOwnedGunUnit(int index)
-    {
+    {      
+
         ownedGunShowUnits[index].gameObject.SetActive(false);
     }
 
@@ -100,27 +128,19 @@ public class GunUI : MonoBehaviour
         ownedGunShowUnits[index].gameObject.SetActive(true);
     }
 
-    public void ChangeOwnedGunShowUnit(int index)
+    public void UpdateAmmoInOwnedGunShowUnit(int index, int ammo_Current, int ammo_Reserve)
     {
-
-        if(currentOwnedGunShowUnit != null)
-        {
-            currentOwnedGunShowUnit.Unselect();
-        }
-
-        currentOwnedGunShowUnit = ownedGunShowUnits[index];
-        currentOwnedGunShowUnit.Select();
-
-    }
-
-    public void UpdateAmmoInOwnedGunShowUnit(int index, int ammo)
-    {
-        ownedGunShowUnits[index].UpdateAmmo(ammo);
+        //ownedGunShowUnits[index].UpdateAmmo(ammo_Current, ammo_Reserve);
     }
 
     public void UpdateChargeInOwnedGunShowUnit(int index, float current, float total)
     {
-        ownedGunShowUnits[index].UpdateChargeImage(current, total);
+       //we will show a differnt ui here.
+
+
     }
 
 }
+
+
+//

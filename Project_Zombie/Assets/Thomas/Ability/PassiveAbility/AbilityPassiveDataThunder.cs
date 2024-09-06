@@ -53,7 +53,7 @@ public class AbilityPassiveDataThunder : AbilityPassiveData
 
             if (damageable == null) continue;
 
-            damageable.TakeDamage(new DamageClass(_firstValue));
+            damageable.TakeDamage(new DamageClass(_firstValue, DamageType.Magical, 0));
         }
 
 

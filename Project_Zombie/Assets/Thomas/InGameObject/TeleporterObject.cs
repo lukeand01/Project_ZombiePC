@@ -16,7 +16,11 @@ public class TeleporterObject : MonoBehaviour
     //does a presentation on teleport.
     //teleport has a cooldown, both sides.
     //teleport has a timer, that is run by the last teleporter, at the end it does something, but using the teleporter forces it earlier.
+    
+
+
     //
+
 
     bool isPlayerInside;//So we know when to run the progress.
     bool hasBeenTeleportedTo;//this we use so the player doesnt trigger it after being teleported.
@@ -35,25 +39,98 @@ public class TeleporterObject : MonoBehaviour
         DetectIfPlayerShouldBeTeleported();
     }
 
-    
+    private void Awake()
+    {
+        rotationSpeed_Current = rotationSpeed_Base;
+    }
+
+    private void Start()
+    {
+        PlayerHandler.instance._entityEvents.eventEntityStunned += DetectIfPlayerGotStunned;
+
+    }
+
+
     [Separator("TIME FOR THE TELEPORT TO WORK")]
     [SerializeField] float timeToTeleport_Total;
     [SerializeField] float timeToTeleport_Current;
 
+    
+
+
+    #region DETECT
+    void DetectIfPlayerGotStunned()
+    {
+        if (isPlayerInside)
+        {
+
+            //effect die off rather than just disappear.
+
+        }
+    }
+
+    bool IsAbleToTeleport()
+    {
+        if (isTeleporting) return false;
+        if (!isPlayerInside) return false;
+        if (hasBeenTeleportedTo) return false;
+        if (isLocked) return false;
+        if (IsOnCooldown) return false;
+        if (connectedTeleporter.IsOnTimer) return false;
+
+        if (PlayerHandler.instance._entityStat.isStunned) return false;
+
+        return true;
+    }
+
     void DetectIfPlayerShouldBeTeleported()
     {
-        if (isTeleporting) return;
-        if (!isPlayerInside) return;
-        if (hasBeenTeleportedTo) return;
-        if (isLocked) return;
-        if (IsOnCooldown) return;
-        if (connectedTeleporter.IsOnTimer) return;
 
+        if (!isPlayerInside)
+        {
+            ControlEffect(false);
+            StopChargeAudio();
+        }
+
+        if (!IsAbleToTeleport())
+        {
+
+            timeToTeleport_Current = 0;
+
+            rotationSpeed_Current = rotationSpeed_Base;
+
+            if (rotatingRb.angularVelocity.y > 0)
+            {
+                rotatingRb.AddTorque(new Vector3(0, -0.2f, 0), ForceMode.Impulse);
+            }
+
+
+            return;
+        }
+
+        HandleRotation();
+
+       
+        //
+
+        if(cooldownForTeleport_Current == 0)
+        {
+            //start playing
+            StartChargeAudio();
+        }
+
+        if (timeToTeleport_Current > timeToTeleport_Total * 0.7f)
+        {
+            ControlEffect(true);
+        }
 
         if (timeToTeleport_Total > timeToTeleport_Current)
         {
-
             timeToTeleport_Current += Time.fixedDeltaTime;
+
+            //we start playing
+            //i will tell by teleport timer actually.
+
         }
         else
         {
@@ -63,6 +140,81 @@ public class TeleporterObject : MonoBehaviour
 
     }
 
+    #endregion
+
+    #region ROTATION
+
+    [Separator("ROTATION")]
+    [SerializeField] Rigidbody rotatingRb;
+    [SerializeField] float rotationSpeed_Base;
+    [SerializeField] float rotationSpeed_IncrementModifier;
+    [SerializeField] float rotationSpeed_Max;
+
+    float rotationSpeed_Current; //
+
+    void HandleRotation()
+    {
+        rotatingRb.AddTorque(new Vector3(0, rotationSpeed_Current, 0), ForceMode.Force);
+        
+        
+
+
+        Debug.Log("rotating this fella");
+
+        rotationSpeed_Current += Time.fixedDeltaTime * rotationSpeed_IncrementModifier;
+        rotationSpeed_Current = Mathf.Clamp(rotationSpeed_Current, 0, rotationSpeed_Max);
+    }
+
+
+    #endregion
+
+    #region ESPECIAL EFFECTS
+    [SerializeField] ParticleSystem[] effectObjects_Common;
+    [SerializeField] ParticleSystem soonToTeleportEffectHolder;
+    [SerializeField] GameObject thunderEffectHolder;
+    bool areEffectsVisible;
+
+    void ControlEffect(bool isVisible)
+    {
+        if(areEffectsVisible != isVisible)
+        {
+            foreach (var item in effectObjects_Common)
+            {
+                item.gameObject.SetActive(isVisible);
+            }
+
+            areEffectsVisible = isVisible;
+        }
+
+
+        
+    }
+
+
+    #endregion
+
+    #region SOUND EFFECTS
+    [Separator("SOUND")]
+    [SerializeField] AudioSource charge_AudioSource;
+    [SerializeField] AudioClip thunder_AudioClip;
+
+
+    void StartChargeAudio()
+    {
+        charge_AudioSource.Play();
+    }
+    void StopChargeAudio()
+    {
+        charge_AudioSource.Stop();
+    }
+
+
+    void CallThunderAudio()
+    {
+        GameHandler.instance._soundHandler.CreateSfx(thunder_AudioClip);
+    }
+
+    #endregion
 
     #region TELEPORTING FUNCTIONS
 
@@ -71,14 +223,6 @@ public class TeleporterObject : MonoBehaviour
     [SerializeField] Transform wayOutTransform; //you leave to a place that is not a teleporter.
     [SerializeField] UnityEvent eventOnTeleportedHere;
     [SerializeField] bool lockAllEnemies;
-
-
-    //if there is a wayout it will use it instead of teh telerpoter. always
-    //but it always inform the other teleporter that it can be used.
-    //if either of them has cooldown, the cooldown is activated.
-    //if you use a teleporter that does not have timer, nothing happens
-    //if you go to a teleporter that has tiomer, it starts the timer
-    //if you use a teleporter that has timer, it spots the timer.
 
     //it still calling the teleporter.
     //and is allowed the teleport to go between the timer.
@@ -130,7 +274,6 @@ public class TeleporterObject : MonoBehaviour
             {
                 //if its not then we will start.
                 StartTimer();
-                Debug.Log("start timer " + gameObject.name);
             }
 
 
@@ -165,6 +308,13 @@ public class TeleporterObject : MonoBehaviour
         }
     }
 
+
+    //there is a period where you can move
+    //there is another where you cannot
+    //the generator sound starts shortly after entering the generator
+    //it should signal when teh player can no longer move
+    //soon to move should as sonn as the player can no longer move.
+
     IEnumerator TeleportProcess()
     {
 
@@ -193,32 +343,42 @@ public class TeleporterObject : MonoBehaviour
 
     IEnumerator LowerCurtainProcess()
     {
-        float duration = 1;
+        float duration = 1.5f;
 
         PlayerHandler.instance._playerController.block.AddBlock("Teleporter", BlockClass.BlockType.Complete);
 
-        StartCoroutine(GameHandler.instance.LowerCurtainProcess_Simple(1));
+        StartCoroutine(GameHandler.instance.LowerCurtainProcess_Teleport());
 
         //we call the thunder and make the player disappear.
+        //start
+        soonToTeleportEffectHolder.gameObject.SetActive(true);
+        soonToTeleportEffectHolder.Play();
 
-        yield return new WaitForSeconds(duration * 0.1f);
+        yield return new WaitForSeconds(duration * 0.2f);
 
+
+        thunderEffectHolder.gameObject.SetActive(true);
         PlayerHandler.instance.ControlGraphicHolderVisibility(false);
+        //PlayerHandler.instance.TryToCallExplosionCameraEffect(transform, 0.2f);
 
-        yield return new WaitForSeconds(duration * 0.9f);
+        yield return new WaitForSeconds(duration * 0.8f);
+
+        thunderEffectHolder.gameObject.SetActive(false);
+
+        soonToTeleportEffectHolder.Stop();
+        soonToTeleportEffectHolder.gameObject.SetActive(false);
     }
 
     IEnumerator RaiseCurtainProcess()
     {
 
         
-
         float duration = 1;
 
         yield return new WaitForSeconds(0.1f);
 
 
-        StartCoroutine(GameHandler.instance.RaiseCurtainProcess_Simple(1));
+        StartCoroutine(GameHandler.instance.RaiseCurtainProcess_Teleport());
 
         yield return new WaitForSeconds(duration * 0.3f);
 
@@ -230,7 +390,6 @@ public class TeleporterObject : MonoBehaviour
 
 
     #endregion
-
 
     #region COOLDOWN
     [Separator("COOLDOWN")]

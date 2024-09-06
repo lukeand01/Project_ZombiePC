@@ -8,7 +8,7 @@ public class ButtonChestEquip : ButtonBase
     //it needs to handle certain things
     //when you have no hover fella but need one it needs to warn
     //ask for confirm when you are about to swap
-    //when you dont need to replace a gun and you have one hover it just ignores.
+    //when you dont need to replace a gun_Perma and you have one hover it just ignores.
 
 
     //i will think that wiull create more problems i will be doing through here.

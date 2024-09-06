@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class CityStoreUnit : ButtonBase
 {
-    //this will be able to take an ability, gun or a command for either upgrading itself or the player´s roll level.
+    //this will be able to take an ability, gun_Perma or a command for either upgrading itself or the player´s roll level.
 
     [SerializeField] GameObject hover;
     [SerializeField] GameObject selected;

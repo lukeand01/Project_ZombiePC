@@ -39,6 +39,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7de699dcd4418804fa47683b196830a0, type: 2}
   canHoldDownButtonToKeepShooting: 1
   goThroughPower: 0
+  mouseImageType: 0
+  animationType: 1
+  damageList:
+  - <_damageType>k__BackingField: 0
+    <_value>k__BackingField: 50
+  - <_damageType>k__BackingField: 1
+    <_value>k__BackingField: 50
   audio_Shoot: {fileID: 8300000, guid: 2203773368e4340d98c114f55c2dd7fd, type: 3}
   audio_Reload: {fileID: 8300000, guid: eb5685b26a6494994af389a3293064e8, type: 3}
   store: 0

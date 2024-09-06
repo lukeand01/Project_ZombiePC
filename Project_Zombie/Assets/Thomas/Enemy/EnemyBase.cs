@@ -1,5 +1,7 @@
+using DG.Tweening;
 using MyBox;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -19,7 +21,13 @@ public class EnemyBase : Tree, IDamageable
     [SerializeField] protected GameObject head;
     [SerializeField] EntityEvents _entityEvents; //these are just a bunch of events that might interest this entity.
     [SerializeField] EntityStat _entityStat; //
-    [SerializeField] MeshRenderer _rend;
+    //[SerializeField] MeshRenderer _rend;
+    [SerializeField] protected EnemyGraphicHandler _enemyGraphicHandler;
+    [field:SerializeField] public EntityAnimation _entityAnimation { get; private set; }
+
+    [Separator("CONTAINERS")]
+    [SerializeField] Transform psContainer;
+
 
     float healthCurrent;
     float healthTotal;
@@ -33,34 +41,72 @@ public class EnemyBase : Tree, IDamageable
     const int POINTS_PERHIT = 5;
     const int POINTS_PERKILL = 50;
 
-    bool isLocked;
+
 
     private void OnDestroy()
     {
-       
-       Debug.Log("destroyed this enemy? " + gameObject.name);
+      
 
         LocalHandler.instance.RemoveEnemyFromSpawnList(data);
 
-        PlayerHandler.instance._entityEvents.eventLockEntity -= ControlLocked;
     }
     private void Awake()
     {
         shieldedPenetrationValue = -1;
         _rb = GetComponent<Rigidbody>();
-        AwakeFunction();
+        _entityAnimation = GetComponent<EntityAnimation>();
 
+
+        if(_entityAnimation != null )
+        {
+            _entityAnimation.SetStateUpperBody(AnimationState_UpperBody.Nothing); //I DO THIS BECAUSE THE ENEMY DOESNT HAVE UPPERBODY MOVEMENT
+            _entityAnimation.SetAnimationID("Enemy");
+        }
+
+
+
+        AwakeFunction();
     }
 
     protected override void UpdateFunction()
     {
-        if (isLocked) return;
+
+        if (isDead) return;
+
+        if (PlayerHandler.instance._playerResources.isDead)
+        {
+            _entityAnimation.CallAnimation_Idle();
+            _entityAnimation.ControlWeight(2, 0);
+            return;
+        }
+        else
+        {
+            _entityAnimation.ControlWeight(2, 1); //THIS MIGHT CREATE PROBLEMS
+        }
+
 
         if (_entityStat.isStunned)
         {
             StopAgent();
             return;
         }
+
+        if (!agent.isStopped)
+        {
+            Vector3 direction = agent.velocity;
+
+            // If the agent is moving
+            if (direction.magnitude > 0.1f)
+            {
+                // Calculate the rotation required to face the direction
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                
+                // Smoothly rotate towards the target rotation
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            }
+        }
+
+
         base.UpdateFunction();
 
         CheckIfShouldBeDespawned();
@@ -68,7 +114,7 @@ public class EnemyBase : Tree, IDamageable
 
     private void FixedUpdate()
     {
-        if (isLocked) return;
+
         HandleDuration();
     }
 
@@ -79,8 +125,7 @@ public class EnemyBase : Tree, IDamageable
 
         id = Guid.NewGuid().ToString();
 
-        agent = GetComponent<NavMeshAgent>();   
-
+        agent = GetComponent<NavMeshAgent>();
 
         _entityEvents.eventUpdateStat += UpdateStat;
 
@@ -89,18 +134,13 @@ public class EnemyBase : Tree, IDamageable
 
     }
 
-    void ControlLocked(bool isLocked)
-    {
-        this.isLocked = isLocked;
-
-        if (isLocked) StopAgent();
-    }
+    //actually what we will do instead is to simply force the respawn from this piece.
 
 
     protected virtual void StartFunction()
     {
 
-        PlayerHandler.instance._entityEvents.eventLockEntity += ControlLocked;
+
 
 
         if (!alreadySetStat)
@@ -119,6 +159,8 @@ public class EnemyBase : Tree, IDamageable
 
     private void Start()
     {
+        CreateKeyForAnimation_Attack();
+        _entityAnimation.UpdateAttackAnimationSpeed(data.AttackAnimationSpeed);
         StartFunction();
     }
 
@@ -126,6 +168,8 @@ public class EnemyBase : Tree, IDamageable
     {
         gameObject.SetActive(false);
         isDead = false;
+        gameObject.layer = 6;
+        _entityAnimation.ControlIfAnimatorApplyRootMotion(false);
 
         _enemyCanvas.UpdateDuration(0, 0);
         //but also turn on the collider.
@@ -142,7 +186,9 @@ public class EnemyBase : Tree, IDamageable
         {
             _abilityIndicatorCanvas.StopCircleIndicator();
         }
-       
+
+
+        SetIsAttacking_Animation(false);
     }
 
     #region STAT ENTITY
@@ -154,16 +200,13 @@ public class EnemyBase : Tree, IDamageable
     {
         //so we need to set the stats of each felal here.
         //we will use the data already inside.
-
-
+      
         alreadySetStat = true;
 
         List<StatClass> baseStatList = data.initialStatList;
         List<StatClass> scaleStatList = data.scaleStatList;
 
-        
-
-
+       
         if(_entityStat == null)
         {
             Debug.Log("something wrong here " + gameObject.name);
@@ -241,33 +284,23 @@ public class EnemyBase : Tree, IDamageable
         shieldedPenetrationValue = penetrationValue;
     }
 
-    public void TakeDamage(DamageClass damageRef)
+    bool DoesShieldBlock(DamageClass damageRef)
     {
 
-        if (isDead) return;
-
-       
         if (isImmuneToExplosion && damageRef.isExplosion)
         {
-            return;
+            return true;
         }
-        if (damageRef.isExplosion)
+        if (shieldedPenetrationValue != -1 && damageRef.attacker != null && !damageRef.isExplosion)
         {
-            Debug.Log("is explosion damage " + gameObject.name);
-        }
-
-       if(shieldedPenetrationValue != -1 && damageRef.attacker != null && !damageRef.isExplosion)
-        {
-
-
-            if(damageRef.attacker.GetID() == "Player")
+            if (damageRef.attacker.GetID() == "Player")
             {
                 //actually i want to record the position when the player shot.
                 Vector3 damageDirection = (damageRef.lastPos - transform.position).normalized;
 
                 float angle = Vector3.Angle(damageDirection, transform.forward);
 
-                if(angle < 65)
+                if (angle < 65)
                 {
 
                     //and not call 
@@ -275,51 +308,70 @@ public class EnemyBase : Tree, IDamageable
                     if (damageRef.pen < shieldedPenetrationValue)
                     {
                         CallShieldPopUp();
-                        return;
-                    }                  
-                    
+                        return true;
+                    }
+
                 }
                 else
                 {
                     Debug.Log("back");
+                    
                 }
 
-                
+
             }
 
         }
-        
 
+
+        return false;
+    }
+
+    public void TakeDamage(DamageClass damageRef)
+    {
+
+        if (isDead) return;
+         
+        //this here is checking if the player can damage the shield.
+        bool hasShieldBlocked = DoesShieldBlock(damageRef);
+
+        if (hasShieldBlocked) return;
+
+
+        if(damageRef.projectilTransform != null)
+        {
+            PSScript ps = GameHandler.instance._pool.GetPS(PSType.Blood_01, damageRef.projectilTransform);
+            ps.transform.SetParent(psContainer);
+            ps.StartPS();
+        }
+       
 
         DamageClass damage = new DamageClass(damageRef);
+        damage.UpdateDamageList_Enemy(data); //this is checking
+        _entityEvents.CallDelegate_DealDamageToEntity(ref damage);
+        float totalDamage = damage.GetTotalDamage();
 
 
-        bool isCrit = damage.CheckForCrit();
+        //GRAPHICAL 
+        _enemyGraphicHandler.MakeDamaged();
 
-        if (isCrit)
+        //EVENTS
+        PlayerHandler.instance._entityEvents.OnDamagedEntity(this, damage);      
+        PlayerHandler.instance._playerStatTracker.ChangeStatTracker(StatTrackerType.DamageDealt_Total, totalDamage);
+        if (damage.AtLeastOneDamageCrit())
         {
             PlayerHandler.instance._entityEvents.OnCrit();
         }
 
-        PlayerHandler.instance._entityEvents.OnDamagedEntity(this, damage);
+        //
 
+       //UI
+        _enemyCanvas.CreateDamagePopUp(damage);
 
-        float reduction = _entityStat.GetTotalValue(StatType.DamageReduction);
-        float totalHealth = _entityStat.GetTotalValue(StatType.Health);
-
-        float damageValue = damage.GetDamage(reduction, totalHealth, isCrit);
-
-
-        _entityEvents.CallDelegate_DealDamageToEntity(ref damageValue);
-
-        healthCurrent -= damageValue;
-        PlayerHandler.instance._playerStatTracker.ChangeStatTracker(StatTrackerType.DamageDealt, damageValue);
-        _enemyCanvas.CreateDamagePopUp(damageValue, DamageType.Physical, isCrit);
-
+        healthCurrent -= totalDamage;
         _enemyCanvas.UpdateHealth(healthCurrent, healthTotal);
-      
 
-        if(healthCurrent <= 0)
+        if (healthCurrent <= 0)
         {
             bool wasPlayer = false;
 
@@ -338,7 +390,6 @@ public class EnemyBase : Tree, IDamageable
             GameHandler.instance._soundHandler.CreateSfx(data.audio_Hit, transform);
         }
 
-
     }
 
     public void CallShieldPopUp()
@@ -351,9 +402,7 @@ public class EnemyBase : Tree, IDamageable
 
 
         PlayerHandler.instance._entityEvents.OnKillEnemy(this, wasKilledByPlayer);
-        
-
-       
+            
         PlayerHandler.instance._playerResources.GainPoints(POINTS_PERKILL);
 
         if (preventNextDeath)
@@ -363,7 +412,9 @@ public class EnemyBase : Tree, IDamageable
         }
 
         isDead = true;
-  
+        gameObject.layer = 0;
+        StopAgent();
+        _rb.velocity = Vector3.zero;
 
 
         LocalHandler.instance.RemoveEnemyFromSpawnList(data);
@@ -374,10 +425,32 @@ public class EnemyBase : Tree, IDamageable
         
         OnDied(data);
 
+        StartCoroutine(DeathProcess());
+        //we need to call death animation here.
 
-        GameHandler.instance._pool.Enemy_Release(data, this);
+        
         //Destroy(gameObject);
 
+    }
+
+    IEnumerator DeathProcess()
+    {
+
+        _entityAnimation.ControlWeight(2, 0);
+        _entityAnimation.ControlIfAnimatorApplyRootMotion(true);
+        _entityAnimation.RerollDeathAnimation();
+        _entityAnimation.CallAnimation_Death();
+
+        float clipDuration = _entityAnimation.GetDurationForDeath() + 5;
+
+        yield return new WaitForSeconds(clipDuration);
+
+        transform.DOMove(transform.position + new Vector3(0, -5, 0), 10f);
+
+        yield return new WaitForSeconds(9.8f);
+
+
+        GameHandler.instance._pool.Enemy_Release(data, this);
     }
 
 
@@ -516,6 +589,9 @@ public class EnemyBase : Tree, IDamageable
     
     public virtual void CallAttack()
     {
+        _entityAnimation.RerollAttackAnimation();
+
+
         if(targetObject == null)
         {
             return;
@@ -535,7 +611,7 @@ public class EnemyBase : Tree, IDamageable
         float distanceForAttack = Vector3.Distance(targetObject.transform.position, transform.position);
         GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
 
-
+        //i wont check for distance, i will check with raycast.
 
         //we will check any fellas in front 
 
@@ -545,7 +621,7 @@ public class EnemyBase : Tree, IDamageable
 
             //if the player is still in range then we attack.
             DamageClass damage = GetDamage();
-            damage.MakeAttacker(this);
+            damage.Make_Attacker(this);
             targetIdamageable.TakeDamage(damage);
         }
 
@@ -557,7 +633,7 @@ public class EnemyBase : Tree, IDamageable
         float pen = _entityStat.GetTotalValue(StatType.Pen);
 
 
-        return new DamageClass(baseDamage, pen);
+        return new DamageClass(baseDamage, data.damageType, pen);
     }
 
     #endregion
@@ -598,13 +674,13 @@ public class EnemyBase : Tree, IDamageable
 
     void CheckIfShouldBeDespawned()
     {
+
         if (data.shouldNotDespawnBecauseOfDistance) return;
         if (_enemySightedByCamera.IsVisibleByCamera) return;
 
+
         Transform playerTransform = PlayerHandler.instance.transform;
         float distance = Vector3.Distance(transform.position, playerTransform.position);
-
-
 
         if(distance > 80)
         {
@@ -613,6 +689,8 @@ public class EnemyBase : Tree, IDamageable
         }
 
     }
+
+
 
     #endregion
 
@@ -644,7 +722,7 @@ public class EnemyBase : Tree, IDamageable
 
         IsAlly = true;
         gameObject.layer = 8;
-        _rend.material = _allyMaterial;
+        _enemyGraphicHandler.MakeAlly();
 
         //recover health
 
@@ -683,11 +761,46 @@ public class EnemyBase : Tree, IDamageable
 
     #endregion
 
+    #region ANIMATION
+
+    //i actually want to be looping rather than always calling it.
+    //i want the attacks to deal damage in the half of its time.
+    //all animations should have 60 fps, with 30 frames being when the damaged is dealt, so always half.
+    //i want to be able to loop.
+
+    //the zombie will not react from getting damaged. they will instead show a little red color
+    //the first attack id is random, but then it becomes a loop.
+    //the zombie should have movement for slow walk and fast walk
+    //
+
+
+
+    public bool IsAttacking_Animation { get; private set; }
+
+    public void SetIsAttacking_Animation(bool IsAttacking_Animation)
+    {
+        this.IsAttacking_Animation = IsAttacking_Animation;
+    }
+
+    protected virtual void CreateKeyForAnimation_Attack()
+    {
+        _entityAnimation.AddEnemyID("Attack", 1,2);
+        _entityAnimation.AddEnemyID("Death", 1, 3);
+    }
+
+
+
+
+
+    //running is just one for the meantime.
+
+    #endregion
 
 
     [Separator("SOUND FOR ENEMY")]
     [SerializeField] SoundUnit soundUnitTemplate;
     [SerializeField] Transform container;
+    //WE WILL BE IGNORING THIS FOR NOW
 
     protected void CreateAudioSource(AudioClip clip)
     {
@@ -740,3 +853,12 @@ public class EnemyBase : Tree, IDamageable
 
 //all these spells should be shows as lines in the floor.
 //just create an image that is placed in the floor. cannot go through wall and is affected by spell range. alos will have a fill function to show when the enemy will attack.
+
+
+
+
+
+//VERSION 0.7
+
+//certain enemies can lose limbs. this has no gameplay utility it will just look cool
+//

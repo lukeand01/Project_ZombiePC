@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b94e31467ba87724a83a99b7000ab593, type: 3}
   m_Name: CityData_Body
   m_EditorClassIdentifier: 
+  <cityStoreName>k__BackingField: Body Enhancer
   <cityStoreLevel>k__BackingField: 0
   <popRequirement>k__BackingField: 5
   <resourcePopRef>k__BackingField: {fileID: 11400000, guid: 5557f4efc84e59844861b35c4006e011, type: 2}
@@ -28,10 +29,10 @@ MonoBehaviour:
     - <data>k__BackingField: {fileID: 11400000, guid: c4fa8ed7843d9d4459af738f0eeb4eb1, type: 2}
       <quantity>k__BackingField: 150
     requiredCityStoreLevelList: []
-  indexList: 000000000000000000000000000000000000000000000000000000000000000000000000
+  indexList: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
   <currentStatAlteredList>k__BackingField:
   - stat: 0
-    initialValue: 150
+    initialValue: 5000
   - stat: 1
     initialValue: 30
   - stat: 2
@@ -40,11 +41,13 @@ MonoBehaviour:
     initialValue: 0
   - stat: 4
     initialValue: 0
+  - stat: 5
+    initialValue: 0
+  - stat: 8
+    initialValue: 0
   - stat: 7
     initialValue: 0
-  - stat: 6
+  - stat: 13
     initialValue: 0
-  - stat: 12
-    initialValue: 0
-  - stat: 17
+  - stat: 18
     initialValue: 0

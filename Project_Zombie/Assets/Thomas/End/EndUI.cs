@@ -110,7 +110,28 @@ public class EndUI : MonoBehaviour
 
 
     public bool IsEnd() => holder.activeInHierarchy;
+
+
+
+
+    #region NEW STUFF
+
+    [SerializeField] Button_Event_End[] buttonArray;
+
+
+    public void StartDefeat()
+    {
+        //the animation is basically the same. it just changes some other things.
+    }
+
+
+    #endregion
+
 }
+
+
+
+//
 
 
 

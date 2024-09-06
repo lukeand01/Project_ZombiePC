@@ -38,11 +38,16 @@ public class EnemySimpleMelee : EnemyBase
         }
     }
 
-
+    public override void ResetEnemyForPool()
+    {
+        base.ResetEnemyForPool();
+        _enemyGraphicHandler.SelectRandomGraphic();
+    }
 
     protected override void StartFunction()
     {
         UpdateTree(GetBehavior());
+        _enemyGraphicHandler.SelectRandomGraphic();
         base.StartFunction();
     }
 
@@ -56,9 +61,5 @@ public class EnemySimpleMelee : EnemyBase
         });
     }
 
-    public override void CallAttack()
-    {
-        base.CallAttack();
-    }
 
 }

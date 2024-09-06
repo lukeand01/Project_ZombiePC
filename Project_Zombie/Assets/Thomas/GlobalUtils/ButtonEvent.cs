@@ -29,6 +29,7 @@ public class ButtonEvent : ButtonBase
 
     private void Start()
     {
+        
         total = 5f;
     }
 
@@ -80,6 +81,7 @@ public class ButtonEvent : ButtonBase
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
+
         base.OnPointerEnter(eventData);
         isHovering = true;
     }

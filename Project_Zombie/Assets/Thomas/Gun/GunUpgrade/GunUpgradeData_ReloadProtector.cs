@@ -31,5 +31,5 @@ public class GunUpgradeData_ReloadProtector : GunUpgradeData
 
 
 
-    //it needs to be the same gun.
+    //it needs to be the same gun_Perma.
 }

@@ -8,6 +8,7 @@ public class FireballProjectil : MonoBehaviour
 
     LayerMask enemyLayer;
     float damageModifier = 0;
+    DamageType damageType;
     Vector3 dir;
     float speed = 25;
     bool canMove = false;
@@ -41,8 +42,8 @@ public class FireballProjectil : MonoBehaviour
     {
         if (other.gameObject.layer != 6 && other.gameObject.layer != 9) return;
 
-        DamageClass damage = new DamageClass(damageModifier);
-        DamageClass damageSecond = new DamageClass(damageModifier * 0.5f);
+        DamageClass damage = new DamageClass(damageModifier, damageType, 0);
+        DamageClass damageSecond = new DamageClass(damageModifier * 0.5f, damageType, 0);
         float burnDamageModifier = 1;
 
         //BDClass bd = new BDClass("Fireball", BDDamageType.Burn)

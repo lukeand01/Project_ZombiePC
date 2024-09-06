@@ -1,6 +1,5 @@
 
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,6 +38,21 @@ public static class MyUtils
     }
 
     //i shouldnt be able to improve all stats. 
+
+    public static DamageType GetDamageTypeFromBDDamageType(BDDamageType _type) 
+    {
+        
+            switch(_type)
+            {
+                case BDDamageType.Burn:
+                    return DamageType.Magical;
+                case BDDamageType.Bleed:
+                    return DamageType.Physical;
+            }
+
+            return DamageType.Physical;
+        } 
+
 
     public static List<StatType> GetStatRefList_ForBodyEnhancer()
     {
@@ -337,7 +351,7 @@ public static class MyUtils
             StatTrackerType.GunChestsUsed,
             StatTrackerType.ResourceChestsFound,
             StatTrackerType.DamageTaken,
-            StatTrackerType.DamageDealt
+            StatTrackerType.DamageDealt_Total
         };
     }
 
@@ -472,4 +486,45 @@ public static class MyUtils
 
         return 0;
     }
+
+
+    public static Vector3 NormalizeDirectionToInt(Vector3 vector, float threshold)
+    {
+        if(threshold > 0)
+        {
+            return new Vector3(
+            Mathf.Abs(vector.x) < threshold ? 0 : Mathf.Sign(vector.x),
+            Mathf.Abs(vector.y) < threshold ? 0 : Mathf.Sign(vector.y),
+            Mathf.Abs(vector.z) < threshold ? 0 : Mathf.Sign(vector.z)
+            );
+        }
+        else
+        {
+            return new Vector3(
+            Mathf.Sign(vector.x),
+            Mathf.Sign(vector.y),
+            Mathf.Sign(vector.z)
+            );
+        }
+       
+    }
+
+
+    public static Vector3 GetVectorFromAngle(float angle)
+    {
+        float angleRad = angle * (Mathf.PI / 180);
+        return new Vector3(Mathf.Cos(angleRad), 0, Mathf.Sin(angleRad));
+    }
+
+    public static float GetAngleFromVectorFloat(Vector3 dir)
+    {
+        dir = dir.normalized;
+
+        float n = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        if (n < 0) n += 360;
+
+        return n;
+    }
+
 }

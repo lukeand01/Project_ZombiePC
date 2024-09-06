@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class EquipWindowUI : MonoBehaviour
 {
-    //we create the ability or gun everytime respecive is changed.
+    //we create the ability or gun_Perma everytime respecive is changed.
 
     GameObject holderMain;
     [SerializeField] GameObject holder;
@@ -123,7 +123,7 @@ public class EquipWindowUI : MonoBehaviour
     public EquipWindowEquipUnit GetEquipForPermaGun(GunClass gun)
     {
         equipUnit_Gun_Player.SetGun(gun.data, this);
-        //equipUnit_Gun_Player.SetGunClass(gun);
+        //equipUnit_Gun_Player.SetGunClass(gun_Perma);
         gun.SetGunEquip(equipUnit_Gun_Player);
         return equipUnit_Gun_Player;
     }

@@ -102,7 +102,7 @@ public class EnemyWithShield : EnemyBase
 
             //if the player is still in range then we attack.
             DamageClass damage = GetDamage();
-            damage.MakeAttacker(this);
+            damage.Make_Attacker(this);
             targetIdamageable.TakeDamage(damage);
 
             Vector3 pushDirection = (PlayerHandler.instance.transform.position - transform.position).normalized;

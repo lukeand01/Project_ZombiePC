@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Diagnostics;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.UIElements.Experimental;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -28,6 +30,9 @@ public class PlayerMovement : MonoBehaviour
 
         groundLayer |= (1 << 10);
     }
+
+
+
 
     private void Start()
     {
@@ -67,17 +72,28 @@ public class PlayerMovement : MonoBehaviour
 
     #region MOVEMENT
     [SerializeField]Vector3 lastDir;
+    [field:SerializeField] public float currentSpeed { get; private set; }
     //so a part of the 
 
 
     public void MovePlayer(Vector3 dirVector)
     {
         //the thing that disables it is the death plane
-        
-        if(dirVector != Vector3.zero)
+
+        if (dirVector != Vector3.zero)
         {
             lastDir = new Vector3(dirVector.x, 0, dirVector.y);
+            handler._entityAnimation.CallAnimation_BlendRun();
+            UpdateDirectionInRelationToMousePosition();
         }
+        else
+        {
+            handler._entityAnimation.CallAnimation_Idle();
+        }
+
+         
+
+
 
         float currentSpeed = stat.GetTotalValue(StatType.Speed) * 0.3f ;
 
@@ -86,7 +102,11 @@ public class PlayerMovement : MonoBehaviour
 
         float moveModifier = 1;
 
-        Vector3 movement = new Vector3(dirVector.x, 0, dirVector.y) * (currentSpeed - giantModifier) * moveModifier;
+
+        this.currentSpeed = (currentSpeed - giantModifier) * moveModifier;
+        this.currentSpeed = Mathf.Clamp(this.currentSpeed, 0, 100);
+
+        Vector3 movement = new Vector3(dirVector.x, 0, dirVector.y) * this.currentSpeed;
         Vector3 fallSpeed = new Vector3(0, handler._rb.velocity.y , 0);
         handler._rb.velocity = movement + fallSpeed;
         //handler._rb.AddForce((movement + fallSpeed) * 200, ForceMode.Force);
@@ -94,6 +114,71 @@ public class PlayerMovement : MonoBehaviour
         //maybe increase a force to create the effect.
 
     }
+
+
+
+
+    //this is actually not wortking
+    //when it goes down its showing very bad values.
+    //when going down the value is reduced. we can use 
+    //maybe what we care is not the transform position, 
+
+    int GetForwardValue(float angle)
+    {
+        int value = 0;
+        //300 - 29
+        //150 - 250
+        if (angle > 130 && angle < 250)
+        {
+            value = -1;
+        }
+        if (angle > 300 || angle < 50)
+        {
+            value = 1;
+        }
+
+        return value;
+    }
+    int GetSideValue(float angle)
+    {
+        //
+        int value = 0;
+
+        //90
+        //270
+
+        if(angle > 120 && angle < 200)
+        {
+            value = -1;
+        }
+        if(angle < 80 || angle > 310)
+        {
+            value = 1;
+        }
+
+
+        return value;
+    }
+
+
+    void UpdateDirectionInRelationToMousePosition()
+    {
+        //
+
+        //THIS GETS THE OF THE GRAPHICHOLDER TO USE IT AS REFERENCE. THERE IS NO NEED TO KNOW WHERE THE MOUSE IS IN FACT
+        float angle = Vector3.SignedAngle(lastDir, graphic.transform.forward, Vector3.up);
+        if (angle < 0) angle += 360;
+
+
+        float angle_Side = Vector3.SignedAngle(lastDir, graphic.transform.right, Vector3.up);
+        if (angle_Side < 0) angle_Side += 360;
+
+
+        handler._entityAnimation.UpdateMovementBleed(GetForwardValue(angle), GetSideValue(angle_Side));
+
+    }
+
+    
 
     #endregion
 
@@ -118,6 +203,12 @@ public class PlayerMovement : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(rotationVector, Vector3.up);
             graphic.transform.rotation = Quaternion.RotateTowards(graphic.transform.rotation, targetRotation, Time.deltaTime * 1100);
         }
+
+        //i need to know the angle and which side it is.
+        //the angle is always based on the same axis. Z AXIS
+        //if its to the left we 
+
+
     }
 
     public void RotatePlayer(Vector3 dir)
@@ -173,7 +264,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform head; //we shoot a raycast from both of these to tell if there is a wall ahead.
 
     [Separator("DASH")]
-    [SerializeField] AudioClip audio_Dash;
+    [SerializeField] AudioClip audio_Dash_Start;
+    [SerializeField] AudioClip audio_Dash_End;
+    [SerializeField] Material dashMaterial;
+
 
     int dashTotal;
     int dashCurrent;
@@ -224,6 +318,10 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(DashProcess());
     }
 
+
+    //the dash will make the player disappear and spawn particles
+    //then the dash makes it appear at the end and spawn particles again.
+
     IEnumerator DashProcess()
     {
         //a short period you cannot control the char and a short period
@@ -236,8 +334,8 @@ public class PlayerMovement : MonoBehaviour
         handler._entityStat.AddBD(bdClass);
 
         float startTime = Time.time;
-        float dashTime = 0.08f;
-        float dashSpeed = 120;
+        float dashTime = 0.15f;
+        float dashSpeed = 60;
 
 
         //if this touches a wall then we call it to force it end.
@@ -252,6 +350,12 @@ public class PlayerMovement : MonoBehaviour
             dashSpeedDir *= 0.5f;
         }
 
+        //handler.GetGraphicHolder.SetActive(false);
+
+        PSScript ps_Start = GameHandler.instance._pool.GetPS(PSType.Dash_01, transform);
+        ps_Start.StartPS();
+
+        handler._entityMeshRend.ApplyMaterial_EntireBody_New(dashMaterial);
 
         while (Time.time < startTime + dashTime && !IsWallAhead())
         {         
@@ -260,8 +364,11 @@ public class PlayerMovement : MonoBehaviour
             yield return null;           
         }
 
+        handler._entityMeshRend.ApplyMaterial_EntireBody_Original();
 
-
+        //handler.GetGraphicHolder.SetActive(true);
+        PSScript ps_End = GameHandler.instance._pool.GetPS(PSType.Dash_01, transform);
+        ps_End.StartPS();
 
         handler._rb.velocity = Vector3.zero;
         handler._playerController.block.RemoveBlock("Dash");

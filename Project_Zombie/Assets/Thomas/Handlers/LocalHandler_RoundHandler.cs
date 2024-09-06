@@ -198,9 +198,15 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
     //but i also need a list for despawned fella. that once you receive you instantly assign to someone close.
 
+
+    /// <summary>
+    /// I RECEIVE ANY ENEMIES THAT ARE TOO FAR FROM THE PLAYER HERE
+    /// </summary>
     public void ReceiveDespawnedEnemy(EnemyBase enemy)
     {
-        //we spawn the same fella at a possible list.
+        //this here we spawn directly.
+        //what might be happening
+
 
         if(currentPortalCloseList.Count > 0)
         {
@@ -225,7 +231,8 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         //if thats the case we check for the next.
     }
 
-
+    //i need to learn how we are dealing with the respawn
+    //actually i wont do that. i will stop their movement, but i will not despawn them, so i need a way to force them to no not despawn.
     void SpawnEnemies()
     {
 
@@ -241,9 +248,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         }
 
 
-        //we are chopsen the enemies here.
-        //if an enemy has 0 chance fo spawning i dont it.
-        //then i need to check for 
+        
 
 
         List<EnemyData> chosenEnemyList = new();
@@ -319,9 +324,6 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         }
 
         //Debug.Log("got to the end " + );
-
-
-
 
         foreach (var item in chosenEnemyList)
         {

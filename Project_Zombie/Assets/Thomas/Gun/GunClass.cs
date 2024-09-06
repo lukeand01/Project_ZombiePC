@@ -10,20 +10,23 @@ public class GunClass
     [SerializeField] ItemGunData debugShowData;
     string ownerId;
 
-   
+    public bool isEquipped { get; private set; } 
+
+
+
 
     public GunClass()
     {
         data = null;
         debugShowData = null;
     }
-    public GunClass(PlayerHandler handler, ItemGunData data, GameObject spawnedGunModel)
+    public GunClass(PlayerHandler handler, ItemGunData data, GameObject spawnedGunModel, Transform holsterHolder)
     {
         this.data = data;
 
         SetUp();
 
-        SetGunModel(spawnedGunModel);
+        SetGunModel(spawnedGunModel, holsterHolder);
 
         ammoCurrent = (int)data.GetValue(StatType.Magazine);
         ammoTotal = ammoCurrent;
@@ -56,20 +59,22 @@ public class GunClass
     {
         //we have to update the values here
 
-        _DamageClass = new DamageClass(0);
+        _DamageClass = new DamageClass(data.GetDamageList);
+        
+        //damage will increase every stat.
 
         //DAMAGE
         float modifier = GetGunTotalStat(StatType.Damage) * _stat.GetTotalValue(StatType.Damage);
-        _DamageClass.MakeDamage(GetGunTotalStat(StatType.Damage) + modifier);
+        
 
         //PEN
-        _DamageClass.MakePen(GetGunTotalStat(StatType.Pen) + _stat.GetTotalValue(StatType.Pen));
+        _DamageClass.Make_Pen(GetGunTotalStat(StatType.Pen) + _stat.GetTotalValue(StatType.Pen));
 
         //CRIT CHANCE
-        _DamageClass.MakeCritChance(GetGunTotalStat(StatType.CritChance) + _stat.GetTotalValue(StatType.CritChance) + (_stat.GetTotalValue(StatType.Luck) * 1.5f )) ;
+        _DamageClass.Make_CritChance(GetGunTotalStat(StatType.CritChance) + _stat.GetTotalValue(StatType.CritChance) + (_stat.GetTotalValue(StatType.Luck) * 1.5f )) ;
 
         //CRIT DAMAGE
-        _DamageClass.MakeCritDamage(GetGunTotalStat(StatType.CritDamage) + _stat.GetTotalValue(StatType.CritDamage));
+        _DamageClass.Make_CritDamage(GetGunTotalStat(StatType.CritDamage) + _stat.GetTotalValue(StatType.CritDamage));
 
     }
 
@@ -201,7 +206,7 @@ public class GunClass
         OrganizeAllDamageStats();
 
         //we update firerate.
-        //we update total magazine.
+        //we update total_Damage magazine.
         //when it come out of the upgrade station it should have the magazine refreshed as well.
 
         ammoTotal = (int)GetGunTotalStat(StatType.Magazine);
@@ -390,15 +395,57 @@ public class GunClass
     #region MODELS
     public GameObject gunModel {  get; private set; }
     public Transform gunPoint {  get; private set; }
-    public void SetGunModel(GameObject gunModel)
+    Transform holsterHolder;
+    Transform gunHand;
+
+    Vector3 equippedPosition;
+    Vector3 equippedRotation;
+    Vector3 equippedScale;
+    //we need to save rotation and position of the gun_Perma
+
+    public void SetGunModel(GameObject gunModel, Transform holsterHolder)
     {
         this.gunModel = gunModel;
         gunPoint = gunModel.transform.GetChild(0).transform;
+        gunHand = gunModel.transform.parent;
 
+        equippedPosition = gunModel.transform.localPosition;
+        equippedRotation = gunModel.transform.localRotation.eulerAngles;
+        equippedScale = gunModel.transform.localScale;
+
+
+        this.holsterHolder = holsterHolder;
 
         gunModel.transform.localRotation = data.gunModel.transform.localRotation;
     }
 
+    public void StoreWeapon()
+    {
+        //we put teh weapon, turned on in the right place. perphaps we reduce the 
+
+        gunModel.transform.SetParent(holsterHolder);
+        gunModel.transform.localPosition = Vector3.zero;
+        gunModel.transform.localRotation = Quaternion.Euler(new Vector3(0, -90, 90));
+
+        isEquipped = false;
+    }
+    public void EquipWeaponInHand()
+    {
+        //
+
+        gunModel.transform.SetParent(gunHand);
+
+        gunModel.transform.localPosition = equippedPosition;
+        gunModel.transform.localRotation = Quaternion.Euler(equippedRotation);
+        gunModel.transform.localScale = equippedScale;
+
+        isEquipped = true;
+    }
+
+    public void ControlModelVisibility(bool isVisible)
+    {
+        if(gunModel != null) gunModel.gameObject.SetActive(isVisible);
+    }
 
     #endregion
 
@@ -464,25 +511,25 @@ public class GunClass
    
     void UpdateStat(StatType stat, float value)
     {
-
-        if(stat == StatType.Damage)
+        EntityStat _stat = PlayerHandler.instance._entityStat;
+        if (stat == StatType.Damage)
         {
-            float modifier = GetGunTotalStat(StatType.Damage) * value;
-            _DamageClass.MakeDamage(GetGunTotalStat(StatType.Damage) + modifier);
+            float modifier = _stat.GetTotalValue(StatType.Damage);
+            _DamageClass.Update_DamageListUsingDamageStat(modifier + value, modifier);
         }
         if(stat == StatType.Pen)
         {
-            _DamageClass.MakePen(GetGunTotalStat(StatType.Pen) + value);
+            _DamageClass.Make_Pen(GetGunTotalStat(StatType.Pen) + value);
             return;
         }
         if (stat == StatType.CritChance)
         {
-            _DamageClass.MakeCritChance(GetGunTotalStat(StatType.Pen) + value);
+            _DamageClass.Make_CritChance(GetGunTotalStat(StatType.Pen) + value);
             return;
         }
         if (stat == StatType.CritDamage)
         {
-            _DamageClass.MakeCritDamage(GetGunTotalStat(StatType.Pen) + value);
+            _DamageClass.Make_CritDamage(GetGunTotalStat(StatType.Pen) + value);
             return;
         }
 
@@ -493,17 +540,17 @@ public class GunClass
     {
         EntityStat _stat = PlayerHandler.instance._entityStat;
 
-        float modifier = GetGunTotalStat(StatType.Damage) * _stat.GetTotalValue(StatType.Damage);
-        _DamageClass.MakeDamage(GetGunTotalStat(StatType.Damage) + modifier);
+        float modifier =  _stat.GetTotalValue(StatType.Damage);
+        _DamageClass.Update_DamageListUsingDamageStat(modifier);
 
         //PEN
-        _DamageClass.MakePen(GetGunTotalStat(StatType.Pen) + _stat.GetTotalValue(StatType.Pen));
+        _DamageClass.Make_Pen(GetGunTotalStat(StatType.Pen) + _stat.GetTotalValue(StatType.Pen));
 
         //CRIT CHANCE
-        _DamageClass.MakeCritChance(GetGunTotalStat(StatType.CritChance) + _stat.GetTotalValue(StatType.CritChance) + (_stat.GetTotalValue(StatType.Luck) * 1.5f));
+        _DamageClass.Make_CritChance(GetGunTotalStat(StatType.CritChance) + _stat.GetTotalValue(StatType.CritChance) + (_stat.GetTotalValue(StatType.Luck) * 1.5f));
 
         //CRIT DAMAGE
-        _DamageClass.MakeCritDamage(GetGunTotalStat(StatType.CritDamage) + _stat.GetTotalValue(StatType.CritDamage));
+        _DamageClass.Make_CritDamage(GetGunTotalStat(StatType.CritDamage) + _stat.GetTotalValue(StatType.CritDamage));
     }
 
     #endregion
@@ -550,7 +597,6 @@ public class GunClass
     //i am puitting here variable that i dont where to put yet.
 
     public int bulletPerShot { get; private set; } //this is the actual number.
-    public float bulletQuantityDamageModifier { get; private set; } //we are simply going to add this to the damage.
 
     int bulletShootFlat2;
 
@@ -570,7 +616,6 @@ public class GunClass
 
         RecaculateBulletPerShot();
 
-        _DamageClass.MakeBulletQuantityDamageModifier(secretStatMultipleBulletDamageModifier * (bulletPerShot - 1));
 
     }
 

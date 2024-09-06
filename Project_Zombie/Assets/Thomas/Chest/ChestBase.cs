@@ -10,11 +10,20 @@ public class ChestBase : MonoBehaviour, IInteractable
     protected bool isLocked;
     [Separator("CHESTBASE")]
     [SerializeField] protected InteractCanvas interactCanvas;
-
-
+    [SerializeField] protected Transform graphic_Body;
+    [SerializeField] protected Transform graphic_Lid;
+    [SerializeField] protected AudioClip openChestClip;
     private void Awake()
     {
         id = Guid.NewGuid().ToString(); 
+    }
+
+
+    public virtual void ResetForPool()
+    {
+        graphic_Body.gameObject.SetActive(true);
+        graphic_Lid.gameObject.SetActive(true);
+        interactCanvas.gameObject.SetActive(false);
     }
 
     public string GetInteractableID()
@@ -29,6 +38,7 @@ public class ChestBase : MonoBehaviour, IInteractable
 
     public virtual void InteractUI(bool isVisible)
     {
+        interactCanvas.gameObject.SetActive(isVisible);
         interactCanvas.ControlInteractButton(isVisible);
 
         //this makes the gunchest update the price.

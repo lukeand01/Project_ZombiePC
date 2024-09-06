@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f4f525fee86b5745a9e40a442066eab, type: 3}
   m_Name: CityData_Main
   m_EditorClassIdentifier: 
-  <cityStoreLevel>k__BackingField: 5
+  <cityStoreName>k__BackingField: Main
+  <cityStoreLevel>k__BackingField: 1
   <popRequirement>k__BackingField: 0
   <resourcePopRef>k__BackingField: {fileID: 11400000, guid: 5557f4efc84e59844861b35c4006e011, type: 2}
   <requirementToIncreaseLevelList>k__BackingField:

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using MyBox;
 using System;
 using System.Collections;
@@ -27,12 +28,18 @@ public class PlayerHandler : MonoBehaviour
     
     public EntityEvents _entityEvents {  get; private set; }
     public EntityStat _entityStat { get; private set; }
+    public EntityAnimation _entityAnimation { get; private set; }
+    public EntityMeshRend _entityMeshRend { get; private set; }
 
     public Camera _cam { get; private set; }
 
     [Separator("BODY PARTS REF")]
     [SerializeField] GameObject graphicHolder;
     [SerializeField] Transform _head;
+
+
+    public GameObject GetGraphicHolder { get { return graphicHolder; } }
+
     [field:SerializeField]public Transform[] eyeArray { get; private set; }
 
 
@@ -68,11 +75,11 @@ public class PlayerHandler : MonoBehaviour
 
 
     //how should the ability work?
-    //maybe actually what we can do is that the gun 
+    //maybe actually what we can do is that the gun_Perma 
 
     //int he armory you see all the guns you can have, but unless you have already seen those guns they will remain a mystery.
     
-    //from where i get the gun?
+    //from where i get the gun_Perma?
     //guns should have difference spawn chances.
     //
 
@@ -115,6 +122,7 @@ public class PlayerHandler : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        _cam = Camera.main;
 
         _playerController = GetComponent<PlayerController>();
         _playerMovement = GetComponent<PlayerMovement>();
@@ -128,16 +136,22 @@ public class PlayerHandler : MonoBehaviour
 
         _entityEvents = GetComponent<EntityEvents>();
         _entityStat = GetComponent<EntityStat>();
+        _entityAnimation = GetComponent<EntityAnimation>();
+        _entityMeshRend = GetComponent<EntityMeshRend>();
 
         _rb = GetComponent<Rigidbody>();
 
-       
+
+        _entityAnimation.SetAnimationID("Player");
+
+        DOTween.Init();
+
         //layerForBuilding |= (1 << )
     }
 
     public void ResetPlayer()
     {
-        //inform the gun to drop all guns
+        //inform the gun_Perma to drop all guns
         //inform the stathandler to remove all bds
         //reset the passives.
 
@@ -146,10 +160,20 @@ public class PlayerHandler : MonoBehaviour
         _playerAbility.ResetPassiveAbilities();
         _playerCombat.ResetPlayerCombat();
         _playerStatTracker.ResetStatTracker();
-        _playerResources.ResetPlayerResource();
-        _playerCamera.ResetPlayerCamera();
+        _playerResources.ResetPlayerResource();       
         _playerMovement.ResetPlayerMovement();
+        _entityAnimation.ResetPlayerAnimation();
+        _playerCamera.ResetPlayerCamera();
         //also in the end we need to make sure that it always return tot eh base
+
+
+        abilityRoll_Cost = 0;
+    }
+
+
+    public void SetPlayerOutOfCity()
+    {
+        _entityAnimation.ControlWeight(2, 1);
 
     }
 
@@ -227,31 +251,70 @@ public class PlayerHandler : MonoBehaviour
         _rb.AddForce(pos * strenght, ForceMode.Impulse);
     }
 
-    public void CallDeathByFalling()
+
+    #region COLOR FOR DAMAGE
+
+    [Separator("COLOR FOR DAMAGE")]
+    [SerializeField] Color color_Physical;
+    [SerializeField] Color color_Magical;
+    [SerializeField] Color color_Plasma;
+    [SerializeField] Color color_Corrupt;
+    [SerializeField] Color color_Pure;
+    public Color GetColorForDamageType(DamageType _type)
     {
-        //here we will get the player camera to do something.
-        //we wait and then we call the screen
+        switch (_type)
+        {
+            case DamageType.Physical:
+                return color_Physical;
+            case DamageType.Magical:
+                return color_Magical;
+            case DamageType.Plasma:
+                return color_Plasma;
+            case DamageType.Corrupt:
+                return color_Corrupt;
+            case DamageType.Pure:
+                return color_Pure;
 
-        StopAllCoroutines();
-        StartCoroutine(DeathByFallingProcess());
+        }
 
+        return Color.black;
     }
 
-    IEnumerator DeathByFallingProcess()
+    #endregion
+
+    #region COLOR FOR ABILITY TYPE
+    [Separator("COLOR FOR ABILITY TPE")]
+    [SerializeField] Color color_BoneOfDeath;
+    [SerializeField] Color color_SoulOfAnger;
+    [SerializeField] Color color_EyeOfWisdom;
+
+    public Color GetColorForAbilityCoinType(AbilityCoinType _type)
     {
-        _playerController.block.AddBlock("Falling", BlockClass.BlockType.Complete);
+        switch (_type)
+        {
+            case AbilityCoinType.Bone_Of_Death:
+                return color_BoneOfDeath;
+            case AbilityCoinType.Soul_Of_Anger:
+                return color_SoulOfAnger;
+            case AbilityCoinType.Eye_Of_Wisdom:
+                return color_EyeOfWisdom;
+        }
 
-        _playerCamera.SetCamera(CameraPositionType.FallDeath, 2, 2);
-
-        _rb.velocity = new Vector3(0, _rb.velocity.y, 0);
-
-
-        yield return new WaitForSeconds(1.5f); //then we kill the player
-
-        _playerResources.Die(true);
-
-        _playerController.block.RemoveBlock("Falling");
+        return Color.black;
     }
+    #endregion
+
+
+    #region COST FOR ABILITY ROLL
+    public int abilityRoll_Cost { get; private set; } = 0;
+
+    public void AbilityRoll_Add()
+    {
+        abilityRoll_Cost += 1;
+    }
+
+
+    #endregion
 
 }
 

@@ -88,13 +88,13 @@ public class Teleporter : MonoBehaviour
         if (shouldLockEnemies)
         {
             PlayerHandler.instance._entityEvents.OnLockEntity(true);
+            Debug.Log("called it true");
         }
 
         
       
         float duration = 1;
 
-       StartCoroutine(GameHandler.instance.LowerCurtainProcess_Simple(1));
 
         //we call the thunder and make the player disappear.
 
@@ -126,7 +126,6 @@ public class Teleporter : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
 
-        StartCoroutine(GameHandler.instance.RaiseCurtainProcess_Simple(1));
 
         yield return new WaitForSeconds(duration * 0.3f);
 
@@ -150,6 +149,7 @@ public class Teleporter : MonoBehaviour
         if (!shouldLockEnemies)
         {
             PlayerHandler.instance._entityEvents.OnLockEntity(false);
+            Debug.Log("called it false");
         }
     }
 

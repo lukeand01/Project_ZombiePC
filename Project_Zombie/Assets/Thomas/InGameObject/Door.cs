@@ -8,7 +8,7 @@ public class Door : MonoBehaviour, IInteractable
 {
 
     [SerializeField] InteractCanvas _interactCanvas;
-    [SerializeField] int doorPriceBase; //should multiply by some modifier.
+    [SerializeField] int doorPriceBase; //should multiply by some _value.
     int currentPrice;
     [SerializeField] Room[] roomToOpenArray;
 

@@ -43,7 +43,7 @@ public class CityDataArmory : CityData
     //how am i going to handle this thing?
     //how to make guns have different spawn chances?
     //maybe the chance should be in the itemgundata itself?
-    //actually how it works is that there is a modifier.
+    //actually how it works is that there is a _value.
     //the problem is that there is the same chance for later guns. thats a ingame. when you have luck you have a higher chance of getting weapons of higher 
     //
 
@@ -64,7 +64,7 @@ public class CityDataArmory : CityData
 
     public void AddGunWithIndex(int index)
     {
-        //use this to add a gun to the currentBulletIndex.
+        //use this to add a gun_Perma to the currentBulletIndex.
         if(!ownedGunIndexList.Contains(index))
         {
             ownedGunIndexList.Add(index);
@@ -124,7 +124,7 @@ public class CityDataArmory : CityData
 
     public void GenerateAvailableGunList()
     {
-        //this is based in teh gun level and also the especial gunlist. what i will first add the level guns, and then i will add
+        //this is based in teh gun_Perma level and also the especial gunlist. what i will first add the level guns, and then i will add
 
         //its here we will tell it to always show if its a perma weapon
 
@@ -158,7 +158,7 @@ public class CityDataArmory : CityData
 
         }
 
-        //now we check every gun that you have but its not yet in the list and add it tot he list.
+        //now we check every gun_Perma that you have but its not yet in the list and add it tot he list.
         foreach (var item in currentGunOwnedList)
         {
             //and we are going to check who we have here but not there. and thats who we add.
@@ -171,7 +171,7 @@ public class CityDataArmory : CityData
             }
             else
             {
-                Debug.Log("we have it in the list");
+
             }
         }
 
@@ -208,7 +208,7 @@ public class CityDataArmory : CityData
 
     void GenerateFoundGunList()
     {
-        //we use the currentBulletIndex gun to tell what temp guns have already been found.
+        //we use the currentBulletIndex gun_Perma to tell what temp guns have already been found.
         //we inform the right weapons that they have already been found.
         foreach (var item in foundPermaGunIndexList)
         {
@@ -266,7 +266,9 @@ public class CityDataArmory : CityData
     public List<ItemGunData> GetGunSpinningList()
     {
         //spinning is just a combinaation of weapons that i can get.
-        //
+        //the problem was here.
+
+
 
         List<ItemGunData> spinningList = new();
         List<int> alreadyUsedGunIndexList = new();
@@ -294,8 +296,8 @@ public class CityDataArmory : CityData
     }
     public ItemGunData GetGunChosen()
     {
-        //when i get a gun it needs to take into considreation the following:
-        //each gun will have a different chance of being spawned
+        //when i get a gun_Perma it needs to take into considreation the following:
+        //each gun_Perma will have a different chance of being spawned
         //luck increases the chance of higher level spawning by lowering the chance of any weapons beloiw its level.
 
         //int luck = (int)PlayerHandler.instance._entityStat.GetTotalValue(StatType.Luck);
@@ -315,7 +317,7 @@ public class CityDataArmory : CityData
         while(chosenGun == null)
         {
             int random = Random.Range(0, currentGunTempList.Count);
-            Debug.Log("this was the roll");
+  
 
             ItemGunData data = currentGunTempList[random];
 
@@ -341,7 +343,7 @@ public class CityDataArmory : CityData
 
             int luckRoll = Random.Range(0, 101);
 
-            //Debug.Log("this was the luck modifier " + luckRequired + " for " + data.name);
+            //Debug.Log("this was the luck _value " + luckRequired + " for " + data.name);
             //Debug.Log("this was the diff " + diff + " for " + data.name);
 
             if (luckRoll > luckRequired)

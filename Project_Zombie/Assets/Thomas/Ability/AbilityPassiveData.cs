@@ -9,7 +9,8 @@ public class AbilityPassiveData : AbilityBaseData
     //do i want to create a passive for each thing? 
     [Separator("PASSIVE")]
     [SerializeField] protected float _firstValue;
-    [SerializeField] protected float _secondValue;   
+    [SerializeField] protected float _secondValue;
+    [field: SerializeField] public AbilityCoinType _coinType { get; private set; }
 
     public virtual void Add(AbilityClass ability)
     {
@@ -87,6 +88,12 @@ public class AbilityPassiveData : AbilityBaseData
     public override AbilityPassiveData GetPassive() => this;   
 }
 
+public enum AbilityCoinType
+{
+    Bone_Of_Death,
+    Soul_Of_Anger,
+    Eye_Of_Wisdom
+}
 
 //we can ad stuff and just handle stuff somewhere else.
 //

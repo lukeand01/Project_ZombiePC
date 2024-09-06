@@ -16,6 +16,7 @@ public class ItemNotificationUnit : MonoBehaviour
 
 
     [SerializeField] Image background;
+    [SerializeField] Image border;
     [SerializeField] Image portrait;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI quantityText;
@@ -93,6 +94,7 @@ public class ItemNotificationUnit : MonoBehaviour
         float duration = 0.3f;
 
         background.DOFade(0, duration).SetUpdate(true);
+        border.DOFade(0, duration).SetUpdate(true);
         portrait.DOFade(0, duration).SetUpdate(true);
         nameText.DOFade(0, duration).SetUpdate(true);
         quantityText.DOFade(0, duration).SetUpdate(true);

@@ -97,7 +97,7 @@ public class CityDataLab : CityData
 
         }
 
-        //now we check every gun that you have but its not yet in the list and add it tot he list.
+        //now we check every gun_Perma that you have but its not yet in the list and add it tot he list.
         foreach (var item in currentActiveAbilityOwnedList)
         {
             //and we are going to check who we have here but not there. and thats who we add.

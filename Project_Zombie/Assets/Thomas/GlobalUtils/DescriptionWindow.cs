@@ -283,7 +283,7 @@ public class DescriptionWindow : MonoBehaviour
         foreach (var item in refList)
         {
            StatDescriptionUnit newObject = Instantiate(gun_Stat_Template);
-            newObject.SetUp(item, 0); //we give no stats here but when we open with teh gun we change that.
+            newObject.SetUp(item, 0); //we give no stats here but when we open with teh gun_Perma we change that.
             newObject.RemoveRaycast();
             newObject.transform.SetParent(gun_Stat_Container);
             gun_Stat_UnitList.Add(newObject);

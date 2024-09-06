@@ -103,7 +103,7 @@ public class PlayerInventory : MonoBehaviour
         {
             //wthen we infomr the ui to show that it just received this thing.
             CheckItemInUI(item);
- 
+            Debug.Log("appear in ui");
         }
 
 
@@ -177,7 +177,7 @@ public class PlayerInventory : MonoBehaviour
     
     void CheckItemInUI(ItemClass item)
     {
-
+        //this list is the pauselist.
         //the item must be added before being called.
  
         for (int i = 0; i < inventoryListForUI.Count; i++)

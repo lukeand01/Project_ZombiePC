@@ -19,7 +19,7 @@ public class KeyClass
             KeyType.MoveDown, 
             KeyType.MoveUp,
             KeyType.Reload,
-            KeyType.SwapWeapon,
+            KeyType.SwapWeapon_1,
             KeyType.Interact,
             KeyType.Ability1,
             KeyType.Ability2,
@@ -83,7 +83,8 @@ public class KeyClass
         keyDictionary.Add(KeyType.MoveRight, KeyCode.D);
 
         keyDictionary.Add(KeyType.Reload, KeyCode.R);
-        keyDictionary.Add(KeyType.SwapWeapon, KeyCode.Q);
+        keyDictionary.Add(KeyType.SwapWeapon_1, KeyCode.Q);
+        keyDictionary.Add(KeyType.SwapWeapon_2, KeyCode.E);
         keyDictionary.Add(KeyType.Interact, KeyCode.F);
 
         keyDictionary.Add(KeyType.Ability1, KeyCode.Alpha1);
@@ -97,6 +98,8 @@ public class KeyClass
         keyDictionary.Add(KeyType.Dash, KeyCode.LeftShift);
 
         keyDictionary.Add(KeyType.EquipWindow, KeyCode.Tab);
+
+        keyDictionary.Add(KeyType.Interact_2, KeyCode.G);
     }
 
     public List<KeyClass_Individual_ForShow> GetListForSettings()
@@ -142,7 +145,7 @@ public enum KeyType
     MoveUp,
     MoveDown,
     Reload,
-    SwapWeapon,
+    SwapWeapon_1,
     Interact,
     Ability1,
     Ability2,
@@ -150,6 +153,8 @@ public enum KeyType
     Shoot,
     Pause,
     Dash,
-    EquipWindow
+    EquipWindow,
+    SwapWeapon_2,
+    Interact_2
 
 }

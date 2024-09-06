@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -37,6 +38,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+
+        if (handler == null) return;
+       
+
 
         if(Time.timeScale == 0)
         {
@@ -221,9 +226,14 @@ public class PlayerController : MonoBehaviour
     }
     void InputSwap()
     {
-        if (Input.GetKeyDown(key.GetKey(KeyType.SwapWeapon)))
+        if (Input.GetKeyDown(key.GetKey(KeyType.SwapWeapon_1)))
         {
-            handler._playerCombat.OrderSwapGun();
+            handler._playerCombat.OrderSwapGun(1);
+            handler._entityEvents.OnHardInput();
+        }
+        if (Input.GetKeyDown(key.GetKey(KeyType.SwapWeapon_2)))
+        {
+            handler._playerCombat.OrderSwapGun(2);
             handler._entityEvents.OnHardInput();
         }
     }
@@ -313,6 +323,7 @@ public class PlayerController : MonoBehaviour
 
     LayerMask layerForMouseHover_Enemy;
     LayerMask layerForMouseHover_Ground;
+    [SerializeField] float debugAngleMouse;
     public Vector3 GetMouseDirection()
     {
         
@@ -329,9 +340,10 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerForMouseHover_Enemy))
         {
+            //actually i dont want hit.point i want the entity itself.
 
             // Calculate direction to rotate character
-            Vector3 targetDirection = (hit.point - transform.position).normalized;
+            Vector3 targetDirection = (hit.collider.transform.position - transform.position).normalized;
             targetDirection.y = 0f; // Ignore vertical component (if needed)
 
             // Rotate character towards mouse position         
@@ -340,8 +352,29 @@ public class PlayerController : MonoBehaviour
         //and another that only hits the map and gives a point in the map.
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerForMouseHover_Ground))
         {
-            Vector3 targetDirection = (hit.point - transform.position).normalized;
+  
+
+            //Vector3 offset = new Vector3(0,0,0);
+
+            float angle = Vector3.SignedAngle(hit.point, transform.transform.forward, Vector3.up);
+            if (angle < 0) angle += 360;
+
+
+            debugAngleMouse = angle;
+            //this is the angle
+
+
+            Vector3 targetDirection = (hit.point - transform.position.normalized);
             targetDirection.y = 0f; 
+
+            
+
+
+            //here we will add the offsets.
+            //to the right we add a bit to the offset
+            //to the left we subtract a bit to the offset
+
+
 
             return targetDirection;
         }

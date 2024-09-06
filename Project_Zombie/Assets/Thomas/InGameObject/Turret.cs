@@ -47,7 +47,7 @@ public class Turret : AllyBase
         //targetLayer |= (1 << 7);
 
         attackCooldownTotal = GetStat(StatType.FireRate);
-        damage = new DamageClass(GetStat(StatType.Damage));
+        damage = new DamageClass(GetStat(StatType.Damage), DamageType.Physical, 0);
         SetUp_Ally(50, 35);
     }
 

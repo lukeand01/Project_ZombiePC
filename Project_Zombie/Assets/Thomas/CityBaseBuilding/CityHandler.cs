@@ -40,8 +40,9 @@ public class CityHandler : MonoBehaviour
         PlayerHandler.instance._playerInventory.PassStageInventoryToCityInventory(); //we get the inventory from teh player to teh city
         PlayerHandler.instance.transform.position = spawnPos.position; //we put the player in the right position
         PlayerHandler.instance._playerController.block.AddBlock("City", BlockClass.BlockType.Combat); //and we block combat
-
-        //now i need to 
+        PlayerHandler.instance._playerCombat.ControlGunHolderVisibility(false);
+        PlayerHandler.instance._entityAnimation.ControlWeight(2, 0);
+        
 
         UpdateAbilityListUsingCurrentAbilities();
         UpdateGunListUsingCurrentPermaGun(); 
@@ -61,14 +62,14 @@ public class CityHandler : MonoBehaviour
 
     public void StartCity()
     {
-        PlayerHandler.instance._playerCombat.ControlGunHolderVisibility(false);
+        
 
         //ready the equip here and i get ref from the player
 
         UpdateGunListUsingCurrentPermaGun();
 
         UpdateAbilityListUsingCurrentAbilities();
-        //hide the gun from the player.
+        //hide the gun_Perma from the player.
 
 
 
@@ -90,7 +91,7 @@ public class CityHandler : MonoBehaviour
 
         List<ItemGunData> ownedGunList = cityDataHandler.cityArmory.currentGunOwnedList;
 
-        //this update is updating only the owned gun.
+        //this update is updating only the owned gun_Perma.
 
         foreach (var item in ownedGunList)
         {
@@ -369,6 +370,8 @@ public class CityHandler_CityBuildingHandler
         //we remove all houses and then bring back them back based in the center level. 
         //every level we add three houses.
 
+
+
         foreach (var item in houseList)
         {
             item.RemoveFromCity();
@@ -443,7 +446,7 @@ public class CityHandler_CityBuildingHandler
 
 
             Debug.LogError("pop spend should never be more than the current pop");
-            return;
+            //return;
         }
 
         PlayerInventory playerInventory = PlayerHandler.instance._playerInventory;

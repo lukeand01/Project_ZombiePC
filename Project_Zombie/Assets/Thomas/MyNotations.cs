@@ -13,7 +13,7 @@
 
 //GOAL
 ///move system. the player can move and can look around
-//gun system. can equip and shoot the weapons.
+//gun_Perma system. can equip and shoot the weapons.
 //interaction system. can interact with items and doors.
 
 
@@ -31,7 +31,7 @@
 ///the player has stats
 ///the enemy has stats that can be scaled.
 ///first i needd to be able to change stats in a non-heavy manner
-//i need to make every gun, enemy and etc assign to the right event. and remove said events if they are killed.
+//i need to make every gun_Perma, enemy and etc assign to the right event. and remove said events if they are killed.
 ///can crit. and it is influenced by player critchance and critdamage. guns also have modifierse.
 ///handle penetration.
 ///stat reload speed affect reload speed.
@@ -46,7 +46,7 @@
 //GOAL
 ///the effect of many guns appearing till one is hover.
 ///i need to randomly select 
-//it shows the stats of that gun.
+//it shows the stats of that gun_Perma.
 //we can reroll
 //if we already have two guns then we need to select which one we will be replacing.
 
@@ -55,12 +55,12 @@
 ///then i will do the equip with no other gun
 ///then we will make that your guns can appear by the left.
 ///you can hover them to see their stats in relation to the chosen. when you no longer hovering it instantly goes back to only the chosen
-//if you have two guns you need to select one for replacement. then we need to actually replace them and simply throg away the replaced gun.
+//if you have two guns you need to select one for replacement. then we need to actually replace them and simply throg away the replaced gun_Perma.
 ///the rotations of new guns seem to not be working.
 ///the chest gun is not swaping the right weapon
 
 
-//when you receive a gun. it pauses the game and shows the the gun. you can roll again for the double of points.
+//when you receive a gun_Perma. it pauses the game and shows the the gun_Perma. you can roll again for the double of points.
 //when you receive an ability. you gain three options which you must choose. you can roll for them again but you need tp spend a lot of points
 //can interact with the door
 //fix what happens when two interact are too close.
@@ -190,7 +190,7 @@
 ///change it so the description appears as a window instead of staying in place. then i place the passive holderMain there.
 ///create and update passive description
 ///create and update stat description
-//create gun description
+//create gun_Perma description
 
 //GOAL
 ///create ability box. each enemy has a chance to carry a ability box that will be dropped once dead.
@@ -226,7 +226,7 @@
 //GOAL
 ///creates system for dodge. and when you dodge there is a popup
 ///creates system for damageback
-///creates system for increasing the amount of shoots based in a modifier.
+///creates system for increasing the amount of shoots based in a _value.
 
 
 //
@@ -315,12 +315,12 @@
 
 
 //NOW the goal is to create a playable enviroment. for this i require:
-//a draft of base upgrade minigame: ability roll ; gun roll ; active abilities ; main guns ; improve stats(something different here)
+//a draft of base upgrade minigame: ability roll ; gun_Perma roll ; active abilities ; main guns ; improve stats(something different here)
 //active ability: tier1 - 3; tier2 - 3)
 //passive ability: tier1 - 6 ; tier 2 - 6
-//main gun: tier 1 - 3; tier 2 - 2
-//temp gun: tier 1 - 6; tier 2 - 3
-//fix the gun popup. its not appearing really well and it should show really well.
+//main gun_Perma: tier 1 - 3; tier 2 - 2
+//temp gun_Perma: tier 1 - 6; tier 2 - 3
+//fix the gun_Perma popup. its not appearing really well and it should show really well.
 
 //HOW BASE BUILDING WORK
 //you can walk around. you can test abilities.
@@ -394,7 +394,7 @@
 
 
 //how will chest spawn work?
-//the gun one has a spawn place. in whatever place of the map. once used it goes to another random spot.
+//the gun_Perma one has a spawn place. in whatever place of the map. once used it goes to another random spot.
 //resource chest is found in certain spots. 
 //the ability chest is spwaned by killing. 
 //
@@ -618,7 +618,7 @@
 //can spawn enemy.
 //can kill all enemies
 //can get a passive with id
-//can get gun with id
+//can get gun_Perma with id
 //can buy all items in the store.
 
 
@@ -639,7 +639,7 @@
 //finish the turret.
 ///fix the enemy not moving from spawn
 //improve spawn system
-//check ability and gun systems.
+//check ability and gun_Perma systems.
 
 
 
@@ -684,7 +684,7 @@
 //WHAT I CAN DO NOW?
 //there will be places to mine resources. Iron and copper.
 //there is a computer that you can gain intel, which allows to build new builds or, when activated oyu must protect the place to gain the intel.
-//gun boxes
+//gun_Perma boxes
 //there are shrines randomly placed in the map. you must complete a random goal to get the bless from this thing. "kill 100 enemies". you gain a bless. 
 //A - forces a random bless. you must complete it or you lose 15% of your health. it gives 10 bleses. low timer
 //B - choose one goal out of three. you must complete it or you lose 50% of your health. it gives 10 blesses. high timer
@@ -740,8 +740,8 @@
 //GOAL OF TODAY
 //the charge enemy
 //make sure the shield is working
-//apply effects to teh gun once the process is done
-//create a bd system for the gun.
+//apply effects to teh gun_Perma once the process is done
+//create a bd system for the gun_Perma.
 //connect to the gunstats. Damage, Magazine, firerate, Pen, Critchance, Critdamage, ReloadSpeed
 //make a way to add tot he shield.
 
@@ -840,7 +840,7 @@ using static System.Collections.Specialized.BitVector32;
 ///sawed off shotgun: deals more damage per additional pellet. 0.5 % per pellet.
 ///creates system for dodge. and when you dodge there is a popup
 ///creates system for damageback
-///creates system for increasing the amount of shoots based in a modifier.
+///creates system for increasing the amount of shoots based in a _value.
 ///shoot a fireaball at mouse
 ///create burning tick
 ///instantly reload the mag and deasl damage around based in the magsize.
@@ -980,8 +980,8 @@ using static System.Collections.Specialized.BitVector32;
 ///the upgrade weapon also costs money to start.
 //the charge enemy
 //make sure the shield is working
-//apply effects to teh gun once the process is done
-//create a bd system for the gun.
+//apply effects to teh gun_Perma once the process is done
+//create a bd system for the gun_Perma.
 //connect to the gunstats. Damage, Magazine, firerate, Pen, Critchance, Critdamage, ReloadSpeed
 //make a way to add tot he shield.
 
@@ -1117,7 +1117,7 @@ using static System.Collections.Specialized.BitVector32;
 ///so in the builded version adding a gun is not updating the ui
 ///also i cannot see the description window for the gun unit
 ///the box didnt destroyed once the ability was chosen
-//the slow bullet is not working and breaking the gun
+//the slow bullet is not working and breaking the gun_Perma
 ///the ranged are shooting too fast.
 ///
 
@@ -1153,7 +1153,7 @@ using static System.Collections.Specialized.BitVector32;
 ///the stat in pause ui is not working
 //the store ui
 //the dash ui
-//the gun owned ui
+//the gun_Perma owned ui
 ///the character is not interacting
 //the add items appear in the main menu
 ///ui for the abilities are not appearing
@@ -1178,7 +1178,7 @@ using static System.Collections.Specialized.BitVector32;
 //VERSION 0.5
 
 //MECHANICS
-//the gun box is changed to look more like cod
+//the gun_Perma box is changed to look more like cod
 //create the drop system
 //you can build new buildings for your city.
 //there are npcs walking around. they do nothing but they have to pretend to work
@@ -1189,7 +1189,7 @@ using static System.Collections.Specialized.BitVector32;
 //CONTENT
 //2 new enemies
 //3 new guns
-//3 new gun upgrades
+//3 new gun_Perma upgrades
 //3 new quests
 //5 new passive abilities
 //the turret active ability.
@@ -1204,7 +1204,7 @@ using static System.Collections.Specialized.BitVector32;
 //create effeect for the bullet
 
 //GENERAL FIXES
-//when you increase the total health you should health by that same amount
+//when you increase the total_Damage health you should health by that same amount
 //the giant is walking sideways towards the player. remember to fix that when you put the grqpahics
 //the pause ui passive abiity number is not showing the number of stacks
 //the ranged enemies are not moving, and other times they are stuck near a wall firing at the wall.
@@ -1220,14 +1220,14 @@ using static System.Collections.Specialized.BitVector32;
 //fix that the equip window will show the last position of the drag item for a splitsecond.
 //create more passive abilities
 //create more active abilities
-//more gun upgrades
+//more gun_Perma upgrades
 //more enemies
 //more guns
 //more quests
 //add effects to the bullets
 //when you pick the resource box it should stack the different resource being granted if they are the same.
 //i think the ranged units should try moving after every hit. especially if the player gets too close.
-//the gun box shouldnt be a ui. it should be like cod, a weapon rising to the air as the game continues to play.
+//the gun_Perma box shouldnt be a ui. it should be like cod, a weapon rising to the air as the game continues to play.
 
 
 //now i have to do it for ability
@@ -1235,7 +1235,7 @@ using static System.Collections.Specialized.BitVector32;
 //i need to make sure its working in the equip tab.
 //and now we will improve the buy screen.
 //i want an effect for buying, not instantly
-//i need to add more stats to the gun stats description.
+//i need to add more stats to the gun_Perma stats description.
 
 //HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
@@ -1499,7 +1499,7 @@ using static System.Collections.Specialized.BitVector32;
 //create the main menu with the new ui
 ///create the system for cooldown per round and cooldown per timer. other ability ui improvements
 ///create the system for you to hold the ability to charge the ability
-//create new content (new passive, new active, new enemies, new gun abilities, new guns )
+//create new content (new passive, new active, new enemies, new gun_Perma abilities, new guns )
 //put more things in the map. mechanics unique to this map.
 //create the turret
 //create an area where you can train in the city.
@@ -1629,7 +1629,7 @@ using static System.Collections.Specialized.BitVector32;
 //create a stat called leadership that influences any allies damage and health.
 
 //TEMP GUN IDEA
-//Laser gun. once you shoot it charges and fire a beam that last a few seconds.
+//Laser gun_Perma. once you shoot it charges and fire a beam that last a few seconds.
 //Laser rifle. it charges and shoot a nomral bullet.
 //Sword. swip in front
 //
@@ -1649,7 +1649,7 @@ using static System.Collections.Specialized.BitVector32;
 
 ///fix reloadability. create a pop up when you use this ability.
 ///create an effect for the portal spawning.
-//Laser gun and laser rifle
+//Laser gun_Perma and laser rifle
 ///can dash through walls and gates?
 //can stand in the gaps outside of the map
 ///test the mage offset.
@@ -1673,7 +1673,7 @@ using static System.Collections.Specialized.BitVector32;
 
 //GOAL STEPS
 //create 2 new guns (laser, )
-//create 2 new gun passives
+//create 2 new gun_Perma passives
 ///create another enemy
 ///create 2 more shrine quests.
 
@@ -1808,7 +1808,7 @@ using static System.Collections.Specialized.BitVector32;
 //
 
 //it will be a random seller every time
-//it can sell abilities, gun upgrades or curses.
+//it can sell abilities, gun_Perma upgrades or curses.
 //there will always be three options right in front of the merchant
 //you can talk with the merchant as well
 //each of the options are alwayws random
@@ -2002,7 +2002,7 @@ using static System.Collections.Specialized.BitVector32;
 //MY GOAL
 ///change the gunbox to work like zombie cod
 //create 2 new guns
-//create 2 new gun upgrades
+//create 2 new gun_Perma upgrades
 
 //MY GOAL
 ///you can improve your perma stats.
@@ -2061,7 +2061,7 @@ using static System.Collections.Specialized.BitVector32;
 //so you hold the weapon you wish to give. then you interact and you lose that weapon
 //it takes a time and when complete it delivers the weapons back.
 //but how the upgrade works?
-//it improves all gun stats.
+//it improves all gun_Perma stats.
 //some of these fellas can stack.
 //stats - damage, reloadspeed, magsize, 
 //and it gives one additional value_Level :
@@ -2073,9 +2073,9 @@ using static System.Collections.Specialized.BitVector32;
 //blood consumer - this weapons has 15% vampirism.
 //Light weight - gives movespeed when holding this weapon.
 //Fragmentation Bullet - every bullet in contact with an enemy breaks off into three other pieces that deal 20% of the damage. they do apply status
-//Possessed - start a quest that after completing it grants this gun higher damage.
-//Sharp Projectile - grants this gun 25% pen.
-//Reload Protector - when you reload this gun you recover 50 % of your shield. you get a shield of 50;
+//Possessed - start a quest that after completing it grants this gun_Perma higher damage.
+//Sharp Projectile - grants this gun_Perma 25% pen.
+//Reload Protector - when you reload this gun_Perma you recover 50 % of your shield. you get a shield of 50;
 //
 
 
@@ -2088,7 +2088,7 @@ using static System.Collections.Specialized.BitVector32;
 //
 
 //upgrade system
-//each gun must have ability passives.
+//each gun_Perma must have ability passives.
 //this wont be passive otherwise it will show in ui.
 //so we create a "gunpassiveData" which it can hold and alter gunpassives.
 
@@ -2109,7 +2109,7 @@ using static System.Collections.Specialized.BitVector32;
 ///reload instant not working ability
 ///the ability units are black for some reason. tehy cannot be seen.
 //door in the left 
-//when you respawn your current gun. what that means?
+//when you respawn your current gun_Perma. what that means?
 ///suicide is moving and dealing global damage
 //abilities 
 ///getting stuck in the wall. spawner has collider in show 
@@ -2120,7 +2120,7 @@ using static System.Collections.Specialized.BitVector32;
 
 
 //i need to change how weapons are found
-//i probably dont want the same gun in different tiers.
+//i probably dont want the same gun_Perma in different tiers.
 //but i want guns to be improved. so perphaps i have two equal guns and the guy just replace the guns.
 //the player should have a list that is defined by the tier list, so the same system, but we add a especial list of guns that the player get from quests.
 //perpahps the tier system is not what i want. like what you should be able to do is instead have a quantity of guns and then you add the guns.
@@ -2144,24 +2144,3 @@ using static System.Collections.Specialized.BitVector32;
 //
 //
 
-//VERSION 0.6 -==--==--=-=-=-=-==-=--==-=-=-
-
-//NEW CONTENT (Start date: ; End date: ;)
-//you are able to alter the run at the start. choosing harder modes, or modes where you cannot heal or other stuff.
-//vision fog. the player does not see things that visible for its character
-//get 3d models.
-//animatio  systems
-//create sound system
-//create save system, and save slots
-//use dots with some parts of the game. like bullets and parts of enemies. (ONLY IF THERE ARE PERFOMANCE PROBLEMS)
-//bosses and mini-bosses.
-//create a new round type where there is boulder constantly falling down
-//round type where 
-//create a new map: there is an energe generator. there is a cart you can use to go to other places. 
-//create a better fade ui for misc messages
-//create enemy lancer, it has a shield and a lancer. it show an ability indcator for the lance attack, which is middle range.
-//each ability has one out of three Coins. which are gained when obtaining an original ability. three of those can be traded in the 
-//can talk with the merchant and use bless to reroll the abilities, or to show the especial abilities, which are bought with those especial coins.
-//enemy spawned should be improved. because currently as long as you keep killing the enemy it will keep spawning the same especial. make a limit per round instead.
-//Buy UI. need to be improved. also all the things should have a description.
-//pressing escape when the settings in on the screen makes only the settings close

@@ -15,11 +15,21 @@ public class EnemySimpleRanged : EnemyBase
 
     bool canShoot = false;
 
-
+    public override void ResetEnemyForPool()
+    {
+        base.ResetEnemyForPool();
+        _enemyGraphicHandler.SelectRandomGraphic();
+    }
     protected override void StartFunction()
     {
         UpdateTree(GetBehavior());
+        _enemyGraphicHandler.SelectRandomGraphic();
         base.StartFunction();
+    }
+
+    protected override void CreateKeyForAnimation_Attack()
+    {
+        _entityAnimation.AddEnemyID("Attack", 3, 3); //IT CAN ONLY USE THE ANIMATION 3
     }
 
     protected override void UpdateFunction()

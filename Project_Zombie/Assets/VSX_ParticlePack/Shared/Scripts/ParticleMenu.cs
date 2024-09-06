@@ -8,7 +8,7 @@ public class ParticleMenu : MonoBehaviour {
 	// our ParticleExamples class being turned into an array of things that can be referenced
 	public ParticleExamples[] particleSystems;
 
-	// the gun GameObject
+	// the gun_Perma GameObject
 	public GameObject gunGameObject;
 
 	// a private integer to store the current position in the array
@@ -46,7 +46,7 @@ public class ParticleMenu : MonoBehaviour {
 		// ..spawn the relevant game object based on the array of potential game objects, according to the current currentBulletIndex (position in the array)
 		currentGO = Instantiate (particleSystems[currentIndex].particleSystemGO, spawnLocation.position + particleSystems[currentIndex].particlePosition, Quaternion.Euler(particleSystems[currentIndex].particleRotation)) as GameObject;
 
-		// only activate the gun GameObject if the current effect is a weapon effect
+		// only activate the gun_Perma GameObject if the current effect is a weapon effect
 		gunGameObject.SetActive (particleSystems[currentIndex].isWeaponEffect);
 
 		// setup the UI texts according to the strings in the array 

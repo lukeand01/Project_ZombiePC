@@ -8,37 +8,16 @@ using UnityEngine;
 
 public class CityStore : MonoBehaviour, IInteractable
 {
-    //the city store is anything in the base
-    //what things are we going to have in the base
-    //each of them will have a level that will dictate what you can do
-    //the buildins are:
-    //armory: Perma guns and player roll chance
-    //Training: Active abilities and ability roll
-    //Headquarter: where you choose a mission
-
-
-    //i can just hardcode this.
-    //i can create a generic class that takes resources.
-    //it needs data so it easy to change. the data inform how much it costs and what it costs to up things
-
-    //City data. armory has cost of ugprading.
-    //there should be a bar in the top showing that stuff,
-
-
 
 
     string id;
     [SerializeField] protected CityCanvas _cityCanvas;
     [SerializeField] InteractCanvas _interactCanvas;
 
-    [SerializeField] GameObject graphicHolder;
+    [SerializeField] protected GameObject[] graphicArray;
 
-    [Separator("Work Spot")]
-    [SerializeField] List<CityWorkSpot> workSpotList = new();
 
-    //what do i should in the citystorecanvas?
-    //
-
+    //each script decided on what to do.
 
     private void Awake()
     {
@@ -81,7 +60,8 @@ public class CityStore : MonoBehaviour, IInteractable
         if (shouldReset)
         {
             GetCityData.ResetCityStoreLevel();
-            HideBuilding();
+            UpdateGraphic();
+            //we reset level and so we must reset this to the original level.
         }
         else
         {
@@ -93,9 +73,15 @@ public class CityStore : MonoBehaviour, IInteractable
 
             if(GetCityData.cityStoreLevel > 0)
             {
-                ShowBuilding();
+                //if we are loading and the citystorelevel is more than 0
+                UpdateGraphic();
             }
-            else { HideBuilding();}
+            else {
+
+                //but if not we still hide it
+                UpdateGraphic();
+
+            }
         }
 
     }
@@ -105,23 +91,33 @@ public class CityStore : MonoBehaviour, IInteractable
     {
         //each fella does a different thing.
         //we decide on a graphic also.
-        ShowBuilding();
+        //call it fade to black.
+
         GetCityData.IncreaseCityStoreLevel();
-
+        UpdateGraphic();
     }
 
-    public void ShowBuilding()
+
+   protected virtual void UpdateGraphic()
     {
-        graphicHolder.transform.DOLocalMoveY(0, 1.5f).SetEase(Ease.Linear).SetUpdate(true);
+        //this get the level of the thing and 
+        int lastIndex = -1;
+        for (int i = 0; i < graphicArray.Length; i++)
+        {    
+           
+            graphicArray[i].SetActive(GetCityData.cityStoreLevel == i);
 
+            if (graphicArray[i].activeInHierarchy)
+            {
+                lastIndex = i;
+            }
+        }
+
+        if(lastIndex != -1)
+        {
+            graphicArray[lastIndex].SetActive(true);
+        }
     }
-    public void HideBuilding()
-    {
-        graphicHolder.transform.DOLocalMoveY(-5, 1).SetEase(Ease.Linear).SetUpdate(true);
-    }
-
-
-   
 
     protected virtual void CallInteract()
     {
@@ -131,7 +127,7 @@ public class CityStore : MonoBehaviour, IInteractable
 
     protected virtual void UpdateInteractUIName(string name)
     {
-        _interactCanvas.ControlNameHolder(name);
+        
     }
 
     #region INTERACT
@@ -150,11 +146,17 @@ public class CityStore : MonoBehaviour, IInteractable
 
     public void InteractUI(bool isVisible)
     {
-       
-            //we are going to show the build canvas.
-            _interactCanvas.ControlInteractButton(isVisible);
-            UpdateInteractUIName("yo");
-        
+
+        //we are going to show the build canvas.
+
+        _interactCanvas.gameObject.SetActive(isVisible);
+
+        if (!isVisible) return;
+
+        string inputText_1 = PlayerHandler.instance._playerController.key.GetKey(KeyType.Interact).ToString();
+        _interactCanvas.UpdateInteractButton_NewSystem(0, inputText_1, GetCityData.cityStoreName, GetCityData.cityStoreLevel.ToString());
+        _interactCanvas.DisableInteratButton_NewSystem(1);
+     
 
         
     }
@@ -166,6 +168,12 @@ public class CityStore : MonoBehaviour, IInteractable
     #endregion
 }
 
-//if the thing is level 0 then it will auto set as not yet built.
-//then we must have different graphics for each level.
+//GOAL
+//each citystore has graphics that are updated by level, wont use most but its good to have as a system
+//each citystore can have a character.
+//when you interact with a building there are two options, to open the building options or to talk with the person.
+//when you upgrade a store it should fade out and in to allow the character to appear.
+//
+
+//GOAL
 //

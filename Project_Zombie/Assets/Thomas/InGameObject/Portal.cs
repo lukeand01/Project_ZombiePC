@@ -1,3 +1,5 @@
+using DG.Tweening;
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -29,8 +31,13 @@ public class Portal : MonoBehaviour
     LocalHandler handler;
 
     bool isSpawning;
-    bool isLocked;
+    [SerializeField] bool isLocked;
 
+
+    [Separator("PORTAL EFFECT")]
+    [SerializeField] ParticleSystem ps;
+
+    //currently teleport is not locked.
 
     private void Start()
     {
@@ -38,6 +45,9 @@ public class Portal : MonoBehaviour
         originalPos = transform.position;
 
         PlayerHandler.instance._entityEvents.eventLockEntity += ControlLocked;
+
+        ps.transform.localScale = Vector3.zero;
+
     }
 
     private void OnDestroy()
@@ -48,6 +58,7 @@ public class Portal : MonoBehaviour
     void ControlLocked(bool isLocked)
     {
         this.isLocked = isLocked;
+
     }
 
     private void Awake()
@@ -57,6 +68,9 @@ public class Portal : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        if (isLocked) return;
+
         if (spawnTotal == 0)
         {
             Debug.Log("spawn total");
@@ -134,31 +148,27 @@ public class Portal : MonoBehaviour
     }
     IEnumerator SpawnProcess()
     {
-        //we shake this thing a bit
-        //
+        //we will zoom in the portal effect, then spawn teh fella and then zoom out.
 
         isSpawning = true;
 
-        int rounds = 25;
-        float timer = 1.5f / rounds;
+        ps.transform.DOScale(2.3f, 3);
 
-        float randomValue = 0.08f;
-
-        for (int i = 0; i < rounds; i++)
-        {
-            float randomX = Random.Range(-randomValue, randomValue);
-            float randomY = 0;
-
-            transform.position = originalPos + transform.right * randomX ;
-            yield return new WaitForSeconds(timer);
-        }
-
-        //this wont work
+        yield return new WaitForSeconds(3);
 
         Spawn(spawnQueueList[0]);
         spawnQueueList.RemoveAt(0);
+        
+
+        ps.transform.DOScale(0, 3);
+
+        yield return new WaitForSeconds(3);
+
         isSpawning = false;
     }
+
+
+
 
     public void OrderRespawn(EnemyBase enemy)
     {

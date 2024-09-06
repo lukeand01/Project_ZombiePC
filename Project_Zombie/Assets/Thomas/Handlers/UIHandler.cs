@@ -55,8 +55,10 @@ public class UIHandler : MonoBehaviour
     public Settings _settingsUI { get { return settingUIRef; } }
     #endregion
 
-    
-    
+
+    [Separator("OTHER CANVAS")]
+    [SerializeField] Transform genericWorldCanvas; //we are going to put fade ui here.
+    public Transform GetGenericWorldCanvas { get { return genericWorldCanvas; } }
 
     public void ControlUI(bool isCityUI)
     {
@@ -76,7 +78,7 @@ public class UIHandler : MonoBehaviour
     }
     void ControlStageUI(bool isVisible)
     {
-        //stage ui is gun, playerui, abilityu
+        //stage ui is gun_Perma, playerui, abilityu
 
         gunUI.ControlUI(isVisible);
         _playerUI.ControlUI(isVisible);

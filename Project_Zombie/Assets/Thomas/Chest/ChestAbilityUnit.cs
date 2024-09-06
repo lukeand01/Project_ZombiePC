@@ -19,16 +19,18 @@ public class ChestAbilityUnit : ButtonBase
     [SerializeField] GameObject selected;
     [SerializeField] TextMeshProUGUI stackText;
     [SerializeField] TextMeshProUGUI descriptionText;
-
-
+    [SerializeField] Image[] abilityTypeIndicator;
 
 
     ChestUI _chestUI;
 
     AbilityPassiveData data;
+    int orderIndex;
 
-    public void SetUp(AbilityPassiveData data, ChestUI _chestUI)
+    public void SetUp(AbilityPassiveData data, ChestUI _chestUI, int orderIndex)
     {
+
+        this.orderIndex = orderIndex;
 
         transform.localScale = Vector3.zero;
         transform.DOKill();
@@ -56,6 +58,13 @@ public class ChestAbilityUnit : ButtonBase
         }
 
 
+        Color abilityCoinColor = PlayerHandler.instance.GetColorForAbilityCoinType(data._coinType);
+        foreach (var item in abilityTypeIndicator)
+        {
+            item.color = abilityCoinColor;
+        }
+
+
     }
 
 
@@ -63,18 +72,22 @@ public class ChestAbilityUnit : ButtonBase
     {
         base.OnPointerClick(eventData);
 
+        Debug.Log("click");
+
         if(data == null)
         {
             //there was nothing here.
             Debug.Log("no data?");
         }
 
-        _chestUI.ChooseAbility(data);
+        _chestUI.ChooseAbility(data, orderIndex);
 
     }
     public override void OnPointerEnter(PointerEventData eventData)
     {
         base.OnPointerEnter(eventData);
+
+        Debug.Log("true");
 
         selected.transform.DOKill();
         selected.transform.DOScale(1.05f, 0.15f).SetUpdate(true);

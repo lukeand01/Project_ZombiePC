@@ -4,27 +4,42 @@ using UnityEngine;
 
 public class City_House : MonoBehaviour
 {
-
     [SerializeField] GameObject graphicHolder;
+    [SerializeField] GameObject[] graphicArray;
     [SerializeField] Transform especialNpcPosition;
 
     public Story_NpcData npc {  get; private set; }
 
     public bool isActive {  get; private set; }
 
+    void UpdateGraphic()
+    {
+        //we check the main one and increase the level
+
+        int mainLevel = GameHandler.instance.cityDataHandler.cityMain.cityStoreLevel / 2;
+        int cappedLevel = Mathf.Clamp(mainLevel, 1, 5) - 1;
+
+        Debug.Log("capped level " + cappedLevel);
+
+        for (int i = 0; i < graphicArray.Length; i++)
+        {
+            graphicArray[i].SetActive(cappedLevel == i - 1);
+        }
+    }
 
     public void RemoveFromCity()
     {
         //we hide them underground
-        graphicHolder.transform.localPosition = new Vector3(0, -4, 0);
-
+        UpdateGraphic();
+        graphicHolder.SetActive(false);
         isActive = false;
     }
 
     public void AddToCity()
     {
         //we bring them to the upper level.
-        graphicHolder.transform.localPosition = Vector3.zero;
+        UpdateGraphic();
+        graphicHolder.SetActive(true);
 
         isActive = true;
     }

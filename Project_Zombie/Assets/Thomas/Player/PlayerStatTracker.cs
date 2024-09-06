@@ -64,5 +64,10 @@ public enum StatTrackerType
     GunChestsUsed,
     ResourceChestsFound,
     DamageTaken,
-    DamageDealt
+    DamageDealt_Total,
+    DamageDealt_Physical,
+    DamageDealt_Magical,
+    DamageDealt_Plasma,
+    DamageDealt_Corruption,
+    DamageDealt_Pure,
 }

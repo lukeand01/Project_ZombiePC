@@ -109,11 +109,16 @@ public class BehaviorChase : Sequence2
         {
             //then we call this and apss to the next
             //then we force right at way for the enemy to stop
-
+            //we dont play
+           
             return NodeState.Success;
         }
         else
         {
+            //here we play animation for running
+            enemy._entityAnimation.CallAnimation_Run(0);
+             enemy._entityAnimation.CallAnimation_Run(2);
+
             return NodeState.Running;
         }
         

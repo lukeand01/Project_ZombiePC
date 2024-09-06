@@ -81,7 +81,7 @@ public class AllyBase : MonoBehaviour, IDamageable
     {
         Debug.Log("take damage");
 
-        float damageValue = damage.GetDamage(0, health_Total, false);
+        float damageValue = damage.GetTotalDamage();
 
 
         health_Current -= damageValue;

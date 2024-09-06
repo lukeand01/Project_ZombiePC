@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 [CreateAssetMenu(menuName = "Item / Gun / TempGun")]
 public class ItemGunData : ItemData
 {
-    //basically every basic gun that behaves normally will take from this.
+    //basically every basic gun_Perma that behaves normally will take from this.
 
     [Range(1, 20)] public int bulletPerShot = 1;
     public float bulletOffset;
@@ -18,6 +18,12 @@ public class ItemGunData : ItemData
     [field:SerializeField] public List<BulletBehavior> bulletBehaviorList { get; private set; } = new(); //the amount of stuff that a single bullet from this will do. like setting people on fire and dealing damage.
     public bool canHoldDownButtonToKeepShooting;
     [field:SerializeField] public int goThroughPower;
+    [field: SerializeField] public MouseUIType mouseImageType;
+    [field: SerializeField] public AnimationState_UpperBody animationType;
+
+    [Separator("DAMAGE LIST")]
+    [SerializeField] List<DamageTypeClass> damageList = new(); //
+    public List<DamageTypeClass> GetDamageList { get { return damageList; } }
 
     [Separator("SOUNDS")]
      [SerializeField]AudioClip audio_Shoot;
@@ -75,11 +81,26 @@ public class ItemGunData : ItemData
         this.hasBeenFound = hasBeenFound;
     }
 
-
+    private void Awake()
+    {
+        
+    }
 
     private void OnEnable()
     {
         FormStatList();
+
+        if (animationType == AnimationState_UpperBody.Idle)
+        {
+            if (isTemp)
+            {
+                animationType = AnimationState_UpperBody.Rifle;
+            }
+            else
+            {
+                animationType = AnimationState_UpperBody.Pistol;
+            }
+        }
     }
 
     [ContextMenu("Form Stat List")]
@@ -100,9 +121,9 @@ public class ItemGunData : ItemData
 
     public StatClass[] GetGunStatList() => gunBaseStat;
 
-    //butllet per shot is modifier
+    //butllet per shot is _value
     //also we should be able to get damage from it
-    //i can just put those variables in the gun? but then i would need to double check everytime.
+    //i can just put those variables in the gun_Perma? but then i would need to double check everytime.
 
     IDamageable playerDamageable; //terrible solution, but it works for now.
 
@@ -113,7 +134,7 @@ public class ItemGunData : ItemData
 
         Transform gunPointPosition = gun.gunPoint;
 
-        PlayerCombat combat = PlayerHandler.instance._playerCombat;
+
 
         if(playerDamageable == null)
         {
@@ -177,11 +198,11 @@ public class ItemGunData : ItemData
 
     public virtual void AddGunPassives()
     {
-        //Debug.LogError("add gun passive failed " + itemName);
+        //Debug.LogError("add gun_Perma passive failed " + itemName);
     }
     public virtual void RemoveGunPassives()
     {
-        //Debug.LogError("remove gun passive failed " + itemName);
+        //Debug.LogError("remove gun_Perma passive failed " + itemName);
     }
 
     public override ItemGunData GetGun() { return this; }

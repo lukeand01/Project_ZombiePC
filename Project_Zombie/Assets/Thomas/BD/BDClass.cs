@@ -85,7 +85,8 @@ public class BDClass
         this.damageModifier = damageModifier * 0.01f;
 
         float damageValue = GetDamage();
-        damage = new DamageClass(damageValue);
+        DamageType _type = MyUtils.GetDamageTypeFromBDDamageType(damageType);
+        damage = new DamageClass(damageValue, _type, 0);
 
 
 
@@ -206,7 +207,7 @@ public class BDClass
     {
         if (IsTick())
         {
-            //we will get the duration between tick, and put them together in a total.
+            //we will get the duration between tick, and put them together in a total_Damage.
             return tickTotal * tickTimerTotal;
         }
         if (IsTemp())
@@ -239,7 +240,7 @@ public class BDClass
 
     #region STACKING
 
-    //perphaps i want a modifier per 
+    //perphaps i want a _value per 
 
 
     bool doesStackingRefreshTimer;
@@ -324,10 +325,11 @@ public class BDClass
             if(damage == null)
             {
                 float damageValue = GetDamage();
-                damage = new DamageClass(damageValue);               
+                DamageType _type = MyUtils.GetDamageTypeFromBDDamageType(damageType);
+                damage = new DamageClass(damageValue, _type, 0);               
             }
 
-            damage.MakeStack(stackCurrent);
+            damage.Make_Stack(stackCurrent);
 
             return;
         }
@@ -348,7 +350,7 @@ public class BDClass
 
         //Debug.Log("raw value_Level " + value_Level);
         float modifier = stackScaleModifier * stackCurrent;
-        //Debug.Log("this is the modifier " +  modifier); 
+        //Debug.Log("this is the _value " +  _value); 
         float result = value * modifier;
         //Debug.Log("this is the result " + result);
 

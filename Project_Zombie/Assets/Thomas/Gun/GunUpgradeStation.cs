@@ -72,7 +72,7 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
     {
         hasGun = false;
 
-        //do the thing for the gun.
+        //do the thing for the gun_Perma.
 
         
 
@@ -118,7 +118,7 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
         isActive = true;
 
 
-        gun = PlayerHandler.instance._playerCombat.GetCurrentGun();
+        gun = PlayerHandler.instance._playerCombat.GetCurrentGun;
         gun.AddUpgradeStation();
 
         PlayerHandler.instance._playerCombat.RemoveCurrentGun_ForUpgradeStation();
@@ -157,7 +157,7 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        //need to remove the gun from the player and force the player equip
+        //need to remove the gun_Perma from the player and force the player equip
 
         
 
@@ -170,13 +170,13 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
             }
             else
             {
-                //then we should pick gun because its ready
+                //then we should pick gun_Perma because its ready
                 GiveGunToPlayer();
             }
         }
         else
         {
-            //then we should give the gun. but only if it has enough thing
+            //then we should give the gun_Perma. but only if it has enough thing
             if (PlayerHandler.instance._playerResources.HasEnoughPoints(pointCost))
             {
                 StartStation();
@@ -231,9 +231,9 @@ public class GunUpgradeStation : MonoBehaviour, IInteractable
 
 //for now only points.
 
-//first we check if we are not equipped with a perma gun
+//first we check if we are not equipped with a perma gun_Perma
 //then we check if we have the resources.
-//then we need to remove the gun from player
+//then we need to remove the gun_Perma from player
 //wait a moment
 //then we give back
 //te player must head there and do interact to get it back.

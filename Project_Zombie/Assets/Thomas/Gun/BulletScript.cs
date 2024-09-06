@@ -118,7 +118,7 @@ public class BulletScript : MonoBehaviour
     public void MakeDamage(DamageClass damage, float damageChangeAfterCollision, float damageChangeAfterBounce)
     {
         this.damage = damage;
-
+        this.damage.Make_Projectil(transform);
 
         this.damageChangeAfterBounce = damageChangeAfterBounce;
         this.damageChangeAfterCollision = damageChangeAfterCollision;
@@ -127,8 +127,8 @@ public class BulletScript : MonoBehaviour
 
     public void MakePlayerDamageableRef(IDamageable damageable)
     {
-        damage.MakeAttacker(damageable);
-        damage.MakePlayerPosWhenCreated(PlayerHandler.instance.transform.position);
+        damage.Make_Attacker(damageable);
+        damage.Make_PlayerPosWhenCreated(PlayerHandler.instance.transform.position);
 
     }
     public void MakePlayerPosWhenShot(Vector3 shootPos)
@@ -263,7 +263,7 @@ public class BulletScript : MonoBehaviour
     {
         if (collisionsAllowedCurrent >= collisionsAllowedTotal)
         {
-            //Debug.Log("Destroyed. total and current " + collisionsAllowedTotal + " : " + collisionsAllowedCurrent);
+            //Debug.Log("Destroyed. total_Damage and current " + collisionsAllowedTotal + " : " + collisionsAllowedCurrent);
             canMove = false;
             _collider.enabled = false;
 
@@ -275,7 +275,7 @@ public class BulletScript : MonoBehaviour
         }
         else
         {
-            //Debug.Log(" Didnt destroy. total and current " + collisionsAllowedTotal + " : " + collisionsAllowedCurrent);
+            //Debug.Log(" Didnt destroy. total_Damage and current " + collisionsAllowedTotal + " : " + collisionsAllowedCurrent);
             collisionsAllowedCurrent++;
             //reduce damage or speed
         }

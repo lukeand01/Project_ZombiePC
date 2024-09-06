@@ -1,3 +1,4 @@
+using DG.Tweening;
 using MyBox;
 using System;
 using System.Collections;
@@ -15,7 +16,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
     float healthTotal;
 
     string id;
-    bool isDead;
+    public bool isDead {  get; private set; }
 
     [SerializeField] bool debugCannotTakeDamage;
 
@@ -52,14 +53,19 @@ public class PlayerResources : MonoBehaviour, IDamageable
         ResetQuest_Stage();
 
         PlayerHandler.instance._rb.useGravity = true;
+
+        ResetAbilityCoin();
+
+        StopAllCoroutines();
+
     }
 
     #region DEBUG
     [ContextMenu("DEBUG TAKE DAMAGE")]
     public void Debug_TakeDamage()
     {
-        TakeDamage(new DamageClass(90));
-        
+        //TakeDamage(new DamageClass(90));
+        Debug.Log("not working ");
     }
 
     [ContextMenu("DEBUG HEAL")]
@@ -96,8 +102,9 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageClass damage)
     {
-       
 
+        
+        
 
         if (debugCannotTakeDamage) return;
 
@@ -113,37 +120,36 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
         CheckDamageBack(damage);
 
-        if (CheckDodge() && !damage.cannotBeDodged)
+        if (CheckDodge(damage))
         {
             //we ignore the damage and announce the dodge.
-            handler._entityStat.CallDodgeFadeUI();
-            handler._entityEvents.OnHasDodged();
             return;
         }
 
         handler._entityEvents.OnHardInput();
 
 
-        bool isCrit = damage.CheckForCrit();
+        DamageClass newDamage = new DamageClass(damage);
 
         float reduction = handler._entityStat.GetTotalValue(StatType.DamageReduction);
+        //float totalHealth = handler._entityStat.GetTotalValue(StatType.Health);
+
+        float pureDamage = newDamage.GetTotalDamage_Pure();
+        float damageValue = newDamage.GetTotalDamage(true);
+        reduction = damageValue * reduction;
+        damageValue -= reduction;
 
 
-        float totalHealth = handler._entityStat.GetTotalValue(StatType.Health);
-
-
-        float damageValue = damage.GetDamage(reduction, totalHealth, isCrit);
-
-        handler._entityEvents.CallDelegate_DamageTaken(ref damageValue);
-
-
+        handler._entityEvents.CallDelegate_DamageTaken(ref newDamage);
         handler._playerStatTracker.ChangeStatTracker(StatTrackerType.DamageTaken, damageValue);
 
-        float damageAfterShield = handler._playerCombat.ShieldReduceDamage(damageValue);
+
+
+        float damageAfterShield = handler._playerCombat.ShieldReduceDamage(damageValue, damage.damageList);
 
         if (damageAfterShield == 0) return;
 
-        healthCurrent -= damageAfterShield;
+        healthCurrent -= damageAfterShield + pureDamage;
         healthCurrent = Mathf.Clamp(healthCurrent, 0, healthTotal);
         UIHandler.instance._playerUI.UpdateHealth(healthCurrent, healthTotal, damageAfterShield);
         handler._entityEvents.OnDamageTaken();
@@ -151,7 +157,6 @@ public class PlayerResources : MonoBehaviour, IDamageable
         if (healthCurrent <= 0)
         {
             //death
-
             Die();
         }
 
@@ -184,6 +189,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
     {
 
 
+        
 
         handler._playerCombat.CancelCharge();
 
@@ -202,11 +208,77 @@ public class PlayerResources : MonoBehaviour, IDamageable
         //stop timer
         //stop round
 
-
-        UIHandler.instance._EndUI.StartDefeatUI();
-
         PlayerHandler.instance._rb.velocity = Vector3.zero;
         PlayerHandler.instance._rb.useGravity = false;
+
+
+        StopAllCoroutines();
+        StartCoroutine(DeathProcess());
+    }
+
+    IEnumerator DeathProcess()
+    {
+
+
+        handler._playerController.block.AddBlock("Death", BlockClass.BlockType.Partial);
+
+        handler._playerCamera.SetCamera(CameraPositionType.RegularDeath, 6, 3);
+
+        handler._entityAnimation.ControlWeight(1, 0);
+        handler._entityAnimation.ControlWeight(2, 0);
+        handler._entityAnimation.ControlWeight(3, 0);
+        handler._entityAnimation.ControlWeight(4, 0);
+
+        handler._entityAnimation.SetStateUpperBody(AnimationState_UpperBody.Nothing);
+
+        handler._entityAnimation.ControlIfAnimatorApplyRootMotion(true);
+        handler._entityAnimation.CallAnimation_Death();
+        //after a moment we 
+
+        yield return new WaitForSeconds(6);
+
+        //something spawns underneath and pull the player down.
+        handler._entityAnimation.ControlPortal(true);
+        handler._entityAnimation.MovePlayerModelDown();
+
+        yield return new WaitForSeconds(4.5f);
+
+        GameHandler.instance._sceneLoader.ReloadCurrentScene();
+        handler._entityAnimation.ControlPortal(false);
+
+
+        //UIHandler.instance._EndUI.StartDefeatUI();
+    }
+
+    public void CallDeathByFalling()
+    {
+        if (isDead) return;
+
+        Debug.Log("call death by falling");
+        
+        StopAllCoroutines();
+        StartCoroutine(DeathByFallingProcess());
+    }
+
+    IEnumerator DeathByFallingProcess()
+    {
+
+        isDead = true;
+        hasRevive = false;
+        alreadyRevived = false;
+
+        handler._playerController.block.AddBlock("Falling", BlockClass.BlockType.Complete);
+
+        handler._playerCamera.SetCamera(CameraPositionType.FallDeath, 2, 2);
+
+        handler._rb.velocity = new Vector3(0, handler._rb.velocity.y, 0);
+        //
+
+        yield return new WaitForSeconds(1.5f); //then we kill the player
+
+
+        GameHandler.instance._sceneLoader.ReloadCurrentScene();
+
     }
 
     public float GetTargetMaxHealth()
@@ -220,16 +292,32 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
 
 
-    bool CheckDodge()
+    bool CheckDodge(DamageClass damage)
     {
+        if (!damage.cannotBeDodged) return false;
+
         float dodgeChance = handler._entityStat.GetTotalValue(StatType.Dodge) + handler._entityStat.GetTotalValue(StatType.Luck);
 
         
         int roll = UnityEngine.Random.Range(0, 80);
         dodgeChance = Math.Clamp(dodgeChance, 0, 60);
 
+        bool dodgeRoll = dodgeChance >= roll;
 
-        return dodgeChance >= roll;
+
+       
+        if (dodgeRoll)
+        {
+            handler._entityStat.CallDodgeFadeUI();
+            handler._entityEvents.OnHasDodged();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+       
     }
 
     void CheckDamageBack(DamageClass damage)
@@ -238,15 +326,14 @@ public class PlayerResources : MonoBehaviour, IDamageable
         if (damage.attacker == null) return;
         float damageBackValue = handler._entityStat.GetTotalValue(StatType.DamageBack);
         damageBackValue *= 0.01f;
-        damageBackValue = damageBackValue.Clamp(0, 0.9f);
+        damageBackValue = damageBackValue.Clamp(0, 0.8f);
 
 
         if (damageBackValue <= 0) return;
-        
 
-
-        float damageBack = damage.baseDamage * damageBackValue;
-        damage.attacker.TakeDamage(new DamageClass(damageBack));
+        float totalDamage = damage.GetTotalDamage();
+        float damageBack = totalDamage * damageBackValue;
+        damage.attacker.TakeDamage(new DamageClass(damageBack, DamageType.Magical, 0));
 
 
     }
@@ -541,7 +628,6 @@ public class PlayerResources : MonoBehaviour, IDamageable
     }
     #endregion
 
-
     #region DROP SYSTEM
 
     List<DropClass> dropList = new(); //these are the drops. every turn we check with this list.
@@ -562,6 +648,41 @@ public class PlayerResources : MonoBehaviour, IDamageable
     {
 
     }
+
+    #endregion
+
+    #region ABILITY COINS
+
+    Dictionary<AbilityCoinType, int> abilityCoinDictionary = new();
+
+    public void AddAbilityCoin(AbilityCoinType _coinType, int quantity)
+    {
+        if(abilityCoinDictionary.ContainsKey(_coinType))
+        {
+            abilityCoinDictionary[_coinType] += quantity;
+        }
+    }
+    public void SpendAbilityCoin(AbilityCoinType _coinType, int quantity)
+    {
+        if (abilityCoinDictionary.ContainsKey(_coinType))
+        {
+            abilityCoinDictionary[_coinType] -= quantity;
+        }
+    }
+
+    public int GetAbilityCoinQuantity(AbilityCoinType _coinType)
+    {
+        return abilityCoinDictionary[_coinType];
+    }
+
+
+    void ResetAbilityCoin()
+    {
+        abilityCoinDictionary[AbilityCoinType.Bone_Of_Death] = 0;
+        abilityCoinDictionary[AbilityCoinType.Soul_Of_Anger] = 0;
+        abilityCoinDictionary[AbilityCoinType.Eye_Of_Wisdom] = 0;
+    }
+
 
     #endregion
 }

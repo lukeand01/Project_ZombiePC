@@ -171,7 +171,7 @@ public class EquipWindowEquipUnit : ButtonBase
         if(draggingUnit.gunData != null && gunData != null)
         {
 
-            //when we swap we pass this new information to the player and we tell him to equip this new gun
+            //when we swap we pass this new information to the player and we tell him to equip this new gun_Perma
             PlayerHandler.instance._playerCombat.ReceivePermaGun(draggingUnit.gunData);
             ItemGunData newPermaGun = PlayerHandler.instance._playerCombat.GetCurrentPermaGun();
             Debug.Log("this is the new perma gun " + newPermaGun.itemName);

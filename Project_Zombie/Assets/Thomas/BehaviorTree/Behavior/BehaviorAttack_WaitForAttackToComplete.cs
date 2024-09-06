@@ -20,7 +20,7 @@ public class BehaviorAttack_WaitForAttackToComplete : Sequence2
         this.enemy = enemy;
         enemyData = enemy.GetData();
 
-        total = enemyData.attackSpeed;
+        total = enemyData.AttackAnimationSpeed;
     }
 
     public override NodeState Evaluate()

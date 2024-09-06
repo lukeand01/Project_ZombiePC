@@ -19,7 +19,7 @@ public class ChestUI : MonoBehaviour
         {
             if (canSkipGun)
             {
-                //then we force the gun reveal.
+                //then we force the gun_Perma reveal.
                 canSkipGun = false;
                 StopAllCoroutines();
                 GunReveal();
@@ -36,8 +36,6 @@ public class ChestUI : MonoBehaviour
     {
         holder = transform.GetChild(0).gameObject;
 
-        freeReroll_Gun = true;
-        freeReroll_Ability = true;
     }
 
     [Separator("BASE")]
@@ -61,10 +59,7 @@ public class ChestUI : MonoBehaviour
         this.currentChest = currentChest;
     }
 
-    bool freeReroll_Gun;
-    bool freeReroll_Ability;
-    int rollsUsed = 0;
-    int blessCost = 0;
+
 
     //everytime you call a roll, it doubles. everytime you open a new 
     //for now it will the same value_Level. always.
@@ -83,6 +78,7 @@ public class ChestUI : MonoBehaviour
     [SerializeField] StatDescriptionGroupHolder[] statDescriptionHolder;
     [SerializeField] GunSwapUnit[] gunSwapUnits;
     [SerializeField] ButtonBase gun_Reroll_Button;
+
     ItemGunData currentChosenGun;
 
 
@@ -124,14 +120,7 @@ public class ChestUI : MonoBehaviour
 
     void UpdateGunRollButton()
     {
-        if (freeReroll_Gun)
-        {
-            gun_Reroll_Button.SetText("Free Roll");
-        }
-        else
-        {
-            gun_Reroll_Button.SetText("Use 1 Bless");
-        }
+       
     }
 
     //it need to be something different.
@@ -174,13 +163,9 @@ public class ChestUI : MonoBehaviour
 
     public void GunReroll()
     {
-        if (!PlayerHandler.instance._playerResources.Bless_HasEnough(1) && !freeReroll_Gun)
-        {
-            return;
-        }
 
-       if(!freeReroll_Gun) PlayerHandler.instance._playerResources.Bless_Lose(50);
-        freeReroll_Gun = false;
+
+
         UpdateGunRollButton();
 
         List<ItemGunData> spinningGunList = GameHandler.instance.cityDataHandler.cityArmory.GetGunSpinningList();
@@ -233,7 +218,7 @@ public class ChestUI : MonoBehaviour
         }
         else
         {
-            //there is space so we give the gun right away.                   
+            //there is space so we give the gun_Perma right away.                   
             combat.ReceiveTempGunToReplace(currentChosenGun, index);
         }
 
@@ -276,7 +261,7 @@ public class ChestUI : MonoBehaviour
     }
     public void StopHover()
     {
-        //we call it out if you dont have current gun swap unit.
+        //we call it out if you dont have current gun_Perma swap unit.
         if(currentGunSwapUnit != null)
         {
             SelectInfoGroup(currentGunSwapUnit);
@@ -318,6 +303,12 @@ public class ChestUI : MonoBehaviour
     [SerializeField] GameObject abilityButtonHolder;
     [SerializeField] ChestAbilityUnit[] chestAbilityUnitArray;
     [SerializeField] ButtonBase ability_Reroll_Button;
+    [SerializeField] ButtonBase ability_OpenAbilityInventory_Button;
+    [SerializeField] ButtonBase ability_Scrap_Button;
+    [SerializeField] AudioClip audio_Scrap;
+    [SerializeField] AudioClip audio_Bless;
+    [SerializeField] AudioClip audio_BlessFailure;
+    int currentScrapValue;
 
     public void CallChestAbility(List<AbilityPassiveData> passiveAbilities)
     {
@@ -336,51 +327,129 @@ public class ChestUI : MonoBehaviour
 
         PlayerHandler.instance._playerController.block.AddBlock("AbilityChest", BlockClass.BlockType.Partial);
 
+        int scrapCost = 500; //it scales with the rarity of the ability.
+
+
 
         for (int i = 0; i < passiveAbilities.Count; i++)
         {
-            chestAbilityUnitArray[i].SetUp(passiveAbilities[i], this);
+            var item = passiveAbilities[i];
+            chestAbilityUnitArray[i].SetUp(item, this, i);
+
+            scrapCost += 150 * (int)item.abilityTier;
         }
 
+        currentScrapValue = scrapCost;
 
+        UpdateAbilityScrapButton();
     }
 
-    public void ChooseAbility(AbilityPassiveData data)
+    bool abilityProcess = false;
+
+    public void ChooseAbility(AbilityPassiveData data, int orderIndex)
     {
         //we pass tot he player siomple as that.
+        if (abilityProcess) return;
 
+        StopAllCoroutines();
+        StartCoroutine(ChoseAbilityProcess(data, orderIndex));
+        
+    }
+
+
+    IEnumerator ChoseAbilityProcess(AbilityPassiveData data, int orderIndex)
+    {
+        abilityProcess = true;
+        Debug.Log("start this process");
+
+        Vector3 originalScale = chestAbilityUnitArray[0].transform.localScale; //THEY ALL SHOULD ALWAYS HAVE THE SAME SCALE.
+
+        for (int i = 0; i < chestAbilityUnitArray.Length; i++)
+        {
+            var item = chestAbilityUnitArray[i];
+
+            
+            if(i == orderIndex)
+            {
+                item.transform.DOScale(originalScale * 1.2f, 0.3f).SetUpdate(true);
+            }
+            else
+            {
+                item.transform.DOScale(0, 0.3f).SetUpdate(true);
+            }
+        }
+
+        yield return new WaitForSecondsRealtime(0.3f);
+
+        chestAbilityUnitArray[orderIndex].transform.DOScale(originalScale, 0.3f).SetUpdate(true);
+
+        yield return new WaitForSecondsRealtime(0.3f);
+
+        abilityProcess = false;
         Leave();
         PlayerHandler.instance._playerController.block.RemoveBlock("AbilityChest");
         PlayerHandler.instance._playerAbility.AddAbility(data);
     }
 
+    //
+
     public void AbilityReroll()
     {
         Debug.Log("called");
-        if (!PlayerHandler.instance._playerResources.Bless_HasEnough(1) && !freeReroll_Ability)
+        int blessQuantity = PlayerHandler.instance.abilityRoll_Cost;
+
+        if (!PlayerHandler.instance._playerResources.Bless_HasEnough(blessQuantity))
         {
+            GameHandler.instance._soundHandler.CreateSfx(audio_BlessFailure);
             return;
         }
 
-        UpdateAbilityRollButton();
+        GameHandler.instance._soundHandler.CreateSfx(audio_Bless);
 
-        if (!freeReroll_Ability) PlayerHandler.instance._playerResources.Bless_Lose(1);
-        freeReroll_Ability = false;
+
+        PlayerHandler.instance._playerResources.Bless_Lose(blessQuantity);
+
         List<AbilityPassiveData> passiveListForReroll = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList();
         CallChestAbility(passiveListForReroll);
+
+        PlayerHandler.instance.AbilityRoll_Add();
+        UpdateAbilityRollButton();
+
+
     }
 
     void UpdateAbilityRollButton()
     {
-        if (freeReroll_Ability)
-        {
-            ability_Reroll_Button.SetText("Free Roll");
-        }
-        else
-        {
-            ability_Reroll_Button.SetText("Use 1 Bless");
-        }
+        int blessQuantity = PlayerHandler.instance.abilityRoll_Cost;
+        ability_Reroll_Button.SetText($"Reroll for {blessQuantity} Bless");
+       
     }
+
+    void UpdateAbilityScrapButton()
+    {
+        ability_Scrap_Button.SetText($"Scrap for {currentScrapValue} points");
+    }
+
+    public void CallButton_OpenAbilityInventory()
+    {
+        //we create it once everytime. perfomance? lets worry only if there are problems.
+        //what about pausing the game? wont that mess with the timescale?
+
+    }
+
+    public void CallButton_Scrap()
+    {
+        GameHandler.instance._soundHandler.CreateSfx(audio_Scrap);
+        Debug.Log("scrap");
+        PlayerHandler.instance._playerResources.GainPoints(currentScrapValue);
+        Leave();
+    }
+
+    //i also gain points.
+    //the points gained should be based
+
+    //everytime i check this i will also clean and create a new ability thing to show the player what he already has.
+
 
     #endregion
 

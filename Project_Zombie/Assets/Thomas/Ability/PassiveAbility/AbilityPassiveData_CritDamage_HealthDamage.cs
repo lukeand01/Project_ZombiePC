@@ -44,7 +44,8 @@ public class AbilityPassiveData_CritDamage_HealthDamage : AbilityPassiveData
 
         if (hasEnoughHealth)
         {
-            damageClassBeingUsed.MakePureDamageModifier(_secondValue);
+            //WONT BE USING THIS PASSIVE ANYMORE
+            //damageClassBeingUsed.MakePureDamageModifier(_secondValue);
         }
         
 

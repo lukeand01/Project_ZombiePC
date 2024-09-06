@@ -29,13 +29,13 @@ public class CurseAbilityGlassCannon : AbilityPassiveData
         PlayerHandler.instance._entityEvents.eventDelegate_DamageTaken -= ModifierDamageTaken;
     }
 
-    void ModifierDamageTaken(ref float damage)
+    void ModifierDamageTaken(ref DamageClass damage)
     {
-        damage *= 1.3f;
+        damage.Make_TotalDamageModifier(damage.totalDamageModifier * 1.3f);
     }
-    void ModifierDamageDealt(ref float damage)
+    void ModifierDamageDealt(ref DamageClass damage)
     {
-        damage *= 1.3f;
+        damage.Make_TotalDamageModifier(damage.totalDamageModifier * 1.3f);
     }
 
 
@@ -49,7 +49,7 @@ public class CurseAbilityGlassCannon : AbilityPassiveData
 //this increases damage by 20% and add a debuff to the player.
 
 //but how will damage work in this game?
-//just as a modifier. percent increase.
+//just as a _value. percent increase.
 
 //lets create at least 5 curse abilities:
 //glasscannon, more damage but reduce max health

@@ -13,10 +13,10 @@ public class ChestGun : ChestBase
     //we can animate stuff here and
     //i can use time.unscaledtime to not deal with the mess of scale time.
 
-    //the player can get any gun from this place
+    //the player can get any gun_Perma from this place
     //but the guns arent as unique as they might seen
     //you will have a bunch of guns here that look alike but with different stats.
-    //there are different levels of gun and skill tier. and you can increase your chances in the base.
+    //there are different levels of gun_Perma and skill tier. and you can increase your chances in the base.
     //there is 4 tiers.
     //and at the first level:
     //1 tier -> 80%
@@ -28,7 +28,15 @@ public class ChestGun : ChestBase
 
     [Separator("SHOWING")]
     [SerializeField] GameObject gunHolder; //then we will spawn all guns moedels. but we will check if we have repeating stuff so we dont need to remove
-    
+
+
+    InteractCanvas_ChestGun _interactOnlyForChestGun;
+
+    private void Awake()
+    {
+       _interactOnlyForChestGun = interactCanvas.GetInteractChestGun();
+    }
+
     bool isShowing;
     bool isDone;
 
@@ -41,7 +49,7 @@ public class ChestGun : ChestBase
         base.Interact();
 
 
-        if (isShowing)
+        if (isShowing )
         {
             GetGun();
         }
@@ -68,14 +76,38 @@ public class ChestGun : ChestBase
     public override void InteractUI(bool isVisible)
     {
         base.InteractUI(isVisible);
-        
+
+        //should i bother giving such a indepth comparision?
+        //
+
+        if (isShowing)
+        {
+            //in here we 
+            _interactOnlyForChestGun.StartChestGunInteraction(chosenGun);
+        }
+        else
+        {
+
+            _interactOnlyForChestGun.StopChestGunInteraction();
+
+            float modifier = PlayerHandler.instance._entityStat.GetTotalEspecialConditionValue(EspecialConditionType.GunBoxPriceModifier);
+            float reduction = basePrice * modifier;
+            currentPrice = basePrice - reduction;
+            currentPrice = Mathf.Clamp(currentPrice, 0, 9999);
+
+
+            interactCanvas.gameObject.SetActive(isVisible);
+
+            if (isVisible)
+            {
+                interactCanvas.ControlInteractButton(true);
+                interactCanvas.ControlPriceHolder((int)currentPrice);
+            }
+        }
 
         //we are constantly calling this.
-        float modifier = PlayerHandler.instance._entityStat.GetTotalEspecialConditionValue(EspecialConditionType.GunBoxPriceModifier);
-        float reduction = basePrice * modifier;
-        currentPrice = basePrice - reduction;
-        currentPrice = Mathf.Clamp(reduction, 0, 9999);
-
+        
+        
 
     }
 
@@ -95,7 +127,7 @@ public class ChestGun : ChestBase
 
         if(freeSpaceIndex == -1)
         {
-            //it means we dont have a gun
+            //it means we dont have a gun_Perma
             int currentIndex = PlayerHandler.instance._playerCombat.GetCurrentGunIndex;
 
             if (currentIndex == 0) return false; //this means you are holding the perma when you are not space.
@@ -109,7 +141,33 @@ public class ChestGun : ChestBase
     //the effect opens the box and then the 
 
 
+    //before opening it needs to do a little dance.
 
+    IEnumerator DanceProcess()
+    {
+        //shake a bit
+        //spring the chest open
+        //reveal a light from inside.
+        //then we allow the gun to go up.
+        float value = 5;
+
+        for (int i = 0; i < 10; i++)
+        {
+            float randomRotation = Random.Range(-value, value);
+            graphic_Body.transform.DOLocalRotate(new Vector3(0, -90, randomRotation), 0.1f);
+            yield return new WaitForSeconds(0.1f);
+            
+        }
+        graphic_Body.transform.DOKill();
+        graphic_Body.transform.DOLocalRotate(new Vector3(0, -90, 0), 0.1f);
+
+        yield return new WaitForSeconds(0.5f);
+
+        graphic_Lid.transform.DOLocalRotate(new Vector3(-90, 0, 0), 0.5f);
+
+        //add the light here when doing the light work.
+
+    }
     IEnumerator PresentationProcess(ItemGunData chosenGun, List<ItemGunData> spinningGunList)
     {
         isShowing = true;
@@ -130,15 +188,20 @@ public class ChestGun : ChestBase
         foreach (var item in spinningGunList)
         {
             //spawn the model and put it here.
-            GameObject newObject = Instantiate(item.gunModel, transform.position, Quaternion.identity);
+            GameObject newObject = Instantiate(item.gunModel, transform.position, Quaternion.Euler(0,-90,0));
             newObject.name = item.name;
             newObject.transform.SetParent(gunHolder.transform);
             newObject.transform.localPosition = Vector3.zero;
             newObject.SetActive(false);
+            newObject.transform.localScale = Vector3.one * 1.5f;
+
         }
 
 
         gunHolder.transform.localPosition = Vector3.zero;
+
+
+        yield return StartCoroutine(DanceProcess());
 
         float timer = 4;
 
@@ -175,7 +238,7 @@ public class ChestGun : ChestBase
     IEnumerator CancelProcess()
     {
         //we wait a bit
-        Debug.Log("cancel process called");
+
         yield return new WaitForSeconds(5); //after a time. and i need to inform the player of that time. it starts going down when its over
 
         float timer = 2;
@@ -199,6 +262,11 @@ public class ChestGun : ChestBase
 
 
         isDone = false;
+
+        Debug.Log("cancelled");
+
+        
+
         EndGunShow();
 
     }
@@ -207,6 +275,7 @@ public class ChestGun : ChestBase
     {
         //
 
+        if (!isDone) return;
 
         int indexCurrentlyUsing = PlayerHandler.instance._playerCombat.GetCurrentGunIndex;
         int index = PlayerHandler.instance._playerCombat.GetGunEmptySlot();
@@ -225,7 +294,7 @@ public class ChestGun : ChestBase
 
         Debug.Log("get gun");
         //we stop all process.
-        //give gun
+        //give gun_Perma
         StopAllCoroutines();
         gunHolder.SetActive(false);
         gunHolder.transform.DOKill();
@@ -245,6 +314,9 @@ public class ChestGun : ChestBase
     void EndGunShow()
     {
         isShowing = false;
+
+        graphic_Lid.transform.DOKill();
+        graphic_Lid.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.1f);
     }
 
     public override void ProgressChest()

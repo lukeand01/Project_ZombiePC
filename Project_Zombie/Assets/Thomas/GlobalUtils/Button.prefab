@@ -321,12 +321,16 @@ MonoBehaviour:
   mouseHover: {fileID: 2490449593530292539}
   mouseClick: {fileID: 1196948596069116788}
   base_Selected: {fileID: 1196948596069116788}
-  clickClip: {fileID: 0}
-  hoverClip: {fileID: 0}
+  base_ControlClick: {fileID: 0}
+  clickClip: {fileID: 8300000, guid: 0c621901caf7443bb9dae7bb788aff88, type: 3}
+  hoverClip: {fileID: 8300000, guid: cd7044bf418f642df9a2130900bd3fd5, type: 3}
   clickTimerTotal: 0
   unityEvent:
     m_PersistentCalls:
       m_Calls: []
+  fillImage: {fileID: 0}
+  callEndAnimation: 0
+  waitForEndAnimation: 0
 --- !u!1 &6369306059125967519
 GameObject:
   m_ObjectHideFlags: 0

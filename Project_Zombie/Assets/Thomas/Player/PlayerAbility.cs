@@ -139,11 +139,12 @@ public class PlayerAbility : MonoBehaviour
 
         data.SetFound(true);
 
+        handler._playerResources.AddAbilityCoin(data._coinType, 1);
+
+
         if(index != -1)
         {
-            ReplaceSameAbilityByIndex(index, data);
-
-        
+            ReplaceSameAbilityByIndex(index, data);    
         }
         else
         {

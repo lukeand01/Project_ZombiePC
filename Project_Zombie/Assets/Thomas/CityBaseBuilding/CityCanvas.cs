@@ -61,7 +61,7 @@ public class CityCanvas : MonoBehaviour
    
     public void SetGun(CityDataArmory armoryData)
     {
-        //set gun in teh start based in the 
+        //set gun_Perma in teh start based in the 
         //this is putting all fellas all at once in this.
 
         nameText.text = "Armory";
@@ -330,8 +330,8 @@ public class CityCanvas : MonoBehaviour
     [SerializeField] Transform buy_Gun_Container;
     [SerializeField] StatDescriptionUnit buy_Gun_Template;
     //stat - what are the 
-    //resource - how much it costs to buy this item. same for ability or gun
-    //description - just the description. same for ability or gun
+    //resource - how much it costs to buy this item. same for ability or gun_Perma
+    //description - just the description. same for ability or gun_Perma
 
 
     public void CallBuy()

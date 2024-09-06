@@ -88,17 +88,23 @@ public class SceneLoaderHandler : MonoBehaviour
         UIHandler.instance._pauseUI.ForceClosePause();
 
         currentStageData = stage;
-        if (CityHandler.instance != null)
-        {
-            //we tell the cityhandler to recalculate everything regarding the citystores and equip window
-            CityHandler.instance.StartCity();
-        }
+        
 
         if (PlayerHandler.instance != null)
         {
             //reset the abilities and guns.
 
             PlayerHandler.instance.ResetPlayer();
+        }
+
+        if (CityHandler.instance != null)
+        {
+            //we tell the cityhandler to recalculate everything regarding the citystores and equip window
+            CityHandler.instance.StartCity();
+        }
+        else
+        {
+            PlayerHandler.instance.SetPlayerOutOfCity();
         }
 
         yield return StartCoroutine(handler.RaiseCurtainProcess());

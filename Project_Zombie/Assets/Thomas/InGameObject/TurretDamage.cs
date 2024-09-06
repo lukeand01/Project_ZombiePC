@@ -8,7 +8,7 @@ public class TurretDamage : Turret
 {
 
 
-    //it will get damage from the modifier that i will put here.
+    //it will get damage from the _value that i will put here.
 
     [Separator("TURRET DAMAGE")]
     [SerializeField] List<BulletBehavior> bulletBehaviorList;

@@ -436,6 +436,7 @@ public class EntityStat : MonoBehaviour
     }
     void AddBDImmune()
     {
+        _entityEvents.OnEntityStunned();
         IsImmune = true;
     }
 
@@ -760,6 +761,8 @@ public class EntityStat : MonoBehaviour
     }
 
     #region CALL FADE UI
+
+
     public void CallDodgeFadeUI()
     {
         if (_entityCanvas == null) return;
@@ -779,7 +782,17 @@ public class EntityStat : MonoBehaviour
     public void CallDropFadedUI(string dropName) => _entityCanvas.CreateFadeUIForDrop(dropName);
     #endregion
 
-
+    public void CheckForEnemyElementalResistance(EnemyData data, DamageType _type, ref float damageValue)
+    {
+        foreach (var item in data.enemyResistanceList)
+        {
+            if(item._damageType == _type)
+            {
+                damageValue *= item._value;
+                return;
+            }
+        }
+    }
 
 }
 
@@ -859,8 +872,7 @@ public enum StatType
     DamageBack,
     Dodge,
     ElementalPower, //this affects how strong bleeding or fire is
-    ElementalChance //this affects the chance of applying fire and 
-
-
+    ElementalChance, //this affects the chance of applying fire and 
 
 }
+

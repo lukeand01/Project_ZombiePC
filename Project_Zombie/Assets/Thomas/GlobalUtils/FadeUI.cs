@@ -8,6 +8,7 @@ public class FadeUI : MonoBehaviour
 {
     //this is any ui that i want to fade overtime.
     [SerializeField]TextMeshProUGUI text;
+    [SerializeField] GameObject critHolder;
     [SerializeField] AnimationCurve alphaColorCurve;
     [SerializeField] AnimationCurve scaleCurve;
     [SerializeField] AnimationCurve heightCurve;
@@ -23,7 +24,7 @@ public class FadeUI : MonoBehaviour
     float timeForHeight;
     float timeForHeightModifier = 1;
 
-    
+    [SerializeField] Color textColor;
 
     Vector3 origin;
     Vector3 originalScale;
@@ -32,7 +33,7 @@ public class FadeUI : MonoBehaviour
     [SerializeField] bool debugDoesNotFade;
 
     bool isReusable;
-
+    bool isReady;
     private void Start()
     {
         transform.localScale = new Vector3(1,1,1);
@@ -43,13 +44,19 @@ public class FadeUI : MonoBehaviour
 
     }
 
+    public void ResetForPool()
+    {
+
+    }
+
 
     private void Update()
     {
         if (text == null) return;
         if (debugDoesNotFade) return;
+        if (!isReady) return;
 
-        text.color = new Color(text.color.r, text.color.g, text.color.b, alphaColorCurve.Evaluate(timeForColor));
+        text.color = new Color(textColor.r, textColor.g, textColor.b, alphaColorCurve.Evaluate(timeForColor));
         transform.localScale = originalScale * scaleCurve.Evaluate(timeForScale);
         //transform.position = origin + new Vector3(0, 0 + heightCurve.Evaluate(timeForHeight), 0);
         transform.localPosition = origin + new Vector3(0, 0 + heightCurve.Evaluate(timeForHeight), 0);
@@ -66,6 +73,8 @@ public class FadeUI : MonoBehaviour
         {
             if (isReusable) gameObject.SetActive(false);
             else Destroy(gameObject);
+
+            
         }
 
     }
@@ -75,17 +84,23 @@ public class FadeUI : MonoBehaviour
         isReusable = true;
     }
 
-    public void SetUp(string text, Color color, bool crit = false)
+    public void SetUp(string text, Color color, bool isCrit = false)
     {
         //then we change a bit the vector.
         //the problem is that i dont want the fellas to overshadow each other.       
+
         this.text.text = text;
         this.text.color = color;
+
+        textColor = color;
 
         timeForColor = 0;
         timeForScale = 0;
         timeForHeight = 0;
-       
+
+        critHolder.SetActive(isCrit);
+
+        isReady = true;
     }
 
     

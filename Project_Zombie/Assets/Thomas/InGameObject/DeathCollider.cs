@@ -23,7 +23,7 @@ public class DeathCollider : MonoBehaviour
 
         }
 
-        PlayerHandler.instance.CallDeathByFalling();
+        PlayerHandler.instance._playerResources.CallDeathByFalling();
         //
     }
 

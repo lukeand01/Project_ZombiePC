@@ -12,18 +12,41 @@ public class EnemyCanvas : MonoBehaviour
     Camera mainCam;
     [SerializeField] FadeUI fadeTemplate;
     [SerializeField] Transform damageContainer;
-    List<FadeUI> fadeUnitList = new();
 
     Vector3 sameTarget;
 
+    //what we can try is a copy? but that is not that good.
+    //i dont want to create that many canvas?
 
     private void Awake()
     {
         mainCam = Camera.main;
+
+    }
+
+
+    private void OnDisable()
+    {
+        Debug.Log("called this");
+        //everytime this happens we send everyone in the fadeunitlist back to the pool.
+        //buit we need a way to remove ethe fellas from the list normamly.      
+        //i dont want to remove them before their time either, so if this is disabled then we 
+
+        //what can happenb is that each carry a canvas.
+
+        //what i can do is that the entire canvas is removed from the player, and return to the player once there are no more damage 
+
+
+
     }
 
     private void Start()
     {
+
+        //the problem is with 
+
+
+        return;
         Vector3 direction = mainCam.transform.position - transform.position;
         direction.y = 0f;
 
@@ -38,7 +61,7 @@ public class EnemyCanvas : MonoBehaviour
     private void Update()
     {
 
-       
+        return;
         Quaternion rotation = Quaternion.LookRotation(sameTarget);
         rotation.eulerAngles = new Vector3(0, rotation.eulerAngles.y, 0);
         transform.rotation = rotation;
@@ -55,53 +78,65 @@ public class EnemyCanvas : MonoBehaviour
     public void ResetFadeList()
     {
         
-        foreach (var item in fadeUnitList)
-        {
-            if(item != null)
-            {
-                Destroy(item.gameObject);
-            }        
-        }
-
-        fadeUnitList.Clear();
+        
     }
 
-    public void CreateDamagePopUp(float damage, DamageType damageType, bool isCrit)
+
+    //i need to put it in the container
+
+    public void CreateDamagePopUp(DamageClass damage)
     {
-        FadeUI newObject = Instantiate(fadeTemplate);
-        newObject.transform.SetParent(damageContainer);
-         newObject.transform.rotation = Quaternion.Euler(0, -180, 0);
-        float modifierX = 0;
-        float modifierY = 35;
+
+        float modifierX = 30;
+        float modifierY = 80;
+        float modifierZ = 50;
         float x = Random.Range(-modifierX, modifierX);
-        float y = Random.Range(0, modifierY) + 80;
+        float y = Random.Range(0, modifierY) + 50;
+        float z = Random.Range(-modifierZ, modifierZ);
 
-        Vector3 offset = new Vector3(x, y, 0);
+        Vector3 offset = new Vector3(x, y, z);   
 
-        newObject.ChangeHeightModifier(1.8f);
-        newObject.ChangeColorModifier(1);
 
-        
 
-        if (isCrit)
+        int random = Random.Range(0, 2);
+
+        if (random == 0)
         {
-            newObject.ChangeScaleModifier(1.6f);
-        }
-        
-        //i need this to keep following the player.
-
-        newObject.transform.localPosition = Vector3.zero + offset;
-
-        string additional = "";
-
-        if (isCrit)
-        {
-            additional = "*";
+            random = -1;
         }
 
+        for (int i = 0; i < damage.damageList.Count; i++)
+        {
+            var item = damage.damageList[i];
 
-        newObject.SetUp(damage.ToString("f1") + additional, Color.red);
-        fadeUnitList.Add(newObject);
+            FadeUI_New newObject = GameHandler.instance._pool.GetFadeUI(damageContainer.position);
+            newObject.transform.SetParent(damageContainer);
+            //newObject.transform.rotation = Quaternion.Euler(0, -180, 0);
+
+            Color damageColor = PlayerHandler.instance.GetColorForDamageType(item._damageType);
+
+            FadeClass _fadeClass = new FadeClass(item._value.ToString(), damageColor, 0.8f);
+
+            //the crit is too ugly.
+
+            if (item.isCrit)
+            {
+                _fadeClass.Make_Crit();
+            }
+
+            newObject.transform.localPosition = Vector3.zero + offset + new Vector3(0,-55 * i, 0);
+            newObject.transform.localScale = Vector3.one * 1.5f;
+
+            newObject.SetUp_Damage(_fadeClass, random);
+
+            //newObject.SetUp(item._value.ToString(), damageColor, item.isCrit);
+
+
+        }
+
+
+
+        
     }
 
     public void CreateShieldPopUp()
@@ -126,7 +161,7 @@ public class EnemyCanvas : MonoBehaviour
 
         newObject.SetUp("SHIELD", Color.black);
 
-        fadeUnitList.Add(newObject);
+
 
     }
 

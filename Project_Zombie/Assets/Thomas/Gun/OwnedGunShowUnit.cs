@@ -12,44 +12,108 @@ public class OwnedGunShowUnit : ButtonBase
 
 
     [Separator("OWNED GUN PART")]
-    [SerializeField] Image icon;
-    [SerializeField] GameObject selected_ForShow;
-    [SerializeField] GameObject select_ForPause;
-    [SerializeField] TextMeshProUGUI ammoText;
     [SerializeField] GameObject holder;
-    [SerializeField] Image chargeImage;
-    GunClass gun;
-
-
+    [SerializeField] Animator _animator;
+    [SerializeField] Image icon;
+    [SerializeField] TextMeshProUGUI inputText;
+    //[SerializeField] TextMeshProUGUI ammoText_Current;
+    //[SerializeField] TextMeshProUGUI ammoText_Reserve;
     
+    GunClass gun_Perma;
+    GunClass gun_Temp;
+
+    GunClass GetCurrentGun { get 
+        {
+            if (gun_Temp != null) 
+            {
+                if (gun_Temp.data != null && !gun_Temp.isEquipped) return gun_Temp;
+            }
+              
+            if(gun_Perma != null)
+            {
+                if (gun_Perma.data != null && !gun_Perma.isEquipped) return gun_Perma;
+            }
+           
+            return null;
+
+        } }
+
+
+    const string ANIMATION_NORMAL = "Normal";
+    const string ANIMATION_HIGHLIGHTED = "Highlighted";
+    const string ANIMATION_PRESSED = "Pressed";
+    const string ANIMATION_DISABLED = "Disabled";
+
+
+
 
     private void Awake()
     {
         holder.SetActive(false);
+        
 
-        chargeImage.fillAmount = 0;
     }
-    public void SetUp(GunClass gun)
+
+    private void Start()
     {
-        this.gun = gun;
-        icon.sprite = gun.data.itemIcon;
+        
+    }
+
+    public void UpdateKeyText(int index)
+    {
+
+
+        if (index == 1)
+        {
+            string key = PlayerHandler.instance._playerController.key.GetKey(KeyType.SwapWeapon_1).ToString();
+            inputText.text = key;
+        }
+        if (index == 2)
+        {
+            string key = PlayerHandler.instance._playerController.key.GetKey(KeyType.SwapWeapon_2).ToString();
+            inputText.text = key;
+        }
+    }
+
+    public void SetUp(GunClass gun_Perma, GunClass gun_Temp)
+    {
+        this.gun_Perma = gun_Perma;
+        this.gun_Temp = gun_Temp;
+
+        UpdateUI();
+
+        
+    }
+
+ 
+    public void UpdateUI()
+    {
+        if(GetCurrentGun == null)
+        {
+            holder.SetActive(false);
+            return;
+        }
+
+        icon.sprite = GetCurrentGun.data.itemIcon;
         Unselect();
-        ammoText.text = gun.ammoCurrent.ToString();
+        //ammoText_Current.text = GetCurrentGun.ammoCurrent.ToString();
+        //ammoText_Reserve.text = GetCurrentGun.ammoReserve.ToString();
         holder.SetActive(true);
     }
 
     public void Select()
     {
-        selected_ForShow.SetActive(true);
+        
     }
     public void Unselect()
     {
 
-        selected_ForShow.SetActive(false);
+
     }
-    public void UpdateAmmo(int ammo)
+    public void UpdateAmmo(int ammo_Current, int ammo_Reserve)
     {
-        ammoText.text = ammo.ToString();    
+        //ammoText_Current.text = ammoText_Current.ToString();
+        //ammoText_Reserve.text = ammoText_Reserve.ToString();
     }
 
     bool isPause = false;
@@ -64,29 +128,18 @@ public class OwnedGunShowUnit : ButtonBase
         isPause = UIHandler.instance._pauseUI.IsPauseOn();
         isEnd = UIHandler.instance._EndUI.IsEnd();
 
-        if (!isPause && !isEnd)
-        {
-            select_ForPause.SetActive(false);
-        }
 
-
-      
-
+     
     }
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
         base.OnPointerEnter(eventData);
 
-
-
-
-
         if (isPause || isEnd)
         {
             Debug.Log("this");
-            select_ForPause.SetActive(true);
-            UIHandler.instance._pauseUI.DescribeGun(gun, transform);
+            UIHandler.instance._pauseUI.DescribeGun(gun_Temp, transform);
         }
     }
     public override void OnPointerExit(PointerEventData eventData)
@@ -95,19 +148,14 @@ public class OwnedGunShowUnit : ButtonBase
 
         if (isPause || isEnd)
         {
-            select_ForPause.SetActive(false);
             UIHandler.instance._pauseUI.StopDescription();
         }
     }
     private void OnDisable()
     {
-        select_ForPause.SetActive(false);
+        
     }
 
 
-    public void UpdateChargeImage(float current, float total)
-    {
-        chargeImage.fillAmount = current / total;
-    }
 
 }

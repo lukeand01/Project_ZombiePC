@@ -42,6 +42,7 @@ public class InventoryUI : MonoBehaviour
     {
         //must not call this if i am in anotther scene
         //we will not create this.
+
         if (LocalHandler.instance == null && CityHandler.instance == null) return; 
 
         ItemNotificationUnit fakeObject = Instantiate(_itemNotificationUnit);

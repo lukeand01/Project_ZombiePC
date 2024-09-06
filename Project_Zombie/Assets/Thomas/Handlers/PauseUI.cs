@@ -11,7 +11,7 @@ public class PauseUI : MonoBehaviour
     //all the passives he has
     //all the actives.
     //the guns and their damage 
-    //the player total stats.
+    //the player total_Damage stats.
     //it also needs settings.
 
     //is there another place where the ability unit is set? or just pause because that should be the think
@@ -86,7 +86,7 @@ public class PauseUI : MonoBehaviour
     }
 
     #region DESCRIPTION
-    //description for bd, for ability, for stat and for gun.
+    //description for bd, for ability, for stat and for gun_Perma.
     //i need show the passive abilities he has gathered.
 
 
@@ -115,7 +115,7 @@ public class PauseUI : MonoBehaviour
     //i can just make everyone appear right at first. then we check.
     
 
-    //the gun will be the only different.
+    //the gun_Perma will be the only different.
 
     public void StopDescription()
     {

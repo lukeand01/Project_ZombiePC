@@ -23,7 +23,7 @@ public class EnemyEye : EnemyBase
 
         timeToStartDealingDamage_Total = 6;
         intervalBetweenDamage_Total = 2;
-        damage = new DamageClass(1);
+        damage = new DamageClass(1, DamageType.Pure, 0);
 
         _lineRend.positionCount = 2;
     }

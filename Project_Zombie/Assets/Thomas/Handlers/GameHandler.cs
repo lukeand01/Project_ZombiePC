@@ -98,7 +98,6 @@ public class GameHandler : MonoBehaviour
 
     #endregion
 
-
     #region FADE SCREEN
     [Separator("UI")]
     [SerializeField] Image loadScreen;
@@ -107,31 +106,6 @@ public class GameHandler : MonoBehaviour
     [SerializeField] Image rotateImageBackground;
     [SerializeField] Image rotateImage;
     [SerializeField] GameObject rotateImageHolder;
-
-
-
-    public IEnumerator LowerCurtainProcess_Simple(float duration)
-    {
-        //we basically disable all these fellas.
-
-        loadScreen.gameObject.SetActive(true);
-
-        tipText.DOFade(0, 0).SetUpdate(true);
-        titleText.DOFade(0, 0).SetUpdate(true);
-        rotateImageBackground.DOFade(0, 0).SetUpdate(true);
-        rotateImage.DOFade(0, 0).SetUpdate(true);
-
-        loadScreen.DOFade(1, duration).SetUpdate(true);
-        yield return new WaitForSeconds(duration);
-    }
-
-    public IEnumerator RaiseCurtainProcess_Simple(float duration)
-    {
-        
-        loadScreen.DOFade(0, duration).SetUpdate(true);
-        yield return new WaitForSeconds(duration);
-        loadScreen.gameObject.SetActive(false);
-    }
 
 
     public IEnumerator LowerCurtainProcess()
@@ -192,5 +166,31 @@ public class GameHandler : MonoBehaviour
     }
 
     #endregion
+
+    #region TELEPORT SCREEN
+    [Separator("TELEPORTER SCREEN")]
+    [SerializeField] Image teleportScreen;
+
+    //
+
+    public IEnumerator LowerCurtainProcess_Teleport()
+    {
+
+        yield return null;
+
+    }
+
+    public IEnumerator RaiseCurtainProcess_Teleport()
+    {
+        yield return null;
+    }
+
+    #endregion
+
+    #region COLOR
+
+
+    #endregion
+
 
 }

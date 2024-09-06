@@ -7,7 +7,10 @@ public class SoundUnit : MonoBehaviour
     [SerializeField] AudioSource _source;
     float timeForDestruction_Current;
     float timeForDestruction_Total;
-    public void SetUp(AudioClip clip, bool isSpatial)
+
+    // i need to tell what sound to use
+
+    public void SetUp(AudioClip clip, bool isSpatial, float modifier = 1)
     {
 
         if(isSpatial)
@@ -24,7 +27,8 @@ public class SoundUnit : MonoBehaviour
         _source.clip = clip;
         _source.Play();
 
-        _source.volume = 0.05f;
+        float volume = GameHandler.instance._settingsData.Get_Audio(Setting_AudioType.Sfx);
+        _source.volume = volume * modifier;
 
     }
 

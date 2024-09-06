@@ -48,7 +48,7 @@ public class PlayerCamera : MonoBehaviour
 
     public void ResetPlayerCamera()
     {
-        SetCamera(CameraPositionType.Default, 0, 0); //we instantly set the camera to the right position
+        SetCamera(CameraPositionType.Default, 0f, 0f); //we instantly set the camera to the right position
     }
 
     #region DETECT WALLS
@@ -236,7 +236,8 @@ public class PlayerCamera : MonoBehaviour
 
         Transform refTransform = cameraPositionClassArray[(int)_type]._transform;
 
-        cam.DOKill();
+
+        cam.transform.DOKill();
         cam.transform.DOLocalMove(refTransform.localPosition, moveSpeed).SetEase(Ease.Linear);
         cam.transform.DOLocalRotate(refTransform.localRotation.eulerAngles, rotationSpeed).SetEase(Ease.Linear);
 
@@ -254,7 +255,7 @@ public class PlayerCamera : MonoBehaviour
         //Gizmos.color = Color.yellow;
 
 
-        //Gizmos.DrawLine(cam.transform.position, transform.position - cam.transform.position);
+        //Gizmos.DrawLine(_cam.transform.position, transform.position - _cam.transform.position);
     }
 }
 
@@ -262,7 +263,8 @@ public enum CameraPositionType
 {
     Default = 0,
     FallDeath = 1,
-    Presentation = 2
+    Presentation = 2,
+    RegularDeath = 3
 }
 [System.Serializable]
 public class CameraPositionClass

@@ -606,11 +606,13 @@ public class LocalHandler : MonoBehaviour
         newObject.SetUp(item, index);
     }
 
+
+    //this is outdated and should be replaced with the pool system.
     public void ChestResourceDestroy(int index)
     {
         if(chestResourceSpawnIndexList.Count <= 0)
         {
-            Debug.LogError("TRIED TO REMOVE A CHEST BUT THERE ARE NO MORE RESOURCE CHESTS");
+            Debug.LogError("TRIED TO REMOVE A CHEST BUT THERE ARE NO MORE RESOURCE CHESTS"); 
             return;
         }
 

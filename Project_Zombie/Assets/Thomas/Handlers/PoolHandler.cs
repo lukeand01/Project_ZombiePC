@@ -1,5 +1,4 @@
 using MyBox;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -18,6 +17,9 @@ public class PoolHandler : MonoBehaviour
         CreateSoundPool();
         CreateAreaDamagePool();
         CreateTurretFlyPool();
+        CreateDashEffectPool();
+        CreateFadeUIPool();
+        CreateChestPool();
     }
 
 
@@ -28,6 +30,9 @@ public class PoolHandler : MonoBehaviour
         DamageArea_Reset();
         Enemy_Reset();
         TurretFly_Reset();
+        PS_Reset();
+        FadeUI_Reset();
+        Chest_Reset();
     }
 
     #region BULLET
@@ -153,7 +158,6 @@ public class PoolHandler : MonoBehaviour
     }
 
     #endregion
-
 
     #region ENEMY
     [Separator("ENEMY")]
@@ -334,4 +338,250 @@ public class PoolHandler : MonoBehaviour
     }
 
     #endregion
+
+    #region PS EFFECT
+    [Separator("PARTICLE SYSTEM")]
+    [SerializeField] PSScript[] psTemplate;
+    [SerializeField] Transform psContainer;
+    Dictionary<PSType, PSScript> ps_Ref_Dictionary = new();
+    Dictionary<PSType, ObjectPool<PSScript>> pool_Ps_Dictionary = new();
+    PSScript psTarget;
+
+    void CreateDashEffectPool()
+    {
+        List<PSType> psRefList = new() 
+        {
+            PSType.Dash_01,
+            PSType.Blood_01,
+        };
+
+
+        for (int i = 0; i < psTemplate.Length; i++)
+        {
+            var item = psTemplate[i];
+
+            if (item == null)
+            {
+                Debug.Log("no model here " + item.name);
+                continue;
+            }
+
+            pool_Ps_Dictionary.Add(psRefList[i], new ObjectPool<PSScript>(PS_Create, null, PS_ReturnToPool, defaultCapacity: 100));
+            ps_Ref_Dictionary.Add(psRefList[i], psTemplate[i]);
+        }
+
+
+    }
+
+    void PS_Reset()
+    {
+        for (int i = 0; i < psContainer.childCount; i++)
+        {
+            var item = psContainer.GetChild(i).gameObject;
+
+            if (item == null) return;
+
+            item.SetActive(false);
+        }
+    }
+
+    public PSScript GetPS(PSType _type, Transform pos)
+    {
+        PSScript refPS = ps_Ref_Dictionary[_type];
+        psTarget = refPS;
+
+        PSScript newPS = pool_Ps_Dictionary[_type].Get();     
+        newPS.transform.position = pos.position;
+        newPS.gameObject.SetActive(true);
+
+        return newPS;
+    }
+
+
+    PSScript PS_Create()
+    {
+        var ps = Instantiate(psTarget);
+        ps.transform.SetParent(psContainer);
+        psContainer.gameObject.name = "PsContainer " + psContainer.childCount.ToString();
+        return ps;
+    }
+
+
+    void PS_ReturnToPool(PSScript ps)
+    {
+        ps.ResetForPool();
+        ps.transform.localPosition = Vector3.zero;
+        ps.transform.SetParent(psContainer);
+        psContainer.gameObject.name = "PsContainer " + psContainer.childCount.ToString();
+        //i need to return this to the player as well.
+    }
+
+
+
+    public void PS_Release(PSType _psType, PSScript ps)
+    {
+        pool_Ps_Dictionary[_psType].Release(ps);
+    }
+
+
+
+    #endregion
+
+    #region FADE UI
+
+    //i will put this because i will be creating a lot of these fellas.
+    [Separator("FADE UI")]
+    [SerializeField] FadeUI_New fadeUITemplate;
+    [SerializeField] Transform fadeContainer;
+    ObjectPool<FadeUI_New> pool_FadeUI;
+
+    void CreateFadeUIPool()
+    {
+        pool_FadeUI = new ObjectPool<FadeUI_New>(FadeUI_Create, null, FadeUI_ReturnToPool, defaultCapacity: 150);
+
+    }
+
+    void FadeUI_Reset()
+    {
+        for (int i = 0; i < fadeContainer.childCount; i++)
+        {
+            var item = damageContainer.GetChild(i).gameObject;
+            item.SetActive(false);
+        }
+    }
+
+    public FadeUI_New GetFadeUI(Vector3 pos)
+    {
+        FadeUI_New newFade = pool_FadeUI.Get();
+        newFade.transform.position = pos;
+        newFade.gameObject.SetActive(true);
+        return newFade;
+    }
+
+    FadeUI_New FadeUI_Create()
+    {
+        var newFade = Instantiate(fadeUITemplate);
+        newFade.transform.SetParent(fadeContainer);
+        fadeContainer.gameObject.name = "FadeContainer " + fadeContainer.childCount.ToString();
+        return newFade;
+    }
+
+    void FadeUI_ReturnToPool(FadeUI_New fadeUI)
+    {
+        fadeUI.ResetForPool();
+        fadeUI.transform.localPosition = Vector3.zero;
+        fadeUI.transform.SetParent(fadeContainer);
+        //i need to return this to the player as well.
+    }
+
+    public void FadeUI_Release(FadeUI_New fadeUI)
+    {
+        pool_FadeUI.Release(fadeUI);
+    }
+
+
+
+    #endregion
+
+    #region CHEST
+    [Separator("Chests")]
+    [SerializeField] ChestBase[] chestBaseTemplateArray;
+    [SerializeField] Transform chestContainer;
+    Dictionary<ChestType, ChestBase> chest_Ref_Dictionary = new();
+    Dictionary<ChestType, ObjectPool<ChestBase>> pool_Chest_Dictionary = new();
+    ChestBase chestTarget;
+
+    void CreateChestPool()
+    {
+        List<ChestType> chestRefList = new()
+        {
+            ChestType.ChestGun,
+            ChestType.ChestAbility,
+            ChestType.ChestResource,
+            //ChestType.ChestShrine,
+        };
+
+
+        for (int i = 0; i < chestBaseTemplateArray.Length; i++)
+        {
+            var item = chestBaseTemplateArray[i];
+
+            if (item == null)
+            {
+                Debug.Log("no model here for chest" + item.name);
+                continue;
+            }
+
+            pool_Chest_Dictionary.Add(chestRefList[i], new ObjectPool<ChestBase>(Chest_Create, null, Chest_ReturnToPool, defaultCapacity: 100));
+            chest_Ref_Dictionary.Add(chestRefList[i], chestBaseTemplateArray[i]);
+        }
+
+
+    }
+
+    void Chest_Reset()
+    {
+        for (int i = 0; i < chestContainer.childCount; i++)
+        {
+            var item = chestContainer.GetChild(i).gameObject;
+
+            if (item == null) return;
+
+            item.SetActive(false);
+        }
+    }
+
+    public ChestBase GetChest(ChestType _type, Transform pos)
+    {
+        ChestBase refChest = chest_Ref_Dictionary[_type];
+        chestTarget = refChest;
+
+        ChestBase newChest = pool_Chest_Dictionary[_type].Get();
+        newChest.transform.position = pos.position;
+        newChest.gameObject.SetActive(true);
+
+        return newChest;
+    }
+
+
+    ChestBase Chest_Create()
+    {
+        var chest = Instantiate(chestTarget);
+        chest.transform.SetParent(chestContainer);
+        chestContainer.gameObject.name = "ChestContainer " + chestContainer.childCount.ToString();
+        return chest;
+    }
+
+
+    void Chest_ReturnToPool(ChestBase ps)
+    {
+        ps.ResetForPool();
+        ps.transform.localPosition = Vector3.zero;
+        ps.transform.SetParent(chestContainer);
+        chestContainer.gameObject.name = "ChestContainer " + chestContainer.childCount.ToString();
+        //i need to return this to the player as well.
+    }
+
+
+
+    public void Chest_Release(ChestType _type, ChestBase chest)
+    {
+        pool_Chest_Dictionary[_type].Release(chest);
+    }
+
+
+    #endregion
+
+
 }
+
+
+//we use this to call different particle systems
+public enum PSType 
+{ 
+    Dash_01,
+    Blood_01
+
+
+}
+

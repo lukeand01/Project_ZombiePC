@@ -79,12 +79,12 @@ public class EnemyMage : EnemyBase
             Debug.Log("here " + type);
             newObject.SetUp(playerPosition + offset, damageRadius, damageTimer, GetDamage(), 3, 0.1f,type);
 
-            float timerRandom = Random.Range(0.6f, 1);
+            float timerRandom = Random.Range(1, 1.5f);
 
             yield return new WaitForSeconds(timerRandom);
         }
 
-        float cooldownRandom = Random.Range(1.2f, 2);
+        float cooldownRandom = Random.Range(3, 4);
 
         yield return new WaitForSeconds(cooldownRandom);
 

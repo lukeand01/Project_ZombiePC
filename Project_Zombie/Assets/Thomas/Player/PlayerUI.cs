@@ -40,9 +40,52 @@ public class PlayerUI : MonoBehaviour
         holder.SetActive(isVisible);
     }
 
+    bool isUpdatingShield;
+    bool isUpdatingHealth;
+
     private void Update()
     {
         mouseIcon.transform.position = Input.mousePosition;
+
+
+        if(shieldBar.fillAmount > 0 && shieldBar.isActiveAndEnabled )
+        {
+            if(shieldText.transform.localScale != Vector3.one && !isUpdatingShield)
+            {
+                isUpdatingShield = true;
+                shieldText.transform.DOKill();
+                shieldText.transform.DOScale(1, 0.25f).SetEase(Ease.Linear);
+
+                healthText.transform.DOKill();
+                healthText.transform.DOScale(0.75f, 0.25f).SetEase(Ease.Linear);
+            }
+
+            if (shieldText.transform.localScale == Vector3.one && isUpdatingShield)
+            {
+                isUpdatingShield = false;
+            }
+
+
+        }
+        else
+        {
+            if (healthText.transform.localScale != Vector3.one && !isUpdatingHealth)
+            {
+                isUpdatingHealth = true;
+                shieldText.transform.DOKill();
+                shieldText.transform.DOScale(0.75f, 0.25f).SetEase(Ease.Linear);
+
+                healthText.transform.DOKill();
+                healthText.transform.DOScale(1, 0.25f).SetEase(Ease.Linear);
+            }
+
+            if (healthText.transform.localScale == Vector3.one && isUpdatingHealth)
+            {
+                isUpdatingHealth = false;
+            }
+
+
+        }
 
 
         HandleDamageFlash();

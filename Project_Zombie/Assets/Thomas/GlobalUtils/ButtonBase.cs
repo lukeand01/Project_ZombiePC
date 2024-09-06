@@ -37,12 +37,19 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
+
+        Debug.Log("pointer click");
+
         if(base_ControlClick != null)
         {
             if (base_ControlClick.activeInHierarchy) return;
         }
 
-        if (clickClip != null && GameHandler.instance != null) GameHandler.instance._soundHandler.CreateSfx(clickClip);
+        if (clickClip != null && GameHandler.instance != null)
+        {
+            Debug.Log("click this");
+            GameHandler.instance._soundHandler.CreateSfx(clickClip);
+        }
 
         clickTimerCurrent = clickTimerTotal;
         if(mouseClick != null)
@@ -91,12 +98,16 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
+
         if (base_ControlClick != null)
         {
             if (base_ControlClick.activeInHierarchy) return;
         }
         if (mouseHover != null) mouseHover.SetActive(true);
-        if (hoverClip != null && GameHandler.instance != null) GameHandler.instance._soundHandler.CreateSfx(hoverClip);
+        if (hoverClip != null && GameHandler.instance != null)
+        {
+            GameHandler.instance._soundHandler.CreateSfx(hoverClip);
+        }
     }
 
 

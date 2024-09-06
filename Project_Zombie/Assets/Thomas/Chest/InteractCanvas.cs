@@ -14,12 +14,18 @@ public class InteractCanvas : MonoBehaviour
     [SerializeField] TextMeshProUGUI interactButtonText;
     [SerializeField] GameObject priceHolder;
     [SerializeField] TextMeshProUGUI priceText;
+    [SerializeField] protected GameObject titleHolder;
+    [SerializeField] TextMeshProUGUI titleText;
+    //while the thing is showing i want the  interact button if it has a border to keep slowly rotating
+
 
     private void Awake()
     {
         mainCam = Camera.main;
 
-        if(priceHolder != null ) priceHolder.SetActive(false);
+        if (priceHolder != null) priceHolder.SetActive(false);
+
+        gameObject.SetActive(false);
     }
 
     private void Update()
@@ -27,8 +33,12 @@ public class InteractCanvas : MonoBehaviour
         transform.LookAt(mainCam.transform.position);
     }
 
-    public void ControlInteractButton(bool isVisible)
+    public virtual void ControlInteractButton(bool isVisible)
     {
+        if (interatButtonHolder == null) return;
+        if (interactButtonText == null) return;
+
+
         if (isDestroyed) return;
         if (isVisible)
         {
@@ -43,18 +53,28 @@ public class InteractCanvas : MonoBehaviour
     public void ControlPriceHolder(int price)
     {
         if (isDestroyed) return;
+        if(titleHolder == null)
+        {
+            UnityEngine.Debug.Log("this does not have title holder " + gameObject.name);
+            return;
+        }
+        titleHolder.SetActive(false);
         priceHolder.SetActive(true);
-        priceText.text = "Price: " + price.ToString();
+        priceText.text = price.ToString();
     }
+
+
 
     public void ControlNameHolder(string name)
     {
+        if (priceHolder == null) return;
         if (isDestroyed) return;
-        priceHolder.SetActive(true);
-        priceText.text = name;
+        titleHolder.SetActive(true);
+        priceHolder.SetActive(false);
+        titleText.text = name;
     }
 
-    
+
 
 
     bool isDestroyed;
@@ -76,7 +96,7 @@ public class InteractCanvas : MonoBehaviour
     {
         ControlInteractButton(true);
 
-        if(price == 0)
+        if (price == 0)
         {
             priceHolder.SetActive(false);
         }
@@ -85,7 +105,7 @@ public class InteractCanvas : MonoBehaviour
             ControlPriceHolder(price);
         }
 
-        
+
         merchantHolder.gameObject.SetActive(true);
 
         merchantHolder.color = backgroundColor;
@@ -95,7 +115,7 @@ public class InteractCanvas : MonoBehaviour
         iconImage.sprite = _icon;
 
     }
-    
+
     public void StopMerchant()
     {
         ControlInteractButton(false);
@@ -108,7 +128,39 @@ public class InteractCanvas : MonoBehaviour
 
     #endregion
 
+
+
+    [Separator("NEW SYSTEM - FOR CITY")]
+    [SerializeField] ButtonInteractUnit[] interactButtonArray;
+
+
+    public void UpdateInteractButton_NewSystem(int index, string inputString, string titleString, string levelString)
+    {
+        interactButtonArray[index].gameObject.SetActive(true);
+        interactButtonArray[index].SetUp(inputString, titleString, levelString);
+
+    }
+    public void DisableInteratButton_NewSystem(int index)
+    {
+        interactButtonArray[index].gameObject.SetActive(false);
+    }
+
+
+
+    #region CHECK WHAT CHILDREN FROM INTERACT CANVAS IT IS
+
+
+    public virtual InteractCanvas_ChestGun GetInteractChestGun() => null;
+
+    #endregion
+
+
 }
+
+
+
+
+
 
 
 //we need to show the amount of points that it cost.

@@ -1,35 +1,20 @@
+using DG.Tweening;
 using MyBox;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MouseUI : MonoBehaviour
 {
-    //i will hold the ref here.
-    //things that are interactle can have unique sprites for the 
-    //we will hold ref for the basic ones here. all white and they will be changed with color.
-
-    //the mouse ui will slowly move when hovering an enem,y
-    //and scale up. a bit
-
-
-
-    //it should a different ui when inside the city.
-    //
-
-    //either 
+   //i want to improve this fella by a lot
+   //the aim needs to be more precise, it needs to show the area of error.
+   
+    //still need to rotate the damage thing.
 
 
     //we need to keep checking with
-    [SerializeField] Image mouse_Game;
 
-    [Separator("REF TO THE BASIC SPRITES")]
-    [SerializeField] Sprite mouseSprite_DefaultAim; //this is the aim
-    [SerializeField] Sprite mouseSprite_HoverEnemy;
-    [SerializeField] Sprite mouseSprite_Interact;
-    Camera cam;
+    Camera _cam;
 
     [Separator("COLOR")]
     [SerializeField] Color color_Enemy;
@@ -44,6 +29,11 @@ public class MouseUI : MonoBehaviour
 
     MouseStatType state;
 
+    [SerializeField] List<MouseUIClass> _mouseUIClassList = new();
+    int mouseUICurrentIndex;
+    MouseUIClass GetCurrentMouse { get { return _mouseUIClassList[mouseUICurrentIndex]; } }
+
+
     enum MouseStatType
     {
         Free,
@@ -54,71 +44,97 @@ public class MouseUI : MonoBehaviour
 
     private void Awake()
     {
-        cam = Camera.main;
-        targetScale = mouse_Game.transform.localScale.x;
+        _cam = Camera.main;
 
         layer_Enemy |= (1 << 6);
         layer_Interactable |= (1 << 7);
 
     }
 
+    public void UpdateMouseUI(MouseUIType _type)
+    {
+        for (int i = 0; i < _mouseUIClassList.Count; i++)
+        {
+            var item = _mouseUIClassList[i];
+
+            item.Reset();
+        }
+        mouseUICurrentIndex = (int)_type;
+        GetCurrentMouse.mouseUIHolder.SetActive(true);
+        targetScale = GetCurrentMouse.mouseUIHolder.transform.localScale.x;
+    }
+
+    public void Shoot()
+    {
+        if(!isReloading) GetCurrentMouse.Shoot();
+    }
+
     public void ControlAppear(bool shouldAppear)
     {
         shouldNotUseMouseUI = !shouldAppear;
     }
-
+    [SerializeField] float angle;
+    [SerializeField] Vector3 dir;
+    [SerializeField] float mousePosZCorrecttor;
+    bool isReloading;
     private void Update()
     {
-        //it keeps following
-        //mouse_Game.transform.position = cam.ScreenToWorldPoint(Input.mousePosition);
-
-      
+       
+        isReloading = PlayerHandler.instance._playerCombat.isReloading;
+       
         if(Time.timeScale == 0 || shouldNotUseMouseUI)
         {
             //if thats teh case then we show the cursos.
             Cursor.visible = true;
-            mouse_Game.gameObject.SetActive(false);
+            GetCurrentMouse.mouseUIHolder.SetActive(false);
             return;
         }
         else
         {
             Cursor.visible = false;
-            mouse_Game.gameObject.SetActive(true);
+            GetCurrentMouse.mouseUIHolder.SetActive(true);
         }
 
-        mouse_Game.transform.position = Input.mousePosition;
+        MoveWithMouseInput();
+        CheckScale();
+        if (isReloading)
+        {
+            KeepRotatingWhileReloading();
+            targetScale = 0.7f;
+            //mouse_Game.transform.Rotate(0, 0, 30 * Time.deltaTime);
+            _mouseUIClassList[mouseUICurrentIndex].ChangeColor(Color.white);
+            return;
+        }
+        else
+        {
+            RotateToAlwaysFacePlayer();
 
+        }
         //we need to get information frmo where it is in the canvas.
 
         switch (state)
         {
             case MouseStatType.Free:
                 targetScale = 0.7f;
-                mouse_Game.transform.Rotate(0, 0, 30 * Time.deltaTime);
-                mouse_Game.sprite = mouseSprite_DefaultAim;
-                mouse_Game.color = Color.white;
+                GetCurrentMouse.mouseUIHolder.transform.Rotate(0, 0, 30 * Time.deltaTime);
+                _mouseUIClassList[mouseUICurrentIndex].ChangeColor(Color.white);
                 break;
             case MouseStatType.Enemy:
            
-                mouse_Game.transform.Rotate(0, 0, -100 * Time.deltaTime);
                 targetScale = 1.5f;
-                mouse_Game.color = color_Enemy;
-                mouse_Game.sprite = mouseSprite_HoverEnemy;
+                _mouseUIClassList[mouseUICurrentIndex].ChangeColor(color_Enemy);
                 break;
             case MouseStatType.Interactable:
 
-                mouse_Game.transform.Rotate(0, 0, -100 * Time.deltaTime);
                 targetScale = 1.5f;
-                mouse_Game.color = color_Interactable;
-                mouse_Game.sprite = mouseSprite_Interact;
+                _mouseUIClassList[mouseUICurrentIndex].ChangeColor(color_Interactable);
                 break;
         }
 
 
 
 
-        CheckScale();
-
+ 
         if (CheckForEnemy())
         {
             state = MouseStatType.Enemy;
@@ -136,15 +152,59 @@ public class MouseUI : MonoBehaviour
         state = MouseStatType.Free;
     }
 
+
+
+
     public void ControlVisibility(bool isVisible)
     {
         //there is a different ui for stage and city.
     }
 
+    void RotateToAlwaysFacePlayer()
+    {
+        Vector3 mousePosition = _cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 50));
+        mousePosition.z += mousePosZCorrecttor;
+
+
+
+        Vector3 direction = new Vector3(
+        mousePosition.x - PlayerHandler.instance.transform.position.x,
+        0,
+        mousePosition.z - PlayerHandler.instance.transform.position.z
+        );
+
+
+
+        Vector3 screenPos = _cam.WorldToScreenPoint(direction);
+        dir = screenPos;
+
+        var angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+        angle += 90;
+        GetCurrentMouse.mouseUIHolder.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        //i want to perphaps rotate it a bit
+
+    }
+
+    void MoveWithMouseInput()
+    {
+        GetCurrentMouse.mouseUIHolder.transform.position = Input.mousePosition + new Vector3(0,0,10);
+
+
+        //this is the fella.
+
+    }
+
+    void KeepRotatingWhileReloading()
+    {
+        GetCurrentMouse.mouseUIHolder.transform.Rotate(new Vector3(0, 0, 1));
+    }
+
+
 
     void CheckScale()
     {
-        float scale_Current = mouse_Game.transform.localScale.x;
+        float scale_Current = GetCurrentMouse.mouseUIHolder.transform.localScale.x;
 
         bool shouldScale = Mathf.Abs(scale_Current - targetScale) > 1;
         if (!shouldScale)
@@ -155,11 +215,11 @@ public class MouseUI : MonoBehaviour
 
         if(scale_Current > targetScale)
         {
-            mouse_Game.transform.localScale -= new Vector3(1, 1, 1) * Time.deltaTime * 100;
+            _mouseUIClassList[mouseUICurrentIndex].ChangeSize(- new Vector3(1, 1, 1) * Time.deltaTime * 100);
         }
         if(scale_Current < targetScale)
         {
-            mouse_Game.transform.localScale += new Vector3(1, 1, 1) * Time.deltaTime * 100;
+            _mouseUIClassList[mouseUICurrentIndex].ChangeSize(new Vector3(1, 1, 1) * Time.deltaTime * 100); 
         }
     }
 
@@ -168,7 +228,7 @@ public class MouseUI : MonoBehaviour
         Vector3 mousePosition = Input.mousePosition;
 
         // Convert the mouse position to a ray
-        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        Ray ray = _cam.ScreenPointToRay(mousePosition);
 
         RaycastHit hit;
 
@@ -180,12 +240,84 @@ public class MouseUI : MonoBehaviour
         Vector3 mousePosition = Input.mousePosition;
 
         // Convert the mouse position to a ray
-        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        Ray ray = _cam.ScreenPointToRay(mousePosition);
 
         RaycastHit hit;
 
         return Physics.Raycast(ray, out hit, 999, layer_Interactable);
 
     }
+
+}
+
+public enum MouseUIType
+{
+    Simple = 0,
+    Shotgun = 1,
+    Laser = 2,
+    Sniper = 3
+}
+
+[System.Serializable]
+public class MouseUIClass
+{
+    [field:SerializeField] public GameObject mouseUIHolder { get; private set; }
+
+    [SerializeField] Image[] piecesArray;
+    [SerializeField] MouseUIType mouseUIType;
+
+    float originalSpreadSize; //we update this everytime we change the gun_Perma
+    Vector3 originalPosition { get { return new Vector3(originalSpreadSize, 0, 0); } }
+    public void SetUp(float originalSpreadSize)
+    {
+        this.originalSpreadSize = originalSpreadSize;   
+    }
+
+    public void Reset()
+    {
+
+    }
+
+    public void Shoot()
+    {
+        originalSpreadSize = 50;
+
+        float timer = 0.05f;
+        piecesArray[0].transform.DOKill();
+        piecesArray[1].transform.DOKill();
+
+        piecesArray[0].transform.DOLocalMove(-originalPosition - new Vector3(20, 0, 0), timer).SetEase(Ease.Linear).OnComplete(() => ReturnToNormal());       
+        piecesArray[1].transform.DOLocalMove(originalPosition + new Vector3(20, 0, 0), timer).SetEase(Ease.Linear);
+    }
+
+    void ReturnToNormal()
+    {
+
+
+        float timer = 0.05f;
+        piecesArray[0].transform.DOKill();
+        piecesArray[1].transform.DOKill();
+        piecesArray[0].transform.DOLocalMove(-originalPosition, timer).SetEase(Ease.Linear);
+
+        
+        piecesArray[1].transform.DOLocalMove(originalPosition, timer).SetEase(Ease.Linear);
+    }
+
+
+    public void ChangeColor(Color color)
+    {
+        foreach (var item in piecesArray)
+        {
+            item.color = color;
+        }
+    }
+    public void ChangeSize(Vector3 vectorValue)
+    {
+        foreach (var item in piecesArray)
+        {
+            item.transform.localScale += vectorValue;
+        }
+    }
+
 
 }

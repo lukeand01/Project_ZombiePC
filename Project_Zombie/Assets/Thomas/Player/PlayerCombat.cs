@@ -1,4 +1,5 @@
 using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,10 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] Transform gunSpawnPos;
 
     [SerializeField]GunClass[] gunList; //0 is always perma and the next two are temp
+    public GunClass GetCurrentGun { get{ return gunList[currentGunIndex]; } }
     int currentGunIndex;
+
+    [SerializeField] Transform[] gunHolsterHolderList;
 
     GunUI _gunUI;
     bool keepShootingIfCanHold;
@@ -31,6 +35,9 @@ public class PlayerCombat : MonoBehaviour
     [Separator("SOUND")]
     [SerializeField] AudioSource audioSrc_Reload;
     [SerializeField] AudioClip audio_Swap;
+
+
+    //everytime we are supposed to turn off the model we just put it in the right place.
 
 
     private void Awake()
@@ -43,6 +50,8 @@ public class PlayerCombat : MonoBehaviour
     {
 
         //the problem is because this is starting somewhere else where there is no cityhandler. i simply must call it from the cityhandler.
+
+        
 
         SetUp();
         _gunUI = UIHandler.instance.gunUI;
@@ -126,11 +135,11 @@ public class PlayerCombat : MonoBehaviour
 
 
         UIHandler.instance._EquipWindowUI.GetEquipForPermaGun(gunList[0]);
+        UIHandler.instance._MouseUI.UpdateMouseUI(gunList[0].data.mouseImageType);
 
-        
-        
 
-        
+
+
         //StartCoroutine(CallThisLater());
 
         //we could call this when we open the thing as well, to make sure it opens at the right momet
@@ -161,7 +170,7 @@ public class PlayerCombat : MonoBehaviour
         {
             if (gunList[i].data == null) continue;
             Destroy(gunList[i].gunModel);
-            UIHandler.instance.gunUI.ClearOwnedGunUnit(i);
+            if(i != 0)  UIHandler.instance.gunUI.ClearOwnedGunUnit(i - 1);
             gunList[i].ResetGunClass();
         }
 
@@ -172,11 +181,23 @@ public class PlayerCombat : MonoBehaviour
 
         gunList[0].ReloadGunForFree();
 
+        OrderSwapGun(0, true);
+        UpdateRiggingAndAnimationForCurrentGun();
+
+
+
     }
 
     public void ControlGunHolderVisibility(bool isVisible)
     {
-        gunSpawnPos.gameObject.SetActive(isVisible);
+
+        //we tell each fella to disappear with its gun.
+
+        foreach (var item in gunList)
+        {
+            item.ControlModelVisibility(isVisible);
+        }
+
     }
 
 
@@ -185,10 +206,7 @@ public class PlayerCombat : MonoBehaviour
     {
         return gunList[0].data;
     }
-    public GunClass GetCurrentGun()
-    {
-        return gunList[currentGunIndex];
-    }
+
 
     public int GetCurrentGunIndex { get { return currentGunIndex; } }
 
@@ -217,17 +235,17 @@ public class PlayerCombat : MonoBehaviour
         //either we willl put the data.
         GameObject spawnedModel = CreateGunModel(gun);
 
-        gunList[0] = new GunClass(handler, gun, spawnedModel);       
+        gunList[0] = new GunClass(handler, gun, spawnedModel, gunHolsterHolderList[0]);       
         gunList[0].MakeAmmoInfinite();
         gunList[0].data.AddGunPassives();
 
         UpdateSecretValues();
 
-        UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[0], 0);
-        UIHandler.instance.gunUI.ChangeOwnedGunShowUnit(0);
+        //UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[0], 0);
+        // UIHandler.instance.gunUI.ChangeOwnedGunShowUnit(0);
+        gunList[0].StoreWeapon();
 
-
-        if(currentGunIndex == 0)
+        if (currentGunIndex == 0)
         {
             SwapGunModel();
         }
@@ -236,7 +254,6 @@ public class PlayerCombat : MonoBehaviour
         {
             CityHandler.instance.UpdateGunListUsingCurrentPermaGun();
         }
-
 
     }
 
@@ -261,8 +278,9 @@ public class PlayerCombat : MonoBehaviour
 
 
         GameObject spawnedModel = CreateGunModel(data);
-        gunList[emptyIndex] = new GunClass(handler, data, spawnedModel);
-        UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[emptyIndex], emptyIndex);
+        gunList[emptyIndex] = new GunClass(handler, data, spawnedModel, gunHolsterHolderList[emptyIndex]);
+        UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[0], gunList[emptyIndex], emptyIndex - 1);
+        gunList[emptyIndex].StoreWeapon();
 
         UpdateSecretValues();
 
@@ -296,8 +314,9 @@ public class PlayerCombat : MonoBehaviour
         spawnedModel.transform.rotation = Quaternion.Euler(0,-90,0);
 
 
-        gunList[index] = new GunClass(handler, data, spawnedModel);
-        UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[index], index);
+        gunList[index] = new GunClass(handler, data, spawnedModel, gunHolsterHolderList[index]);
+        UIHandler.instance.gunUI.SetOwnedGunUnit(gunList[0], gunList[index], index - 1);
+        gunList[index].StoreWeapon();
 
         UpdateSecretValues();
 
@@ -312,11 +331,13 @@ public class PlayerCombat : MonoBehaviour
     GameObject CreateGunModel(ItemGunData data)
     {
         
-
         GameObject newObject = Instantiate(data.gunModel, gunSpawnPos.transform.position, data.gunModel.transform.localRotation);
         
-        newObject.SetActive(false);
+        //newObject.SetActive(false);
         newObject.transform.SetParent(gunSpawnPos);
+        newObject.transform.localPosition = data.gunModel.transform.localPosition;
+        newObject.transform.localRotation = data.gunModel.transform.localRotation;
+        newObject.transform.localScale = data.gunModel.transform.localScale;
 
         return newObject;
     }
@@ -344,65 +365,69 @@ public class PlayerCombat : MonoBehaviour
     #region SWAP GUN
 
 
-    public void OrderSwapGun()
+    public void OrderSwapGun(int index, bool insta = false)
     {
-        UnselectCurrentGunModel();
+        //we are not going to check everyone anymore
 
-        bool done = false;
+        //we are going to do the following
+        //if the requested gun is 0 and the current weapon is 0 then we do nothing
+        //if the requested gun is not 0, and the requested gun is NOT equippuied then we equip the main gun
+        //if the requested gun is not 0, and its equipped then we will equip 0
+
+
+        if (isSwapping)
+        {
+            //then we simply dont care.
+
+            return;
+        }
+
+
+
+        if (gunList[index].data == null) return; //this means this gun doesnt exist
+        if(index == 0 && currentGunIndex == 0) return;
 
         int lastGun = currentGunIndex;
+        int newIndex = 0; 
+
+
+        if (!gunList[index].isEquipped)
+        {
+            newIndex = index;
+        }
+
+        
 
         CancelCharge();
 
-        while (!done)
-        {
-            int safeBreak = 0;
-
-            safeBreak++;
-
-            if (safeBreak > 100)
-            {
-                Debug.LogError("COUDLTN FIND ANY AVAIALBE GUN " + currentGunIndex);
-                break;
-            }
-
-            currentGunIndex++;
-
-
-           
-            if (currentGunIndex >= gunList.Length)
-            {
-                currentGunIndex = 0;
-            }
-            if (gunList[currentGunIndex] == null)
-            {
-                continue;
-            }
-            if (gunList[currentGunIndex].data == null)
-            {
-                continue;
-            }
-            if (gunList[currentGunIndex].isInUpgradeStation)
-            {
-                continue;
-            }
-
-
-            done = true;
-        }
 
         if(lastGun != currentGunIndex)
         {
             GameHandler.instance._soundHandler.CreateSfx(audio_Swap);
         }
+
         
         CancelReload();
 
 
-        _gunUI.ChangeOwnedGunShowUnit(currentGunIndex);
-        SwapGunModel();
-        ResetHoldShoot();
-        MakeTrueBlock();
+        if (insta)
+        {
+            UnselectCurrentGunModel();
+            currentGunIndex = index;
+            SwapGunModel();
+            ResetHoldShoot();
+            MakeTrueBlock();
+            UIHandler.instance.gunUI.UpdateGunShowUnit();
+            UIHandler.instance._MouseUI.UpdateMouseUI(gunList[currentGunIndex].data.mouseImageType);
+            CancelSwap();
+        }
+        else
+        {
+            swapProcess = StartCoroutine(SwapGunProcess(newIndex));
+        }
+
+        
+
 
 
     }
@@ -419,10 +444,10 @@ public class PlayerCombat : MonoBehaviour
             //Debug.Log("NO DATA HERE");
             return;
         }
-            
-        
 
-        gunList[currentGunIndex].gunModel.SetActive(false);
+
+
+        gunList[currentGunIndex].StoreWeapon();
     }
     void SwapGunModel()
     {
@@ -440,23 +465,68 @@ public class PlayerCombat : MonoBehaviour
 
         audioSrc_Reload.clip = gunList[currentGunIndex].data.Get_Audio_Reload;
 
-        UIHandler.instance.gunUI.UpdateGunPortrait(gunList[currentGunIndex].data.itemIcon);
+        //UIHandler.instance.gunUI.UpdateGunPortrait(gunList[currentGunIndex].data.itemIcon);
         UIHandler.instance.gunUI.UpdateGunTitle(gunList[currentGunIndex].data.itemName);
         UIHandler.instance.gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
 
-        gunList[currentGunIndex].gunModel.SetActive(true);
+        gunList[currentGunIndex].EquipWeaponInHand();
+
+
+        UpdateRiggingAndAnimationForCurrentGun();
     }
 
-    
+    bool isSwapping;
+    Coroutine swapProcess;
+    IEnumerator SwapGunProcess(int targetIndex)
+    {
+        //a process like reaload.
+
+        isSwapping = true;
+
+        float current = 0;
+        float total = 0.4f;
+
+        while (total > current)
+        {
+            current += Time.deltaTime;
+            _gunUI.UpdateSwapFill(current, total);
+            yield return new WaitForSecondsRealtime(Time.deltaTime);
+        }
+
+        //in the end we change it.
+        UnselectCurrentGunModel();
+        currentGunIndex = targetIndex;
+        SwapGunModel();
+        ResetHoldShoot();
+        MakeTrueBlock();
+
+
+        UIHandler.instance.gunUI.UpdateGunShowUnit();
+
+        UIHandler.instance._MouseUI.UpdateMouseUI(gunList[currentGunIndex].data.mouseImageType);
+
+        CancelSwap();
+    }
+
+    public void CancelSwap()
+    {
+
+        if (!isSwapping) return;
+        //audioSrc_Reload.Stop();
+        StopCoroutine(swapProcess);
+        _gunUI.UpdateSwapFill(0, 0);
+        isSwapping = false;
+    }
 
     #endregion
 
     #region RELOAD
 
-    bool isReloading;
+    public bool isReloading { get; private set; }
 
     public void Reload()
     {
+        CancelSwap();
         if (gunList[currentGunIndex].data == null)
         {
             Debug.Log("there is no gun. cannot reload");
@@ -474,6 +544,7 @@ public class PlayerCombat : MonoBehaviour
         }
 
         CancelCharge();
+        
 
         StopCoroutine(nameof(ReloadProcess));
         reloadProcess = StartCoroutine(ReloadProcess());
@@ -493,6 +564,9 @@ public class PlayerCombat : MonoBehaviour
 
         audioSrc_Reload.Play();
 
+
+        handler._entityAnimation.CallAnimation_Reload(total);
+
         while (total > current)
         {
             current += Time.deltaTime;
@@ -500,12 +574,15 @@ public class PlayerCombat : MonoBehaviour
             yield return new WaitForSecondsRealtime(Time.deltaTime);
         }
 
+
+        handler._entityAnimation.StopAnimation_Reload();
+
         gunList[currentGunIndex].ReloadGun();
 
          handler._entityEvents.OnReloadedGun(gunList[currentGunIndex].data);
         _gunUI.UpdateReloadFill(0, 0);
         _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
-        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
+        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, GetCurrentGun.ammoCurrent, GetCurrentGun.ammoReserve);
 
         isReloading = false;
     }
@@ -538,7 +615,7 @@ public class PlayerCombat : MonoBehaviour
     {
         gunList[currentGunIndex].ReloadGunForFree();
         _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
-        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
+        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent, GetCurrentGun.ammoReserve);
 
     }
 
@@ -602,26 +679,45 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
-    public float ShieldReduceDamage(float damage)
+    public float ShieldReduceDamage(float totalDamage, List<DamageTypeClass> damageList)
     {
         if (shieldTotal == 0)
         {
-
-            return damage;
+            return totalDamage;
         }
 
+        float additionalDamageOnlyToShield = 0;
+
+        foreach (var item in damageList)
+        {
+            if(item._damageType == DamageType.Magical)
+            {
+                float additionalMagicalDamage = item._value * 0.2f;
+                additionalDamageOnlyToShield += additionalMagicalDamage;    
+            }
+            if(item._damageType == DamageType.Pure)
+            {
+                Debug.Log("there should be no pure damage here");
+            }
+
+
+        }
+
+
+
+    
         float valueToReturn = 0;
         float valueToReduce = 0;
 
-        if(shieldCurrent > damage)
+        if(shieldCurrent > totalDamage + additionalDamageOnlyToShield)
         {
-            valueToReduce = damage;
+            valueToReduce = totalDamage + additionalDamageOnlyToShield;
             valueToReturn = 0;
         }
         else
         {
             valueToReduce = shieldCurrent;
-            valueToReturn = damage - shieldCurrent ;
+            valueToReturn = totalDamage - shieldCurrent ;
 
         }
 
@@ -648,7 +744,7 @@ public class PlayerCombat : MonoBehaviour
     }
     public void HandleShield()
     {
-        //if shield total is higher
+        //if shield total_Damage is higher
 
         if(shieldTotal > 0 && shieldTotal > shieldCurrent)
         {
@@ -695,7 +791,7 @@ public class PlayerCombat : MonoBehaviour
         UIHandler.instance.gunUI.ClearOwnedGunUnit(currentGunIndex);
 
         //then we move to the next data
-        OrderSwapGun();
+        OrderSwapGun(0);
 
     }
     public void ReceiveTempGun_FromUpgradeStation()
@@ -744,12 +840,35 @@ public class PlayerCombat : MonoBehaviour
 
 
         GameObject spawnedModel = CreateGunModel(gunList[indexToUse].data);
-        gunList[indexToUse].SetGunModel(spawnedModel);
+        gunList[indexToUse].SetGunModel(spawnedModel, gunHolsterHolderList[indexToUse]);
         //UIHandler.instance.gunUI.SetOwnedGunUnit(dropList[indexToUse], indexToUse);
         UIHandler.instance.gunUI.ShowOwnedGunUnit(indexToUse);
         currentGunIndex = indexToUse;   
         SwapGunModel();
     }
+
+    #endregion
+
+    #region EQUIP RIGGING
+    //instead of just rotating we have to do things here
+    //we have animation for different gun_Perma holdings
+    //we always place the gun_Perma at the right hand.
+    //we only worry about this when 
+
+    //so basically there is two spot
+
+    void UpdateRiggingAndAnimationForCurrentGun()
+    {
+        //we detect what weapon is it
+        //we tell the animation 
+        //but i still want a way
+        //change the animation
+
+        handler._entityAnimation.SetStateUpperBody(GetCurrentGun.data.animationType);
+    }
+
+
+
 
     #endregion
 
@@ -845,8 +964,9 @@ public class PlayerCombat : MonoBehaviour
         {
 
             gunList[currentGunIndex].Shoot(shootDir, forcedBulletBehaviorList);
-            _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
-            _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
+            UIHandler.instance._MouseUI.Shoot();
+            _gunUI.UpdateAmmoGun(GetCurrentGun.ammoCurrent, GetCurrentGun.ammoReserve);
+            //_gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, GetCurrentGun.ammoCurrent, GetCurrentGun.ammoReserve);
         }
 
 
@@ -926,7 +1046,7 @@ public class PlayerCombat : MonoBehaviour
 
         gunList[currentGunIndex].Shoot(currentMousePos, forcedBulletBehaviorList);
         _gunUI.UpdateAmmoGun(gunList[currentGunIndex].ammoCurrent, gunList[currentGunIndex].ammoReserve);
-        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent);
+        _gunUI.UpdateAmmoInOwnedGunShowUnit(currentGunIndex, gunList[currentGunIndex].ammoCurrent, GetCurrentGun.ammoReserve);
 
         CancelCharge();
     }

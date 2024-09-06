@@ -134,7 +134,7 @@ public class TurretFlying : Turret
             newBullet.SetUp("Turret Ally", direction);
 
             newBullet.MakeBulletBehavior(bulletBehaviorList);
-            newBullet.MakeDamage(new DamageClass(50), 0, 0);
+            newBullet.MakeDamage(new DamageClass(50, DamageType.Physical, 0), 0, 0);
             newBullet.MakeSpeed(25, 0, 0);
 
             attackCooldownCurrent = attackCooldownTotal;

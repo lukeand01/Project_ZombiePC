@@ -1,3 +1,4 @@
+using DG.Tweening;
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ public class ChestAbility : ChestBase
     [Separator("CHEST ABILITY")]
     [SerializeField] List<AbilityPassiveData> debugPassiveDataList;
     [SerializeField] int price;
+    
+    //create an effect for the thing instead of just disappearing.
 
     public override void Interact()
     {
@@ -38,18 +41,46 @@ public class ChestAbility : ChestBase
         }
 
 
+       StartCoroutine(OpenProcess(_chestUI));
+    }
+
+    //
+
+    IEnumerator OpenProcess(ChestUI _chestUI)
+    {
+
         List<AbilityPassiveData> passiveList = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList();
+        //GameHandler.instance._soundHandler.CreateSfx(openChestClip, transform);
+
+        //it jumps in the air and o
+        transform.DOMove(transform.position + new Vector3(0, 5f, 0), 0.6f).SetEase(Ease.Linear);
+
+        yield return new WaitForSeconds(0.6f);
+
+
+        graphic_Lid.DOLocalRotate(new Vector3(-90, 0, 0), 0.2f).SetEase(Ease.Linear);
+
+        yield return new WaitForSeconds(0.2f);
+
 
         _chestUI.SetChest(this);
         _chestUI.CallChestAbility(passiveList);
 
         PlayerHandler.instance._entityEvents.OnOpenChest(ChestType.ChestAbility);
 
+        yield return new WaitForSeconds(1f);
+
+        //it stays in the air and disappears.
+
         Destroy(gameObject);
     }
 
+
+
     public override void InteractUI(bool isVisible)
     {
+
+        interactCanvas.gameObject.SetActive(isVisible);
         base.InteractUI(isVisible);
 
         if(price != 0)

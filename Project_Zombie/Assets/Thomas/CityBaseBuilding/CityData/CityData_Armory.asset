@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e3eebfb483b07459ffad681e975672, type: 3}
   m_Name: CityData_Armory
   m_EditorClassIdentifier: 
+  <cityStoreName>k__BackingField: Armory
   <cityStoreLevel>k__BackingField: 1
   <popRequirement>k__BackingField: 5
   <resourcePopRef>k__BackingField: {fileID: 11400000, guid: 5557f4efc84e59844861b35c4006e011, type: 2}
@@ -77,22 +78,14 @@ MonoBehaviour:
   ownedGunIndexList: 000000000100000002000000030000000a000000
   foundPermaGunIndexList: 
   nothing: 0
-  <currentGunAvailableArmoryList>k__BackingField:
+  <currentGunAvailableArmoryList>k__BackingField: []
+  <currentGunOwnedList>k__BackingField:
   - {fileID: 11400000, guid: 13aa1538999aba942a2f1a5764b302b5, type: 2}
   - {fileID: 11400000, guid: e4f36989caa466d448692e11cf5f651b, type: 2}
   - {fileID: 11400000, guid: 34eff2ce5ce97a6418e92af39813b2cb, type: 2}
   - {fileID: 11400000, guid: b5ce0634117da2145bff94c8137aff90, type: 2}
-  <currentGunOwnedList>k__BackingField:
-  - {fileID: 11400000, guid: e4f36989caa466d448692e11cf5f651b, type: 2}
-  - {fileID: 11400000, guid: 34eff2ce5ce97a6418e92af39813b2cb, type: 2}
-  - {fileID: 11400000, guid: b5ce0634117da2145bff94c8137aff90, type: 2}
-  <currentGunTempList>k__BackingField:
-  - {fileID: 11400000, guid: 175ac004bae164d4d94e189ba599b0fc, type: 2}
-  - {fileID: 11400000, guid: a03601f2da05203458d93520948ee0c7, type: 2}
-  - {fileID: 11400000, guid: dcf2f6a0e2ecb294795f5d7d84302122, type: 2}
-  - {fileID: 11400000, guid: 7b1a459b35bd35a40b2561aae96569cc, type: 2}
-  - {fileID: 11400000, guid: aeec2fcead747d541b16c14375ab067f, type: 2}
-  - {fileID: 11400000, guid: 175ac004bae164d4d94e189ba599b0fc, type: 2}
+  - {fileID: 11400000, guid: 03d21dd65e235db4eaa8be7289a68581, type: 2}
+  <currentGunTempList>k__BackingField: []
   debug_ItemList:
   - data: {fileID: 11400000, guid: dcf2f6a0e2ecb294795f5d7d84302122, type: 2}
     chance: 52

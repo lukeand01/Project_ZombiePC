@@ -15,17 +15,25 @@ MonoBehaviour:
   enemyName: Artillery
   enemyModel: {fileID: 6559205954906567091, guid: fafa9a3aef7714e4dbfc9c2c0b67a957, type: 3}
   attackRange: 200
-  attackSpeed: 8
+  AttackAnimationSpeed: 1
+  attackRest: 0
   initialStatList:
   - stat: 0
     initialValue: 150
   - stat: 2
     initialValue: 200
+  - stat: 2
+    initialValue: 200
   scaleStatList:
   - stat: 0
     initialValue: 30
+  enemyResistanceList:
+  - <_damageType>k__BackingField: 0
+    <_value>k__BackingField: 0
   audio_Hit: {fileID: 8300000, guid: 8e4851963e3ebde4b948020b48d7cd78, type: 3}
   audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
   audio_Spawned: {fileID: 0}
   audio_Attack: {fileID: 8300000, guid: ef852f4dba9f9e34285d4227eb3883d0, type: 3}
   shouldNotDespawnBecauseOfDistance: 1
+  canIgnoreAlly: 0
+  canTurnAlly: 0

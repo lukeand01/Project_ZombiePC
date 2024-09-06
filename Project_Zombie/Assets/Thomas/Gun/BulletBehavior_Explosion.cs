@@ -15,8 +15,8 @@ public class BulletBehavior_Explosion : BulletBehavior
 
         Transform posRef = target.GetObjectRef().transform;
 
-        DamageClass damageClassForExplosion = new DamageClass(damage.baseDamage * explosionPercentDamage);
-        damageClassForExplosion.MakeExplosion();
+        DamageClass damageClassForExplosion = new DamageClass(damage.GetTotalDamage() * explosionPercentDamage, damage.damageList[0]._damageType, 0) ;
+        damageClassForExplosion.Make_Explosion();
 
         LayerMask targetLayers = 0;
         targetLayers |= (1 << 6);

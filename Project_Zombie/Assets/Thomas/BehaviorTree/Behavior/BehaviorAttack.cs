@@ -21,9 +21,15 @@ public class BehaviorAttack : Sequence2
     {
         this.enemy = enemy;
         enemyData = enemy.GetData();
-
-        total = enemyData.attackSpeed;
+        total = enemy.GetData().attackRest;
     }
+
+    //instead of waiting, we will attack and call it in the end of the animation.
+
+    //what if the animation is too slow? i just need to speed it up for each one.
+
+    //
+
 
     public override NodeState Evaluate()
     {
@@ -33,23 +39,60 @@ public class BehaviorAttack : Sequence2
 
         enemy.CallAbilityIndicator(current, total);
 
+        //there is a time between attacks so we dont span attacks
+        //also 
 
-        if(current > total)
+
+
+        //when we call the animation we only stop this after two things
+        //but we might need to reset this.
+        //
+
+        //WE DO THIS ALWAYS TO CONFIRM THAT THE ATTACKS STARTS FROM 0
+        if (!enemy.IsAttacking_Animation)
         {
-            //then we call the attack against the target. but only if the target is still close to the player.
-            enemy.CallAttack();
             current = 0;
-            return NodeState.Success;
+            //stop animation if that becomes a problem
         }
-        else
+
+        
+
+        if (enemy._entityAnimation.IsAttacking(0))
+        {
+            Debug.Log("attacking");
+            //enemy._entityAnimation.CallAnimation_Idle(0, 1);
+            enemy._entityAnimation.CallAnimation_Idle(0, 0);
+        }
+        else if(!enemy.IsAttacking_Animation)
+        {
+
+            enemy._entityAnimation.CallAnimation_Attack(2);
+            enemy.SetIsAttacking_Animation(true);
+            current = 0;
+        }
+        else if (enemy.IsAttacking_Animation)
+        {
+            enemy.SetIsAttacking_Animation(false);
+            return NodeState.Success;
+
+        }
+
+        //we call the attack but we can stop       
+
+
+        if (enemy.IsAttacking_Animation)
         {
             current += Time.deltaTime;
             return NodeState.Running;
         }
-
-
+        else
+        {
+            return NodeState.Success;
+        }
 
     }
+
+
 
 
 }

@@ -86,6 +86,8 @@ public class EntityEvents : MonoBehaviour
     public void OnLockEntity(bool isLocked) => eventLockEntity?.Invoke(isLocked);
 
 
+    public Action eventEntityStunned;
+    public void OnEntityStunned() => eventEntityStunned?.Invoke();
 
     private void OnDestroy()
     {
@@ -96,22 +98,22 @@ public class EntityEvents : MonoBehaviour
 
     public delegate void DelegateDamageTaken<T>(ref T modifier);
 
-    public DelegateDamageTaken<float> eventDelegate_DamageTaken;
+    public DelegateDamageTaken<DamageClass> eventDelegate_DamageTaken;
 
-     public void CallDelegate_DamageTaken(ref float modifier)
+     public void CallDelegate_DamageTaken(ref DamageClass damage)
     {
         if (eventDelegate_DamageTaken != null)
         {
-            eventDelegate_DamageTaken(ref modifier);
+            eventDelegate_DamageTaken(ref damage);
         }
     }
 
 
     public delegate void DelegateDealDamageToEntity<T>(ref T totalValue);
 
-    public DelegateDealDamageToEntity<float> eventDelegate_DealDamageToEntity;
+    public DelegateDealDamageToEntity<DamageClass> eventDelegate_DealDamageToEntity;
 
-     public void CallDelegate_DealDamageToEntity(ref float modifier)
+     public void CallDelegate_DealDamageToEntity(ref DamageClass modifier)
     {
         if (eventDelegate_DealDamageToEntity != null)
         {
