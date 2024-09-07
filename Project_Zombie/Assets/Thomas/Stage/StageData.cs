@@ -140,7 +140,7 @@ public class StageData : ScriptableObject
     [SerializeField] List<QuestClass> questList_Challenge = new();
     [SerializeField] List<QuestClass> questList_Curse = new(); //all curses allowed in this thing 
 
-    public List<QuestClass> GetQuestList()
+    public List<QuestClass> GetQuestListUsingNothing()
     {
         
         
@@ -212,7 +212,22 @@ public class StageData : ScriptableObject
         return null;
     }
 
+    public QuestClass GetSingleQuestListUsingQuestType(QuestType _type)
+    {
+        List<QuestClass> rightList = new();
 
+        if(_type == QuestType.Bless)
+        {
+            rightList = questList_Bless;
+        }
+        if(_type == QuestType.Curse)
+        {
+            rightList = questList_Curse;
+        }
+
+        int random = Random.Range(0, rightList.Count);
+        return rightList[random];
+    }
 
     #endregion
 

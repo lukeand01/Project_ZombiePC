@@ -282,10 +282,39 @@
 //put some effects in the portal. they create a sound when they open, but its local.
 //revisit shrine system
 //create challenges.
-//make the aim better. it needs an offset
+//make the aim better. it needs an offset. the aim is all crazy for some reason.
+//change the fountain to be a shrine as well. but its a shrine that has an effect 
+///make the system spawn the fountain. if there is no health fountain it must spawn a fountain health, if tehre is there is two health fountain it must spawna buff one.
+//remember the audio for the fountain health and buff 
+//you can only get one curse at a time
+//you can only get three challenges at most.
+//show those problems through fade ui.
+//improve the quest interface
+//when teh quest appear it informs what kind of challenge it is, the text fades and then the images moves away. maybe an animation that highlights the image as well
+//
+
+
+
+
+
+//so basically we will first have three different types 
+
 
 //CHALLENGES
-//
+//i want things that may appear in the map or that appear after triggered.
+//is having a shrine good?
+//challenges also involve staying in one location for long enough
+//shrines should be random and rare. 
+
+
+//i will create one that you must stay in one position for the duration
+//there will be a toten that will summon a miniboss and lock the doors. enemies outside should slowly appear inside? or not, or maybe we create a new wave for this room.
+//i want shrines that give small temporary buffs - such as attack, health regen, and stuff like this
+//i would like to still have these challenges. so we will create two shrines
+//we will have two shrines, one with timer and the other that does not, but will have a penality. i need to inform the player of a penality
+//the penality involves resources that you would lose resource, a portion of your resources per thing. cannot ahve more than one curse at a time.
+//and curse will give perma buffs and bless.
+
 
 
 
@@ -293,7 +322,7 @@
 //terrain stuff
 //light stuff
 //the vision now disables thing that are too far for perfoamnce, and hides enemies.
-
+//create that fog effect for the door, because i cant without the new graphic
 
 
 //I WILL BE HAVING PERFOMANCE PROBLEMS IN THIS BUILD. for now we continue till we find actual perfomance problems.
@@ -306,21 +335,6 @@
 
 
 
-
-//things for reset
-//the rotation for when you are holding the gun is not quite right after reloading
-//and also the enemy isnt attacking
-//if you have only a perma weapon it should not show more stuff.
-//the player keeps dying.
-
-//why is the camrea moving like that?
-//I KNOW WHY? its because of fall damage.
-
-//perhaps i can get the hands a bit close to the center, the problem is that they are too much to the side.
-
-
-//each gun needs to hold a value for damage 
-//each ability will show stacks and damage or healing or whatever stats it has
 
 //those stats will all be show through a description window.
 //ALL THINGS WE MUST SHOW INFO ABOUT

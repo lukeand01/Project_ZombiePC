@@ -19,6 +19,8 @@ public class QuestUnit : ButtonBase
     [SerializeField] TextMeshProUGUI descriptionText;
     [SerializeField] GameObject barHolder;
     [SerializeField] Image bar;
+    [SerializeField] GameObject titleHolder;
+    [SerializeField] TextMeshProUGUI titleText;
 
     bool isStory = false;
 

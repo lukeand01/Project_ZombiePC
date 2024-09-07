@@ -61,11 +61,7 @@ public class FadeUI_New : MonoBehaviour
             transform.localRotation = rotation;
         }
 
-       
-
-
-
-
+      
         //the problem is also the 
 
         if (!runDuration) return;
@@ -100,22 +96,17 @@ public class FadeUI_New : MonoBehaviour
             //i want to increase the size of text with this one.
             text.text += "!";
         }
-        Vector3 initialScale = transform.localScale;
-
-       //we make it small.
-       //we are supposed
 
 
+
+        
 
     }
 
-
-    //it want to randomize to where it falls to, but all the damage should fall together.
-    //it can go to either side.
+   
 
 
-    //
-
+    #region ONLY FOR DAMAGE
     int side;
 
     public void SetUp_Damage(FadeClass _fadeClass, int side)
@@ -201,11 +192,8 @@ public class FadeUI_New : MonoBehaviour
         //transform.DOMove(transform.position + new Vector3(1, -5,0), 0.5f).SetEase(Ease.Linear).OnComplete(DamageStep_4);
 
     }
+    #endregion
 
-    void DamageStep_4()
-    {
-        
-    }
 
     //scale the damaged based in size?
 

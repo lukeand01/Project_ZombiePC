@@ -59,6 +59,8 @@ public class LocalHandler : MonoBehaviour
         UIHandler.instance.ControlUI(false);
         PlayerHandler.instance._playerController.block.RemoveBlock("City");
 
+        PlayerHandler.instance._entityEvents.eventPassedRound += CheckIfShouldSpawnShrine;
+
 
         SpawnPaidInGameObjects();
     }
@@ -69,7 +71,8 @@ public class LocalHandler : MonoBehaviour
         ChestResourceHandle();
         ChestAbilityHandle();
         ChestAmmoHandle();
-        Shrine_Handle();
+
+        
 
 
         if (useNewRoundSystem)
@@ -99,8 +102,7 @@ public class LocalHandler : MonoBehaviour
         //spawnCurrent = spawnTotal;
         spawnCurrent = 0;
 
-        shrineCurrent = 0;
-        shrineTotal = Random.Range(130, 200);
+
 
         chestResourceTotal = Random.Range(35, 60);
         chestResourceCurrent = chestResourceTotal;
@@ -755,84 +757,80 @@ public class LocalHandler : MonoBehaviour
     //shrines will spawn randomly around the map. they can appar in front of the player because they would do an animation
     //we randomly choose one out of three types of shrine and we inform the player what kind of shrine it is.
     //the quest
-    [Separator("SHRINE")]
-    [SerializeField] Shrine shrineTemplate;
-    [SerializeField] Transform[] shrinePosArray;
-    List<Shrine> shrineSpawnedList = new();
-    List<int> shrineIndexList = new();
-    float shrineCurrent;
-    float shrineTotal;
 
-   
 
-    void Shrine_Handle()
+    //this spawn every x moment.
+    //shrines should only appear in opened rooms.
+    //also shrines should exist for a certain duration then disappear.
+    //how does it know where the list is? perphaps the list must be placed inside the room.
+
+    //i do not whish to spawn anyone. they always exist but are hidden.
+    float shrine_StoredRoll;
+    List<int> roomsWithShrineWorkingList = new();
+    void CheckIfShouldSpawnShrine()
     {
-        if(shrineSpawnedList.Count >= 3)
-        {
-            shrineCurrent = 0;
-            return;
-        }
-        if(shrinePosArray.Length == 0)
-        {
-            //Debug.Log("not enough in teh array");
-            return;
-        }
+        //it only spawns after 5 rounds.
 
-        if(shrineSpawnedList.Count >= shrinePosArray.Length)
-        {
-            shrineCurrent = 0;
-            //Debug.Log("all positions filled");
-            return;
-        }
+        if (round < 5) return;
 
-        if(shrineCurrent > shrineTotal)
-        {
-            Shrine_Spawn();
-            shrineCurrent = 0;
-        }
-        else
-        {
-            shrineCurrent += Time.fixedDeltaTime;
-        }
+        //we roll for a chacne to spawn.
 
-    }
 
-    void Shrine_Spawn()
-    {
+        int roll = Random.Range(10, 51);
+        shrine_StoredRoll += round;
 
-        int roll = Random.Range(0, shrinePosArray.Length);
+        if (shrine_StoredRoll < 45) return;
+
+
+        
         int safeBreak = 0;
-
-        while (shrineIndexList.Contains(roll))
+        bool done = false;
+        while (!done)
         {
-            roll = Random.Range(0, shrinePosArray.Length);
-
-            safeBreak += 1;
-
+            safeBreak++;
             if(safeBreak > 1000)
             {
-                Debug.Log("broke shrine spawn");
                 return;
             }
 
-            continue;
+            int random = Random.Range(0, openRoomList.Count);
+
+            if(roomsWithShrineWorkingList.Contains(random)) { continue; }
+
+           bool isSuccess = openRoomList[random].CallShrine();
+
+            if (isSuccess)
+            {
+                roomsWithShrineWorkingList.Add(random);
+                done = true;
+            }
+            else
+            {
+                done = false;
+            }
+
         }
 
 
-        Shrine newObject = Instantiate(shrineTemplate);
-       
-        newObject.transform.position = shrinePosArray[roll].position + new Vector3(0,-6,0);
-        newObject.SetIndex(shrineSpawnedList.Count);
-        newObject.RaiseFromGround();
-        shrineIndexList.Add(roll);
-        shrineSpawnedList.Add(newObject);
-        shrineTotal = Random.Range(130, 200);
-    }
 
-    public void Shrine_Remove(int index)
+
+    }
+   
+    public void RemoveShrineFromList(int index)
     {
-        shrineSpawnedList.RemoveAt(index);
-        shrineIndexList.RemoveAt(index);
+        for (int i = 0; i < roomsWithShrineWorkingList.Count; i++)
+        {
+            var item = roomsWithShrineWorkingList[i];
+
+            if(item == index)
+            {
+                roomsWithShrineWorkingList.RemoveAt(i);
+            }
+
+          
+        }
+
+
     }
 
 
@@ -920,7 +918,12 @@ public class LocalHandler : MonoBehaviour
 
     void SpawnFountains()
     {
-        //there are positions. we will enable a number of fountains
+        //we will not spawn all.
+        //but the same ones will be in the same place.
+        //we also need to know the number of health ones.
+
+        int currentNumberOfFountainsForHealth = 0;
+
         List<int> indexList = new();
 
         int safeBreak = 0;
@@ -940,6 +943,36 @@ public class LocalHandler : MonoBehaviour
             if (!indexList.Contains(random))
             {
                 _healthFountainArray[random].gameObject.SetActive(true);
+
+                if(currentNumberOfFountainsForHealth == 0)
+                {
+                    _healthFountainArray[random].SetUp(false);
+                    currentNumberOfFountainsForHealth += 1;
+                }
+                else if(currentNumberOfFountainsForHealth == 1)
+                {
+                    //it might be health but might not
+
+                    int random_BuffOrHealth = Random.Range(0, 101);
+
+                    if(random_BuffOrHealth < 50)
+                    {
+                        _healthFountainArray[random].SetUp(true);
+                    }
+                    if (random_BuffOrHealth > 50)
+                    {
+                        _healthFountainArray[random].SetUp(false);
+                        currentNumberOfFountainsForHealth += 1;
+                    }
+
+                }
+                else if(currentNumberOfFountainsForHealth > 1)
+                {
+                    //then its always a buff
+                    _healthFountainArray[random].SetUp(true);
+                }
+
+
                 indexList.Add(random);
                 i++;
             }
