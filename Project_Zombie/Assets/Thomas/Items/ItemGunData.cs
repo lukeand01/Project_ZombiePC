@@ -153,7 +153,7 @@ public class ItemGunData : ItemData
 
 
 
-            BulletScript newBullet = GameHandler.instance._pool.GetBullet(0, gunPointPosition);
+            BulletScript newBullet = GameHandler.instance._pool.GetBullet(ProjectilType.PlayerRegular, gunPointPosition);
 
 
             newBullet.SetUp(ownerId, direction);
@@ -171,7 +171,7 @@ public class ItemGunData : ItemData
         }
 
 
-        GameHandler.instance._soundHandler.CreateSfx(audio_Shoot);
+        GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(audio_Shoot);
 
         //i need to receive
     }

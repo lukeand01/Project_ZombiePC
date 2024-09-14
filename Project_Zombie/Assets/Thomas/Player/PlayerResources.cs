@@ -201,6 +201,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
             return;
         }
 
+        handler._entityStat.ResetEntityStat();
 
         isDead = true;
         hasRevive = false;
@@ -425,6 +426,9 @@ public class PlayerResources : MonoBehaviour, IDamageable
         points -= value;
         handler._entityEvents.OnChangedPoints(-value);
         UIHandler.instance._playerUI.UpdatePoint(points, -value);
+
+        GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_SpendMoney);
+
     }
 
     public bool HasEnoughPoints(int value)
@@ -496,16 +500,44 @@ public class PlayerResources : MonoBehaviour, IDamageable
         }
     }
 
-    public void AddQuest(QuestClass quest)
+
+    //have to check if i already have curse or three challenges.
+
+    bool HasACurseInQuestList()
+    {
+        for (int i = 0; i < questList.Count; i++)
+        {
+            var item = questList[i];
+
+            if (item.questType == QuestType.Curse) return true;
+
+
+        }
+        return false;
+    }
+
+    public bool AddQuest(QuestClass quest)
     {
         //we show in the thing and we update everytime.
 
         //i need to create a new quest 
 
+        if(questList.Count >= 3)
+        {
+            //already three quests.
+            handler._entityStat.CallPowerFadeUI("Only 3 quests allowed", Color.blue, 0.5f);
+            return false;
+        }
+
+        if(quest.questType == QuestType.Curse &&  HasACurseInQuestList())
+        {
+            handler._entityStat.CallPowerFadeUI("Only 1 Curse quest allowed!", Color.blue, 0.5f);
+            return false;
+        }
 
         if(quest.questData == null)
         {
-            return;
+            return false;
         }
 
         QuestClass newQuest = new QuestClass(quest);
@@ -516,9 +548,11 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
         newQuest.questData.AddQuest(newQuest);
 
-        UIHandler.instance._QuestUI.OpenUI();
-
+        return true;
     }
+
+
+
 
     public void RemoveQuest(string id)
     {
@@ -560,6 +594,19 @@ public class PlayerResources : MonoBehaviour, IDamageable
         questList.Clear();
     }
 
+    [ContextMenu("DEBUG CURSE QUEST")]
+    public void Debug_AddCurseQuest()
+    {
+        QuestClass _quest = LocalHandler.instance._stageData.GetSingleQuestListUsingQuestType(QuestType.Curse);
+        AddQuest(_quest);
+    }
+    [ContextMenu("DEBUG BLESS QUEST")]
+    public void Debug_AddBlessQuest()
+    {
+        Debug.Log("yo");
+        QuestClass _quest = LocalHandler.instance._stageData.GetSingleQuestListUsingQuestType(QuestType.Bless);
+        AddQuest(_quest);
+    }
 
     #endregion
 

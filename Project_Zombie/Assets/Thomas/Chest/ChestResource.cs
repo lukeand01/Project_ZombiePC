@@ -57,7 +57,7 @@ public class ChestResource : ChestBase
 
     IEnumerator DestroyCrateProcess()
     {
-        GameHandler.instance._soundHandler.CreateSfx(openChestClip, transform);
+        GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_OpenChestResource, transform);
         graphic_Body.gameObject.SetActive(false);
         dustExplosionPS.gameObject.SetActive(true);
         dustExplosionPS.Play();

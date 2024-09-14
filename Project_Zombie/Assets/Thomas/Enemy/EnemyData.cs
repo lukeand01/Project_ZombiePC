@@ -8,6 +8,7 @@ public class EnemyData : ScriptableObject
 {
     public string enemyName;
     public EnemyBase enemyModel;
+    public EnemyBoss bossModel;
 
     public float attackRange; //the only one we can use here. every single fella will have just one attack so thats fine.
     public float AttackAnimationSpeed = 1;

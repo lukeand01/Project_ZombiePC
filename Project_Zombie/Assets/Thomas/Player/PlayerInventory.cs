@@ -103,7 +103,6 @@ public class PlayerInventory : MonoBehaviour
         {
             //wthen we infomr the ui to show that it just received this thing.
             CheckItemInUI(item);
-            Debug.Log("appear in ui");
         }
 
 
@@ -462,6 +461,29 @@ public class PlayerInventory : MonoBehaviour
 
 
     #endregion
+
+    #region BOSS SIGILS
+    public List<BossSigilType> bossSigilList = new();
+
+    //when we use i want to sepdn it.
+
+    public void AddBossSigil(BossSigilType bossSigil)
+    {
+        bossSigilList.Add(bossSigil);
+    }
+
+
+    #endregion
+
+}
+
+public class BossSigilClass
+{
+
+}
+public enum BossSigilType 
+{ 
+    MiniBoss_Knight
 
 }
 

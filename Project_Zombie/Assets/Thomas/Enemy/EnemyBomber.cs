@@ -42,7 +42,7 @@ public class EnemyBomber : EnemyBase
 
 
         float distanceForAttack = Vector3.Distance(targetObject.transform.position, transform.position);
-        GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
+        GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(data.audio_Attack, transform);
 
         //we will check any fellas in front 
         //its the same thing but in the end it explodes. creates effect.

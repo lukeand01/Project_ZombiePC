@@ -400,11 +400,11 @@ public class ChestUI : MonoBehaviour
 
         if (!PlayerHandler.instance._playerResources.Bless_HasEnough(blessQuantity))
         {
-            GameHandler.instance._soundHandler.CreateSfx(audio_BlessFailure);
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_BlessFailure);
             return;
         }
 
-        GameHandler.instance._soundHandler.CreateSfx(audio_Bless);
+        GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_BlessSuccess);
 
 
         PlayerHandler.instance._playerResources.Bless_Lose(blessQuantity);
@@ -439,7 +439,7 @@ public class ChestUI : MonoBehaviour
 
     public void CallButton_Scrap()
     {
-        GameHandler.instance._soundHandler.CreateSfx(audio_Scrap);
+        GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Scrap);
         Debug.Log("scrap");
         PlayerHandler.instance._playerResources.GainPoints(currentScrapValue);
         Leave();

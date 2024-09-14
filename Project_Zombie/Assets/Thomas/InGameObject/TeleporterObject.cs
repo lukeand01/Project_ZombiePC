@@ -211,7 +211,7 @@ public class TeleporterObject : MonoBehaviour
 
     void CallThunderAudio()
     {
-        GameHandler.instance._soundHandler.CreateSfx(thunder_AudioClip);
+        GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_ThunderTeleporter);
     }
 
     #endregion
@@ -304,7 +304,7 @@ public class TeleporterObject : MonoBehaviour
     {
         if (lockAllEnemies)
         {
-            PlayerHandler.instance._entityEvents.OnLockEntity(true);
+            PlayerHandler.instance._entityEvents.OnLockPortals(true);
         }
     }
 
@@ -334,7 +334,7 @@ public class TeleporterObject : MonoBehaviour
 
         if (lockAllEnemies)
         {
-            PlayerHandler.instance._entityEvents.OnLockEntity(false);
+            PlayerHandler.instance._entityEvents.OnLockPortals(false);
         }
 
         isAlreadyCalled = false;

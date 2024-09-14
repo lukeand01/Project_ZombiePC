@@ -10,8 +10,8 @@ public class BulletScript : MonoBehaviour
     string ownedID;
     bool isEnemy;
     [SerializeField] Vector3 dir;
-    bool canMove;
-    [SerializeField] DestroySelf _destroySelf;
+    protected bool canMove;
+    [SerializeField] protected DestroySelf _destroySelf;
     [SerializeField] BoxCollider _collider;
     [SerializeField]TrailRenderer _trailRenderer;
     [SerializeField] TrailRenderer _trailRenderer2;
@@ -20,9 +20,8 @@ public class BulletScript : MonoBehaviour
 
     LayerMask _layer;
 
-    //
 
-    public void ResetToReturnToPool()
+    public virtual void ResetToReturnToPool()
     {
         if (_trailRenderer != null)
         {
@@ -33,6 +32,8 @@ public class BulletScript : MonoBehaviour
         {
             _trailRenderer2.Clear();
         }
+
+        Debug.Log("return to pool");
     }
 
     private void Awake()
@@ -47,7 +48,18 @@ public class BulletScript : MonoBehaviour
         canMove = true;
         _collider.enabled = true;
         //none of them have range.
-        _destroySelf.SetUpDestroy(isEnemy, 7, this);
+        int index = 0;
+        if (isEnemy)
+        {
+            index = (int)ProjectilType.EnemySpit;
+        }
+        else
+        {
+            index = (int)ProjectilType.PlayerRegular;
+        }
+
+        _destroySelf.SetUpDestroy(index , 7, this);
+
     }
     public void MakeEnemy()
     {
@@ -68,10 +80,15 @@ public class BulletScript : MonoBehaviour
     {
         if (!canMove) return;
         //the bullet keeps on moving. 
-       
+        UpdateFunction();
+        
+    }
 
+    protected virtual void UpdateFunction()
+    {
         transform.position += dir.normalized * speed * Time.fixedDeltaTime;
     }
+
 
     void TEST()
     {
@@ -107,7 +124,7 @@ public class BulletScript : MonoBehaviour
 
     #region DAMAGE
 
-    DamageClass damage;
+    protected DamageClass damage;
     float damageChangeAfterCollision;
     float damageChangeAfterBounce;
 
@@ -144,7 +161,7 @@ public class BulletScript : MonoBehaviour
     #endregion
 
     #region SPEED
-    float speed;
+    protected float speed;
     float speedChangeAfterCollision;
     float speedChangeAfterBounce;
 
@@ -156,7 +173,6 @@ public class BulletScript : MonoBehaviour
     }
 
     #endregion
-
 
     #region COLLISION
     int bounceTotal;
@@ -204,7 +220,12 @@ public class BulletScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        TriggerEnterFunction(other);
+       
+    }
 
+    protected virtual void TriggerEnterFunction(Collider other)
+    {
         canMove = false;
 
         //then we apply everything and check if this fella can continue.
@@ -230,8 +251,8 @@ public class BulletScript : MonoBehaviour
         IDamageable damageable = other.GetComponent<IDamageable>();
 
         //Debug.Log("deal damage to " + other.gameObject.name + " " + damage.baseDamage);
- 
-        if(damage == null)
+
+        if (damage == null)
         {
             //Debug.Log("no damage here");
         }
@@ -284,5 +305,8 @@ public class BulletScript : MonoBehaviour
 
 
     #endregion
+
+    public virtual FlyingBlade GetFlyingBlade { get { return null; } }
+
 
 }

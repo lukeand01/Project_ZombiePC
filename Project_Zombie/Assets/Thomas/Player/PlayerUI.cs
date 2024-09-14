@@ -656,4 +656,42 @@ public class PlayerUI : MonoBehaviour
 
     #endregion
 
+
+
+    #region CHALLENGE
+
+    [Separator("CHALLENGE")]
+    [SerializeField] GameObject challengeBarHolder;
+    [SerializeField] GameObject challengeTitleHolder;
+    [SerializeField] Image challengeBar;
+    [SerializeField] TextMeshProUGUI challengeTitleText;
+    [SerializeField] TextMeshProUGUI challengeQuantityText;
+
+    public void Challenge_UpdateBarColor(Color color) => challengeBar.color = color;
+
+    public void Challenge_ControlBarHolder(bool isVisible)
+    {
+        challengeBarHolder.SetActive(isVisible);
+    }
+    public void Challenge_ControlTextHolder(bool isVisible)
+    {
+        challengeTitleHolder.SetActive(isVisible);
+    }
+
+    public void Challenge_FillBar(float current, float total)
+    {
+
+        challengeBarHolder.gameObject.SetActive(total != 0);
+        challengeBar.fillAmount = current / total;           
+     }
+
+    public void Challenge_UpdateQuantity(string text)
+    {
+        challengeQuantityText.text = text;
+    }
+    public void Challenge_UpdateTitle(string text)
+    {
+        challengeTitleText.text = text;
+    }
+    #endregion
 }

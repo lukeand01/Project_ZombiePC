@@ -19,7 +19,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
     [SerializeField] int amountPerInterval;
 
-    float intervalTimerCurrent;
+    [SerializeField]float intervalTimerCurrent;
     [SerializeField] float intervalTimerTotal; //this is the time we are going to spwan an amount.
 
     int intervalQuantityTotal; //the number of times we will have interval spawns.
@@ -124,12 +124,12 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(1);
 
-        amountPerInterval = GetAmountToSpawnPerInterval(); //this amount of enemies per interval
+        amountPerInterval = MyUtils.GetAmountToSpawnPerInterval(round, _handler.RoundSpawnModifier); //this amount of enemies per interval
 
-        intervalQuantityTotal = GetQuantityOfSpawnIntervals(); //quantity of interval each round has.
+        intervalQuantityTotal = MyUtils.GetQuantityOfSpawnIntervals(round); //quantity of interval each round has.
         intervalQuantityCurrent = 0;
 
-        intervalTimerTotal = GetIntervalBetweenSpawns(); //quantity of 
+        intervalTimerTotal = MyUtils.GetIntervalBetweenSpawns(round); //quantity of 
         intervalTimerCurrent = intervalTimerTotal * 0.7f;
 
 
@@ -244,11 +244,11 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         if (_handler.enemyChanceList.Count <= 0)
         {
+            Debug.Log("this?");
             return;
         }
 
 
-        
 
 
         List<EnemyData> chosenEnemyList = new();
@@ -259,12 +259,17 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         bool triedEspecialList = false;
 
         int roll = Random.Range(0, 101);
+
+
+        Debug.Log("handler " + _handler.enemyChanceList.Count);
+
         while (amountPerInterval > chosenEnemyList.Count)
         {
             safeBreak++;
             if (safeBreak > 2000)
             {
-                Debug.LogError("Safe break for choose enemies " + chosenEnemyList.Count);
+                Debug.LogError("Safe break for choose enemies ");
+
                 break;
             }
 
@@ -299,6 +304,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
             if (!CanStack(enemyChance))
             {
+
                 //Debug.Log("cannot add more of this fella " + enemyChance.data.enemyName);
                 if (_handler.preferenceForEspecialList > especialRandom) triedEspecialList = true;
                 continue;
@@ -309,8 +315,8 @@ public class LocalHandler_RoundHandler : MonoBehaviour
             }
 
 
-
-            if (enemyChance.totalChanceSpawn >= roll && enemyChance.totalChanceSpawn > 0)
+            float chanceToSpawn = enemyChance.GetChanceToSpawn();
+            if (chanceToSpawn >= roll && chanceToSpawn > 0)
             {
                 chosenEnemyList.Add(enemyChance.data);
                 TryToAddFromDictionary(enemyChance.data.name);
@@ -323,7 +329,6 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         }
 
-        //Debug.Log("got to the end " + );
 
         foreach (var item in chosenEnemyList)
         {
@@ -344,25 +349,36 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
 
 
-        foreach (var item in enemyList)
+        for (int i = 0; i < enemyList.Count;)
         {
+            var item = enemyList[i];
+
             int random = -1;
             if (currentPortalCloseList.Count == 0 && currentPortalNotFarEnoughList.Count > 0)
             {
                 random = Random.Range(0, currentPortalNotFarEnoughList.Count);
-                currentPortalNotFarEnoughList[random].OrderSpawn(item);
+                if (currentPortalNotFarEnoughList[random].gameObject.activeInHierarchy)
+                {
+                    currentPortalNotFarEnoughList[random].OrderSpawn(item);
+                    i++;
+                }
+              
                 // Debug.Log("no currentportal");
                 continue;
             }
 
             int roll = Random.Range(0, 101);
 
-
             if (roll >= 80 && currentPortalNotFarEnoughList.Count > 0)
             {
                 //the its the not close enoguh list
                 random = Random.Range(0, currentPortalNotFarEnoughList.Count);
-                currentPortalNotFarEnoughList[random].OrderSpawn(item);
+                if (currentPortalNotFarEnoughList[random].gameObject.activeInHierarchy)
+                {
+                    currentPortalNotFarEnoughList[random].OrderSpawn(item);
+                    i++;
+                }
+                
                 //Debug.Log("chosen currentportal not far enough");
                 continue;
             }
@@ -371,7 +387,12 @@ public class LocalHandler_RoundHandler : MonoBehaviour
                 //then its the close list.
                 // Debug.Log("current portal close list");
                 random = Random.Range(0, currentPortalCloseList.Count);
-                currentPortalCloseList[random].OrderSpawn(item);
+                if (currentPortalCloseList[random].gameObject.activeInHierarchy)
+                {
+                    currentPortalCloseList[random].OrderSpawn(item);
+                    i++;
+                }
+                
                 continue;
             }
 
@@ -380,9 +401,14 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
             //if it ever gets here 
             random = Random.Range(0, _handler.allowedPortal.Count);
-            _handler.allowedPortal[random].OrderSpawn(item);
-
+            if (_handler.allowedPortal[random].gameObject.activeInHierarchy)
+            {
+                _handler.allowedPortal[random].OrderSpawn(item);
+                i++;
+            }
+            
         }
+
 
     }
 
@@ -390,6 +416,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     void HandleTurn()
     {
         //everytime we meant to spawn we will get a new amount.
+
 
         if (!isTurnRunning) return;
 
@@ -400,6 +427,8 @@ public class LocalHandler_RoundHandler : MonoBehaviour
             return;
         }
         if (round == 0) return;
+
+
 
         if (intervalTimerCurrent > intervalTimerTotal)
         {
@@ -433,6 +462,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
             return;
         }
+
         if (intervalQuantityTotal > intervalQuantityCurrent)
         {
             return;
@@ -444,16 +474,13 @@ public class LocalHandler_RoundHandler : MonoBehaviour
             return;
         }
 
-
+        Debug.Log("checking if turn ended " + currentTurnEnemySpawnedList.Count);
         if (currentTurnEnemySpawnedList.Count == 0)
         {
             //Debug.Log("this round is over");
             NextTurn();
         }
     }
-
-
-
 
     public void AddEnemy(EnemyData data)
     {
@@ -487,90 +514,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
     #region GETTING VALUES FOR SPAWN
 
     //how many spawn inter5vals will be called per round
-    int GetQuantityOfSpawnIntervals()
-    {
 
-        return 1;
-
-        if (round >= 3)
-        {
-            return 4;
-        }
-
-        if (round > 5 && round <= 9)
-        {
-            return 6;
-        }
-        if (round > 10 && round <= 14)
-        {
-            return 7;
-        }
-        if (round > 15 && round <= 19)
-        {
-            return 8;
-        }
-        if (round > 20)
-        {
-            return 10;
-        }
-        return 3;
-
-    }
-    int GetAmountToSpawnPerInterval()
-    {
-        int value = 0;
-
-        if (round <= 10)
-        {
-            // Linear interpolation from 5 at round 1 to 40 at round 10
-            value = Mathf.RoundToInt(5 + ((40 - 5) / 9f) * (round - 1));
-        }
-        else if (round <= 15)
-        {
-            // Linear interpolation from 40 at round 10 to 80 at round 15
-            value = Mathf.RoundToInt(40 + ((80 - 40) / 5f) * (round - 10));
-        }
-        else if (round <= 25)
-        {
-            // Exponential interpolation from 80 at round 15 to 150 at round 25
-            float startValue = 80;
-            float endValue = 150;
-            float exponent = (round - 15) / 10f;
-            value = Mathf.RoundToInt(startValue * Mathf.Pow((endValue / startValue), exponent));
-        }
-        else
-        {
-            // Beyond round 25, use exponential growth based on the last known values
-            float startValue = 150;
-            float exponent = (round - 25) / 10f;
-            value = Mathf.RoundToInt(startValue * Mathf.Pow(1.5f, exponent));
-        }
-
-
-        float additionalSpawnValue = value * _handler.RoundSpawnModifier;
-
-
-        return value + (int)additionalSpawnValue;
-    }
-    float GetIntervalBetweenSpawns()
-    {
-
-        if (round > 0 && round <= 5)
-        {
-            return 2;
-        }
-
-        if (round > 5 && round <= 10)
-        {
-            return 1;
-        }
-        if (round > 10)
-        {
-            return 0.5f;
-        }
-
-        return 0;
-    }
 
     #endregion
 
@@ -636,7 +580,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
 
         foreach (var item in _handler.enemyChanceList)
         {
-            if(item.maxAllowedAtAnyTime != 0)
+            if(item.GetMaxAllowedToSpawn() > 0)
             {
                 dictionaryForEnemyStacking.Add(item.data.name, 0);
                 //Debug.Log("Placed this here " + item.data.name);
@@ -655,7 +599,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         }
 
 
-        return dictionaryForEnemyStacking[enemySpawnClass.data.name] < enemySpawnClass.maxAllowedAtAnyTime;
+        return dictionaryForEnemyStacking[enemySpawnClass.data.name] < enemySpawnClass.GetMaxAllowedToSpawn();
     }
 
     void TryToAddFromDictionary(string key)

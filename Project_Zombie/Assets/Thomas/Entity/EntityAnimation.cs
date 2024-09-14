@@ -188,7 +188,18 @@ public class EntityAnimation : MonoBehaviour
 
     #region DEATH
 
-    public void ControlIfAnimatorApplyRootMotion(bool doesApply) => _animator.applyRootMotion = doesApply;
+    public void ControlIfAnimatorApplyRootMotion(bool doesApply)
+    {
+        _animator.applyRootMotion = doesApply;
+
+        if (!doesApply)
+        {
+            //we always put it back in the rihgt place.
+            playerModelTransform.transform.localPosition = new Vector3(0, -1, 0);
+            playerModelTransform.transform.localRotation = Quaternion.Euler(0,0,0);
+        }
+
+    }
     public void CallAnimation_Death()
     {
 
@@ -210,7 +221,7 @@ public class EntityAnimation : MonoBehaviour
 
     public void RerollDeathAnimation()
     {
-        Debug.Log("yo");
+
         enemyIDDictionary[ANIMATIONCOMMAND_DEATH].RandomizeNumberID();
     }
 

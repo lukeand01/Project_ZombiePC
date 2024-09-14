@@ -31,14 +31,21 @@ MonoBehaviour:
     RoundsPassedPerTrigger: 5
   classList:
   - Id: Shield
-    data: {fileID: 11400000, guid: 804e4ac7c50f0124e97c176f17b9f5fd, type: 2}
-    min: 0
-    max: 0
-    baseChanceToSpawn: 100
-    chancePerLevelToSpawn: 0
-    chanceSpawnMaxCap: 0
-    chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 1
+    data: {fileID: 11400000, guid: 3839579ea0c928f4ea734d2f5de59aa5, type: 2}
+    _spawnChanceArray:
+    - round: 1
+      value: 10
+    _maxSpawnCapArray:
+    - round: 1
+      value: 0
+  - Id: Shield
+    data: {fileID: 11400000, guid: 8996d72b5f1f4cf4ab6669a787585898, type: 2}
+    _spawnChanceArray:
+    - round: 1
+      value: 100
+    _maxSpawnCapArray:
+    - round: 1
+      value: 2
   itemChanceList:
   - data: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
     chance: 60

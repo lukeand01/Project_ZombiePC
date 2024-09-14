@@ -16,6 +16,7 @@ public class Sequence2 : Node
     public override NodeState Evaluate()
     {
         //i dont care for each node just the current one.
+
         Node node = children[currentIndex];
         switch (node.Evaluate())
         {

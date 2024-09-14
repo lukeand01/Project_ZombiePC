@@ -246,9 +246,10 @@ public class PlayerHandler : MonoBehaviour
 
     }
 
-    public void PushPlayer(Vector3 pos, float strenght)
+    public void PushPlayer(Vector3 dir, float strenght)
     {
-        _rb.AddForce(pos * strenght, ForceMode.Impulse);
+        if (_playerResources.isDead) return;
+        _rb.AddForce(dir * strenght, ForceMode.Impulse);
     }
 
 

@@ -463,10 +463,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactCanvas: {fileID: 6629770725409415133}
+  graphic_Body: {fileID: 364293897948404837}
+  graphic_Lid: {fileID: 364570238762317771}
+  openChestClip: {fileID: 0}
   amountAllowed: 0
   gunHolder: {fileID: 2920910218943524115}
-  graphic_Body: {fileID: 361857471165964899}
-  graphic_Lid: {fileID: 361631733442724659}
   basePrice: 500
 --- !u!1 &4181204065231724932
 GameObject:
@@ -1606,19 +1607,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd5ea9674251dc1428ba8d458d463c69, type: 3}
---- !u!1 &361631733442724659 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1422411444413972, guid: dd5ea9674251dc1428ba8d458d463c69, type: 3}
-  m_PrefabInstance: {fileID: 360793237583209767}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &361857471165964899 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1223732142638916, guid: dd5ea9674251dc1428ba8d458d463c69, type: 3}
-  m_PrefabInstance: {fileID: 360793237583209767}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &364293897948404837 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4486930969147714, guid: dd5ea9674251dc1428ba8d458d463c69, type: 3}
+  m_PrefabInstance: {fileID: 360793237583209767}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &364570238762317771 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4219079025611500, guid: dd5ea9674251dc1428ba8d458d463c69, type: 3}
   m_PrefabInstance: {fileID: 360793237583209767}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6336943071596716303

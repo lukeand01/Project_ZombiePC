@@ -32,67 +32,44 @@ MonoBehaviour:
   classList:
   - Id: Simple
     data: {fileID: 11400000, guid: 3839579ea0c928f4ea734d2f5de59aa5, type: 2}
-    min: 0
-    max: 0
-    baseChanceToSpawn: 60
-    chancePerLevelToSpawn: -5
-    chanceSpawnMaxCap: 80
-    chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 0
+    _spawnChanceArray:
+    - round: 1
+      value: 70
+    - round: 5
+      value: 30
+    - round: 10
+      value: 0
+    _maxSpawnCapArray:
+    - round: 0
+      value: -1
   - Id: Simple Melee 2
     data: {fileID: 11400000, guid: cb9769c528a0d3b45b040e2334a19e2e, type: 2}
-    min: 3
-    max: 0
-    baseChanceToSpawn: 35
-    chancePerLevelToSpawn: 5
-    chanceSpawnMaxCap: 80
-    chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 15
+    _spawnChanceArray:
+    - round: 1
+      value: 20
+    - round: 1
+      value: 20
+    _maxSpawnCapArray: []
   - Id: Simple Ranged
     data: {fileID: 11400000, guid: 8996d72b5f1f4cf4ab6669a787585898, type: 2}
-    min: 3
-    max: 0
-    baseChanceToSpawn: 30
-    chancePerLevelToSpawn: 0
-    chanceSpawnMaxCap: 0
-    chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 5
+    _spawnChanceArray: []
+    _maxSpawnCapArray: []
   - Id: Mage
     data: {fileID: 11400000, guid: 804e4ac7c50f0124e97c176f17b9f5fd, type: 2}
-    min: 6
-    max: 0
-    baseChanceToSpawn: 15
-    chancePerLevelToSpawn: 0
-    chanceSpawnMaxCap: 60
-    chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 15
+    _spawnChanceArray: []
+    _maxSpawnCapArray: []
   - Id: Eye
     data: {fileID: 11400000, guid: 4df895293f0867243b14d8ae52cb3f84, type: 2}
-    min: 10
-    max: 0
-    baseChanceToSpawn: 20
-    chancePerLevelToSpawn: 0
-    chanceSpawnMaxCap: 60
-    chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 2
+    _spawnChanceArray: []
+    _maxSpawnCapArray: []
   - Id: Hound
     data: {fileID: 11400000, guid: 3e284f2bbd3d3814abbc1dad525eff05, type: 2}
-    min: 5
-    max: 0
-    baseChanceToSpawn: 25
-    chancePerLevelToSpawn: 0
-    chanceSpawnMaxCap: 60
-    chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 15
+    _spawnChanceArray: []
+    _maxSpawnCapArray: []
   - Id: Simple Shield
     data: {fileID: 11400000, guid: 2fbf11cfa4229494b91e1e4c61ce3256, type: 2}
-    min: 5
-    max: 0
-    baseChanceToSpawn: 20
-    chancePerLevelToSpawn: 0
-    chanceSpawnMaxCap: 60
-    chanceSpawnMinCap: 0
-    maxAllowedAtAnyTime: 10
+    _spawnChanceArray: []
+    _maxSpawnCapArray: []
   itemChanceList:
   - data: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
     chance: 60

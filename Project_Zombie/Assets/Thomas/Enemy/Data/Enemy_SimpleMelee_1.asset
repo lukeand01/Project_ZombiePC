@@ -20,7 +20,7 @@ MonoBehaviour:
   <damageType>k__BackingField: 0
   initialStatList:
   - stat: 0
-    initialValue: 1500
+    initialValue: 150
   - stat: 1
     initialValue: 3
   - stat: 2

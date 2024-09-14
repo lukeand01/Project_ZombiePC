@@ -10,10 +10,14 @@ public class EntityMeshRend : MonoBehaviour
     [SerializeField] BodyRendererClass[] bodyRendArray;
 
 
-    private void Start()
+
+
+    private void Awake()
     {
-        foreach (var item in bodyRendArray)
+        //this for the player.
+        for (int i = 0; i < bodyRendArray.Length; i++)
         {
+            var item = bodyRendArray[i];   
             item.SetUp();
         }
     }
@@ -42,7 +46,9 @@ public class BodyRendererClass
     [ConditionalField(nameof(_meshRend), true)][SerializeField] SkinnedMeshRenderer _skinnedRend;
     [ConditionalField(nameof(_skinnedRend), true)][SerializeField] MeshRenderer _meshRend;
 
-    Material originalMaterial;
+    [SerializeField] Material originalMaterial;
+
+
 
     public void ControlIfBodyVisible(bool isVisible)
     {
@@ -71,7 +77,6 @@ public class BodyRendererClass
             return;
         }
 
-        Debug.LogError("No ORIGINAL MATERIAL");
     }
 
     public void ChangeMaterial_New(Material material)
@@ -100,6 +105,22 @@ public class BodyRendererClass
             return;
         }
     }
+
+    public void SetMaterial(Material originalMaterial)
+    {        
+        if (_skinnedRend != null)
+        {
+            _skinnedRend.material = originalMaterial;
+            return;
+        }
+        if (_meshRend != null)
+        {
+            _meshRend.material = originalMaterial;
+            return;
+        }
+    }
+
+
 }
 
 //we use this so we can cahnge body parts

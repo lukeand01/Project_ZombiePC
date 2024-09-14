@@ -1,5 +1,6 @@
 using DG.Tweening;
 using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -32,40 +33,77 @@ public class QuestUI : MonoBehaviour
         CloseUI();
     }
 
+    private void Update()
+    {
+        //it keeps checking if it has one quest at least.
+    }
+
+
     #region WINDOW
     [Separator("WINDOW")]
     [SerializeField] QuestUnit unitTemplate;
     [SerializeField] Transform container;
     [SerializeField] GameObject windowHolder;
+
+    public bool IsOpen {  get; private set; }
+
+
+    //it checks only through the add function, there is no reason to check anywhere else.
+    //
+
+
+    //i want to do the presentation.
+    //the unit will only start onec the window is in the right place.
+    //the process is that the text inside the quest is changed to correct type, it scale up and down
+    //when it scales up, it start filling the image till its done, then once that done the text fades away as the titleholder is pulled to the left
     
 
     public void OpenUI()
     {
 
-
-        if(container.childCount == 0)
-        {
-            return;
-        }
         windowHolder.transform.DOKill();
-        windowHolder.transform.DOMove(originalPos, 0.5f);
+        windowHolder.transform.DOMove(originalPos, 0.5f).OnComplete(OnOpenedUI);
     }
+
+
+    public Action eventOpenUI;
+
+
+    void OnOpenedUI()
+    {
+        //we inform everyone that the ui has been succesful
+        //and if they are waiting they can start right now.
+        Debug.Log("opened completed");
+        eventOpenUI?.Invoke();
+        IsOpen = true;
+    }
+
     public void CloseUI()
     {
         windowHolder.transform.DOKill();
         windowHolder.transform.DOMove(originalPos + new Vector3(Screen.width * -0.3f, 0, 0), 0.5f);
+        IsOpen = false;
     }
 
     public void AddQuestUnit(QuestClass _questClass)
     {
+
+        if (!IsOpen)
+        {
+            OpenUI();
+        }
+
         QuestUnit newObject = Instantiate(unitTemplate);
-        newObject.SetUp(_questClass);   
+        newObject.SetUp_Challenge(_questClass, this);   
         newObject.transform.SetParent(container);
+
+
+
     }
 
     #endregion
 
-
+    //we are not going to be doing this.
     #region SHRINE
 
     [Separator("SHRINE")]

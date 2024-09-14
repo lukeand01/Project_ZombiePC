@@ -188,10 +188,7 @@ public class MouseUI : MonoBehaviour
 
     void MoveWithMouseInput()
     {
-        GetCurrentMouse.mouseUIHolder.transform.position = Input.mousePosition + new Vector3(0,0,10);
-
-
-        //this is the fella.
+        GetCurrentMouse.mouseUIHolder.transform.position = Input.mousePosition + new Vector3(0, 25, 0);
 
     }
 

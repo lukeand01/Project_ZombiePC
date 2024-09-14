@@ -25,20 +25,6 @@ public class EnemyCanvas : MonoBehaviour
     }
 
 
-    private void OnDisable()
-    {
-        Debug.Log("called this");
-        //everytime this happens we send everyone in the fadeunitlist back to the pool.
-        //buit we need a way to remove ethe fellas from the list normamly.      
-        //i dont want to remove them before their time either, so if this is disabled then we 
-
-        //what can happenb is that each carry a canvas.
-
-        //what i can do is that the entire canvas is removed from the player, and return to the player once there are no more damage 
-
-
-
-    }
 
     private void Start()
     {

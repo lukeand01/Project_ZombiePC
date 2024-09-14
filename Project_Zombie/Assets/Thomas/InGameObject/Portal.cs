@@ -20,11 +20,13 @@ public class Portal : MonoBehaviour
     bool isRoomOpen; //this is to know that it belongsg to a room that it is working.
     bool isBlocked; //this is for abilities that close the portal.
 
+    [Separator("SPAWN LSITS")]
     [SerializeField] List<EnemyData> spawnQueueList = new();
+    [SerializeField] List<EnemyData> spawnQueueList_Challenge = new();
     List<EnemyBase> enemyDespawnedList = new();
-    [SerializeField] ChestAbility chestAbilityTemplate;
-    [SerializeField] Transform spawnPoint;
 
+    [Separator("HOLDERS")]
+    [SerializeField] Transform spawnPoint;
     [SerializeField] GameObject graphic;
     Vector3 originalPos;
 
@@ -32,13 +34,13 @@ public class Portal : MonoBehaviour
 
     bool isSpawning;
     [SerializeField] bool isLocked;
-
+    bool isChallenge;
 
     [Separator("PORTAL EFFECT")]
     [SerializeField] ParticleSystem ps;
 
     //currently teleport is not locked.
-
+    
     private void Start()
     {
         handler = LocalHandler.instance;
@@ -73,10 +75,13 @@ public class Portal : MonoBehaviour
 
         if (spawnTotal == 0)
         {
-            Debug.Log("spawn total");
             return;
         }
         if (isSpawning) return;
+
+        
+
+
 
         if (spawnCurrent > 0)
         {
@@ -85,16 +90,27 @@ public class Portal : MonoBehaviour
         }
         else
         {
+
+            if(isChallenge)
+            {
+                //then we spawn this first.
+
+                SpawnEnemy_Challenge();
+                return;
+            }
+
             if (enemyDespawnedList.Count > 0)
             {
                 SpawnDespawned();
                 return;
             }
 
+
+
             if (spawnQueueList.Count > 0)
             {
 
-                StartCoroutine(SpawnProcess());
+                StartCoroutine(SpawnProcess(spawnQueueList));
                 //this will hlep spawn things at different times.
             }
         }
@@ -110,7 +126,6 @@ public class Portal : MonoBehaviour
     public void OrderSpawn(EnemyData enemy)
     {
 
-
         if (spawnQueueList.Count > 0)
         {
             //then we simply add to the list.
@@ -120,7 +135,9 @@ public class Portal : MonoBehaviour
             spawnTotal = Random.Range(3, 5);
             spawnCurrent = spawnTotal;
         }
+
         spawnQueueList.Add(enemy);
+
     }
 
     public void Spawn(EnemyData enemy)
@@ -131,10 +148,9 @@ public class Portal : MonoBehaviour
         int round = LocalHandler.instance.round;
         // EnemyBase newObject = Instantiate(enemy.enemyModel, spawnPoint.transform.position + Vector3.forward, Quaternion.identity);
         EnemyBase newObject = GameHandler.instance._pool.GetEnemy(enemy, spawnPoint.transform.position + Vector3.forward);
-
+        newObject.transform.position = spawnPoint.transform.position;
         newObject.gameObject.name = enemy.name;
         newObject.SetStats(round);
-        chestAbilityTemplate = null;
 
         spawnTotal = Random.Range(1, 3);
         spawnCurrent = spawnTotal;
@@ -144,9 +160,9 @@ public class Portal : MonoBehaviour
     [ContextMenu("yo")]
     public void Yo()
     {
-        StartCoroutine(SpawnProcess());
+        StartCoroutine(SpawnProcess(spawnQueueList));
     }
-    IEnumerator SpawnProcess()
+    IEnumerator SpawnProcess(List<EnemyData> enemyDataList)
     {
         //we will zoom in the portal effect, then spawn teh fella and then zoom out.
 
@@ -156,8 +172,8 @@ public class Portal : MonoBehaviour
 
         yield return new WaitForSeconds(3);
 
-        Spawn(spawnQueueList[0]);
-        spawnQueueList.RemoveAt(0);
+        Spawn(enemyDataList[0]);
+        enemyDataList.RemoveAt(0);
         
 
         ps.transform.DOScale(0, 3);
@@ -168,8 +184,6 @@ public class Portal : MonoBehaviour
     }
 
 
-
-
     public void OrderRespawn(EnemyBase enemy)
     {
         enemyDespawnedList.Add(enemy);  
@@ -177,7 +191,7 @@ public class Portal : MonoBehaviour
 
     void SpawnDespawned()
     {
-
+        Debug.Log("spawn despawned?");
         enemyDespawnedList[0].transform.position = spawnPoint.transform.position + Vector3.forward;
         enemyDespawnedList[0].gameObject.SetActive(true);
         enemyDespawnedList.RemoveAt(0);
@@ -187,9 +201,35 @@ public class Portal : MonoBehaviour
 
     }
 
-    public void SetNextSpawnToCarryChest(ChestAbility chestAbilityTemplate)
+
+    void SpawnEnemy_Challenge()
     {
-        this.chestAbilityTemplate = chestAbilityTemplate;
+        //we dont remove from this list in this one.
+        //we only remove when the challenge is completed.
+        //we get a random fella. but it needs to use chance still. otherwise we will keep spwaning the same fella.
+        if(spawnQueueList_Challenge.Count <= 0)
+        {
+
+            return;
+        }
+
+
+        StartCoroutine(SpawnProcess(spawnQueueList_Challenge));
+        //Spawn(spawnQueueList_Challenge[0]);
+        //spawnQueueList_Challenge.RemoveAt(0);
+    }
+
+    public void AddChallenge(EnemyData data)
+    {
+
+        isChallenge = true;
+        isLocked = false;
+        spawnQueueList_Challenge.Add(data);
+    }
+    public void RemoveChallenge()
+    {
+        isChallenge = false;
+        spawnQueueList_Challenge.Clear();
     }
 
 

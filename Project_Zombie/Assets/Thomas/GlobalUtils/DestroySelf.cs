@@ -7,10 +7,12 @@ public class DestroySelf : MonoBehaviour
     float current;
     float total;
     BulletScript bullet;
-    bool isEnemy;
-    public void SetUpDestroy(bool isEnemy, float total, BulletScript bullet)
+    int index = 0;
+    bool canRun;
+    public void SetUpDestroy(int index, float total, BulletScript bullet)
     {
-        this.isEnemy = isEnemy;
+        canRun = true;
+        this.index = index;
         current = 0; 
         this.total = total;
         this.bullet= bullet;
@@ -18,19 +20,18 @@ public class DestroySelf : MonoBehaviour
 
     private void Update()
     {
+        if (!canRun) return;
+
+        Debug.Log("yo");
         if(current >= total)
         {
             if (bullet != null)
             {
-                int index = 0;
-
-                if (isEnemy) index = 1;
-
-
                 GameHandler.instance._pool.Bullet_Release(index,bullet);
             }
             else
             {
+
                 Destroy(gameObject);
             }
             

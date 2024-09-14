@@ -25,13 +25,18 @@ public class HealthFountain : ChestBase
 
     bool CanUse { get { return roundsPassed >= roundsPerUse; } }
 
-    //
+    [SerializeField] bool debugCall;
 
     private void Start()
     {
         PlayerHandler.instance._entityEvents.eventPassedRound += PassedRound;
 
         roundsPassed = roundsPerUse;
+
+        if (debugCall)
+        {
+            SetUp(isBuff);
+        }
 
     }
 
@@ -58,6 +63,8 @@ public class HealthFountain : ChestBase
     void ControlPS()
     {
 
+
+
         if (!CanUse)
         {
             _psBuff.gameObject.SetActive(false);
@@ -65,8 +72,8 @@ public class HealthFountain : ChestBase
         }
         else
         {
-            _psBuff.gameObject.SetActive(isBuff);
-            _psHealth.gameObject.SetActive(!isBuff);
+           if(_psBuff != null) _psBuff.gameObject.SetActive(isBuff);
+           if (_psHealth != null) _psHealth.gameObject.SetActive(!isBuff);
 
             if (isBuff)
             {
@@ -98,19 +105,19 @@ public class HealthFountain : ChestBase
         {
             //
             GiveRandomBuff();
-            GameHandler.instance._soundHandler.CreateSfx(_audioBuff);
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_ShrineBuff);
         }
         else
         {
             PlayerHandler.instance._playerResources.RestoreHealthBasedInPercent(0.25f);
             interactCanvas.ControlInteractButton(false);
-            GameHandler.instance._soundHandler.CreateSfx(_audioHealth);
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_ShrineHeal);
         }
         //heal the player and start the cooldowjn
 
         roundsPassed = 0;
         PlayerHandler.instance._playerResources.SpendPoints(price);
-
+        ControlPS();
 
     }
 

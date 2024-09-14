@@ -64,7 +64,7 @@ public class EnemyMage : EnemyBase
 
         for (int i = 0; i < 6; i++)
         {
-            GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
+            GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(data.audio_Attack, transform);
             Vector3 playerPosition = PlayerHandler.instance.transform.position;
 
             float value = 1.8f;

@@ -223,7 +223,7 @@ public class LocalHandler : MonoBehaviour
         {
             openRoomDictionary.Add(room.id, room);
             //we must also liberated
-            foreach (var item in room.portalList)
+            foreach (var item in room.GetPortalList())
             {
                 allowedPortal.Add(item);
             }
@@ -298,6 +298,14 @@ public class LocalHandler : MonoBehaviour
         if (_stageData == null) return;
         enemyChanceList = _stageData.GetCompleteSpawnList(round);
         spawnWaveQuantity = 1; //for now it will be just one.
+
+
+
+        //we also update the fellas.
+
+
+
+
     }
 
     public void ChooseEnemiesAndSpawn()
@@ -343,7 +351,7 @@ public class LocalHandler : MonoBehaviour
                 //Debug.Log("can add this fella");
             }
 
-            if(enemyChance.totalChanceSpawn >= roll)
+            if(enemyChance.GetChanceToSpawn() >= roll)
             {
                 chosenEnemyList.Add(enemyChance.data);
                 AddToStackDictionary(enemyChance);
@@ -428,21 +436,12 @@ public class LocalHandler : MonoBehaviour
     public void EnemyDied(EnemyData data)
     {
         //we check if the enemy was in the list and we remove it. o
-        if (dictionaryForEnemiesWithSpawnCap.ContainsKey(data.name))
-        {
-            //if we have a key. then we must remove a number of it.
-            dictionaryForEnemiesWithSpawnCap[data.name] -= 1;
-
-            if (dictionaryForEnemiesWithSpawnCap[data.name] <= 0)
-            {
-                dictionaryForEnemiesWithSpawnCap.Remove(data.name);
-            }
-        }
+        
 
     }
     public void AddToStackDictionary(EnemyChanceSpawnClass enemySpawnClass)
     {
-        if (enemySpawnClass.maxAllowedAtAnyTime == 0)
+        if (enemySpawnClass.GetMaxAllowedToSpawn() == 0)
         {
             return;
         }
@@ -463,9 +462,8 @@ public class LocalHandler : MonoBehaviour
     {
         if (!dictionaryForEnemiesWithSpawnCap.ContainsKey(enemySpawnClass.data.name)) return true;
 
-        Debug.Log("Curren stack " + dictionaryForEnemiesWithSpawnCap[enemySpawnClass.data.name] + " yo : " + enemySpawnClass.maxAllowedAtAnyTime);
 
-        return dictionaryForEnemiesWithSpawnCap[enemySpawnClass.data.name] < enemySpawnClass.maxAllowedAtAnyTime;
+        return dictionaryForEnemiesWithSpawnCap[enemySpawnClass.data.name] < enemySpawnClass.GetMaxAllowedToSpawn();
     }
 
     public void RemoveEnemyFromSpawnList(EnemyData data)

@@ -20,7 +20,8 @@ public class EntityEvents : MonoBehaviour
 
 
     //so this is the fella
-
+    public Action<bool> eventLockEnemies;
+    public void OnLockEnemies(bool isLocked) => eventLockEnemies?.Invoke(isLocked);
 
 
 
@@ -83,7 +84,7 @@ public class EntityEvents : MonoBehaviour
     public void OnPassedRound() => eventPassedRound?.Invoke();
 
     public Action<bool> eventLockEntity;
-    public void OnLockEntity(bool isLocked) => eventLockEntity?.Invoke(isLocked);
+    public void OnLockPortals(bool isLocked) => eventLockEntity?.Invoke(isLocked);
 
 
     public Action eventEntityStunned;

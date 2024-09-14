@@ -14903,8 +14903,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.8778604, y: 2.086684, z: 1.443604}
-  m_Center: {x: -0.011844337, y: 1.0395159, z: 0.0018799305}
+  m_Size: {x: 2.2868977, y: 4.938137, z: 1.443604}
+  m_Center: {x: 0.051273346, y: 2.4652424, z: 0.0018799305}
 --- !u!54 &5390435023001473325
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -15007,8 +15007,10 @@ MonoBehaviour:
   _entityStat: {fileID: 6830942644709005929}
   _enemyGraphicHandler: {fileID: 1067053350501146685}
   <_entityAnimation>k__BackingField: {fileID: 996887652853042575}
+  _myCollider: {fileID: 2020950505913162556}
+  psContainer: {fileID: 0}
   shieldedPenetrationValue: -1
-  agent: {fileID: 2732536004204897809}
+  _agent: {fileID: 2732536004204897809}
   _abilityIndicatorCanvas: {fileID: 0}
   _enemySightedByCamera: {fileID: 406810424558851444}
   _allyMaterial: {fileID: 0}
@@ -15034,6 +15036,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 6561726820427673802}
   playerModelTransform: {fileID: 6508767380394982350}
+  _portal: {fileID: 0}
 --- !u!1 &5574534539920401071
 GameObject:
   m_ObjectHideFlags: 0
@@ -16189,9 +16192,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 6608548228504412254}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 3891550067931925302}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &6510273050713341622 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1482243110198548, guid: ea757c1578e17134b85ac65be02c4b19, type: 3}
@@ -16212,9 +16217,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 6610126628238905230}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 8056770143529091177}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &6512125302823045482 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1075024190843592, guid: ea757c1578e17134b85ac65be02c4b19, type: 3}
@@ -16249,6 +16256,7 @@ MonoBehaviour:
   - {fileID: 4286112233788257151}
   material_Damaged: {fileID: 2100000, guid: 95303f6493022bc4585f301aac3289ba, type: 2}
   material_Ally: {fileID: 2100000, guid: dad681bcf0fafa2458614904139e3806, type: 2}
+  material_Original: {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
 --- !u!95 &6561726820427673802 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 95570685767865192, guid: ea757c1578e17134b85ac65be02c4b19, type: 3}

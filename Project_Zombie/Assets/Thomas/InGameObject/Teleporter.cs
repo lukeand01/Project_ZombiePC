@@ -87,7 +87,7 @@ public class Teleporter : MonoBehaviour
 
         if (shouldLockEnemies)
         {
-            PlayerHandler.instance._entityEvents.OnLockEntity(true);
+            PlayerHandler.instance._entityEvents.OnLockPortals(true);
             Debug.Log("called it true");
         }
 
@@ -148,7 +148,7 @@ public class Teleporter : MonoBehaviour
         
         if (!shouldLockEnemies)
         {
-            PlayerHandler.instance._entityEvents.OnLockEntity(false);
+            PlayerHandler.instance._entityEvents.OnLockPortals(false);
             Debug.Log("called it false");
         }
     }

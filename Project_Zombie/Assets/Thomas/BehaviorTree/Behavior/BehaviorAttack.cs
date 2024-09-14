@@ -17,6 +17,8 @@ public class BehaviorAttack : Sequence2
     float current;
     float total;
 
+    bool isAttacking;
+
     public BehaviorAttack(EnemyBase enemy)
     {
         this.enemy = enemy;
@@ -39,57 +41,37 @@ public class BehaviorAttack : Sequence2
 
         enemy.CallAbilityIndicator(current, total);
 
-        //there is a time between attacks so we dont span attacks
-        //also 
-
-
-
-        //when we call the animation we only stop this after two things
-        //but we might need to reset this.
-        //
-
-        //WE DO THIS ALWAYS TO CONFIRM THAT THE ATTACKS STARTS FROM 0
-        if (!enemy.IsAttacking_Animation)
-        {
-            current = 0;
-            //stop animation if that becomes a problem
-        }
-
-        
-
         if (enemy._entityAnimation.IsAttacking(0))
         {
             Debug.Log("attacking");
             //enemy._entityAnimation.CallAnimation_Idle(0, 1);
             enemy._entityAnimation.CallAnimation_Idle(0, 0);
-        }
-        else if(!enemy.IsAttacking_Animation)
-        {
-
-            enemy._entityAnimation.CallAnimation_Attack(2);
-            enemy.SetIsAttacking_Animation(true);
-            current = 0;
-        }
-        else if (enemy.IsAttacking_Animation)
-        {
-            enemy.SetIsAttacking_Animation(false);
-            return NodeState.Success;
-
-        }
-
-        //we call the attack but we can stop       
-
-
-        if (enemy.IsAttacking_Animation)
-        {
-            current += Time.deltaTime;
             return NodeState.Running;
         }
-        else
+
+        if (!enemy.IsAttacking_Animation)
         {
-            return NodeState.Success;
+
+            if (isAttacking)
+            {
+                isAttacking = false;
+                return NodeState.Success;
+            }
+            else
+            {
+                current = 0;
+                enemy._entityAnimation.CallAnimation_Attack(2);
+                enemy.SetIsAttacking_Animation(true);
+                isAttacking = true;
+
+                
+            }
+
+           
         }
 
+
+        return NodeState.Running;
     }
 
 

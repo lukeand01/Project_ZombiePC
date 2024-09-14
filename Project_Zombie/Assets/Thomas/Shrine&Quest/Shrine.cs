@@ -3,12 +3,14 @@ using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Shrine : MonoBehaviour, IInteractable
 {
     string id;
     [SerializeField] int price;
+    [SerializeField] GameObject graphicHolder;
     [SerializeField] InteractCanvas _interactCanvas;
     [SerializeField] QuestClass debugQuest;
     [SerializeField] GameObject _candleGroup_Lit;
@@ -20,6 +22,7 @@ public class Shrine : MonoBehaviour, IInteractable
 
     Room roomItBelongsTo;
 
+    Vector3 originalPos;
 
     public int index {  get; private set; }
 
@@ -33,6 +36,7 @@ public class Shrine : MonoBehaviour, IInteractable
     private void Awake()
     {
         id = Guid.NewGuid().ToString();
+        originalPos = graphicHolder.transform.localPosition;
     }
 
     private void Start()
@@ -91,7 +95,8 @@ public class Shrine : MonoBehaviour, IInteractable
             _ps_blackSmoke.Play();
         }
 
-       StartCoroutine(RaiseFromGroundProcess());
+        StartCoroutine(ShakeProcess());
+        StartCoroutine(RaiseFromGroundProcess());
 
     }
 
@@ -99,30 +104,12 @@ public class Shrine : MonoBehaviour, IInteractable
     public void Remove()
     {
         cannotBeInteracted = true;
+        StartCoroutine(ShakeProcess());
         StartCoroutine(RemoveProcess());
     }
 
     IEnumerator RemoveProcess()
     {
-        //shake a bit. 
-        //then it falls under the ground.
-        Vector3 originalPos = transform.position;
-
-
-        //we want to shake it a bit.
-        //while we move down.
-
-        for (int i = 0; i < 20; i++)
-        {
-            //it will move randomly to x and y
-            float value = 0.05f;
-            float x = UnityEngine.Random.Range(-value, value);
-            float z = UnityEngine.Random.Range(-value, value);
-            transform.position = originalPos + new Vector3(x, 0, z);
-            yield return new WaitForSecondsRealtime(0.05f);
-        }
-
-        transform.position = originalPos;
 
         yield return new WaitForSecondsRealtime(1);
 
@@ -156,6 +143,24 @@ public class Shrine : MonoBehaviour, IInteractable
         cannotBeInteracted = false;
     }
 
+    IEnumerator ShakeProcess()
+    {
+        float value = 0.2f;
+        for (int i = 0; i < 15; i++)
+        {
+
+            float x = UnityEngine.Random.Range(-value, value);
+            float z = UnityEngine.Random.Range(-value, value);
+            graphicHolder.transform.localPosition = originalPos + new Vector3(x, 0, z);
+
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        graphicHolder.transform.localPosition = originalPos;
+
+    }
+
+
     public void SetIndex(int index)
     {
         this.index = index;
@@ -175,17 +180,34 @@ public class Shrine : MonoBehaviour, IInteractable
             return;
         }
 
+        bool isSuccess = PlayerHandler.instance._playerResources.AddQuest(questList[0]); 
+
+        if(isSuccess)
+        {
+            PlayerHandler.instance._playerResources.SpendPoints(price);
+            Remove();
+            
+            
+        }
+        else
+        {
+            //here we inform the player he already has enough. but i wont say here. i will say in the other place to be able to change stuff.
+        }
 
         //we are not going to open
 
-        PlayerHandler.instance._playerResources.SpendPoints(price);
-        UIHandler.instance._QuestUI.Shrine_OpenUI(questList, this);
+       
+        //we get the quest directly.
+       
+
+        //UIHandler.instance._QuestUI.Shrine_OpenUI(questList, this);
     }
 
     public void InteractUI(bool isVisible)
     {
         _interactCanvas.gameObject.SetActive(isVisible);
         _interactCanvas.ControlInteractButton(isVisible);
+        _interactCanvas.ControlPriceHolder(price);
     }
 
     public bool IsInteractable()

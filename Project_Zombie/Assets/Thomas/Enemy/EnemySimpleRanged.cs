@@ -63,11 +63,11 @@ public class EnemySimpleRanged : EnemyBase
             return;
         }
 
-        GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
+        GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(data.audio_Attack, transform);
 
         Vector3 shootDir = PlayerHandler.instance.transform.position - transform.position;
 
-        BulletScript newObject = GameHandler.instance._pool.GetBullet(1, shootingPos);
+        BulletScript newObject = GameHandler.instance._pool.GetBullet(ProjectilType.EnemySpit, shootingPos);
 
         newObject.MakeEnemy();
         newObject.SetUp("SimpleRanged", shootDir);

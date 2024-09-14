@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,27 @@ public class AbilityIndicatorCanvas : MonoBehaviour
         float value = current / total;
         value = Mathf.Clamp(value, 0.1f, 0.85f);   
         circleFill.transform.localScale = new Vector3(value, value, 0); 
+
+    }
+
+    public void RotateCircle(Vector3 rotate)
+    {
+        circleFill.transform.Rotate(rotate);
+    }
+
+
+    [Separator("CUSTOM SHAPE")]
+    [SerializeField] GameObject customShapeHolder;
+    [SerializeField] Image customImageFilll;
+
+
+    public void ControlCustomFill(float current, float total)
+    {
+        customShapeHolder.gameObject.SetActive(total != 0);
+
+        if (total == 0) return;
+
+        customImageFilll.fillAmount = current / total;
 
     }
 

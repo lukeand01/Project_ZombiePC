@@ -26,10 +26,10 @@ public class EnemyGraphicUnit : MonoBehaviour
     float highPrio_Current;
     float highPrio_Total;
 
-    private void Awake()
+
+    private void Start()
     {
-        _mainBody.SetUp();
-        _highlightBody.SetUp();
+
     }
 
     private void Update()
@@ -77,8 +77,21 @@ public class EnemyGraphicUnit : MonoBehaviour
     {
         material_HighPrio = null;
         material_LowPrio = null;
-        _mainBody.ChangeMaterial_Original();
+
+ 
+        _mainBody.ChangeMaterial_Original();      
         _highlightBody.ChangeMaterial_Original();
+    }
+
+
+    public void ResetGraphic_WithNewMaterial(Material material)
+    {
+        material_HighPrio = null;
+        material_LowPrio = null;
+
+
+        _mainBody.SetMaterial(material);
+        _highlightBody.SetMaterial(null);
     }
     
 }

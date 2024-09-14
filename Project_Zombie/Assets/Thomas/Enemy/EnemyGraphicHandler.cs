@@ -12,6 +12,13 @@ public class EnemyGraphicHandler : MonoBehaviour
     [Separator("MATERIALS")]
     [SerializeField] Material material_Damaged;
     [SerializeField] Material material_Ally;
+    [SerializeField] Material material_Original;
+
+    public void ResetEnemyGraphic()
+    {
+        
+
+    }
 
     int currentArrayIndex;
     public void SelectRandomGraphic()
@@ -24,7 +31,9 @@ public class EnemyGraphicHandler : MonoBehaviour
         int random = Random.Range(0, graphicArray.Length);
         currentArrayIndex = random;        
         graphicArray[random].gameObject.SetActive(true);
-        graphicArray[random].ResetGraphic();
+        graphicArray[random].ResetGraphic_WithNewMaterial(material_Original);
+
+
     }
 
     public void MakeAlly()

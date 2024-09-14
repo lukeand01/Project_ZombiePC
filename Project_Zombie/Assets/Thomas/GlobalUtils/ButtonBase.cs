@@ -48,7 +48,7 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         if (clickClip != null && GameHandler.instance != null)
         {
             Debug.Log("click this");
-            GameHandler.instance._soundHandler.CreateSfx(clickClip);
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_ButtonClick);
         }
 
         clickTimerCurrent = clickTimerTotal;
@@ -106,7 +106,7 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         if (mouseHover != null) mouseHover.SetActive(true);
         if (hoverClip != null && GameHandler.instance != null)
         {
-            GameHandler.instance._soundHandler.CreateSfx(hoverClip);
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_ButtonHover);
         }
     }
 

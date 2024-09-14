@@ -31,15 +31,15 @@ public class EnemyWithShield : EnemyBase
             // Check if the angle is within the threshold
             if (angle < 20)
             {
-                agent.angularSpeed = 30;
-                agent.speed = oldSpeed;
+                _agent.angularSpeed = 30;
+                _agent.speed = oldSpeed;
             }
             else
             {
                 Debug.Log("Agent is not facing the target.");
-                agent.speed = 50f;
-                agent.angularSpeed = 999;
-                agent.velocity = Vector3.zero;
+                _agent.speed = 50f;
+                _agent.angularSpeed = 999;
+                _agent.velocity = Vector3.zero;
             }
         }
     }
@@ -59,7 +59,7 @@ public class EnemyWithShield : EnemyBase
         UpdateTree(GetBehavior());
         base.StartFunction();
 
-        oldSpeed = agent.speed;
+        oldSpeed = _agent.speed;
     }
 
     Sequence2 GetBehavior()
@@ -91,7 +91,7 @@ public class EnemyWithShield : EnemyBase
 
 
         float distanceForAttack = Vector3.Distance(targetObject.transform.position, transform.position);
-        GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
+        GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(data.audio_Attack, transform);
 
 
 

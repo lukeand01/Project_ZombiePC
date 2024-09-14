@@ -1,6 +1,8 @@
 
 
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class MyUtils 
@@ -526,5 +528,98 @@ public static class MyUtils
 
         return n;
     }
+
+
+    public static string GetRandomID()
+    {
+        return Guid.NewGuid().ToString();
+    }
+
+
+    public static int GetQuantityOfSpawnIntervals(int round)
+    {
+
+        return 1;
+
+        if (round >= 3)
+        {
+            return 4;
+        }
+
+        if (round > 5 && round <= 9)
+        {
+            return 6;
+        }
+        if (round > 10 && round <= 14)
+        {
+            return 7;
+        }
+        if (round > 15 && round <= 19)
+        {
+            return 8;
+        }
+        if (round > 20)
+        {
+            return 10;
+        }
+        return 3;
+
+    }
+    public static int GetAmountToSpawnPerInterval(int round, float spawnRoundModifier)
+    {
+        int value = 0;
+
+        if (round <= 10)
+        {
+            // Linear interpolation from 5 at round 1 to 40 at round 10
+            value = Mathf.RoundToInt(5 + ((40 - 5) / 9f) * (round - 1));
+        }
+        else if (round <= 15)
+        {
+            // Linear interpolation from 40 at round 10 to 80 at round 15
+            value = Mathf.RoundToInt(40 + ((80 - 40) / 5f) * (round - 10));
+        }
+        else if (round <= 25)
+        {
+            // Exponential interpolation from 80 at round 15 to 150 at round 25
+            float startValue = 80;
+            float endValue = 150;
+            float exponent = (round - 15) / 10f;
+            value = Mathf.RoundToInt(startValue * Mathf.Pow((endValue / startValue), exponent));
+        }
+        else
+        {
+            // Beyond round 25, use exponential growth based on the last known values
+            float startValue = 150;
+            float exponent = (round - 25) / 10f;
+            value = Mathf.RoundToInt(startValue * Mathf.Pow(1.5f, exponent));
+        }
+
+
+        float additionalSpawnValue = value * spawnRoundModifier;
+
+
+        return value + (int)additionalSpawnValue;
+    }
+    public static float GetIntervalBetweenSpawns(int round)
+    {
+
+        if (round > 0 && round <= 5)
+        {
+            return 2;
+        }
+
+        if (round > 5 && round <= 10)
+        {
+            return 1;
+        }
+        if (round > 10)
+        {
+            return 0.5f;
+        }
+
+        return 0;
+    }
+
 
 }

@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f3e3ece1d0bc1f45963c4f146c67784, type: 3}
+  m_Name: SoundData
+  m_EditorClassIdentifier: 
+  soundList:
+  - title: 'Thunder Ability '
+    <_soundType>k__BackingField: 0
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 466fdd951996f8d45b2d414ae66645d4, type: 3}
+  - title: 'Bless Failure '
+    <_soundType>k__BackingField: 1
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 1ed8fb76fc64e4e46847348138782234, type: 3}
+  - title: Bless Success
+    <_soundType>k__BackingField: 2
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 1d74880bed4586644a16a79a2d9dc8af, type: 3}
+  - title: Scrap For Ability
+    <_soundType>k__BackingField: 3
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 4d1eb011e7384412a9d81e1173e35230, type: 3}
+  - title: Button Click
+    <_soundType>k__BackingField: 4
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 0c621901caf7443bb9dae7bb788aff88, type: 3}
+  - title: Button Hover
+    <_soundType>k__BackingField: 5
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: cd7044bf418f642df9a2130900bd3fd5, type: 3}
+  - title: Shrine Buff
+    <_soundType>k__BackingField: 6
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
+  - title: Shrine Heal
+    <_soundType>k__BackingField: 7
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
+  - title: Resource Chest
+    <_soundType>k__BackingField: 8
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 77c5725ddae777c4f85a2120ca32407e, type: 3}
+  - title: Ability chest
+    <_soundType>k__BackingField: 9
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 77c5725ddae777c4f85a2120ca32407e, type: 3}
+  - title: Gun Chest
+    <_soundType>k__BackingField: 10
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 77c5725ddae777c4f85a2120ca32407e, type: 3}
+  - title: Gate Open
+    <_soundType>k__BackingField: 11
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: b1334dbf63b8b12469d492e285f8003d, type: 3}
+  - title: Gate Closed
+    <_soundType>k__BackingField: 12
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 77c5725ddae777c4f85a2120ca32407e, type: 3}
+  - title: Spend money
+    <_soundType>k__BackingField: 13
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: f2aaaff934f9f4429a65d374504f87ae, type: 3}
+  - title: BearTrap
+    <_soundType>k__BackingField: 14
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 85e890e800369403ea5af9b10adecb94, type: 3}

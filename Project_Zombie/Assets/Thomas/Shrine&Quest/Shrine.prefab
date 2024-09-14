@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  graphicHolder: {fileID: 7445796555708418541}
   _interactCanvas: {fileID: 6226647497041721560}
   debugQuest:
     editorName: 

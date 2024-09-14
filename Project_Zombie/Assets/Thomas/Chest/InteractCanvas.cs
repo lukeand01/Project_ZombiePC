@@ -30,7 +30,11 @@ public class InteractCanvas : MonoBehaviour
 
     private void Update()
     {
-        transform.LookAt(mainCam.transform.position);
+       // float entityRotation = transform.parent.parent.parent.rotation.eulerAngles.y;
+        Quaternion rotation = Quaternion.LookRotation(mainCam.transform.position);
+        float cappedX = Mathf.Clamp(rotation.eulerAngles.x, 0, 30);
+        rotation.eulerAngles = new Vector3(cappedX * -1, rotation.y, 0);
+        transform.localRotation = rotation;
     }
 
     public virtual void ControlInteractButton(bool isVisible)
@@ -53,12 +57,12 @@ public class InteractCanvas : MonoBehaviour
     public void ControlPriceHolder(int price)
     {
         if (isDestroyed) return;
-        if(titleHolder == null)
+        if(priceHolder == null)
         {
             UnityEngine.Debug.Log("this does not have title holder " + gameObject.name);
             return;
         }
-        titleHolder.SetActive(false);
+        if(titleHolder != null) titleHolder.SetActive(false);
         priceHolder.SetActive(true);
         priceText.text = price.ToString();
     }

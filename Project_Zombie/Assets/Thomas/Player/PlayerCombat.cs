@@ -403,7 +403,7 @@ public class PlayerCombat : MonoBehaviour
 
         if(lastGun != currentGunIndex)
         {
-            GameHandler.instance._soundHandler.CreateSfx(audio_Swap);
+            GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(audio_Swap);
         }
 
         

@@ -283,39 +283,263 @@
 //revisit shrine system
 //create challenges.
 //make the aim better. it needs an offset. the aim is all crazy for some reason.
-//change the fountain to be a shrine as well. but its a shrine that has an effect 
+///change the fountain to be a shrine as well. but its a shrine that has an effect 
 ///make the system spawn the fountain. if there is no health fountain it must spawn a fountain health, if tehre is there is two health fountain it must spawna buff one.
-//remember the audio for the fountain health and buff 
-//you can only get one curse at a time
-//you can only get three challenges at most.
-//show those problems through fade ui.
+///remember the audio for the fountain health and buff 
+///you can only get one curse at a time 
+///you can only get three challenges at most.
+///show those problems through fade ui.
 //improve the quest interface
-//when teh quest appear it informs what kind of challenge it is, the text fades and then the images moves away. maybe an animation that highlights the image as well
+///when teh quest appear it informs what kind of challenge it is, the text fades and then the images moves away. maybe an animation that highlights the image as well
+
+
+//TEST MORE THE QUEST SYSTEMS?
+//i need place to hold those places. <= teste
+
+
+//MY GOAL
+//we need a system for closing all doors, they cannot be bought, and then opening only those that were already open.
+//improve enemy spawn system
+//create teh challenge that you must stay in the area. it might move and change places.
+//damage someting enough in a duration, otherwise it explodes. or you fail.
+//there are enemies that will run away from you. killing them will grant a unique resource, but in enough time the enemy disappears. <= teste
+//we need to stop regular spawning 
+//we need to create ui in tteh top that represents the amount to complete, also reprent a boss health. <= teste
+//create little squares in the ground that are traps. if you press it you take damage.
+//another trap summons a damage area.
+
+
+//the area should be able to move, and change size, it change position.
+//the damage object should do what? it has an attack pattern. create damage areas.
+
+
+//GOAL
+///can start a challenge of area. 
+///the door closes.
+///the spawn outside stops.
+//the challenge begins with its own spawn system
+///once done the door that was open, opens again
+//the spawn system resumes
+//create the damage object challenge
+///create a trap. first its spikes in teh ground, play an animation and in the end of the animation deal damage and apply bleeding
+
+
+//its spawning but for some reason its spawning somewhere else.
+
+//GOAL
+//the ranged doesnt have a death animation
+//for some reason the enemies being spawned because of the challenge are being spawned away from the right position. but only in challenge.
+//need to finish the knight
+
+
+
+//i dont want the animation to curve the body that much.
+//letss call the attack.
+
+
+
+
+
+
+
+//who is spawning the traps?
+//they spawn randomly. there is always a limit, and they can only spawn away from the player view.
+
+
+//i will create lists that take round to spawn people.
+//they will use their own list but use the round amount to contrl the frequency
+//
+
+
+//how am i going to do this?
+//the bosses should have multiple attacks.
+
+//door ui needs to be facing player
+//cannot show price when the door is open
+//when the door is open for chllanege should inform
+//should have sound for money spent
+//should have sound for door open
+
+//
+
+//MY GOAL - KNIGHT
+///we get the knight moving and calling the attacks
+///first the slash, and it deals damage
+///then the thrust, it uses a boxcollider to deal damage.
+///the attacks wait and then attack but without 
+//then the knight will summon the blades. two that circle around and one htat moves randomly.
+//then we create the skill 
+//then we make it die.
+//killing a boss grants 2000 points, 5 bless and a sigil. the sigil will be used to summon a boss.
+//add sound effects.
+//add especial effects.
+
+
+//now we are focusing on the blade.
+//no idea whats happening to it. but it destroys itself when its created.
+//
+
+
+//GOAL FOR TOMORROW
+//get the blades working
+//every ability has a chance to trigger. put that in the attackclass
+//it can die and it has a death animation
+//fix the animation using the rigging.
+
+
+
+
+//the legs are not moving though, they stop for some reason.
+//the rig is no longer working.
+//lets make the slash work and feel nice.
+//then we will make the thurst, no jumping steps.]
+//
+
+//so the slash is working, lets not move the the thrust
+//now the overlapbox is not working
+//its not hitting now.
+///we have to make it rotate to face the player.
+///but i also need to only call the attack if its facing the player.
+//now lets check the ui.
+//the box collider isnt exactly presicen, or maybe the ui isnt
+//i wna thte ui to show it a bit more ready. when we are doing you are supposed o wait a bit more.
+//
+
+
+//GOAL FOR TOMORROW
+
+
+
+//the problem is the 
+
+
+
+//MY GOAL
+//transform the fireball projectiol into a bulletscript
+
+
+//MY GOAL - GHOST
+//create the projectile for ghost. 
+//create condition called "blind" which reduces the player´s vision
+//the ghost create damage area where the player is. it deals damage and blinds
+//first attack is without warning and fast.
+//it passively creates areas of slow.
+//
+
+
+//MY GOAL - MAGE 
+//its first move and the most common is a projectil
+//the second move is a barrage of projectiles
+//it can passively create walls between it and the player.
+//its third move it buffs all enemies, granting them additional damage and speed.
+
+
+//MY GOAL -  ARTILLERY
+//it must always spawn in the farthest room possible. can only spawn if there are enough rooms opened.
+//it shoot slow and huge damage areas.
+//when it gets close it shoots barrages of 
+//
+
+//MY GOAL
+//create a spawn system for the boss.
 //
 
 
 
+//MY GOAL - DEVIL
+//its a melee character.
+//attack 1 
 
 
-//so basically we will first have three different types 
+//CREATE KNIGHT
+
+//the damage works the same
+//the animation works different in boss. each boss has its own animator. we dont use entityanimator here.
+//
 
 
-//CHALLENGES
-//i want things that may appear in the map or that appear after triggered.
-//is having a shrine good?
-//challenges also involve staying in one location for long enough
-//shrines should be random and rare. 
+//knight has 5 attacks
+//a swipe, that deals damage forward
+//a thrust, deals damage from far from a line. 
+//when the player is distance, the knighyt uses a shield, and gain velocity.
+//summons blades that move around for a while. they work by moving randomly, till they meet a wall or a ledge then changing position
 
 
-//i will create one that you must stay in one position for the duration
-//there will be a toten that will summon a miniboss and lock the doors. enemies outside should slowly appear inside? or not, or maybe we create a new wave for this room.
-//i want shrines that give small temporary buffs - such as attack, health regen, and stuff like this
-//i would like to still have these challenges. so we will create two shrines
-//we will have two shrines, one with timer and the other that does not, but will have a penality. i need to inform the player of a penality
-//the penality involves resources that you would lose resource, a portion of your resources per thing. cannot ahve more than one curse at a time.
-//and curse will give perma buffs and bless.
 
 
+
+//CRATE GHOST
+//ghost has only one attack. 
+//ghost cannot be killed and just move towards the player.
+//ghost should create more obstacles.
+//
+
+
+//CREATEA ARTILLERY
+//need to spawn in the farthest
+
+
+//MY GOAL
+//create Lancer 
+//create Ghost
+//create Artillery
+//create Mage
+
+
+//MAGE
+//she walks slow
+//if you are far from her she will shoot thunders are you
+//when you are close enough, it shoots projectile
+//spawn especial ranged enemies that cannot walk too far from the mage
+//increase damage and speed of all enemies.
+//create barries that block player projectiles.
+
+//ARTILLERY
+//it stands still.
+//shoot at teh player from anywhere in the amap
+//the player is supposed to find the enemy from teh sound.
+//when the player gets close the artillery changes from single big shells to small ones.
+
+
+
+//MY GOAL
+//create the boss room.
+//the boos room you can go and summon the boss
+//if you summon a boss all enemies will be killed and the round stops
+//create Devil
+//create Tree
+//create Corrupted tank
+
+
+//minbosses always spawn at round semi-randomly. 
+//but you should be able to do certain thinks for force a spawn. but it works a bit like a easteregg.
+
+
+
+//MY GOAL
+//create mini-bosses.
+//one type must be summoned using bless 
+//another summojns at a time and goes after the player
+//another is a immortal beast that cannot be killed but after enough time they disappear.
+//to summon a boss you must have certain keys. the boss must grant something. once a boss is summoned it closes all doors and has a challenge by itself.
+
+//Mini - BOSS
+//Lancer - he charges, he throws long ranged attacks, and has high defense
+//Ghost - Cannot be killed. but fades.
+//Mage - it buffs allother enemies, and throws some circle around. it also has shield that regenerate once down
+//Trash - it infects areas where you cannot go for a duration. also the trail of it walking deals damage.
+//Artillery - shoots from somewhere in the map and deals a lot of damage.
+
+
+
+//BOSS
+//Devil (Chains) : use a lot of chain to try and pull and do a lot of damage. force mellee.
+//Tree:  it stands still and just throw a bunch of stuff. it summons a lot of enemies.
+//Corrupt tank: a tank full of zombie that shoot a lot.
+
+//MY GOAL
+//create teh extremely detailed endgame.
+//create the system for the curse to penalize
 
 
 //CREATING THE MAP
@@ -429,7 +653,7 @@
 //GOAL
 //create minibosses that will appear every x turns.
 //the bosses needs to be called
-//create enemy lancer.
+
 
 //GOAL
 //create save system
@@ -445,3 +669,36 @@
 //a light from someone walking in the forest
 //a dog coming over to play
 //the player pull certain things from time to time, like especial weapons and bombs or rubber ducks
+
+
+
+
+
+
+
+
+//currently -> cna i do it in 2 months?
+//i am doing the mini-boss and boss -> 7 
+//change the graphic of all enemies and create animations -> 7
+//i still have to do the map, and the lgiht and graphics -> 7
+//then after the light i need to do the system for shading everything that isnt visible by the player. -> 2
+//then i need to creat eteh merchant dialogue, and the possiblity of the especial abilities. -> 2
+//improving the main menu -> 3
+//create system for saving -> 3
+//improve the settings ui -> 1
+//improve the city. -> 7
+//general bug fixes -> 7
+
+//tahts about 63 days, a bit more than 2 months
+//now its about 43 days -> i will say 50 days
+
+
+//RECORDING
+//BOSS -> 13/09 - 
+
+
+//I have Result: 163 days (day 13/09/2024)
+//
+
+//Version 0.7 ()
+//we will be focusing on content here. we will create all passives, actives, perma and temp guns, story quests and challenges.

@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -193,6 +194,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    //what i should do is acutlaly change the mouse ui, and just shift it a bit.
 
     void InputShoot()
     {
@@ -323,7 +325,8 @@ public class PlayerController : MonoBehaviour
 
     LayerMask layerForMouseHover_Enemy;
     LayerMask layerForMouseHover_Ground;
-    [SerializeField] float debugAngleMouse;
+    [Separator("DEBUG")]
+    [SerializeField] Vector3 dirForMouseDir;
     public Vector3 GetMouseDirection()
     {
         
@@ -353,28 +356,10 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerForMouseHover_Ground))
         {
   
-
-            //Vector3 offset = new Vector3(0,0,0);
-
-            float angle = Vector3.SignedAngle(hit.point, transform.transform.forward, Vector3.up);
-            if (angle < 0) angle += 360;
-
-
-            debugAngleMouse = angle;
-            //this is the angle
-
-
-            Vector3 targetDirection = (hit.point - transform.position.normalized);
+            Vector3 targetDirection = (hit.point - transform.position).normalized;
             targetDirection.y = 0f; 
 
-            
-
-
-            //here we will add the offsets.
-            //to the right we add a bit to the offset
-            //to the left we subtract a bit to the offset
-
-
+            dirForMouseDir = targetDirection;
 
             return targetDirection;
         }

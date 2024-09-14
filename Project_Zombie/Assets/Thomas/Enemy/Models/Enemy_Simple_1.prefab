@@ -769,9 +769,10 @@ MonoBehaviour:
   _entityStat: {fileID: 1333699426865011604}
   _enemyGraphicHandler: {fileID: 7665004644641161543}
   <_entityAnimation>k__BackingField: {fileID: 552050694749398293}
+  _myCollider: {fileID: 5009561414981122106}
   psContainer: {fileID: 3403738573473668997}
   shieldedPenetrationValue: -1
-  agent: {fileID: 1497500476275291310}
+  _agent: {fileID: 1497500476275291310}
   _abilityIndicatorCanvas: {fileID: 0}
   _enemySightedByCamera: {fileID: 7654666042393462055}
   _allyMaterial: {fileID: 2100000, guid: 49943a31992c14f46b71b2576670cafa, type: 2}
@@ -886,6 +887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 5478928026209215458}
   playerModelTransform: {fileID: 7308537903238714933}
+  _portal: {fileID: 0}
 --- !u!1 &1856706134824525527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,9 +1206,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 6651357965355083312}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 8167456554184770027}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &2112360552136007465
 GameObject:
   m_ObjectHideFlags: 0
@@ -1570,9 +1574,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 5547703377513341122}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 5023445789724001929}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &2265301595001948410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1756,9 +1762,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 4668795376694182677}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 5314563945819822760}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &2441532502265349445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1943,9 +1951,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 1041047285912460684}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 3154257564357893162}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &2536054001564990563
 GameObject:
   m_ObjectHideFlags: 0
@@ -2098,9 +2108,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 1639967147284491761}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 1674426926801762130}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &2571277908403779329
 GameObject:
   m_ObjectHideFlags: 0
@@ -3102,9 +3114,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 1649046440474429468}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 8730250024285863144}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &3663674580060106524
 GameObject:
   m_ObjectHideFlags: 0
@@ -3870,9 +3884,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 5050687871661102119}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 3682611485397581831}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &5091555811057844972
 GameObject:
   m_ObjectHideFlags: 0
@@ -4195,9 +4211,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 3703624251017709416}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 5870956814659795427}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &5199531007181889478
 GameObject:
   m_ObjectHideFlags: 0
@@ -18743,9 +18761,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 4049948934727210395}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 2438494142162403534}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &5668925825224912986
 GameObject:
   m_ObjectHideFlags: 0
@@ -18898,9 +18918,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 7112539459418894232}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 8800438083762195935}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &5907235454818497932
 GameObject:
   m_ObjectHideFlags: 0
@@ -19953,9 +19975,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 7687324586085811919}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 7738006595418089762}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &7555014749265093371
 GameObject:
   m_ObjectHideFlags: 0
@@ -20290,9 +20314,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 2715328568604058373}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 3469647712282520248}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &8104621032772979917
 GameObject:
   m_ObjectHideFlags: 0
@@ -20540,9 +20566,11 @@ MonoBehaviour:
   _mainBody:
     _skinnedRend: {fileID: 6782996047087603636}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
   _highlightBody:
     _skinnedRend: {fileID: 203781075962142529}
     _meshRend: {fileID: 0}
+    originalMaterial: {fileID: 0}
 --- !u!1 &8527587911424804107
 GameObject:
   m_ObjectHideFlags: 0
@@ -20683,6 +20711,7 @@ MonoBehaviour:
   - {fileID: 1363120758489095337}
   material_Damaged: {fileID: 2100000, guid: dad681bcf0fafa2458614904139e3806, type: 2}
   material_Ally: {fileID: 2100000, guid: 95303f6493022bc4585f301aac3289ba, type: 2}
+  material_Original: {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
 --- !u!1 &8628356284403984353
 GameObject:
   m_ObjectHideFlags: 0

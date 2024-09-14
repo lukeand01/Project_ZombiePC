@@ -24,10 +24,11 @@ public class EnemyBase : Tree, IDamageable
     //[SerializeField] MeshRenderer _rend;
     [SerializeField] protected EnemyGraphicHandler _enemyGraphicHandler;
     [field:SerializeField] public EntityAnimation _entityAnimation { get; private set; }
-
+    [SerializeField] BoxCollider _myCollider;
     [Separator("CONTAINERS")]
     [SerializeField] Transform psContainer;
 
+    bool isLocked;
 
     float healthCurrent;
     float healthTotal;
@@ -70,7 +71,12 @@ public class EnemyBase : Tree, IDamageable
 
     protected override void UpdateFunction()
     {
-
+        if(isLocked)
+        {
+            //we force it to play idle animation.
+            StopAgent();
+            return;
+        }
         if (isDead) return;
 
         if (PlayerHandler.instance._playerResources.isDead)
@@ -91,11 +97,11 @@ public class EnemyBase : Tree, IDamageable
             return;
         }
 
-        if (!agent.isStopped)
+        if (!_agent.isStopped)
         {
-            Vector3 direction = agent.velocity;
+            Vector3 direction = _agent.velocity;
 
-            // If the agent is moving
+            // If the _agent is moving
             if (direction.magnitude > 0.1f)
             {
                 // Calculate the rotation required to face the direction
@@ -125,7 +131,7 @@ public class EnemyBase : Tree, IDamageable
 
         id = Guid.NewGuid().ToString();
 
-        agent = GetComponent<NavMeshAgent>();
+        _agent = GetComponent<NavMeshAgent>();
 
         _entityEvents.eventUpdateStat += UpdateStat;
 
@@ -136,12 +142,16 @@ public class EnemyBase : Tree, IDamageable
 
     //actually what we will do instead is to simply force the respawn from this piece.
 
+    void ControlLocked(bool isLocked)
+    {
+        this.isLocked = isLocked;
+    }
 
     protected virtual void StartFunction()
     {
 
 
-
+        PlayerHandler.instance._entityEvents.eventLockEnemies += ControlLocked;
 
         if (!alreadySetStat)
         {
@@ -170,9 +180,12 @@ public class EnemyBase : Tree, IDamageable
         isDead = false;
         gameObject.layer = 6;
         _entityAnimation.ControlIfAnimatorApplyRootMotion(false);
-
+        _myCollider.enabled = true;
+        _agent.enabled = true;
         _enemyCanvas.UpdateDuration(0, 0);
         //but also turn on the collider.
+
+        isLocked = false;
 
         _entityStat.ResetEntityStat();
 
@@ -329,7 +342,7 @@ public class EnemyBase : Tree, IDamageable
 
     public void TakeDamage(DamageClass damageRef)
     {
-
+        Debug.Log("take damage");
         if (isDead) return;
          
         //this here is checking if the player can damage the shield.
@@ -382,12 +395,12 @@ public class EnemyBase : Tree, IDamageable
 
             //death
             Die(wasPlayer);
-            GameHandler.instance._soundHandler.CreateSfx(data.audio_Dead,transform);
+            GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(data.audio_Dead,transform);
         }
         else
         {
             PlayerHandler.instance._playerResources.GainPoints(POINTS_PERHIT);
-            GameHandler.instance._soundHandler.CreateSfx(data.audio_Hit, transform);
+            GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(data.audio_Hit, transform);
         }
 
     }
@@ -397,7 +410,7 @@ public class EnemyBase : Tree, IDamageable
         _enemyCanvas.CreateShieldPopUp();
     }
 
-    protected void Die(bool wasKilledByPlayer = true)
+    protected virtual void Die(bool wasKilledByPlayer = true)
     {
 
 
@@ -416,6 +429,8 @@ public class EnemyBase : Tree, IDamageable
         StopAgent();
         _rb.velocity = Vector3.zero;
 
+        _myCollider.enabled = false;
+        _agent.enabled = false;
 
         LocalHandler.instance.RemoveEnemyFromSpawnList(data);
 
@@ -534,20 +549,20 @@ public class EnemyBase : Tree, IDamageable
     #endregion
 
     #region PATHING
-    [SerializeField]protected NavMeshAgent agent;
+    [SerializeField]protected NavMeshAgent _agent;
     protected Vector3 currentAgentTargetPosition;
     protected bool isMoving;
 
     void SetSpeed(float value)
     {
         //we update this if we slowed.
-        agent.speed = value;    
+        _agent.speed = value;    
     }
 
     public void SetDestinationForPathfind(Vector3 targetPos)
     {
-        agent.isStopped = false;
-        agent.destination = targetPos;
+        _agent.isStopped = false;
+        _agent.destination = targetPos;
 
         isMoving = true;
         currentAgentTargetPosition = targetPos;
@@ -555,8 +570,8 @@ public class EnemyBase : Tree, IDamageable
 
     public void StopAgent()
     {
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
+        _agent.isStopped = true;
+        _agent.velocity = Vector3.zero;
 
         isMoving = false;
 
@@ -609,7 +624,7 @@ public class EnemyBase : Tree, IDamageable
 
 
         float distanceForAttack = Vector3.Distance(targetObject.transform.position, transform.position);
-        GameHandler.instance._soundHandler.CreateSfx(data.audio_Attack, transform);
+        GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(data.audio_Attack, transform);
 
         //i wont check for distance, i will check with raycast.
 

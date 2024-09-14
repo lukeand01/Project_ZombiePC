@@ -10,13 +10,17 @@ public class Room : MonoBehaviour
     //the room will hold spawn ref.
     [SerializeField] Transform portalHolder;
     [SerializeField] Transform chestGunPos;
-    public List<Portal> portalList = new();
+    [SerializeField] List<Portal> portalList = new();
     [SerializeField] Transform[] gapWalls; //
     [SerializeField] bool checkDebug;
+    [SerializeField] Door[] doorArray;
     [SerializeField] Shrine[] shrineArray; //we will do through this to check the shrines
     Shrine currentShrine;
     public string id {  get; private set; }
 
+
+    public Door[] GetDoorArray () { return doorArray; }
+    public List<Portal> GetPortalList() { return portalList; }
 
     private void Start()
     {
@@ -28,7 +32,6 @@ public class Room : MonoBehaviour
     {
         bool isSuccess = CallShrine();
 
-        Debug.Log("call shrine was success " + isSuccess);
     }
 
     void ResetCallShrine()
@@ -112,6 +115,38 @@ public class Room : MonoBehaviour
 
     public Transform GetChestGunSpawnPos() => chestGunPos;
 
+
+    List<int> doorOpenBeforeChallengeList = new();
+    public void CloseRoomForChallenge()
+    {
+        //we need to stop the regular spawning
+        //we need to close all doors
+
+        for (int i = 0; i < doorArray.Length; i++)
+        {
+            var item = doorArray[i];
+
+            if (item.IsOpen)
+            {
+                doorOpenBeforeChallengeList.Add(i);
+            }
+
+            item.CloseDoor();
+
+        }
+
+
+    }
+    public void OpenRoomAfterChallenge()
+    {
+        for (int i = 0; i < doorOpenBeforeChallengeList.Count; i++)
+        {
+            var item = doorOpenBeforeChallengeList[i];
+
+            doorArray[item].OpenDoor();
+
+        }
+    }
 
 }
 

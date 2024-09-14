@@ -91,6 +91,9 @@ MonoBehaviour:
   isBuff: 0
   _psHealth: {fileID: 8607198724508952491}
   _psBuff: {fileID: 2683502431346660282}
+  _audioHealth: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
+  _audioBuff: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
+  debugCall: 0
 --- !u!65 &7420893018429069877
 BoxCollider:
   m_ObjectHideFlags: 0

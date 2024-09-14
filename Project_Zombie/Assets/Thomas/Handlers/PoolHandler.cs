@@ -20,6 +20,8 @@ public class PoolHandler : MonoBehaviour
         CreateDashEffectPool();
         CreateFadeUIPool();
         CreateChestPool();
+        CreateTrapPool();
+        CreateBossPool();
     }
 
 
@@ -33,6 +35,8 @@ public class PoolHandler : MonoBehaviour
         PS_Reset();
         FadeUI_Reset();
         Chest_Reset();
+        Trap_Reset();
+        Boss_Reset();
     }
 
     #region BULLET
@@ -41,12 +45,11 @@ public class PoolHandler : MonoBehaviour
     [SerializeField] Transform bulletContainer;
     List<ObjectPool<BulletScript>> pool_Bullet_List  = new();
     int currentBulletIndex;
-    //
-
-    public BulletScript GetBullet(int index,Transform pos)
+    
+    public BulletScript GetBullet(ProjectilType indexType,Transform pos)
     {
-        this.currentBulletIndex = index;
-        BulletScript newBullet = pool_Bullet_List[index].Get();
+        currentBulletIndex = (int)indexType;
+        BulletScript newBullet = pool_Bullet_List[(int)indexType].Get();
         
         newBullet.transform.position = pos.position;
         newBullet.gameObject.SetActive(true);
@@ -226,7 +229,79 @@ public class PoolHandler : MonoBehaviour
         pool_Enemy_Dictionary[data].Release(enemy);
     }
 
-    
+
+
+
+    #endregion
+
+    #region BOSS
+    [Separator("BOSS")]
+    [SerializeField] EnemyData[] bossData_array;
+    [SerializeField] Transform bossContainer;
+    List<EnemyBase> bossSpawnedList = new();
+    Dictionary<EnemyData, ObjectPool<EnemyBoss>> pool_Boss_Dictionary = new();
+
+    EnemyData targetBossData;
+    void CreateBossPool()
+    {
+
+        for (int i = 0; i < bossData_array.Length; i++)
+        {
+            var item = bossData_array[i];
+
+            if (item.enemyModel == null)
+            {
+                Debug.Log("no model here " + item.name);
+                continue;
+            }
+
+            pool_Boss_Dictionary.Add(item, new ObjectPool<EnemyBoss>(Boss_Create, null, Boss_ReturnToPool, defaultCapacity: 100));
+        }
+
+    }
+
+
+    void Boss_Reset()
+    {
+        for (int i = 0; i < bossContainer.childCount; i++)
+        {
+            var item = bossContainer.GetChild(i).gameObject;
+            item.SetActive(false);
+        }
+    }
+
+    public EnemyBoss GetBoss(EnemyData data, Vector3 pos)
+    {
+        targetBossData = data;
+
+        EnemyBoss newBoss = pool_Boss_Dictionary[data].Get();
+
+        newBoss.transform.position = pos;
+        newBoss.gameObject.SetActive(true);
+
+        return newBoss;
+    }
+
+    EnemyBoss Boss_Create()
+    {
+        EnemyBoss newObject = Instantiate(targetBossData.bossModel);
+        newObject.transform.SetParent(bossContainer);
+        bossContainer.gameObject.name = "BossContainer " + bossContainer.childCount.ToString();
+        return newObject;
+    }
+
+    void Boss_ReturnToPool(EnemyBoss boss)
+    {
+        boss.ResetForPool();
+
+    }
+
+    public void Boss_Release(EnemyData data, EnemyBoss boss)
+    {
+
+        pool_Boss_Dictionary[data].Release(boss);
+    }
+
 
 
     #endregion
@@ -572,6 +647,94 @@ public class PoolHandler : MonoBehaviour
 
     #endregion
 
+    #region TRAP
+
+    [Separator("Traps")]
+    [SerializeField] TrapBase[] trapTemplateArray;
+    [SerializeField] Transform trapContainer;
+    Dictionary<TrapType, TrapBase> trap_Ref_Dictionary = new();
+    Dictionary<TrapType, ObjectPool<TrapBase>> pool_Trap_Dictionary = new();
+    TrapBase trapTarget;
+
+    void CreateTrapPool()
+    {
+        List<TrapType> trapRefList = new()
+        {
+            TrapType.BearTrap
+            //ChestType.ChestShrine,
+        };
+
+
+        for (int i = 0; i < trapTemplateArray.Length; i++)
+        {
+            var item = trapTemplateArray[i];
+
+            if (item == null)
+            {
+                Debug.Log("no model here for chest" + item.name);
+                continue;
+            }
+
+            pool_Trap_Dictionary.Add(trapRefList[i], new ObjectPool<TrapBase>(Trap_Create, null, Trap_ReturnToPool, defaultCapacity: 100));
+            trap_Ref_Dictionary.Add(trapRefList[i], trapTemplateArray[i]);
+        }
+
+
+    }
+
+    void Trap_Reset()
+    {
+        for (int i = 0; i < trapContainer.childCount; i++)
+        {
+            var item = trapContainer.GetChild(i).gameObject;
+
+            if (item == null) return;
+
+            item.SetActive(false);
+        }
+    }
+
+    public TrapBase GetTrap(TrapType _type, Transform pos)
+    {
+        TrapBase refTrap = trap_Ref_Dictionary[_type];
+        trapTarget = refTrap;
+
+        TrapBase newTrap = pool_Trap_Dictionary[_type].Get();
+        newTrap.transform.position = pos.position;
+        newTrap.gameObject.SetActive(true);
+
+        return newTrap;
+    }
+
+
+    TrapBase Trap_Create()
+    {
+        var trap = Instantiate(trapTarget);
+        trap.transform.SetParent(chestContainer);
+        trapContainer.gameObject.name = "TrapContainer " + trapContainer.childCount.ToString();
+        return trap;
+    }
+
+
+    void Trap_ReturnToPool(TrapBase trap)
+    {
+        trap.ResetForPool();
+        trap.transform.localPosition = Vector3.zero;
+        trap.transform.SetParent(trapContainer);
+        trapContainer.gameObject.name = "TrapContainer " + trapContainer.childCount.ToString();
+        //i need to return this to the player as well.
+    }
+
+
+
+    public void Trap_Release(TrapType _type, TrapBase trap)
+    {
+        pool_Trap_Dictionary[_type].Release(trap);
+    }
+
+
+    #endregion
+
 
 }
 
@@ -585,3 +748,9 @@ public enum PSType
 
 }
 
+public enum ProjectilType
+{
+    PlayerRegular = 0,
+    EnemySpit = 1,
+    FlyingSwords = 2
+}

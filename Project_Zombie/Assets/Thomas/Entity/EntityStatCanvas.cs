@@ -117,7 +117,6 @@ public class EntityStatCanvas : MonoBehaviour
         FadeUI newObject = Instantiate(fadeTemplate);
         newObject.transform.SetParent(recoverHealthPos);
 
-
         float amount = 20;
         float x = Random.Range(-amount * 3, amount * 3);
         float z = Random.Range(-amount, amount);
@@ -126,6 +125,7 @@ public class EntityStatCanvas : MonoBehaviour
         newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
         newObject.SetUp(powerName.ToString(), fadeColor);
         newObject.ChangeColorModifier(duration);
+        newObject.ChangeScaleModifier(1.5f);
     }
 
 
@@ -144,6 +144,14 @@ public class EntityStatCanvas : MonoBehaviour
         newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
         newObject.SetUp(dropName, Color.yellow);
     }
+
+    #endregion
+
+
+    #region NEW FADE UI
+
+
+    //
 
     #endregion
 }

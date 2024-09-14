@@ -2,16 +2,17 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu]
 public class StageData : ScriptableObject
 {
-    //this dicatates what enemies can spawn at this stage.
+    //this dicatates what enemies can round at this stage.
     //each champion has a chance.
     //its always between 1 and 25.
     //we will use this thing also teo tell what resources we can get here.
-    //this will also inform events.like events in certain levels. for example:> spawn a certain fella. spawn a boss. shower of meteors. gas.
+    //this will also inform events.like events in certain levels. for example:> round a certain fella. round a boss. shower of meteors. gas.
 
 
     [Separator("Description")]
@@ -31,64 +32,42 @@ public class StageData : ScriptableObject
     //the enemies that can be spawned in this thing.
 
     //then we need to update them.
-    public List<EnemyChanceSpawnClass> GetCompleteSpawnList(int level)
+    public List<EnemyChanceSpawnClass> GetCompleteSpawnList(int round)
     {
-        List<EnemyChanceSpawnClass> newList = GetAllowedEnemySpawnList(level);
-        newList = GetUpdateEnemySpawnList(level, newList);
-
+        List<EnemyChanceSpawnClass> newList = GetAllowedEnemySpawnList(round);
 
 
         return newList;
     }
 
 
-    List<EnemyChanceSpawnClass> GetAllowedEnemySpawnList(int spawn)
+    List<EnemyChanceSpawnClass> GetAllowedEnemySpawnList(int round)
     {
-        //we use this list to get only those who are even allowed to be spawn at the moment basde in the max cap
-        //
+        //we use this list to get only those who are even allowed to be round at the moment basde in the max cap
+        
+        //this we fomr the list.
+
+
         List<EnemyChanceSpawnClass> newList = new();
 
         foreach (EnemyChanceSpawnClass item in classList)
         {
-            if (item.max != 0 && spawn > item.max)
-            {
-                //we dont add this fella
-                continue;
-            }
-            if (item.min != 0 && spawn < item.min)
-            {
-                //we dont add this fella
-                continue;
-            }
+
+            item.UpdateRound(round);
+
+            //we only refuse to put this fella here when its 0 because -1 means that there is no limit.
+            if (item.GetChanceToSpawn() <= 0) continue;
+
             newList.Add(item);
         }
 
-        return newList;
-    }
-
-    List<EnemyChanceSpawnClass> GetUpdateEnemySpawnList(int level, List<EnemyChanceSpawnClass> targetList)
-    {
-        //we use this list to alter the spawn cahnce values based in the level.
-        List<EnemyChanceSpawnClass> newList = new();
-
-        //we calculate the thing.
-
-        foreach (var item in targetList)
-        {
-
-            float chanceScale = (item.chancePerLevelToSpawn * level);
-            chanceScale = Mathf.Clamp(chanceScale, item.chanceSpawnMinCap, item.chanceSpawnMaxCap);
-
-            float chance = item.baseChanceToSpawn + chanceScale;
-
-            EnemyChanceSpawnClass enemySpawn = new EnemyChanceSpawnClass(item.data, chance, item.maxAllowedAtAnyTime);
-            newList.Add(enemySpawn);
-        }
 
 
         return newList;
-
     }
+
+    //we dont need this anymore. because this is updating the modifier but the animation curve is already doing that.
+
     #endregion
 
     #region ITEMS
@@ -235,42 +214,92 @@ public class StageData : ScriptableObject
 [System.Serializable]
 public class EnemyChanceSpawnClass
 {
-    public EnemyChanceSpawnClass(EnemyChanceSpawnClass refClass)
-    {
-        data = refClass.data;
-
-        min = refClass.min;
-        max = refClass.max;
-
-        baseChanceToSpawn = refClass.baseChanceToSpawn;
-        chancePerLevelToSpawn = refClass.chancePerLevelToSpawn;
-
-        chanceSpawnMaxCap = refClass.chanceSpawnMaxCap;
-        chanceSpawnMinCap = refClass.chanceSpawnMinCap;
-
-        maxAllowedAtAnyTime = refClass.maxAllowedAtAnyTime;
-    }
-
-    public EnemyChanceSpawnClass(EnemyData data, float totalChanceSpawn, int maxAllowedAtAnyTime)
-    {
-        this.data = data;
-        this.totalChanceSpawn = totalChanceSpawn;
-        this.maxAllowedAtAnyTime = maxAllowedAtAnyTime;
-    }
-
 
     [SerializeField] string Id;
 
     public EnemyData data;
-    [Range(0, 25)] public int min = 1;
-    [Range(0, 25)] public int max = 25; //max 
 
-    public float totalChanceSpawn { get; private set; }
-    [Range(0,100)]public float baseChanceToSpawn;
-    [Range(-100,100)]public float chancePerLevelToSpawn;
 
-    [Range(0, 100)] public float chanceSpawnMaxCap;
-    [Range(0,100)] public float chanceSpawnMinCap;  
+    public float GetChanceToSpawn()
+    {
+        return current_SpawnChance;
+    }
 
-    [Range(0, 100)]public int maxAllowedAtAnyTime; //you can never spawn more creatures than the allowed. 0 means there is no need to check this.
+    //allowed to round
+
+    public int GetMaxAllowedToSpawn()
+    {
+        return current_MaxSpawn;
+    }
+
+    //the spawn chance will now envolve a number, when i want the 
+
+    //i dont want to iterate everytime
+
+    [SerializeField] ValuePerRoundClass[] _spawnChanceArray;
+    [SerializeField] ValuePerRoundClass[] _maxSpawnCapArray;
+
+
+    //
+    int current_SpawnChance;
+    int current_MaxSpawn;
+
+    //how do we tell when this start spawning
+    //and how do we tell thatthere is no limit to spawn
+    //if its zero its because 
+
+    public void UpdateRound(int round)
+    {
+        //get the values here.
+        //we check every value.
+        //we get the closest  value that it is lower.
+
+        int storedValue_SpawnRound = 0;
+        float storedValue_SpawnChance = 0;
+
+        for (int i = 0; i < _spawnChanceArray.Length; i++)
+        {
+            var item = _spawnChanceArray[i];
+
+            if(round >= item.round && item.round > storedValue_SpawnRound)
+            {
+                storedValue_SpawnRound = item.round;
+                storedValue_SpawnChance = item.value;
+            }
+
+        }
+
+        current_SpawnChance = (int)storedValue_SpawnChance;
+
+
+        int storedValue_spawnCapRound = 0;
+        float storedValue_SpawnCapMax = 0;
+
+
+        for (int i = 0; i < _maxSpawnCapArray.Length; i++)
+        {
+            var item = _maxSpawnCapArray[i];
+
+            if (round >= item.round && item.round > storedValue_spawnCapRound)
+            {
+                storedValue_spawnCapRound = item.round;
+                storedValue_SpawnCapMax = item.value;
+            }
+
+        }
+
+
+
+        current_MaxSpawn = (int)storedValue_SpawnCapMax;
+
+    }
+
+
+}
+
+[System.Serializable]
+public class ValuePerRoundClass
+{
+    [Range(1, 30)] public int round = 1;
+    public float value;
 }
