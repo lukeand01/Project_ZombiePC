@@ -634,7 +634,8 @@ public enum BDType
     Invisible,
     SecretBulletMultipler,
     EspecialCondition, //these are are mostly for the 
-    event_Drop
+    event_Drop,
+    Blind
 }
 
 public enum BDDamageType 

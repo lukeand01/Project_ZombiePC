@@ -77,7 +77,7 @@ public class EnemyMage : EnemyBase
             
             AreaDamageVSXType type = AreaDamageVSXType.Fireball_Explosion;
             Debug.Log("here " + type);
-            newObject.SetUp(playerPosition + offset, damageRadius, damageTimer, GetDamage(), 3, 0.1f,type);
+            newObject.SetUp_Regular(playerPosition + offset, damageRadius, damageTimer, GetDamage(), 3, 0.1f,type);
 
             float timerRandom = Random.Range(1, 1.5f);
 

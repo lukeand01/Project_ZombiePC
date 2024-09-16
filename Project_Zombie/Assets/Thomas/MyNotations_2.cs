@@ -370,22 +370,67 @@
 //then the knight will summon the blades. two that circle around and one htat moves randomly.
 //then we create the skill 
 //then we make it die.
-//killing a boss grants 2000 points, 5 bless and a sigil. the sigil will be used to summon a boss.
+///killing a boss grants 2000 points, 5 bless and a sigil. the sigil will be used to summon a boss.
+//the sigil should show in the ui
 //add sound effects.
 //add especial effects.
-
-
+//add a especial effect for teh flying blade. it has a sound as well, but only when you are close.
+//
 //now we are focusing on the blade.
-//no idea whats happening to it. but it destroys itself when its created.
+///no idea whats happening to it. but it destroys itself when its created.
+//the movement is better.
+///now lets put everything together. and lets create teh chance thing.
+
 //
 
 
 //GOAL FOR TOMORROW
-//get the blades working
-//every ability has a chance to trigger. put that in the attackclass
+///get the blades working
+///every ability has a chance to trigger. put that in the attackclass
 //it can die and it has a death animation
 //fix the animation using the rigging.
+//add an effect 
+//add sound
 
+//effects
+//slash
+//charge thats works for all
+//thrust, destroying everything in a line and raising smoking. 
+//death needds a better looking effect.
+
+//the effect will be a bunch of smoke and the cracked in the ground that slowly fade. thats it.
+//i want the effect to persist there.
+//what i can do is to trigger something 
+
+//there will be no cracks in the ground because i found no assets for it.
+
+//GOAL
+///death animation for knight
+///cool effect for the death, instead of just being pulled down
+//add effect for slash. add sound
+//add effect for thrust. i still want the smoke, that will be enough. add sound
+//add effect for summoning the blades. add sound. a scream
+//still need the rigging at least for the shield.
+//shoud have sound for being damaged.
+///should have sound for their steps, because they are heavy.
+//maybe some breathing.
+//i need some additional sound for the charging, just triggering the thing is no good
+//also make the player footstep sound.
+
+
+//now i need to ge thte idle animation working to show thats it not using the shield
+
+
+//THEN KNIGHT IS COMPLETE
+
+
+
+//so now we create the smoke effect, it needs to be something apart because it needs to last after the animation
+//the blades are working. need tge random one?
+//
+
+//the collider is still not working when you are above. perphaps camera problem? lets use the boxcollider itself.
+//
 
 
 
@@ -403,10 +448,11 @@
 //now lets check the ui.
 //the box collider isnt exactly presicen, or maybe the ui isnt
 //i wna thte ui to show it a bit more ready. when we are doing you are supposed o wait a bit more.
+//now there is a ltitle bug the thing is not being called?
+
+//sound for death
+//check the death ps as well
 //
-
-
-//GOAL FOR TOMORROW
 
 
 
@@ -424,7 +470,11 @@
 //the ghost create damage area where the player is. it deals damage and blinds
 //first attack is without warning and fast.
 //it passively creates areas of slow.
-//
+
+//first we will get the ghost moving towards the player
+//not taking damage. the damage can still pop
+//i need an animation for his movement
+//then we will create the damage areas.
 
 
 //MY GOAL - MAGE 
@@ -432,6 +482,9 @@
 //the second move is a barrage of projectiles
 //it can passively create walls between it and the player.
 //its third move it buffs all enemies, granting them additional damage and speed.
+
+
+
 
 
 //MY GOAL -  ARTILLERY
@@ -692,6 +745,10 @@
 //tahts about 63 days, a bit more than 2 months
 //now its about 43 days -> i will say 50 days
 
+//(15/09)
+//Days passed: 2
+//days left for target: 48
+//Days left for project: 161
 
 //RECORDING
 //BOSS -> 13/09 - 

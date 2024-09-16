@@ -5,7 +5,11 @@ using UnityEngine;
 public class PSScript : MonoBehaviour
 {
 
+    //this can also have a psanimation
+    //
+
     [SerializeField] ParticleSystem _particleSystem;
+    [SerializeField] PSAnimationObject _psAnimation;
     [SerializeField] PSType _type;
     public void ResetForPool()
     {

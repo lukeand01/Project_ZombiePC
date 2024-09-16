@@ -18,19 +18,34 @@ public class Behavior_Boss_Knight_Shield : Sequence2
     {
         //we check if the player is too far, so we raise the shield and 
 
-        if (_boss.IsActing) return NodeState.Success;
+        if (_boss.IsActing)
+        {
+            _boss.ControlIsShielded(false);
+            Debug.Log("acting");
+            return NodeState.Success;
+        }
 
+        
         bool tooFarForShield = Vector3.Distance(_boss.transform.position, _playerTransform.position) > _minDistanceForShield ;
+
+        //if is 13 then its far enough
 
         if(tooFarForShield)
         {
             //raise shield
-            _boss.CallAnimation("ShieldIdle_New", 2);
+            //_boss.CallAnimation("ShieldIdle_New", 2);
+            _boss.SetNewSpeed(5);
+            _boss.ControlIsShielded(true);
+            Debug.Log("shield");
         }
         else
         {
+            Debug.Log("called");
             //lower shield
-            _boss.CallAnimation("_Idle", 2);
+            //_boss.CallAnimation("Idle", 2);
+            _boss.SetNewSpeed(0);
+            _boss.ControlIsShielded(false);
+            Debug.Log("no shield");
         }
 
 

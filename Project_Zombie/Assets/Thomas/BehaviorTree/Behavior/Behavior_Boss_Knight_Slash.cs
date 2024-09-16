@@ -20,7 +20,7 @@ public class Behavior_Boss_Knight_Slash : Sequence2
     {
         if (_boss.actionIndex_Current != _actionIndex) return NodeState.Success;
 
-        bool isInRange = Vector3.Distance(_boss.transform.position, _playerTransform.position) <= _range;
+        bool isInRange = Vector3.Distance(_boss.transform.position, _playerTransform.position) <= _range + 4;
 
         if (isInRange)
         {

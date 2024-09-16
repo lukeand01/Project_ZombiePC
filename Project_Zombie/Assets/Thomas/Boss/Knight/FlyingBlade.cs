@@ -41,18 +41,19 @@ public class FlyingBlade : BulletScript
         }
 
         //_destroySelf.SetUpDestroy((int)ProjectilType.FlyingSwords, 50, this);
-        Debug.Log("this flying blade was set up");
 
         canMove = true;
     }
-    public void Make_FlyingBlade_RotateAroundTarget(Transform _entityToRotateAround, Vector3 pos, float timer)
+    public void Make_FlyingBlade_RotateAroundTarget(Transform _entityToRotateAround, Vector3 pos, float range, float timer)
     {
         this._entityToRotateAround = _entityToRotateAround;
-        transform.DOLocalMove(transform.localPosition + pos, timer).SetEase(Ease.Linear).OnComplete(CallHasArrivedToPosition);
+        transform.DOLocalMove(transform.localPosition + (pos * range), timer).SetEase(Ease.Linear).OnComplete(CallHasArrivedToPosition);
+
     }
 
     void CallHasArrivedToPosition()
     {
+
         hasArrivedToPosition = true;
     }
 

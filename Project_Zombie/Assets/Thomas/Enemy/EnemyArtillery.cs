@@ -42,7 +42,7 @@ public class EnemyArtillery : EnemyBase
         Vector3 playerPosition = PlayerHandler.instance.transform.position;
 
         AreaDamage newObject = Instantiate(areaDamageTemplate, playerPosition, Quaternion.identity);
-        newObject.SetUp(playerPosition, damageRadius, damageTimer, GetDamage(), 3,1 , AreaDamageVSXType.Nothing);
+        newObject.SetUp_Regular(playerPosition, damageRadius, damageTimer, GetDamage(), 3,1 , AreaDamageVSXType.Nothing);
 
     }
 }

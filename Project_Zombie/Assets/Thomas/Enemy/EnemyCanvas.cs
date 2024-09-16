@@ -115,7 +115,7 @@ public class EnemyCanvas : MonoBehaviour
 
             newObject.SetUp_Damage(_fadeClass, random);
 
-            //newObject.SetUp(item._value.ToString(), damageColor, item.isCrit);
+            //newObject.SetUp_Regular(item._value.ToString(), damageColor, item.isCrit);
 
 
         }

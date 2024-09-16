@@ -323,7 +323,11 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     void CheckDamageBack(DamageClass damage)
     {
-
+        if(damage == null)
+        {
+            Debug.Log("nothing here");
+            return;
+        }
         if (damage.attacker == null) return;
         float damageBackValue = handler._entityStat.GetTotalValue(StatType.DamageBack);
         damageBackValue *= 0.01f;

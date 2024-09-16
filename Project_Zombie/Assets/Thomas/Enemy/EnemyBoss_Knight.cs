@@ -19,19 +19,57 @@ public class EnemyBoss_Knight : EnemyBoss
     //randomy decide if it should spawn the blades. the blades have two random moves.
     //
 
+
+    //
+
     [Separator("KNIGHT")]
-    [SerializeField] BoxCollider _attackThrustCollider;
+    [SerializeField] DamageCollider _attackDamageThrust;
+    [SerializeField] PSAnimationObject _psObject_Thrust; //we call and it moves independetly.
+    [SerializeField] GameObject _ps_ChargeSlashAttack;
+    [SerializeField] ParticleSystem _ps_TriggerSlashAttack;
+
+
     LayerMask playerLayer;
 
     protected override void AwakeFunction()
     {
         playerLayer |= (1 << 3);
+        DamageClass _damage = new DamageClass(attackClassArray[1].damage, DamageType.Physical, 0);
+        _damage.Make_Attacker(this);
+        _attackDamageThrust.SetUp(_damage);
         base.AwakeFunction();
     }
 
     private void Start()
     {
         UpdateTree(GetBehavior());
+    }
+
+    protected override void UpdateFunction()
+    {
+        if (IsActing)
+        {
+            //this
+            ControlIsShielded(false);
+        }
+        else
+        {
+            if (isShielded)
+            {
+                CallAnimation("ShieldIdle_New", 3);
+            }
+            else
+            {
+                CallAnimation("Idle", 3);
+            }
+
+        }
+
+        //and also i am going to check
+
+
+
+        base.UpdateFunction();
     }
 
     #region CALCULATE ATTACK
@@ -59,6 +97,11 @@ public class EnemyBoss_Knight : EnemyBoss
         //dela damage based in range.
         bool isPlayerClose = Vector3.Distance(transform.position, PlayerHandler.instance.transform.position) <= attackClassArray[0].range;
 
+        _ps_ChargeSlashAttack.gameObject.SetActive(false);
+        _ps_TriggerSlashAttack.gameObject.SetActive(true);
+        _ps_TriggerSlashAttack.Clear();
+        _ps_TriggerSlashAttack.Play();
+        
         if (isPlayerClose)
         {
             DamageClass damage = new DamageClass(attackClassArray[0].damage, DamageType.Physical, 0);
@@ -66,14 +109,35 @@ public class EnemyBoss_Knight : EnemyBoss
             PlayerHandler.instance._playerResources.TakeDamage(damage);
         }
 
+        _abilityCanvas.ControlCircleFill(0, 0);
+        
+        //
+
     }
+
+
+
+
+
     void Calculate_Thrust()
     {
         //deal damage in a line
 
         //we turn the boxcollider for a frame and turn it off.
-        Vector3 boxCenter = _attackThrustCollider.bounds.center;
-        Vector3 boxHalfExtents = _attackThrustCollider.bounds.extents;
+        //create an object here that moves to the position.
+        //trigger an explision after its done moving
+
+        //now we will create the thing here.
+
+        _psObject_Thrust.gameObject.SetActive(true);
+        _psObject_Thrust.CallAnimation();
+
+
+        PlayerHandler.instance.TryToCallExplosionCameraEffect(transform, 0.6f);
+
+
+        /*Vector3 boxCenter = _attackDamageThrust.bounds.center;
+        Vector3 boxHalfExtents = _attackDamageThrust.bounds.extents;
 
 
         if (Physics.OverlapBox(boxCenter, boxHalfExtents, Quaternion.identity, playerLayer).Length > 0)
@@ -81,15 +145,15 @@ public class EnemyBoss_Knight : EnemyBoss
             DamageClass _damage = new DamageClass(attackClassArray[1].damage, DamageType.Physical, 0);
             _damage.Make_Attacker(this);
             PlayerHandler.instance._playerResources.TakeDamage(_damage);
-        }
-
-
+        }*/
 
     }
-    void OnDrawGizmosSelected()
+
+    public bool CanCallThrust()
     {
-        
+        return !_psObject_Thrust.isActiveAndEnabled;
     }
+
 
     void Calculate_Summon()
     {
@@ -110,21 +174,33 @@ public class EnemyBoss_Knight : EnemyBoss
             //use the circle ui.
             _abilityCanvas.StartCircleIndicator(attackClassArray[0].range);
             _abilityCanvas.ControlCircleFill(current, total);
+            _ps_ChargeSlashAttack.gameObject.SetActive(true);
             return;
         }
 
         if(actionIndex_Current == 1)
         {
             //use a straight line as collider.
+            _abilityCanvas.ControlCircleFill(0, 0);
             _abilityCanvas.ControlCustomFill(current, total);
             return;
+        }
+
+        if(actionIndex_Current == 2)
+        {
+            _abilityCanvas.ControlCircleFill(0, 0);
+            _abilityCanvas.ControlCustomFill(0, 0);
         }
 
 
     }
 
+
+
     #endregion
 
+
+  
 
     Sequence2 GetBehavior()
     {
@@ -132,7 +208,7 @@ public class EnemyBoss_Knight : EnemyBoss
         {
             new Behavior_Boss_Chase(this, _bossData),
             new Behavior_Boss_CheckAction(this),
-            new Behavior_Boss_Knight_Shield(this, 5),
+            new Behavior_Boss_Knight_Shield(this, 8),
             new Behavior_Boss_Knight_Slash(this, 5, 0),
             new Behavior_Boss_Knight_Thrust(this, 15, 1),
             new Behavior_Boss_Knight_Summon(this, 75, 2),

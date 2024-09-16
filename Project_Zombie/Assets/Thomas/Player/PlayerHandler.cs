@@ -238,10 +238,7 @@ public class PlayerHandler : MonoBehaviour
             explosionDir.Normalize();
             _playerCamera.CallCameraRotation(explosionDir, distance, callModifier );
         }
-        else
-        {
-            Debug.Log("dont call explosion");
-        }
+        
 
 
     }

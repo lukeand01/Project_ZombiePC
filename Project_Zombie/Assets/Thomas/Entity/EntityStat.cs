@@ -290,6 +290,10 @@ public class EntityStat : MonoBehaviour
             case BDType.SecretBulletMultipler:
                 PlayerHandler.instance._playerCombat.MakeSecretStatMultipleBulletPercent(1);
                 break;
+            case BDType.Blind:
+                Debug.Log("made player blind");
+                break;
+
         }
 
 
@@ -505,6 +509,10 @@ public class EntityStat : MonoBehaviour
                 break;
             case BDType.SecretBulletMultipler:
                 PlayerHandler.instance._playerCombat.MakeSecretStatMultipleBulletPercent(0);
+                break;
+
+            case BDType.Blind:
+                Debug.Log("made player blind");
                 break;
         }
 

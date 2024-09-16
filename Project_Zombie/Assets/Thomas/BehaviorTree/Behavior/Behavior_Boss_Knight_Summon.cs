@@ -33,17 +33,19 @@ public class Behavior_Boss_Knight_Summon : Sequence2
 
         if (cooldown_Current > 0)
         {
+            _boss.SelectRandomAction(); //we reeselect an action.
             return NodeState.Success;
         }
 
         _boss.StartAction("Summon", 2);
+        _boss.CallAnimation("Idle", 1);
 
+
+        Vector3 increment = new Vector3(1, 0, 0);
         
-        float x = Random.Range(-1, 1);
-        float z = Random.Range(-1, 1);
-        Vector3 randomPos = new Vector3(x, 0, z);
 
-        for (int i = 0; i < 3; i++)
+
+        for (int i = 0; i < 2; i++)
         {
             var bullet = GameHandler.instance._pool.GetBullet(ProjectilType.FlyingSwords, _boss.transform);
             FlyingBlade _blade = bullet.GetFlyingBlade;
@@ -55,9 +57,10 @@ public class Behavior_Boss_Knight_Summon : Sequence2
             }
             else
             {
-                _blade.SetUp_FlyingBlade(_damage, 150);
-                _blade.Make_FlyingBlade_RotateAroundTarget(_boss.transform, randomPos, 1);
-                randomPos *= -1;
+                _blade.SetUp_FlyingBlade(_damage, 50);
+                _blade.Make_FlyingBlade_RotateAroundTarget(_boss.transform, increment, 16, 1.2f);
+                increment *= -1;
+                
             }
 
         }

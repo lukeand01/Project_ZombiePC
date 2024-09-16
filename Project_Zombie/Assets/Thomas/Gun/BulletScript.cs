@@ -33,7 +33,7 @@ public class BulletScript : MonoBehaviour
             _trailRenderer2.Clear();
         }
 
-        Debug.Log("return to pool");
+
     }
 
     private void Awake()

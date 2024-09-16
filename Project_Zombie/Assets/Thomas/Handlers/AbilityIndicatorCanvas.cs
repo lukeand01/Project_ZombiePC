@@ -55,6 +55,7 @@ public class AbilityIndicatorCanvas : MonoBehaviour
 
     public void ControlCustomFill(float current, float total)
     {
+        circleFill.gameObject.SetActive(false);
         customShapeHolder.gameObject.SetActive(total != 0);
 
         if (total == 0) return;

@@ -25,6 +25,7 @@ public class EnemyData : ScriptableObject
     public AudioClip audio_Dead;
     public AudioClip audio_Spawned;
     public AudioClip audio_Attack;
+    public AudioClip[] audio_footstepArray;
 
     [Separator("INFO ABOUT GAME SPAWN")]
     public bool shouldNotDespawnBecauseOfDistance;

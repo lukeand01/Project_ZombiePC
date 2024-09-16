@@ -21,9 +21,9 @@ MonoBehaviour:
   <damageType>k__BackingField: 0
   initialStatList:
   - stat: 0
-    initialValue: 10000
+    initialValue: 10
   - stat: 1
-    initialValue: 2
+    initialValue: 3
   scaleStatList:
   - stat: 0
     initialValue: 500
@@ -40,6 +40,9 @@ MonoBehaviour:
   audio_Dead: {fileID: 0}
   audio_Spawned: {fileID: 0}
   audio_Attack: {fileID: 0}
+  audio_footstepArray:
+  - {fileID: 8300000, guid: 69d0ef4b60e3b164d81da88500018e3b, type: 3}
+  - {fileID: 8300000, guid: 0cfb4b3d3d15a2241902e97b7cf78369, type: 3}
   shouldNotDespawnBecauseOfDistance: 1
   canIgnoreAlly: 1
   canTurnAlly: 0

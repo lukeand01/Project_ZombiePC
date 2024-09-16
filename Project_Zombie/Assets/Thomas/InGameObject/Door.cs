@@ -96,7 +96,6 @@ public class Door : MonoBehaviour, IInteractable
         }
 
         
-        Debug.Log("yo");
 
         float modifier = PlayerHandler.instance._entityStat.GetTotalEspecialConditionValue(EspecialConditionType.GatePriceModifier);
         float reduction = doorPriceBase * modifier;

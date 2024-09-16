@@ -428,6 +428,8 @@ public class PoolHandler : MonoBehaviour
         {
             PSType.Dash_01,
             PSType.Blood_01,
+            PSType.GroundCrack_01,
+            PSType.BlackWholeForBossCollection_01
         };
 
 
@@ -743,7 +745,9 @@ public class PoolHandler : MonoBehaviour
 public enum PSType 
 { 
     Dash_01,
-    Blood_01
+    Blood_01,
+    GroundCrack_01,
+    BlackWholeForBossCollection_01,
 
 
 }

@@ -22,7 +22,6 @@ public class DestroySelf : MonoBehaviour
     {
         if (!canRun) return;
 
-        Debug.Log("yo");
         if(current >= total)
         {
             if (bullet != null)

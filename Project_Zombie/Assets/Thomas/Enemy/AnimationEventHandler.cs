@@ -32,6 +32,8 @@ public class AnimationEventHandler : MonoBehaviour
         _enemyBoss.StartChargingAttack();
     }
 
+    
+
     public void CalculateAttackDirectly_Boss()
     {
         _enemyBoss.CalculateAttack();
@@ -41,4 +43,22 @@ public class AnimationEventHandler : MonoBehaviour
     {
         _enemyBoss.StopAction();
     }
+
+
+    public void TriggerFootStepSound(int index)
+    {
+        //we have to inform whoever is here about this.
+        if(_enemyBoss != null)
+        {
+            _enemyBoss.HandleFootStep(index);
+        }
+    }
+
 }
+
+
+//how should we aim to trigger it?
+
+
+//doing through animation is out of question - because i want the effect to remain after the animation is done.
+//

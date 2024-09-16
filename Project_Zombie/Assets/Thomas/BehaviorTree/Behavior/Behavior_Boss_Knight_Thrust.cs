@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Behavior_Boss_Knight_Thrust : Sequence2
 {
-    EnemyBoss _boss;
+    EnemyBoss_Knight _boss;
     float _range;
     Transform _playerTransform;
     int _actionIndex;
     bool isAlreadyFacing;
-    public Behavior_Boss_Knight_Thrust(EnemyBoss boss, float range, int actionIndex)
+    public Behavior_Boss_Knight_Thrust(EnemyBoss_Knight boss, float range, int actionIndex)
     {
         _boss = boss;
         _range = range;
@@ -20,16 +20,23 @@ public class Behavior_Boss_Knight_Thrust : Sequence2
     public override NodeState Evaluate()
     {
 
+        if (!_boss.CanCallThrust())
+        {
+            Debug.Log("cannot call this");
+            _boss.SelectRandomAction();
+            return NodeState.Success;
+        }
+
         if (_boss.actionIndex_Current != _actionIndex)
         {
             isAlreadyFacing = false;
+            Debug.Log("1");
             return NodeState.Success;
         }
 
 
         if (!isAlreadyFacing)
         {
-
 
             float angle = Vector3.Angle(_boss.transform.forward, PlayerHandler.instance.transform.position);
 
@@ -43,7 +50,6 @@ public class Behavior_Boss_Knight_Thrust : Sequence2
 
             if(Mathf.Abs(dot) > 0.999f)
             {
-
                 isAlreadyFacing = true;
             }
             else
@@ -58,11 +64,7 @@ public class Behavior_Boss_Knight_Thrust : Sequence2
         
 
 
-        //we make it rotate and we have to know if its facing the player.
-        //but once we get it working we shouldnt be rotating again.
-
-
-        bool isInRange = Vector3.Distance(_boss.transform.position, _playerTransform.position) <= _range;
+        bool isInRange = Vector3.Distance(_boss.transform.position, _playerTransform.position) + 2 <= _range;
 
         if (isInRange)
         {
@@ -70,6 +72,7 @@ public class Behavior_Boss_Knight_Thrust : Sequence2
             //Attack_01
             _boss.StartAction("Thrust", 2, true);
             _boss.CallAnimation("Idle", 1);
+            Debug.Log("2");
             return NodeState.Running;
         }
         else
@@ -77,6 +80,7 @@ public class Behavior_Boss_Knight_Thrust : Sequence2
 
         }
 
+        Debug.Log("3");
         return NodeState.Success;
     }
 }
