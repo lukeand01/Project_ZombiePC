@@ -20,6 +20,10 @@ public class MerchantItem : ChestBase
 
     Color _color;
 
+    [Separator("PS")]
+    [SerializeField] ParticleSystem _ps_Curse;
+    [SerializeField] ParticleSystem _ps_Especial;
+
 
     public void SetUp(AbilityPassiveData abilityPassiveData, Merchant _merchant, int price, Color _color)
     {
@@ -29,9 +33,26 @@ public class MerchantItem : ChestBase
         this._color = _color;   
 
         graphicHolder.SetActive(true);
+
+        interactCanvas.gameObject.SetActive(true);
+
+        _ps_Curse.gameObject.SetActive(false);
+        _ps_Especial.gameObject.SetActive(false);
+
     }
 
+    public void MakeCursed()
+    {
+        _ps_Curse.gameObject.SetActive(true);
+        _ps_Curse.Play();
+    }
+    public void MakeEspecial()
+    {
+        _ps_Especial.gameObject.SetActive(true);
+        _ps_Especial.Play();
+    }
     
+
     public void IncreasePrice(int increment)
     {
         price += increment;
@@ -95,7 +116,7 @@ public class MerchantItem : ChestBase
     #region INTERACT
     public override void Interact()
     {
-
+        //
         if (!PlayerHandler.instance._playerResources.HasEnoughPoints(price)) return;
         
         Buy();
@@ -105,8 +126,6 @@ public class MerchantItem : ChestBase
     }
     public override void InteractUI(bool isVisible)
     {
-
-        //we will start the merchant and if it leaves we close it.
 
         if (!isVisible)
         {
@@ -119,6 +138,7 @@ public class MerchantItem : ChestBase
             interactCanvas.ControlInteractButton(false);
             return;
         }
+
 
         interactCanvas.StartMerchant(price, GetName(), GetDescription(), GetIcon(), _color);
 

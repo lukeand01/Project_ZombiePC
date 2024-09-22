@@ -192,20 +192,34 @@ public class DamageClass
         return damage;
     }
 
-    public float GetTotalDamage_Pure()
+    public float GetTotalDamage_Especific(DamageType _damageType)
     {
         float damage = 0;
-
-        foreach (var item in damageList)
+        for (int i = 0; i < damageList.Count; i++)
         {
-            if (item._damageType == DamageType.Pure)
+            var item = damageList[i];
+            if (item._damageType == _damageType)
             {
                 damage += item._value;
             }
-
-           
         }
+
         return damage;
+    }
+
+    public DamageTypeClass GetDamageClass(DamageType _damageType)
+    {
+
+        for (int i = 0; i < damageList.Count; i++)
+        {
+            var item = damageList[i];
+            if (item._damageType == _damageType)
+            {
+                return item;
+            }
+        }
+
+        return null;
     }
 
     void CreateDamageList(List<DamageTypeClass> newDamageList)

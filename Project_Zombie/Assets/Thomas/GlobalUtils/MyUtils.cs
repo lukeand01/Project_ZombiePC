@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public static class MyUtils 
@@ -291,6 +290,11 @@ public static class MyUtils
         if (bd.bdType == BDType.Stun)
         {
             return "The player cannot do anything for the duration";
+        }
+
+        if (bd.bdType == BDType.Blind)
+        {
+            return "The player has been blind and cannot see far";
         }
 
         return "";
@@ -621,5 +625,23 @@ public static class MyUtils
         return 0;
     }
 
+
+
+
+    public static Vector3 GetRandomPointInAnnulus(Vector3 center, float minRadius, float maxRadius)
+    {
+        // Generate a random angle in radians
+        float angle = UnityEngine.Random.Range(0f, Mathf.PI * 2);
+
+        // Generate a random distance between the min and max radius
+        float distance = UnityEngine.Random.Range(minRadius, maxRadius);
+
+        // Calculate the X and Z coordinates using the angle and distance
+        float x = Mathf.Cos(angle) * distance;
+        float z = Mathf.Sin(angle) * distance;
+
+        // Return the random point relative to the center position
+        return new Vector3(center.x + x, center.y, center.z + z);
+    }
 
 }

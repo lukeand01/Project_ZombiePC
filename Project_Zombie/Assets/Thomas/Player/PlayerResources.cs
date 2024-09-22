@@ -134,7 +134,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
         float reduction = handler._entityStat.GetTotalValue(StatType.DamageReduction);
         //float totalHealth = handler._entityStat.GetTotalValue(StatType.Health);
 
-        float pureDamage = newDamage.GetTotalDamage_Pure();
+        float pureDamage = newDamage.GetTotalDamage_Especific(DamageType.Pure);
         float damageValue = newDamage.GetTotalDamage(true);
         reduction = damageValue * reduction;
         damageValue -= reduction;
@@ -458,12 +458,14 @@ public class PlayerResources : MonoBehaviour, IDamageable
     {
         bless += value;
         UIHandler.instance._playerUI.UpdateBless(bless, value);
+        GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_GainBless);
     }
     public void Bless_Lose(int value)
     {
         bless -= value;
         bless = Mathf.Clamp(bless, 0, 9999);
-        UIHandler.instance._playerUI.UpdateBless(bless, value);     
+        UIHandler.instance._playerUI.UpdateBless(bless, value);
+        GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_UseBless);
     }
     public bool Bless_HasEnough(int value)
     {

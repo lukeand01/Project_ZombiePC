@@ -352,9 +352,16 @@ public class PlayerInventory : MonoBehaviour
         }
 
 
-      
+        if(currentInteract != null)
+        {
+            if(interact.GetInteractableID() != currentInteract.GetInteractableID())
+            {
+                DisableCurrentInteract();
+            }
+        }
 
-        DisableCurrentInteract();
+   
+       
 
         currentInteract = interact;
         currentInteract.InteractUI(true);
@@ -377,6 +384,7 @@ public class PlayerInventory : MonoBehaviour
 
             if (currentInteract.GetInteractableID() == id)
             {
+                Debug.Log("disable with id");
                 currentInteract.InteractUI(false);
                 currentInteract = null;
             }
@@ -483,7 +491,9 @@ public class BossSigilClass
 }
 public enum BossSigilType 
 { 
-    MiniBoss_Knight
+    MiniBoss_Knight,
+    MiniBoss_Ghost,
+    MiniBoss_Mage
 
 }
 

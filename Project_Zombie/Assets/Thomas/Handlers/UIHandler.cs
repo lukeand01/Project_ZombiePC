@@ -83,7 +83,7 @@ public class UIHandler : MonoBehaviour
         gunUI.ControlUI(isVisible);
         _playerUI.ControlUI(isVisible);
         _AbilityUI.ControlUI(isVisible);
-        _MouseUI.ControlVisibility(isVisible);
+        _MouseUI.ControlMouseHolderVisibility(isVisible);
     }
 
 

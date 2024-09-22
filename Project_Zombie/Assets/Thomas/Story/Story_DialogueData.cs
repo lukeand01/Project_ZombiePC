@@ -78,6 +78,7 @@ public enum ReponseTriggerType
 { 
     Nothing,
     Quest,
-    Gun
+    Gun,
+    TriggerUniqueToThisNPC, //so each npc will handle with that on its own way
 
 }

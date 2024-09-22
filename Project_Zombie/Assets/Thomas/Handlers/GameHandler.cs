@@ -20,11 +20,6 @@ public class GameHandler : MonoBehaviour
 
 
 
-
-    //
-    //we have the cityhandler here. always.
-
-
     private void Awake()
     {
         if(instance == null)
@@ -173,16 +168,24 @@ public class GameHandler : MonoBehaviour
 
     //
 
-    public IEnumerator LowerCurtainProcess_Teleport()
+    public IEnumerator LowerCurtainProcess_Teleport(float timer)
     {
+        teleportScreen.gameObject.SetActive(true);
+        teleportScreen.DOFade(0, 0); //we set as fade here
+        teleportScreen.DOFade(1, timer).SetEase(Ease.Linear);
 
-        yield return null;
+        yield return new WaitForSeconds(timer);
 
     }
 
-    public IEnumerator RaiseCurtainProcess_Teleport()
+    public IEnumerator RaiseCurtainProcess_Teleport(float timer)
     {
-        yield return null;
+        
+        teleportScreen.DOFade(0, timer).SetEase(Ease.Linear);
+
+        yield return new WaitForSeconds(timer);
+
+        teleportScreen.gameObject.SetActive(false);
     }
 
     #endregion

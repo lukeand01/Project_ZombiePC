@@ -6,13 +6,15 @@ using UnityEngine.UI;
 
 public class MouseUI : MonoBehaviour
 {
-   //i want to improve this fella by a lot
-   //the aim needs to be more precise, it needs to show the area of error.
-   
+    //i want to improve this fella by a lot
+    //the aim needs to be more precise, it needs to show the area of error.
+
     //still need to rotate the damage thing.
 
 
     //we need to keep checking with
+
+    GameObject holder;
 
     Camera _cam;
 
@@ -28,10 +30,16 @@ public class MouseUI : MonoBehaviour
     LayerMask layer_Interactable;
 
     MouseStatType state;
-
+    [Separator("WEAPON MOUSE UI")]
     [SerializeField] List<MouseUIClass> _mouseUIClassList = new();
     int mouseUICurrentIndex;
     MouseUIClass GetCurrentMouse { get { return _mouseUIClassList[mouseUICurrentIndex]; } }
+
+
+    [Separator("UI MOUSE")]
+    [SerializeField] bool _isMouseUI;
+    [SerializeField] Image _mouseUI;
+    
 
 
     enum MouseStatType
@@ -45,6 +53,8 @@ public class MouseUI : MonoBehaviour
     private void Awake()
     {
         _cam = Camera.main;
+
+        holder = transform.GetChild(0).gameObject;
 
         layer_Enemy |= (1 << 6);
         layer_Interactable |= (1 << 7);
@@ -73,13 +83,20 @@ public class MouseUI : MonoBehaviour
     {
         shouldNotUseMouseUI = !shouldAppear;
     }
-    [SerializeField] float angle;
-    [SerializeField] Vector3 dir;
-    [SerializeField] float mousePosZCorrecttor;
+
+    float mousePosZCorrecttor;
     bool isReloading;
+
+
     private void Update()
     {
-       
+        if (_isMouseUI)
+        {
+            MoveWithUIMouse();
+
+            return;
+        }
+
         isReloading = PlayerHandler.instance._playerCombat.isReloading;
        
         if(Time.timeScale == 0 || shouldNotUseMouseUI)
@@ -155,17 +172,25 @@ public class MouseUI : MonoBehaviour
 
 
 
-    public void ControlVisibility(bool isVisible)
+    public void ControlMouseUI(bool isMouseUI)
     {
         //there is a different ui for stage and city.
-    }
 
+        _isMouseUI = isMouseUI;
+        GetCurrentMouse.mouseUIHolder.SetActive(!isMouseUI);
+        _mouseUI.gameObject.SetActive(isMouseUI);
+    }
+    public void ControlMouseHolderVisibility(bool isVisible)
+    {
+        holder.SetActive(isVisible);
+    }
     void RotateToAlwaysFacePlayer()
     {
+
+        mousePosZCorrecttor = 9;
+
         Vector3 mousePosition = _cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 50));
         mousePosition.z += mousePosZCorrecttor;
-
-
 
         Vector3 direction = new Vector3(
         mousePosition.x - PlayerHandler.instance.transform.position.x,
@@ -176,7 +201,6 @@ public class MouseUI : MonoBehaviour
 
 
         Vector3 screenPos = _cam.WorldToScreenPoint(direction);
-        dir = screenPos;
 
         var angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
         angle += 90;
@@ -189,7 +213,13 @@ public class MouseUI : MonoBehaviour
     void MoveWithMouseInput()
     {
         GetCurrentMouse.mouseUIHolder.transform.position = Input.mousePosition + new Vector3(0, 25, 0);
+        
+    }
+    void MoveWithUIMouse()
+    {
+        _mouseUI.transform.position = Input.mousePosition + new Vector3(0,-10,0);
 
+     
     }
 
     void KeepRotatingWhileReloading()
@@ -252,7 +282,7 @@ public enum MouseUIType
     Simple = 0,
     Shotgun = 1,
     Laser = 2,
-    Sniper = 3
+    Sniper = 3,
 }
 
 [System.Serializable]

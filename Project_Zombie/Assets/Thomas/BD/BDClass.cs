@@ -13,6 +13,45 @@ public class BDClass
 
     public string debugName;
 
+    public BDClass(BDClass refClass)
+    {
+        switch(refClass.bdType)
+        {
+            case BDType.Stat:
+                SetStat(refClass.id, 
+                    refClass.statType,
+                    refClass.statValueFlat,  
+                    refClass.statValue_PercentbasedOnBaseValue, 
+                    refClass.statValue_PercentbasedOnCurrentValue);
+                break;
+
+            case BDType.Damage:
+
+                break;
+
+            case BDType.Blind:
+                SetEspecial(refClass.id, refClass.bdType, refClass.tempTotal);
+                break;
+
+        }
+
+
+        if (refClass.showInUI)
+        {
+            MakeShowInUI();
+        }
+        if (refClass.IsTemp())
+        {
+            MakeTemp(refClass.tempTotal);
+        }
+        if (refClass.IsStackable())
+        {
+            MakeStack(refClass.stackTotal, refClass.doesStackingRefreshTimer);
+        }
+
+
+
+    }
 
     #region STAT
     public StatType statType { get; private set; } //this is only relevant if the bd is stat.
@@ -27,6 +66,11 @@ public class BDClass
 
 
     public BDClass(string id, StatType statType, float valueFlat, float valuePercentBase, float valuePercentCurrent)
+    {
+        SetStat(id, statType, valueFlat, valuePercentBase, valuePercentCurrent);
+    }
+
+    void SetStat(string id, StatType statType, float valueFlat, float valuePercentBase, float valuePercentCurrent)
     {
         debugName = $"id: {id}; stat: {statType}; valueFlat: {valueFlat}; valuePercentBase {valuePercentBase}; ValuePercentCurrent {valuePercentCurrent}";
 
@@ -47,9 +91,8 @@ public class BDClass
         MakeFlatValue(valueFlat);
         MakeValuePercentBasedInBase(valuePercentBase);
         MakeValuePercentbasedInCurrent(valuePercentCurrent);
-
-
     }
+
 
     public void MakeFlatValue(float value)
     {
@@ -93,6 +136,11 @@ public class BDClass
         MakeShowInUI();
         //CreateBDUnit();
         CreateTick(tickTotal, tickTimeTotal);
+
+    }
+
+    void SetDamage()
+    {
 
     }
 
@@ -173,7 +221,7 @@ public class BDClass
     #region TEMP
 
     float tempCurrent;
-    float tempTotal;
+    public float tempTotal { get; private set; }
 
     public void MakeTemp(float total)
     {
@@ -225,15 +273,19 @@ public class BDClass
 
     #endregion
 
-    #region STUN, IMMUNE, INVISIBILITY, SECRET BULLETMULTIPLIER
+    #region STUN, IMMUNE, INVISIBILITY, SECRET BULLETMULTIPLIER, BLIND
     public BDClass(string id, BDType _bdType, float duration)
     {
         //this means its the stun.
+        SetEspecial(id, _bdType, duration); 
+    }
+
+    void SetEspecial(string id, BDType _bdType, float duration)
+    {
         this.id = id;
         bdType = _bdType;
 
-        if(duration != 0) MakeTemp(duration);
-        
+        if (duration != 0) MakeTemp(duration);
     }
 
     #endregion
@@ -574,7 +626,10 @@ public class BDClass
         {
             return "Stun";
         }
-
+        if (bdType == BDType.Blind)
+        {
+            return "Blind";
+        }
         return "Error";
     }
 

@@ -40,8 +40,11 @@ public class EnemyBoss_Knight : EnemyBoss
         base.AwakeFunction();
     }
 
-    private void Start()
+
+
+    protected override void StartFunction()
     {
+        base.StartFunction();
         UpdateTree(GetBehavior());
     }
 

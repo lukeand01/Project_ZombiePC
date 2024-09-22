@@ -17,6 +17,7 @@ public class Behavior_Boss_Ghost_Teleport : Sequence2
         _actionIndex = actionIndex;
 
         _cooldown_Total = cooldown_Total;
+        _cooldown_Current = Random.Range(_cooldown_Total * 0.4f, _cooldown_Total * 1.5f);
     }
 
     public override NodeState Evaluate()
@@ -37,8 +38,12 @@ public class Behavior_Boss_Ghost_Teleport : Sequence2
         if (_boss.IsActing) return NodeState.Success;
 
 
+        _boss.SetActionIndexCurrent(_actionIndex);
         _boss.StartAction("Teleport", 2);
         _boss.StopAgent();
+        
+
+        _cooldown_Current = Random.Range(_cooldown_Total * 0.8f, _cooldown_Total * 1.5f);
 
         return NodeState.Running;
     }

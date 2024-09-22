@@ -24,6 +24,14 @@ public class Merchant : Story_EspecialNpc
     bool isCurseMerchant;
     int itemsBought;
 
+
+    //maybe the 
+
+    private void Start()
+    {
+        GenerateMerchant();
+    }
+
     int GetPrice()
     {
         if (isCurseMerchant) return 0;
@@ -84,6 +92,7 @@ public class Merchant : Story_EspecialNpc
         List<AbilityPassiveData> abilityList = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList();
         //actually dont create it, just send the information.
 
+
         isCurseMerchant = false;
 
         int price = GetPrice();
@@ -93,16 +102,11 @@ public class Merchant : Story_EspecialNpc
             itemArray[i].SetUp(abilityList[i], this, price, color_Ability);
         }
     }
-    void CreateWeaponMerchant()
-    {
-        
-
-
-    }
     void CreateCurseMerchant()
     {
         List<AbilityPassiveData> abilityList = GameHandler.instance.cityDataHandler.cityLab.GetCurseAbilities();
         //actually dont create it, just send the information.
+
 
         this.abilityList = abilityList;
 
@@ -122,8 +126,58 @@ public class Merchant : Story_EspecialNpc
     //then we prepare to spawn the fellas.
     //it first sell abilities.
 
+    void RerollItems()
+    {
+        //check for the price here.
 
-    
+        if (!PlayerHandler.instance._playerResources.Bless_HasEnough(1))
+        {
+
+            return;
+        }
+
+        PlayerHandler.instance._playerResources.Bless_Lose(1);
+
+        //but we cannot allow there to be the same
+        if (isCurseMerchant)
+        {
+            CreateCurseMerchant();
+        }
+        else
+        {
+            GenerateMerchant();
+        }
+    }
+
+    void ShowEspecialItems()
+    {
+        //we replace the items with the other stuff
+        if (!PlayerHandler.instance._playerResources.Bless_HasEnough(10))
+        {
+
+            return;
+        }
+
+        PlayerHandler.instance._playerResources.Bless_Lose(10);
+        
+
+        Debug.Log("got here");
+    }
+
+    public override void CallFunctionUnique(int triggerIndex)
+    {
+        switch(triggerIndex)
+        {
+            case 0:
+                RerollItems();
+                break;
+
+            case 1:
+                ShowEspecialItems();
+                break;
+        }
+        
+    }
 
 
 }

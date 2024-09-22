@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3e3ece1d0bc1f45963c4f146c67784, type: 3}
   m_Name: SoundData
   m_EditorClassIdentifier: 
-  soundList:
-  - title: 'Thunder Ability '
+  soundList_Clip:
+  - title: Thunder teleport
     <_soundType>k__BackingField: 0
     <_soundClip>k__BackingField: {fileID: 8300000, guid: 466fdd951996f8d45b2d414ae66645d4, type: 3}
-  - title: 'Bless Failure '
+  - title: Failure
     <_soundType>k__BackingField: 1
     <_soundClip>k__BackingField: {fileID: 8300000, guid: 1ed8fb76fc64e4e46847348138782234, type: 3}
-  - title: Bless Success
+  - title: Use Bless
     <_soundType>k__BackingField: 2
-    <_soundClip>k__BackingField: {fileID: 8300000, guid: 1d74880bed4586644a16a79a2d9dc8af, type: 3}
-  - title: Scrap For Ability
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: cabfae866cab347928b74b7d0ca6bfa9, type: 3}
+  - title: Scrap
     <_soundType>k__BackingField: 3
     <_soundClip>k__BackingField: {fileID: 8300000, guid: 4d1eb011e7384412a9d81e1173e35230, type: 3}
   - title: Button Click
@@ -37,24 +37,43 @@ MonoBehaviour:
   - title: Shrine Heal
     <_soundType>k__BackingField: 7
     <_soundClip>k__BackingField: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
-  - title: Resource Chest
+  - title: Chest Resource
     <_soundType>k__BackingField: 8
     <_soundClip>k__BackingField: {fileID: 8300000, guid: 77c5725ddae777c4f85a2120ca32407e, type: 3}
-  - title: Ability chest
+  - title: Chest Ability
     <_soundType>k__BackingField: 9
-    <_soundClip>k__BackingField: {fileID: 8300000, guid: 77c5725ddae777c4f85a2120ca32407e, type: 3}
-  - title: Gun Chest
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 34f9cbd28a9740349b6cc2f5e280dda3, type: 3}
+  - title: 
     <_soundType>k__BackingField: 10
-    <_soundClip>k__BackingField: {fileID: 8300000, guid: 77c5725ddae777c4f85a2120ca32407e, type: 3}
-  - title: Gate Open
+    <_soundClip>k__BackingField: {fileID: 0}
+  - title: 
     <_soundType>k__BackingField: 11
     <_soundClip>k__BackingField: {fileID: 8300000, guid: b1334dbf63b8b12469d492e285f8003d, type: 3}
-  - title: Gate Closed
+  - title: 
     <_soundType>k__BackingField: 12
-    <_soundClip>k__BackingField: {fileID: 8300000, guid: 77c5725ddae777c4f85a2120ca32407e, type: 3}
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: b1334dbf63b8b12469d492e285f8003d, type: 3}
   - title: Spend money
     <_soundType>k__BackingField: 13
     <_soundClip>k__BackingField: {fileID: 8300000, guid: f2aaaff934f9f4429a65d374504f87ae, type: 3}
-  - title: BearTrap
+  - title: Trap
     <_soundType>k__BackingField: 14
     <_soundClip>k__BackingField: {fileID: 8300000, guid: 85e890e800369403ea5af9b10adecb94, type: 3}
+  - title: Start dialogue
+    <_soundType>k__BackingField: 15
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 98f0bd38817e2004ebd59ae087fa11c8, type: 3}
+  - title: Bless gain
+    <_soundType>k__BackingField: 16
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 1d74880bed4586644a16a79a2d9dc8af, type: 3}
+  - title: Dialogue Letter
+    <_soundType>k__BackingField: 17
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 62b1c4fb90ccd9f48a54f830d5e08304, type: 3}
+  - title: Response Choice
+    <_soundType>k__BackingField: 18
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: d8d04c6f80a1140db85ede568dab1f51, type: 3}
+  - title: Timer out of timer
+    <_soundType>k__BackingField: 19
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+  soundList_Bgm:
+  - title: 
+    <_soundType>k__BackingField: 0
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 975185d9868429d46bed54ac12925b7f, type: 3}

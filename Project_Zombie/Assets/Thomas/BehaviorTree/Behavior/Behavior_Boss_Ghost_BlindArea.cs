@@ -18,7 +18,7 @@ public class Behavior_Boss_Ghost_BlindArea : Sequence2
         _actionIndex = actionIndex;
 
         _cooldown_Total = cooldown_Total;
-        _cooldown_Current = cooldown_Total;
+        _cooldown_Current = Random.Range(_cooldown_Total * 0.5f, _cooldown_Total * 1.5f); ;
     }
 
 
@@ -32,19 +32,50 @@ public class Behavior_Boss_Ghost_BlindArea : Sequence2
             return NodeState.Success;
         }
 
-        if (_boss.IsActing) return NodeState.Success;
+        if (_boss.IsActing)
+        {
+            Debug.Log("that");
+            return NodeState.Success;
+        }
 
 
-        //then here we choose a random target in an area and call a damage area for this place. 
-        //but this damage area gives slow, blind and damage.
-
+        Debug.Log("1");
        AreaDamage _areaDamage =  GameHandler.instance._pool.GetAreaDamage(_boss.transform);
+        Vector3 areaPos = MyUtils.GetRandomPointInAnnulus(PlayerHandler.instance.transform.position, 2, 5);
 
-
+        int safeBreak = 0;
         
+        while(_boss.IsTargetPosWalkable(areaPos))
+        {
+            areaPos = MyUtils.GetRandomPointInAnnulus(PlayerHandler.instance.transform.position, 2, 5);
+            safeBreak++;
+            if(safeBreak > 1000)
+            {
+                areaPos = PlayerHandler.instance.transform.position;
+                break;
+            }
 
-        //the target will be a random area in the radius around the player
-        //also the target area must be ground.
+        }
+
+
+
+        _areaDamage.SetUp_Continuously(areaPos, 4.7f, 3, 23.3f, new DamageClass(5, DamageType.Physical, 0), 3, 0, AreaDamageVSXType.Ghost_Orb);
+
+        BDClass bd_Slow = new BDClass("Ghost_Slow", StatType.Speed, 0, -0.2f, 0);
+        bd_Slow.MakeShowInUI();
+        bd_Slow.MakeTemp(2);
+        bd_Slow.MakeStack(5, true);
+
+        BDClass bd_Blind = new BDClass("Ghost_Blind", BDType.Blind, 5);
+        bd_Slow.MakeShowInUI();
+        bd_Slow.MakeTemp(5);
+        bd_Slow.MakeStack(0, true);
+
+        BDClass[] bdArray = {bd_Slow};
+
+        _areaDamage.Make_BD(bdArray);
+        
+        _cooldown_Current = Random.Range(_cooldown_Total * 0.8f, _cooldown_Total * 1.5f); 
 
 
         return NodeState.Success;

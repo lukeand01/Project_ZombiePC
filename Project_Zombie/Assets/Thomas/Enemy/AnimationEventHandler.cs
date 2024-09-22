@@ -48,6 +48,8 @@ public class AnimationEventHandler : MonoBehaviour
     public void TriggerFootStepSound(int index)
     {
         //we have to inform whoever is here about this.
+
+
         if(_enemyBoss != null)
         {
             _enemyBoss.HandleFootStep(index);

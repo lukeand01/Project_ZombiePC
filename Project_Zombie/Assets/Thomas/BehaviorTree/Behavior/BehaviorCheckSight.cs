@@ -38,8 +38,10 @@ public class BehaviorCheckSight : Sequence2
             Debug.Log("no eye array");
         }
 
-        foreach (var item in eyeArray)
+        for (int i = 0; i < eyeArray.Length; i++)
         {
+            var item = eyeArray[i];
+
             Vector3 targetPos = (playerTransform.position - item.position).normalized;
             Ray ray = new Ray(item.position, targetPos);
 
@@ -54,8 +56,11 @@ public class BehaviorCheckSight : Sequence2
             {
                 return NodeState.Failure;
             }
+
         }
 
+
+     
 
 
         return NodeState.Success;

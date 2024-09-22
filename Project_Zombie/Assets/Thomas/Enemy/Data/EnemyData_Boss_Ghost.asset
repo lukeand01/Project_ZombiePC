@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Ghost
   enemyModel: {fileID: 0}
-  bossModel: {fileID: 0}
+  bossModel: {fileID: 5962390232867664834, guid: 203b63dd3935db343b184fe6af987ebb, type: 3}
   attackRange: 0
   AttackAnimationSpeed: 1
   attackRest: 0
@@ -23,7 +23,7 @@ MonoBehaviour:
   - stat: 0
     initialValue: 500
   - stat: 1
-    initialValue: 3
+    initialValue: 6
   scaleStatList: []
   enemyResistanceList:
   - <_damageType>k__BackingField: 0
@@ -38,7 +38,9 @@ MonoBehaviour:
   audio_Dead: {fileID: 0}
   audio_Spawned: {fileID: 0}
   audio_Attack: {fileID: 0}
-  audio_footstepArray: []
+  audio_footstepArray:
+  - {fileID: 8300000, guid: e3edc2a270af5c04886ab9c5fa4fced6, type: 3}
+  - {fileID: 8300000, guid: 6e6c9769d9509db4e8d892892f70aa11, type: 3}
   shouldNotDespawnBecauseOfDistance: 0
   canIgnoreAlly: 0
   canTurnAlly: 0

@@ -32,6 +32,11 @@ public class Behavior_Boss_Chase : Sequence2
         updateCheckForAlly_Total = 0.08f;
         updateCheckForAlly_Current = updateCheckForAlly_Total;
 
+        if(PlayerHandler.instance == null)
+        {
+            Debug.Log("here");
+        }
+
         playerTransform = PlayerHandler.instance.transform;
 
         allyLayer |= (1 << 8);
@@ -56,9 +61,10 @@ public class Behavior_Boss_Chase : Sequence2
             return NodeState.Failure;
         }
 
+        if (_boss.IsActing) return NodeState.Success;
+
 
         Transform currentTarget = GetTargetAsEnemy();
-
 
 
         if (currentTarget == null)

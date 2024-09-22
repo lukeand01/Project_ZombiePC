@@ -31,7 +31,7 @@ public class TeleporterObject : MonoBehaviour
 
     public void ControlHasBeenTeleported(bool hasBeenTeleported)
     {
-        this.hasBeenTeleportedTo = hasBeenTeleported;   
+        hasBeenTeleportedTo = hasBeenTeleported;   
     }
 
     private void FixedUpdate()
@@ -73,10 +73,16 @@ public class TeleporterObject : MonoBehaviour
     {
         if (isTeleporting) return false;
         if (!isPlayerInside) return false;
-        if (hasBeenTeleportedTo) return false;
+        if (hasBeenTeleportedTo)
+        {
+            Debug.Log("has been teleported to");
+            return false;
+        }
         if (isLocked) return false;
         if (IsOnCooldown) return false;
-        if (connectedTeleporter.IsOnTimer) return false;
+        if(connectedTeleporter != null) if (connectedTeleporter.IsOnTimer) return false;
+        if (merchantPortal != null) if (merchantPortal.isOnCooldown) return false;
+
 
         if (PlayerHandler.instance._entityStat.isStunned) return false;
 
@@ -89,7 +95,7 @@ public class TeleporterObject : MonoBehaviour
         if (!isPlayerInside)
         {
             ControlEffect(false);
-            StopChargeAudio();
+            
         }
 
         if (!IsAbleToTeleport())
@@ -113,12 +119,6 @@ public class TeleporterObject : MonoBehaviour
        
         //
 
-        if(cooldownForTeleport_Current == 0)
-        {
-            //start playing
-            StartChargeAudio();
-        }
-
         if (timeToTeleport_Current > timeToTeleport_Total * 0.7f)
         {
             ControlEffect(true);
@@ -128,8 +128,6 @@ public class TeleporterObject : MonoBehaviour
         {
             timeToTeleport_Current += Time.fixedDeltaTime;
 
-            //we start playing
-            //i will tell by teleport timer actually.
 
         }
         else
@@ -157,9 +155,6 @@ public class TeleporterObject : MonoBehaviour
         rotatingRb.AddTorque(new Vector3(0, rotationSpeed_Current, 0), ForceMode.Force);
         
         
-
-
-        Debug.Log("rotating this fella");
 
         rotationSpeed_Current += Time.fixedDeltaTime * rotationSpeed_IncrementModifier;
         rotationSpeed_Current = Mathf.Clamp(rotationSpeed_Current, 0, rotationSpeed_Max);
@@ -221,6 +216,7 @@ public class TeleporterObject : MonoBehaviour
     [Separator("TELEPORTING VARIABLES")]
     [SerializeField] TeleporterObject connectedTeleporter;
     [SerializeField] Transform wayOutTransform; //you leave to a place that is not a teleporter.
+    [SerializeField] Portal_Merchant merchantPortal;
     [SerializeField] UnityEvent eventOnTeleportedHere;
     [SerializeField] bool lockAllEnemies;
 
@@ -245,6 +241,12 @@ public class TeleporterObject : MonoBehaviour
 
     void TeleportToPlace()
     {
+        if(merchantPortal != null)
+        {
+            merchantPortal.TeleportToHere(this);
+            return;
+        }
+
         if (wayOutTransform != null)
         {
             PlayerHandler.instance.transform.position = wayOutTransform.transform.position;
@@ -317,20 +319,49 @@ public class TeleporterObject : MonoBehaviour
 
     IEnumerator TeleportProcess()
     {
+        //here we actually start teleporting.
+        //the player becomes untouchable.
+
 
         isTeleporting = true;
 
-        yield return StartCoroutine(LowerCurtainProcess());
+
+        PlayerHandler.instance._playerController.block.AddBlock("Teleport", BlockClass.BlockType.Complete);
+        
+        StartCoroutine(ThunderProcess());
+
+        //then we raise the window, and whents taht done we call
+        yield return StartCoroutine(GameHandler.instance.LowerCurtainProcess_Teleport(2));
+
+        PlayerHandler.instance.ControlGraphicHolderVisibility(true);
 
         //here we actually take the fella back.
         TeleportToPlace();
 
-        yield return StartCoroutine(RaiseCurtainProcess());
+        StartCoroutine(GameHandler.instance.RaiseCurtainProcess_Teleport(2));
+        yield return new WaitForSeconds(1);
+
+        PlayerHandler.instance._playerController.block.RemoveBlock("Teleport");
+
+
+        //then we lower it.
 
         CallCooldown();
-        connectedTeleporter.CallTimer();
-        connectedTeleporter.CallEvents();
-        connectedTeleporter.CallLock();
+
+        if (connectedTeleporter != null)
+        {
+            connectedTeleporter.CallTimer();
+            connectedTeleporter.CallEvents();
+            connectedTeleporter.CallLock();
+        }
+        
+        if(merchantPortal != null)
+        {
+            //we call on itself.
+            CallTimer();
+        }
+
+      
 
         if (lockAllEnemies)
         {
@@ -341,53 +372,21 @@ public class TeleporterObject : MonoBehaviour
         isTeleporting = false;
     }
 
-    IEnumerator LowerCurtainProcess()
+    //make the hunder be instant.
+    //turn off the graphicholder
+    //
+
+    IEnumerator ThunderProcess()
     {
-        float duration = 1.5f;
-
-        PlayerHandler.instance._playerController.block.AddBlock("Teleporter", BlockClass.BlockType.Complete);
-
-        StartCoroutine(GameHandler.instance.LowerCurtainProcess_Teleport());
-
-        //we call the thunder and make the player disappear.
-        //start
-        soonToTeleportEffectHolder.gameObject.SetActive(true);
-        soonToTeleportEffectHolder.Play();
-
-        yield return new WaitForSeconds(duration * 0.2f);
-
-
+        GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(thunder_AudioClip);
         thunderEffectHolder.gameObject.SetActive(true);
         PlayerHandler.instance.ControlGraphicHolderVisibility(false);
-        //PlayerHandler.instance.TryToCallExplosionCameraEffect(transform, 0.2f);
-
-        yield return new WaitForSeconds(duration * 0.8f);
+        yield return new WaitForSeconds(0.2f);
 
         thunderEffectHolder.gameObject.SetActive(false);
-
-        soonToTeleportEffectHolder.Stop();
-        soonToTeleportEffectHolder.gameObject.SetActive(false);
+        //then we need to turn off the player
     }
-
-    IEnumerator RaiseCurtainProcess()
-    {
-
-        
-        float duration = 1;
-
-        yield return new WaitForSeconds(0.1f);
-
-
-        StartCoroutine(GameHandler.instance.RaiseCurtainProcess_Teleport());
-
-        yield return new WaitForSeconds(duration * 0.3f);
-
-        PlayerHandler.instance.ControlGraphicHolderVisibility(true);
-        PlayerHandler.instance._playerController.block.RemoveBlock("Teleporter");
-
-        yield return new WaitForSeconds(duration * 0.7f);
-    }
-
+   
 
     #endregion
 
@@ -419,12 +418,31 @@ public class TeleporterObject : MonoBehaviour
 
         while (timer_Current > 0)
         {
+            if(timer_Current <= 5)
+            {
+                GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_OutOfTimeTimer);
+            }
             timer_Current -= 1;
             UIHandler.instance._playerUI.UpdateTimerForTeleport(timer_Current);
-            yield return new WaitForSeconds(1.2f);
+            yield return new WaitForSeconds(1.15f);
         }
 
+        //we get here and inform something.
+        //force any dialogue to end
+        UIHandler.instance._DialogueUI.CloseDialogue();
 
+        if (merchantPortal)
+        {
+            //teleport to this place.
+            //i want to 
+
+            merchantPortal.TeleportBack();
+            yield break;
+        }
+
+        
+
+        Debug.Log("got here");
        if(isTimerRunning) Teleport();
 
     }
@@ -456,8 +474,11 @@ public class TeleporterObject : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag != "Player") return;
+        if (hasBeenTeleportedTo) return;
 
         isPlayerInside = true;
+        StartChargeAudio();
+        soonToTeleportEffectHolder.gameObject.SetActive(true);
 
     }
     private void OnTriggerExit(Collider other)
@@ -467,7 +488,8 @@ public class TeleporterObject : MonoBehaviour
         isPlayerInside = false;
         hasBeenTeleportedTo = false;
         timeToTeleport_Current = 0;
-
+        StopChargeAudio();
+        soonToTeleportEffectHolder.gameObject.SetActive(false);
     }
     #endregion
 

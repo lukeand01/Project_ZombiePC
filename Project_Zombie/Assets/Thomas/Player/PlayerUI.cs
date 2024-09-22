@@ -48,9 +48,9 @@ public class PlayerUI : MonoBehaviour
         mouseIcon.transform.position = Input.mousePosition;
 
 
-        if(shieldBar.fillAmount > 0 && shieldBar.isActiveAndEnabled )
+        if (shieldBar.fillAmount > 0 && shieldBar.isActiveAndEnabled)
         {
-            if(shieldText.transform.localScale != Vector3.one && !isUpdatingShield)
+            if (shieldText.transform.localScale != Vector3.one && !isUpdatingShield)
             {
                 isUpdatingShield = true;
                 shieldText.transform.DOKill();
@@ -136,7 +136,7 @@ public class PlayerUI : MonoBehaviour
         healthTotal = total;
         healthCurrent = current;
 
-        if(damage > 0)
+        if (damage > 0)
         {
             StartDamageFlash();
         }
@@ -144,7 +144,7 @@ public class PlayerUI : MonoBehaviour
 
     public void ForceUpdateHealth(float current, float total)
     {
-        UpdateHealth(current, total,0);
+        UpdateHealth(current, total, 0);
         healthTemporary = current;
     }
 
@@ -212,9 +212,9 @@ public class PlayerUI : MonoBehaviour
 
         //here is the problem. we need to count a timer and then call it, but call it only 1 at a time.
 
-       
 
-        
+
+
 
         if (pointCurrent != pointTemporary)
         {
@@ -380,7 +380,7 @@ public class PlayerUI : MonoBehaviour
 
         //Debug.Log("started this");
         StartRoundText(newValue, 6, newImage, 0.18f);
-       //roundTextCoroutine = StartCoroutine(UpdateRoundTextProcess(newValue, newImage));
+        //roundTextCoroutine = StartCoroutine(UpdateRoundTextProcess(newValue, newImage));
     }
 
     int amountRotations_Total = 0;
@@ -395,7 +395,7 @@ public class PlayerUI : MonoBehaviour
     void StartRoundText(int newRoundValue, int amountRotations_Total, Sprite newImage, float timer)
     {
         isFlashing = true;
-        this.newRoundValue = newRoundValue; 
+        this.newRoundValue = newRoundValue;
         this.amountRotations_Total = amountRotations_Total;
         amountRotations_Current = 0;
         this.newImage = newImage;
@@ -409,12 +409,12 @@ public class PlayerUI : MonoBehaviour
             return;
         }
 
-        if(roundText_New.color.a == 1)
+        if (roundText_New.color.a == 1)
         {
             roundText_New.DOKill();
             roundText_New.DOFade(0, timer).SetEase(Ease.Linear);
-                
-            amountRotations_Current ++;
+
+            amountRotations_Current++;
         }
         if (roundText_New.color.a == 0)
         {
@@ -470,7 +470,7 @@ public class PlayerUI : MonoBehaviour
 
         roundText_New.DOFade(0, timer);
 
-        if(newImage == null)
+        if (newImage == null)
         {
             roundIcon_New.sprite = originalRoundSprite;
             roundBackground.DOColor(Color.black, 0.3f);
@@ -481,7 +481,7 @@ public class PlayerUI : MonoBehaviour
             roundBackground.DOColor(Color.red, 0.3f);
         }
 
-       
+
         yield return new WaitForSeconds(timer);
 
         roundText_New.DOFade(1, timer);
@@ -608,7 +608,7 @@ public class PlayerUI : MonoBehaviour
 
     Vector3 timerForTeleport_OriginalPosition;
 
-    
+
 
     public void ShowTimerForTeleport()
     {
@@ -619,7 +619,7 @@ public class PlayerUI : MonoBehaviour
 
 
     public void HideTimerForTeleport()
-    {        
+    {
         timerForTeleportHolder.transform.DOMoveY(timerForTeleport_OriginalPosition.y + Screen.height * 0.1f, 0.25f);
     }
 
@@ -627,12 +627,12 @@ public class PlayerUI : MonoBehaviour
 
     public void UpdateTimerForTeleport(int timer)
     {
-        timerForTeleportText.text = timer.ToString("F0");   
-        if(timer < 10)
+        timerForTeleportText.text = timer.ToString("F0");
+        if (timer < 10)
         {
-            if(warnCoroutine != null)
+            if (warnCoroutine != null)
             {
-                StopCoroutine(warnCoroutine);   
+                StopCoroutine(warnCoroutine);
             }
             StartCoroutine(WarnTimerProcess());
 
@@ -655,7 +655,6 @@ public class PlayerUI : MonoBehaviour
     }
 
     #endregion
-
 
 
     #region CHALLENGE
@@ -682,8 +681,8 @@ public class PlayerUI : MonoBehaviour
     {
 
         challengeBarHolder.gameObject.SetActive(total != 0);
-        challengeBar.fillAmount = current / total;           
-     }
+        challengeBar.fillAmount = current / total;
+    }
 
     public void Challenge_UpdateQuantity(string text)
     {
@@ -694,4 +693,19 @@ public class PlayerUI : MonoBehaviour
         challengeTitleText.text = text;
     }
     #endregion
+
+    #region BLIND
+    [Separator("BLIND")]
+    [SerializeField] GameObject blindHolder;
+
+    public void ControlBlind(bool isVisible)
+    {
+        blindHolder.SetActive(isVisible);
+    }
+
+    //actually we will call call teh fade. to always match the desired alpha.
+
+
+    #endregion
+
 }

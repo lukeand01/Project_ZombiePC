@@ -171,7 +171,7 @@ public class ItemGunData : ItemData
         }
 
 
-        GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(audio_Shoot);
+        //GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(audio_Shoot);
 
         //i need to receive
     }

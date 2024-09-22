@@ -163,7 +163,7 @@ public class EntityStat : MonoBehaviour
     #region BD
     [field:SerializeField]public bool isStunned { get; private set; }
     [field: SerializeField] public bool IsImmune {  get; private set; }
-
+    [field: SerializeField] public bool isBlind { get; private set; }
     [field:SerializeField] public bool IsInvisible {  get; private set; }
 
 
@@ -233,7 +233,7 @@ public class EntityStat : MonoBehaviour
         //also when we remove it we do stuff;
 
         //i want a stat
-
+  
         TryToStartBDGraphical(bd);
 
         if (dictionaryForStacking.ContainsKey(bd.id))
@@ -244,7 +244,7 @@ public class EntityStat : MonoBehaviour
             RemoveStat(stackBD);
             stackBD.Stack(bd);
             AddBDStat(stackBD);
-            Debug.Log("it stacked");
+
             return;
         }
 
@@ -291,7 +291,7 @@ public class EntityStat : MonoBehaviour
                 PlayerHandler.instance._playerCombat.MakeSecretStatMultipleBulletPercent(1);
                 break;
             case BDType.Blind:
-                Debug.Log("made player blind");
+                isBlind = true;
                 break;
 
         }
@@ -482,7 +482,12 @@ public class EntityStat : MonoBehaviour
 
         if (dictionaryForStacking.ContainsKey(bd.id))
         {
+
             dictionaryForStacking.Remove(bd.id);
+        }
+        else
+        {
+            Debug.Log("this was not stackable");
         }
 
         switch (bd.bdType)
@@ -512,7 +517,7 @@ public class EntityStat : MonoBehaviour
                 break;
 
             case BDType.Blind:
-                Debug.Log("made player blind");
+                isBlind = false;
                 break;
         }
 

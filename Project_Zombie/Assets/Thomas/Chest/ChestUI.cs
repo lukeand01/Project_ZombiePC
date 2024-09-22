@@ -400,11 +400,11 @@ public class ChestUI : MonoBehaviour
 
         if (!PlayerHandler.instance._playerResources.Bless_HasEnough(blessQuantity))
         {
-            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_BlessFailure);
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Failure);
             return;
         }
 
-        GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_BlessSuccess);
+        
 
 
         PlayerHandler.instance._playerResources.Bless_Lose(blessQuantity);

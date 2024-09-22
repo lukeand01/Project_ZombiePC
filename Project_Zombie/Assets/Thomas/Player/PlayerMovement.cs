@@ -111,6 +111,9 @@ public class PlayerMovement : MonoBehaviour
         handler._rb.velocity = movement + fallSpeed;
         //handler._rb.AddForce((movement + fallSpeed) * 200, ForceMode.Force);
 
+        //Debug.Log("current speed " + currentSpeed);
+
+
         //maybe increase a force to create the effect.
 
     }

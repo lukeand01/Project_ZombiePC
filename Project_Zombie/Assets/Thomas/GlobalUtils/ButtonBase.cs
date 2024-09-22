@@ -38,7 +38,7 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public virtual void OnPointerClick(PointerEventData eventData)
     {
 
-        Debug.Log("pointer click");
+
 
         if(base_ControlClick != null)
         {

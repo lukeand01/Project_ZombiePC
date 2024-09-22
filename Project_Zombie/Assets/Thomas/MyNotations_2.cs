@@ -476,6 +476,34 @@
 //i need an animation for his movement
 //then we will create the damage areas.
 
+//we have a problem with stacking, because the speed is not stacking, and when they are completed they are bugging
+///now lets take a look at teleport.
+//it has the same condition of being walkable.
+
+//LIST OF THINGS LKEFT TO DO
+//area challenge
+//test the enemy system spawn
+//the knight is bugging
+//the bd are not stacking correctly. found with ghost
+//have to check the ghost death.
+
+
+//TO DO
+//the bd are not stacking correctly. found with ghost
+//have to check the ghost death.
+//mage shoot projectile. it triest  to follow the player.
+//then barrage of projectiles. its random.
+//then the meteor. its just when its too far for the mage.
+//it creates a barrier at cooldown
+
+
+//we are first going to do the simple attack. just a projectile straight at the player.
+//and also check the meteor.
+
+
+
+//i feel like just making an standard mage is not as interesting
+//but if i give it buff abilities
 
 //MY GOAL - MAGE 
 //its first move and the most common is a projectil
@@ -483,8 +511,141 @@
 //it can passively create walls between it and the player.
 //its third move it buffs all enemies, granting them additional damage and speed.
 
+//twins should be an actual boss.
 
 
+//i need to 
+
+//GOAL
+//i will actually do the merchant now.
+//create a dialogue for the merchant
+//so you can buy stuff and change the actual itens. they cannot change back
+//the timer is still running so you can be pulled away from the dialogue because of it.
+//lets also improve the teleporter.
+
+//need to create triggers so triggers those things
+
+
+//should be able to get quests from dialogue as well.
+//
+
+//change the ui when you are in dialogue.
+//response units should not start with a hover.
+//change the dialgoue. each npc has a camera position which when you talk with them the camera takes that position.
+//what the merchant requires.
+
+//actually the dialogue will work by zooming in
+//the npc turns to the player
+//teh response holder
+
+//its not rotating to the characer.
+
+//additioal things to put with the merchant
+//a little casino machine that you can gain : points, bless,
+//you can get additional musics to play here?
+//you can find other npcs in this area.
+//when the time is over the merchant says something as the player leaves.
+
+
+
+//
+//THE GOAL TOMORROW
+///update the graphics for teleporter
+///the teleporter effects
+//imrpove the merchant room
+//creat the animation for merchant
+///sound effects (when start talking, when stop talking, when buy something from dialogue)
+//background sound effect from the tavern
+//the little cassino
+//sound for dialogue.
+
+//make the portal for the merchant. as long as you go through the portal you will be returned.
+//this portal also triggers the merchant
+
+//i will create a muischandler.
+//acutlaly i wont use audio because then every npc will have the same audio and the player wojt have any.
+//we need a sound for spending bless.
+
+//dialogue not working?
+//sound for typing.//
+
+//when speeding dialogue there should be no sound or another sound
+//another sound for clicking response
+//i have no slotmachine asset /
+
+
+
+
+//THE GOAL 
+///need to be able to highlight dialogue. with custom colors for custom things.
+///check for the dialogue. it had nothing.
+//put the background sound for the merchant
+///make sure the teleport timer is working.
+///need to pull the player out through hte teleport timer.
+//music system for backgroubnd music.
+//teh response needs to hide when not being used.
+
+
+
+//how it works?
+//i want a music for boss
+//i want a music for calm moments
+//i want a music for tense moments
+//i might want music for certain rooms.
+//i want a music for mainmenu
+//and a music default
+
+//i need to allow for silence as well. 
+//a boss can triggers its own music, the msuci doesnt loop.
+//areas can trigger the music, and that music doesnt loop.
+//then we have a default list for stage
+//the default has two lists. low and high. 
+//high always stop after a round is over.
+//after high is over we have a moment of silence.
+//after that moment we go to low
+//we only return to high when there is a lot of happening
+//the triggers are: a lot of enemies around, a mini-boss being spawned, fighting a boss, certain enemies
+
+
+
+//
+//THE GOAL TOMORROW
+//do the sound handler and get bgm working
+///fix the aim again. it seems to be a rotation problem rather than position
+//fix the final parts about ghost
+//return working on the mage
+
+
+//we need to fix the aim. the rotation is all fucked
+//then we need to fix the bd stacking not working.
+
+
+
+//speed isnt stacking. what else isnt stacking?
+
+//lets focus in the game then
+
+
+//the animation isnt right
+//get a blue meteor for the boss
+//need a sound for the explosion. also for the other thing
+//need an animation for shooting, but very importantly it keeps moving while it shoots.
+//the black orb should have a sound as well
+//
+
+
+//MERCHANT
+
+
+
+
+//need an idle animation for the merchant
+//and an talking animation
+//when you talk with it and when you stop talking. the sounds can change.
+//i want sound when you choose something for the merchant.
+//need sound for choosing the response.
+//need a background music for the merchant.
+//
 
 
 //MY GOAL -  ARTILLERY
@@ -496,7 +657,7 @@
 //MY GOAL
 //create a spawn system for the boss.
 //
-
+ 
 
 
 //MY GOAL - DEVIL
@@ -518,14 +679,23 @@
 //summons blades that move around for a while. they work by moving randomly, till they meet a wall or a ledge then changing position
 
 
-
-
+//the problem is that when the character has nothing to do it keeps following.
 
 //CRATE GHOST
 //ghost has only one attack. 
 //ghost cannot be killed and just move towards the player.
-//ghost should create more obstacles.
-//
+
+
+//for the orb we need to check if there is ground in that region.
+//we need something connected to the ghost that is all the way up so it can see.
+//we can actually just shoot a spherecast smaller than the actual arae.
+
+
+
+
+//we are going to use animation for both.
+//then we are going to do the teleport.
+
 
 
 //CREATEA ARTILLERY
@@ -723,11 +893,9 @@
 //a dog coming over to play
 //the player pull certain things from time to time, like especial weapons and bombs or rubber ducks
 
+//
 
-
-
-
-
+//the problem is that i need to place it back
 
 
 //currently -> cna i do it in 2 months?
@@ -735,7 +903,7 @@
 //change the graphic of all enemies and create animations -> 7
 //i still have to do the map, and the lgiht and graphics -> 7
 //then after the light i need to do the system for shading everything that isnt visible by the player. -> 2
-//then i need to creat eteh merchant dialogue, and the possiblity of the especial abilities. -> 2
+///then i need to creat eteh merchant dialogue, and the possiblity of the especial abilities. also highlight certain words -> 2
 //improving the main menu -> 3
 //create system for saving -> 3
 //improve the settings ui -> 1
@@ -745,10 +913,10 @@
 //tahts about 63 days, a bit more than 2 months
 //now its about 43 days -> i will say 50 days
 
-//(15/09)
-//Days passed: 2
-//days left for target: 48
-//Days left for project: 161
+//(21/09)
+//Days passed: 8
+//days left for target: 42
+//Days left for project: 153
 
 //RECORDING
 //BOSS -> 13/09 - 
@@ -759,3 +927,4 @@
 
 //Version 0.7 ()
 //we will be focusing on content here. we will create all passives, actives, perma and temp guns, story quests and challenges.
+//create passives that stack on actions.

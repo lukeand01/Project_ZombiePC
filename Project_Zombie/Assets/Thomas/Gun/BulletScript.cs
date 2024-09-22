@@ -9,17 +9,23 @@ public class BulletScript : MonoBehaviour
 
     string ownedID;
     bool isEnemy;
-    [SerializeField] Vector3 dir;
+    [SerializeField] protected Vector3 dir;
     protected bool canMove;
     [SerializeField] protected DestroySelf _destroySelf;
+    [SerializeField] SpawnPSOnTriggerScript psSpawnOnTriggerScript;
     [SerializeField] BoxCollider _collider;
     [SerializeField]TrailRenderer _trailRenderer;
     [SerializeField] TrailRenderer _trailRenderer2;
-
+    
     //we will create a place to store for teh player.
 
     LayerMask _layer;
 
+
+    public void SetPSOnDisable()
+    {
+
+    }
 
     public virtual void ResetToReturnToPool()
     {

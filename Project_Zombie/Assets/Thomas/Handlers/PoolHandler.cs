@@ -429,7 +429,8 @@ public class PoolHandler : MonoBehaviour
             PSType.Dash_01,
             PSType.Blood_01,
             PSType.GroundCrack_01,
-            PSType.BlackWholeForBossCollection_01
+            PSType.BlackWholeForBossCollection_01,
+            PSType.Dash_02
         };
 
 
@@ -748,7 +749,7 @@ public enum PSType
     Blood_01,
     GroundCrack_01,
     BlackWholeForBossCollection_01,
-
+    Dash_02
 
 }
 
@@ -756,5 +757,7 @@ public enum ProjectilType
 {
     PlayerRegular = 0,
     EnemySpit = 1,
-    FlyingSwords = 2
+    FlyingSwords = 2,
+    DarkOrb = 3,
+    Skull_Seeker = 4
 }

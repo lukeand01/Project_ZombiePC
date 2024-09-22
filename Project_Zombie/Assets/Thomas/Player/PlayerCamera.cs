@@ -229,7 +229,7 @@ public class PlayerCamera : MonoBehaviour
     //
     [SerializeField] CameraPositionClass[] cameraPositionClassArray;
 
-    public void SetCamera(CameraPositionType _type,float moveSpeed, float rotationSpeed)
+    public void SetCamera(CameraPositionType _type,float timeToReachPosition, float timeToReachRotation)
     {
         //we set teh camera to the thing.     
         //we set it here.
@@ -238,12 +238,17 @@ public class PlayerCamera : MonoBehaviour
 
 
         cam.transform.DOKill();
-        cam.transform.DOLocalMove(refTransform.localPosition, moveSpeed).SetEase(Ease.Linear);
-        cam.transform.DOLocalRotate(refTransform.localRotation.eulerAngles, rotationSpeed).SetEase(Ease.Linear);
+        cam.transform.DOLocalMove(refTransform.localPosition, timeToReachPosition).SetEase(Ease.Linear);
+        cam.transform.DOLocalRotate(refTransform.localRotation.eulerAngles, timeToReachRotation).SetEase(Ease.Linear);
 
         originalRotation = refTransform.localRotation;
 
     }
+
+
+    
+
+    //need to move the player position to be away from the camera. we get that position and set the player position a bit behind.
 
     //so for now at the start we call it and also at reset.
     
@@ -264,7 +269,8 @@ public enum CameraPositionType
     Default = 0,
     FallDeath = 1,
     Presentation = 2,
-    RegularDeath = 3
+    RegularDeath = 3,
+    Dialogue = 4
 }
 [System.Serializable]
 public class CameraPositionClass

@@ -15,7 +15,7 @@ public class EnemyBoss : Tree, IDamageable
     //
 
     string id;
-    bool isDead;
+    protected bool isDead;
 
     [Separator("BOSS")]
     [SerializeField] protected EnemyData _bossData;
@@ -25,34 +25,38 @@ public class EnemyBoss : Tree, IDamageable
 
 
     [Separator("SCRIPTS")]
-    [SerializeField] EntityEvents _entityEvent;
-    [SerializeField] EntityStat _entityStat;
-    [SerializeField] EnemyGraphicHandler _enemyGraphicHandler;
+    [SerializeField] protected EntityEvents _entityEvent;
+    [SerializeField] protected EntityStat _entityStat;
+    [SerializeField] protected EnemyGraphicHandler _enemyGraphicHandler;
 
     [Separator("COMPONENTS")]
-    [SerializeField] NavMeshAgent _agent;
-    [SerializeField] Rigidbody _rb;
-    [SerializeField] BoxCollider _boxCollider;
-    [SerializeField] Animator _animator;
+    [SerializeField] protected NavMeshAgent _agent;
+    [SerializeField] protected Rigidbody _rb;
+    [SerializeField] protected BoxCollider _boxCollider;
+    [SerializeField] protected Animator _animator;
 
     [Separator("CANVAS")]
-    [SerializeField] EnemyCanvas _enemyCanvas;
+    [SerializeField] protected EnemyCanvas _enemyCanvas;
     [SerializeField] protected AbilityIndicatorCanvas _abilityCanvas;
 
     [Separator("CONTAINERS")]
-    [SerializeField] Transform psContainer;
+    [SerializeField] protected Transform psContainer;
 
     [Separator("PS")]
     [SerializeField] ParticleSystem _deathPS;
-    [SerializeField] Transform _graphicHolder;
-    float health_Total;
-    float healt_Current;
+    [SerializeField] public Transform _graphicHolder;
+    protected float health_Total;
+    protected float healt_Current;
 
     float _speed_Base;
 
     const int POINTS_PERKILL = 1500;
 
-
+    protected bool isLocked;
+    protected void ControlIsLocked(bool isLocked)
+    {
+        this.isLocked = isLocked;
+    }
 
 
     private void Awake()
@@ -62,8 +66,15 @@ public class EnemyBoss : Tree, IDamageable
 
     float GetHealthFromStat()
     {
+        if (LocalHandler.instance == null)
+        {
+            Debug.Log("no local hanadler");
+        }
+
         float health = 0;
         int round = LocalHandler.instance.round;
+
+        
 
         for (int i = 0; i < _bossData.initialStatList.Count; i++)
         {
@@ -105,12 +116,7 @@ public class EnemyBoss : Tree, IDamageable
 
     protected virtual void AwakeFunction()
     {       
-        health_Total = GetHealthFromStat();
-        healt_Current = health_Total;
 
-
-        _agent.speed = GetSpeedFromStat();
-        _speed_Base = _agent.speed;
 
         SetActionindexMax(attackClassArray.Length);
         
@@ -119,6 +125,19 @@ public class EnemyBoss : Tree, IDamageable
         id = MyUtils.GetRandomID();
     }
 
+    private void Start()
+    {
+        StartFunction();
+    }
+    protected virtual void StartFunction()
+    {
+        health_Total = GetHealthFromStat();
+        healt_Current = health_Total;
+
+
+        _agent.speed = GetSpeedFromStat();
+        _speed_Base = _agent.speed;
+    }
 
     public bool IsStunned { get { return _entityStat.isStunned; } }
 
@@ -145,6 +164,9 @@ public class EnemyBoss : Tree, IDamageable
 
     protected override void UpdateFunction()
     {
+        if (isLocked) return;
+
+
         if (PlayerHandler.instance._playerResources.isDead)
         {
             StopAgent();
@@ -250,7 +272,7 @@ public class EnemyBoss : Tree, IDamageable
        
     }
 
-    public void TakeDamage(DamageClass damageRef)
+    public virtual void TakeDamage(DamageClass damageRef)
     {
         
         if (isDead) return;
@@ -316,7 +338,7 @@ public class EnemyBoss : Tree, IDamageable
     }
 
 
-    void Die()
+    protected void Die()
     {
         //you only gain points in the end.
         //PlayerHandler.instance._entityEvents.OnKillEnemy(this, true);
@@ -595,6 +617,7 @@ public class EnemyBoss : Tree, IDamageable
 
     public void CallAnimation(string nameID, int layer)
     {
+
         _animator.Play(ANIMATIONID + nameID , layer);
     }
     public bool IsAnimationRunning(string nameID, int layer)
@@ -608,6 +631,17 @@ public class EnemyBoss : Tree, IDamageable
 
     #endregion
 
+    #region UTILS
+
+    public bool IsTargetPosWalkable(Vector3 pos)
+    {
+        //we create a cast in the area and check if we have spotted a walkable surface.
+       return _agent.Raycast(pos, out NavMeshHit hit);
+    }
+
+    #endregion
+
+
     public void SetNewSpeed(float additionalSpeed)
     {
         _agent.speed = _speed_Base + additionalSpeed;
@@ -616,6 +650,8 @@ public class EnemyBoss : Tree, IDamageable
 
     public virtual void HandleFootStep(int index)
     {
+
+
         AudioClip _clip = _bossData.audio_footstepArray[index];
         GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(_clip, transform, 0.5f);
     }

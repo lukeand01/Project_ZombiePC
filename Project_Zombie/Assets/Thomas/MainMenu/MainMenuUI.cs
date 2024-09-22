@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MainMenuUI : MonoBehaviour
 {
+
+    [SerializeField] GameObject[] screenHolderArray;
     private void Start()
     {
         //if this ever loads then we turnn off all ui and block the player from doing anything.
