@@ -96,7 +96,7 @@ public class Behavior_Boss_Mage_Meteor : Sequence2
             AreaDamage areaDamage = GameHandler.instance._pool.GetAreaDamage(_boss.transform);
             Vector3 playerPosition = playerTransform.position;
             DamageClass newDamage = new DamageClass(50, DamageType.Physical, 0);
-            areaDamage.SetUp_Regular(playerPosition, 5, 5, newDamage, 3, 1, AreaDamageVSXType.Meteor);
+            areaDamage.SetUp_Regular(playerPosition, 5, 5, newDamage, 3, 1, AreaDamageVSXType.Meteor);           
 
             cooldown_Current = 0;
         }

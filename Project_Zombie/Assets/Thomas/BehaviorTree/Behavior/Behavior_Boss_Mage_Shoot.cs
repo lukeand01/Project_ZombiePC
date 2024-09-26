@@ -45,18 +45,15 @@ public class Behavior_Boss_Mage_Shoot : Sequence2
         if (_boss.IsActing) return NodeState.Success;
 
        
+        //it will not shoot actually.
+        //it will call the animation.
 
         if(cooldown_Current > cooldown_Total)
         {
-            Vector3 shootDir = PlayerHandler.instance.transform.position - _boss.transform.position;
 
-            BulletScript newObject = GameHandler.instance._pool.GetBullet(ProjectilType.DarkOrb, _boss.transform);
-
-            newObject.MakeEnemy();
-            newObject.MakeSpeed(12, 0, 0);
-            newObject.MakeDamage(new DamageClass(250, DamageType.Physical, 0), 0, 0);
-            newObject.SetUp("MinibossMage", shootDir);
-
+            _boss.SetActionIndexCurrent(0);
+            _boss.StartAction("CastSpell", 1);
+          
             cooldown_Current = 0;
 
             Debug.Log("shoot this");

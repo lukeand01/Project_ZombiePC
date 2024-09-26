@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +7,17 @@ public class AnimationEventHandler : MonoBehaviour
 {
 
     //now we can more carefuly hand this stuff
-
+    [SerializeField] bool ignoreEnemy;
     EnemyBase _enemy;
     [SerializeField] EnemyBoss _enemyBoss;
     private void Awake()
     {
-        _enemy = transform.parent.parent.GetComponent<EnemyBase>();
+        if (ignoreEnemy) return;
+
+         _enemy = transform.parent.parent.GetComponent<EnemyBase>();
+        
+        
+        Debug.Log("here");
     }
 
     public void CallAttack()
@@ -56,7 +62,18 @@ public class AnimationEventHandler : MonoBehaviour
         }
     }
 
+
+    [Separator("SOUND")]
+    [SerializeField] SoundType _sound;
+    public void CallSoundThroughAnimation()
+    {
+        GameHandler.instance._soundHandler.CreateSfx(_sound, transform);
+    }
+
+    //
+
 }
+
 
 
 //how should we aim to trigger it?

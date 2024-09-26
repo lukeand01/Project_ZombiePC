@@ -43,6 +43,8 @@ public class EnemyMage : EnemyBase
     }
 
 
+
+
     public override void CallAttack()
     {
         //select an area.

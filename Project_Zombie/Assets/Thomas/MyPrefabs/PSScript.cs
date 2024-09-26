@@ -13,6 +13,7 @@ public class PSScript : MonoBehaviour
     [SerializeField] PSType _type;
     public void ResetForPool()
     {
+        Debug.Log("yo");
         _particleSystem.Clear();
         _particleSystem.Stop();
         gameObject.SetActive(false);
@@ -29,6 +30,10 @@ public class PSScript : MonoBehaviour
         if (!_particleSystem.isPlaying)
         {
             GameHandler.instance._pool.PS_Release(_type, this);
+        }
+        else
+        {
+            Debug.Log("playing");
         }
     }
 

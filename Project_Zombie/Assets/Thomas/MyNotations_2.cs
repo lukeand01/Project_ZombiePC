@@ -620,25 +620,55 @@
 //then we need to fix the bd stacking not working.
 
 
-
-//speed isnt stacking. what else isnt stacking?
-
-//lets focus in the game then
-
-
-//the animation isnt right
+//GOAL
+///speed isnt stacking. what else isnt stacking?
+//the animation isnt right. maybe we can ignore that and just do another animation for the boss.
 //get a blue meteor for the boss
 //need a sound for the explosion. also for the other thing
-//need an animation for shooting, but very importantly it keeps moving while it shoots.
+///need an animation for shooting, but very importantly it keeps moving while it shoots.
 //the black orb should have a sound as well
-//
+
+//its basically complete now. i just need to see it working together
+//and get all the sounds.
+
+//TO DO
+//the black orb 
+//thousand of explosions when close to the meteor
+//then we have the seeking. need a sound.
+//then we have sound for the woman
+//then we have to get eh meteor animation right.
+//then we will start the artillery.
 
 
-//MERCHANT
+
+//now i need to do teh delay ability canvas.
+//and synch it to the actual attack.
+
+//need a sound for summoning orb
+//need a sound for orb
+//need a sound for summoning 
+
+
+
+//TO DO
+//artillery has two projectiles
+//the first falls and then explodes in a large area
+//the second falls and then explodes in many areas around the initial area.
+//we need to get the animation for everyone as well. they will be holding the side.
+//they can also throw grenade, that come out of them and fall in an area.
+//seeker still needs an explosion in the end
+
+
+//the seeking shoots
+
+
+//it will contisnouly deal damage in one area.
+//need a sound of many explosions.
 
 
 
 
+//MERCHAN
 //need an idle animation for the merchant
 //and an talking animation
 //when you talk with it and when you stop talking. the sounds can change.
@@ -657,7 +687,7 @@
 //MY GOAL
 //create a spawn system for the boss.
 //
- 
+
 
 
 //MY GOAL - DEVIL
@@ -913,10 +943,10 @@
 //tahts about 63 days, a bit more than 2 months
 //now its about 43 days -> i will say 50 days
 
-//(21/09)
-//Days passed: 8
-//days left for target: 42
-//Days left for project: 153
+//(26/09)
+//Days passed: 14
+//days left for target: 36
+//Days left for project: 147
 
 //RECORDING
 //BOSS -> 13/09 - 
@@ -928,3 +958,6 @@
 //Version 0.7 ()
 //we will be focusing on content here. we will create all passives, actives, perma and temp guns, story quests and challenges.
 //create passives that stack on actions.
+
+
+//TRAILER

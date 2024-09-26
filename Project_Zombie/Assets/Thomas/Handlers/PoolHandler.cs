@@ -430,7 +430,10 @@ public class PoolHandler : MonoBehaviour
             PSType.Blood_01,
             PSType.GroundCrack_01,
             PSType.BlackWholeForBossCollection_01,
-            PSType.Dash_02
+            PSType.Dash_02,
+            PSType.Explosion_01,
+            PSType.Explosion_02,
+            
         };
 
 
@@ -749,8 +752,10 @@ public enum PSType
     Blood_01,
     GroundCrack_01,
     BlackWholeForBossCollection_01,
-    Dash_02
-
+    Dash_02,
+    Explosion_01,
+    Explosion_02,
+    DarkExplosion_01
 }
 
 public enum ProjectilType

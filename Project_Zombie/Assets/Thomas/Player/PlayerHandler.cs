@@ -47,19 +47,12 @@ public class PlayerHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        CallDebug();
 
         UIHandler.instance._playerUI.ControlBlind(_entityStat.isBlind);
 
     }
 
-    public void CallDebug()
-    {
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            _dropData.CallDrop();
-        }
-    }
+    
 
 
     public void ControlGraphicHolderVisibility(bool isVisible)
@@ -344,25 +337,11 @@ public class PlayerHandler : MonoBehaviour
 
     public void DebugSummonGhostOrb()
     {
-        AreaDamage _areaDamage = GameHandler.instance._pool.GetAreaDamage(transform);
-        Vector3 areaPos = MyUtils.GetRandomPointInAnnulus(transform.position, 2, 5);
-
-
-        _areaDamage.SetUp_Continuously(areaPos, 4.7f, 3, 23.3f, new DamageClass(5, DamageType.Physical, 0), 3, 0, AreaDamageVSXType.Ghost_Orb);
-        BDClass bd_Slow = new BDClass("Ghost_Slow", StatType.Speed, 0, -0.2f, 0);
-        bd_Slow.MakeShowInUI();
-        bd_Slow.MakeTemp(2);
-        bd_Slow.MakeStack(5, true);
-
-        BDClass bd_Blind = new BDClass("Ghost_Blind", BDType.Blind, 5);
-        bd_Blind.MakeShowInUI();
-        bd_Blind.MakeTemp(5);
-        bd_Blind.MakeStack(0, true);
-
-
-        BDClass[] bdArray = { bd_Slow };
-
-        _areaDamage.Make_BD(bdArray);
+        AreaDamage areaDamage = GameHandler.instance._pool.GetAreaDamage(transform.transform);
+        Vector3 playerPosition = transform.position;
+        DamageClass newDamage = new DamageClass(50, DamageType.Physical, 0);
+        areaDamage.SetUp_Continuously(playerPosition, 5, 3, 5, newDamage, 3, 1, AreaDamageVSXType.Meteor);
+        areaDamage.MakeDelayShowInUI();
     }
 }
 

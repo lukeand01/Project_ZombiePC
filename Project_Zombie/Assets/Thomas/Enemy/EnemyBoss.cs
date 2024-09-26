@@ -142,7 +142,7 @@ public class EnemyBoss : Tree, IDamageable
     public bool IsStunned { get { return _entityStat.isStunned; } }
 
 
-    public void ResetForPool()
+    public virtual void ResetForPool()
     {
         isChargingAttack = false;
         IsActing = false;
@@ -338,7 +338,7 @@ public class EnemyBoss : Tree, IDamageable
     }
 
 
-    protected void Die()
+    protected virtual void Die()
     {
         //you only gain points in the end.
         //PlayerHandler.instance._entityEvents.OnKillEnemy(this, true);
@@ -354,13 +354,12 @@ public class EnemyBoss : Tree, IDamageable
         _rb.velocity = Vector3.zero;        
         _boxCollider.enabled = false;
         
-
         StartCoroutine(DeathProcess());
 
 
     }
 
-    IEnumerator DeathProcess()
+    IEnumerator  DeathProcess()
     {
 
         //PlayerHandler.instance._playerResources.GainPoints(POINTS_PERKILL);
@@ -378,8 +377,8 @@ public class EnemyBoss : Tree, IDamageable
 
        PSScript _ps = GameHandler.instance._pool.GetPS(PSType.BlackWholeForBossCollection_01, transform);
         _ps.gameObject.SetActive(true);
-        _ps.gameObject.transform.position = transform.position;
-        _ps.transform.position += new Vector3(0, 0, -5);
+        _ps.gameObject.transform.position = _graphicHolder.transform.GetChild(0).position + new Vector3(0, 5, 2);
+        
 
         //_deathPS.gameObject.SetActive(true);
        // _deathPS.Clear();

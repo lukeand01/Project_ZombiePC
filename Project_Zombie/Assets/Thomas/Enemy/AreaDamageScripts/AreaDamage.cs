@@ -35,7 +35,7 @@ public class AreaDamage : MonoBehaviour
 
     bool isUsingAnimation;
 
-    BDClass[] _bdArray;
+    List<BDClass> _bdList = new();
     //what if i have different types of esecial effect.
     //we will have different processes inside here.
 
@@ -83,13 +83,26 @@ public class AreaDamage : MonoBehaviour
     //if it deals damage in whaterver way it applies this as well.
     public void Make_BD(BDClass[] bdArray)
     {
-        _bdArray = bdArray;
+        _bdList.Clear();
+        for (int i = 0; i < bdArray.Length; i++)
+        {
+            var item = bdArray[i];
+            _bdList.Add(item);
+        }
+
+
        
     }
 
     public void Make_AnimationSpeed(float animationSpeed)
     {
         _animationSpeed = animationSpeed;
+    }
+
+    bool showDelayInUI;
+    public void MakeDelayShowInUI()
+    {
+        showDelayInUI = true;
     }
 
     public void SetUp_Continuously(Vector3 pos, float radius, float delay, float timer, DamageClass damage, int layer, float shakeModifier, AreaDamageVSXType _areaDamageVSX)
@@ -130,6 +143,13 @@ public class AreaDamage : MonoBehaviour
         if(delay_Current < delay_Total)
         {
             delay_Current += Time.fixedDeltaTime;
+
+            if (showDelayInUI)
+            {
+                //show ui.
+                _indicatorCanvas.ControlCircleFill(delay_Current, delay_Total);
+            }
+
             return;
         }
 
@@ -139,7 +159,7 @@ public class AreaDamage : MonoBehaviour
         {
             //i am doing like this because its better than creating a new system
             //we check for thick.
-
+            Debug.Log("continuous");
             if (isDone)
             {
                 if (!IsAnimationPlaying())
@@ -232,9 +252,11 @@ public class AreaDamage : MonoBehaviour
 
     void ApplyBD(IDamageable damageable)
     {
-        for (int i = 0; i < _bdArray.Length; i++)
+        if (_bdList == null) return;
+        Debug.Log("lenght for this " + _bdList.Count);
+        for (int i = 0; i < _bdList.Count; i++)
         {
-            var item = _bdArray[i];
+            var item = _bdList[i];
 
             BDClass newBD = new BDClass(item);
 

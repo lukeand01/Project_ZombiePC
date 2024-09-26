@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586ed45482a7b49459c4a4d56809d9fa, type: 3}
+  m_Name: EnemyData_Boss_Artillery
+  m_EditorClassIdentifier: 
+  enemyName: Artillery
+  enemyModel: {fileID: 0}
+  bossModel: {fileID: 0}
+  attackRange: 0
+  AttackAnimationSpeed: 1
+  attackRest: 0
+  <damageType>k__BackingField: 0
+  initialStatList:
+  - stat: 0
+    initialValue: 500
+  scaleStatList: []
+  enemyResistanceList:
+  - <_damageType>k__BackingField: 0
+    <_value>k__BackingField: 1
+  - <_damageType>k__BackingField: 1
+    <_value>k__BackingField: 1
+  - <_damageType>k__BackingField: 2
+    <_value>k__BackingField: 1
+  - <_damageType>k__BackingField: 3
+    <_value>k__BackingField: 1
+  audio_Hit: {fileID: 0}
+  audio_Dead: {fileID: 0}
+  audio_Spawned: {fileID: 0}
+  audio_Attack: {fileID: 0}
+  audio_footstepArray: []
+  shouldNotDespawnBecauseOfDistance: 0
+  canIgnoreAlly: 0
+  canTurnAlly: 0

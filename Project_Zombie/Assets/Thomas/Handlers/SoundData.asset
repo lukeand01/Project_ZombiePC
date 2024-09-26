@@ -49,7 +49,7 @@ MonoBehaviour:
   - title: 
     <_soundType>k__BackingField: 11
     <_soundClip>k__BackingField: {fileID: 8300000, guid: b1334dbf63b8b12469d492e285f8003d, type: 3}
-  - title: 
+  - title: Gate Close
     <_soundType>k__BackingField: 12
     <_soundClip>k__BackingField: {fileID: 8300000, guid: b1334dbf63b8b12469d492e285f8003d, type: 3}
   - title: Spend money
@@ -73,6 +73,9 @@ MonoBehaviour:
   - title: Timer out of timer
     <_soundType>k__BackingField: 19
     <_soundClip>k__BackingField: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+  - title: Meteor Explosion
+    <_soundType>k__BackingField: 20
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 1bc7bf1574344fb41b5837abcf0b96b9, type: 3}
   soundList_Bgm:
   - title: 
     <_soundType>k__BackingField: 0

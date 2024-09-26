@@ -306,6 +306,7 @@ public class BDClass
         stackCurrent = 1;
         this.stackTotal = stackTotal;
         this.doesStackingRefreshTimer = doesStackingRefreshTimer;
+        stackScaleModifier = 1;
     }
 
     public void MakeStackScaleable(float stackScaleModifier)
@@ -362,9 +363,7 @@ public class BDClass
             //MakeValuePercentBasedInBase(newValue);
 
            MakeValuePercentBasedInBase(GetValueMultipledByStackScale(statValue_PercentbasedOnBaseValue_Original));
-
            
-
            MakeValuePercentbasedInCurrent(GetValueMultipledByStackScale(statValue_PercentbasedOnCurrentValue_Original));
             return;
         }
@@ -397,6 +396,7 @@ public class BDClass
     {
         if(stackScaleModifier == 0 || stackCurrent == 0 || value == 0)
         {
+            Debug.Log("here?");
             return value;
         }
 

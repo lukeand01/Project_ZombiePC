@@ -243,6 +243,7 @@ public class EntityStat : MonoBehaviour
             BDClass stackBD = dictionaryForStacking[bd.id];
             RemoveStat(stackBD);
             stackBD.Stack(bd);
+            Debug.Log("stacked new amount " + bd.statValue_PercentbasedOnBaseValue);
             AddBDStat(stackBD);
 
             return;

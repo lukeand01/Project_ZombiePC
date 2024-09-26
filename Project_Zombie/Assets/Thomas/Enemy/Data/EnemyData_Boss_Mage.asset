@@ -21,9 +21,9 @@ MonoBehaviour:
   <damageType>k__BackingField: 0
   initialStatList:
   - stat: 0
-    initialValue: 5000
+    initialValue: 50
   - stat: 1
-    initialValue: 4
+    initialValue: 0
   scaleStatList: []
   enemyResistanceList:
   - <_damageType>k__BackingField: 0

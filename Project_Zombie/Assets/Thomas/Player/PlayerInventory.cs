@@ -493,7 +493,8 @@ public enum BossSigilType
 { 
     MiniBoss_Knight,
     MiniBoss_Ghost,
-    MiniBoss_Mage
+    MiniBoss_Mage,
+    MiniBoss_Artillery,
 
 }
 

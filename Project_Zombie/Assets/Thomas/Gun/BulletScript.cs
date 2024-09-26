@@ -47,8 +47,12 @@ public class BulletScript : MonoBehaviour
         _layer |= (1 << 14);
     }
 
-    public void SetUp(string id, Vector3 dir)
+    public void SetUp(string id, Vector3 dir, float destroyDuration = 7)
     {
+
+
+        gameObject.name = Random.Range(0, 1000).ToString();
+
         ownedID = id;
         this.dir = dir;
         canMove = true;
@@ -64,13 +68,14 @@ public class BulletScript : MonoBehaviour
             index = (int)ProjectilType.PlayerRegular;
         }
 
-        _destroySelf.SetUpDestroy(index , 7, this);
+        _destroySelf.SetUpDestroy(index , destroyDuration, this);
 
     }
     public void MakeEnemy()
     {
         isEnemy = true;
     }
+
 
 
     private void Update()
@@ -84,7 +89,11 @@ public class BulletScript : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (!canMove) return;
+        if (!canMove)
+        {
+            Debug.Log("stuck");
+            return;
+        }
         //the bullet keeps on moving. 
         UpdateFunction();
         
@@ -93,6 +102,7 @@ public class BulletScript : MonoBehaviour
     protected virtual void UpdateFunction()
     {
         transform.position += dir.normalized * speed * Time.fixedDeltaTime;
+
     }
 
 
@@ -198,9 +208,9 @@ public class BulletScript : MonoBehaviour
 
 
 
-    void CalculateDamageable(IDamageable damageable)
+    protected void CalculateDamageable(IDamageable damageable)
     {
-
+        Debug.Log("collision");
         if (damageable.GetID() == ownedID)
         {
 
@@ -232,8 +242,9 @@ public class BulletScript : MonoBehaviour
 
     protected virtual void TriggerEnterFunction(Collider other)
     {
-        canMove = false;
 
+
+        canMove = false;
         //then we apply everything and check if this fella can continue.
         if (other.gameObject.tag == "Wall")
         {
@@ -241,6 +252,7 @@ public class BulletScript : MonoBehaviour
             CheckBounce();
             return;
         }
+        
 
 
         if (isEnemy && other.gameObject.tag == "Enemy" && other.gameObject.layer != 8)
