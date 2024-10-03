@@ -486,10 +486,7 @@ public class EntityStat : MonoBehaviour
 
             dictionaryForStacking.Remove(bd.id);
         }
-        else
-        {
-            Debug.Log("this was not stackable");
-        }
+
 
         switch (bd.bdType)
         {
@@ -527,7 +524,7 @@ public class EntityStat : MonoBehaviour
     void RemoveStat(BDClass bd)
     {
         //this is flawed because many variable can change and fuck up everything.
-        //what we should do i form a list that carries a value_Level and an id.
+        //what we should do i form a list that carries a value_Level and an _id.
 
         if(bd.statValueFlat != 0)
         {
@@ -794,6 +791,10 @@ public class EntityStat : MonoBehaviour
     }
 
     public void CallDropFadedUI(string dropName) => _entityCanvas.CreateFadeUIForDrop(dropName);
+
+    public void CallToolNameUI(string toolName) => _entityCanvas.CreateToolNameFade(toolName);
+
+    public void CallToolHarvestUI(string harvestName) => _entityCanvas.CreateToolHarvestFade(harvestName);
     #endregion
 
     public void CheckForEnemyElementalResistance(EnemyData data, DamageType _type, ref float damageValue)

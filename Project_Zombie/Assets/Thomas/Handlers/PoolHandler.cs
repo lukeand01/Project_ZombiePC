@@ -249,7 +249,7 @@ public class PoolHandler : MonoBehaviour
         {
             var item = bossData_array[i];
 
-            if (item.enemyModel == null)
+            if (item.bossModel == null)
             {
                 Debug.Log("no model here " + item.name);
                 continue;
@@ -764,5 +764,6 @@ public enum ProjectilType
     EnemySpit = 1,
     FlyingSwords = 2,
     DarkOrb = 3,
-    Skull_Seeker = 4
+    Skull_Seeker = 4,
+    ArtillerySlow =  5
 }

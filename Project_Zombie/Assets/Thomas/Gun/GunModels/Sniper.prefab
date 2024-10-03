@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7245943012386920293}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GunShootPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3729630212259263316}
   - component: {fileID: 8328273750497806467}
   - component: {fileID: 8914163132049930642}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sniper
   m_TagString: Untagged
   m_Icon: {fileID: 0}

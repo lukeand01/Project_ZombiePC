@@ -14,15 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Scratcher
   enemyModel: {fileID: 7099369015076163779, guid: 318c50c56ab9dbb458cef7e546235184, type: 3}
+  bossModel: {fileID: 0}
   attackRange: 3.5
   AttackAnimationSpeed: 1
   attackRest: 0
   <damageType>k__BackingField: 0
   initialStatList:
   - stat: 0
-    initialValue: 150
+    initialValue: 1500000
   - stat: 1
-    initialValue: 3
+    initialValue: 0
   - stat: 2
     initialValue: 60
   scaleStatList: []
@@ -39,6 +40,7 @@ MonoBehaviour:
   audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
   audio_Spawned: {fileID: 0}
   audio_Attack: {fileID: 8300000, guid: ef852f4dba9f9e34285d4227eb3883d0, type: 3}
+  audio_footstepArray: []
   shouldNotDespawnBecauseOfDistance: 0
   canIgnoreAlly: 0
   canTurnAlly: 1

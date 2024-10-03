@@ -318,7 +318,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ChooseResponse(ResponseClass _response)
     {
-        //we will look for the right id here and
+        //we will look for the right _id here and
 
         //we check 
         CheckResponseTrigger(_response.response_trigger, _response.responseTrigger_Index);

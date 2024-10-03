@@ -44,6 +44,7 @@ public class EnemyGraphicHandler : MonoBehaviour
     public void MakeDamaged()
     {
         graphicArray[currentArrayIndex].MakeHighPrioMaterial(material_Damaged, 0.25f);
+       
     }
 
 }

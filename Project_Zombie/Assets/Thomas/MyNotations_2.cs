@@ -928,6 +928,137 @@
 //the problem is that i need to place it back
 
 
+
+//GOAL
+///the dog attack animation is not playing
+//create the graphics for enemy with shield
+//create the effect for the ranged
+//create the graphic for the giant
+//create the graphic for the mage
+//create the graphic for the bomber
+//create the effects for the bomber.
+
+
+
+//ENEMIS
+//simple -> but i want to make stronger versions different
+//ranged -> police officer, the improved just has a different color in the mouth
+//Hound -> just put the infected dog as graphic
+//Shield -> just a simple graphic with a shield infront.
+//Eye ->
+//Giant -> should be smaller because its not a miniboss
+//Mage -> 
+
+
+//GOAL FOR TOMORROW
+//create the first map.
+//lets also create a light system
+//cannot see what is not in sight.
+
+
+//GOAL FOR TOMORROW
+//Devil
+//system for spawning miniboss
+//system for spawning the boss
+
+
+//boss is simple. it only spawns in one especifc room. it requires x minissboss keys. each miniboss increases teh chance of a certain fella being spawned.
+//minibosses appear every 3 - 5 rounds. or they can be triggered to spawn. 
+
+
+
+//for now we will take a look at the light thing
+//then maybe a little at the boss systems. the miniboss is easier so it will be first.
+
+//reduce the light and put ingame lights to create a cool effect.
+
+
+//i might actually need urp, for fog.
+
+//Notes
+//fences should be higher, at least half the player
+
+
+//map 2 
+//two things here - you can shoot at hanging things which will help at a secret task
+//you can defend an area to evacuate people.
+
+
+//urp gives me more work, if possible i would prefer to not use it.
+//what i would like to do is the following. there are barrier that block visio
+
+
+//
+//where there is no vision there should be a fog.
+
+
+//TO DO
+//the camera should still make the wall transparent to see it better. will no longer do that.
+//now you can see enemies through things
+//now we need to completely hide them when out of visionm.
+//now we have something that might be just a bug form unity.
+//so i cannot create more layers for some reason
+
+
+//need a list of all materials that need replacing
+//
+
+
+//we can see things through, but i am not managing to hide things when out of sight.
+//i must simplify and test again
+//then i will take a look at the raycasts.
+
+
+//its already working, what about the dark?
+//so everything is working, i just need to get in place.
+//then i need to check for the raycast. this shouldnt be too hard
+//i need to find a way to ge tthe raycastworking from inside the player, thats the main problem right now
+//then i need to check for the materials
+//then we go back to working on the boss
+
+//need to put the right layer for the enemies.
+//
+
+
+
+//it seems that the aim is wrong sometimes.
+//now we need to try and ut both together.
+//what 
+
+
+//there is three cenarios: i
+//
+
+
+//i still have to finish the render, i would like to try it a bit more otherwise i will tolrate them not appearing behind the thing.
+//or maybe the enemies can ignore the vision, they will disappear just because of the dark
+//
+//TO DO
+//create teh devil
+//then we will create teh boss room. it must be able to stop the round, every enemy inside is killed.
+//
+
+
+//TO DO
+//test the devil using slash and fireball.
+//create the mechanic about setting on fire the places.
+//then i need to work in the transition between phases.
+//then i need to create the flame flying blades.
+//then i need to create the wave attack.
+//then i need to create the system for spawning the hounds
+//then i need to create death
+//then i need the mechanic for entering a room, locking it, and when the enemy is dead the doors open once again.
+
+//one is called by the devil, which he stops and summon a bunch of fireballs
+//and the other it idly summon one fireball.
+
+
+//i actuall need to get the enemies fixed. so get new animation and material for them.
+//make the hounds bark
+//after i am done with the boss i will move to pause menu and end ui. get all that information there working and reworked.
+//tehn we will do sound.
+
+
 //currently -> cna i do it in 2 months?
 //i am doing the mini-boss and boss -> 7 
 //change the graphic of all enemies and create animations -> 7
@@ -939,14 +1070,39 @@
 //improve the settings ui -> 1
 //improve the city. -> 7
 //general bug fixes -> 7
+//sound systems
 
 //tahts about 63 days, a bit more than 2 months
 //now its about 43 days -> i will say 50 days
 
-//(26/09)
-//Days passed: 14
-//days left for target: 36
-//Days left for project: 147
+
+
+//pause ui
+//Passive abilities and ult
+//curse
+//i need tools, and what you have grabbed with the tools.
+//i need current stats.
+//i need to know quests.
+//i need to get info about guns, and stuff like its 
+
+
+//ability and curse are in one side. i dont need to improve it that much., 
+//Stat, quest
+//guns are in the same icon, and also the current currently.
+
+//TO DO
+//add tool to the player
+//the tool appears in the pause ui
+//the tool allows to interact with other places.
+//there is a random value to get things. and when you get them it appears in the inventory.
+//
+
+
+
+//(02/10)
+//Days passed: 20
+//days left for target: 30
+//Days left for project: 141
 
 //RECORDING
 //BOSS -> 13/09 - 
@@ -958,6 +1114,96 @@
 //Version 0.7 ()
 //we will be focusing on content here. we will create all passives, actives, perma and temp guns, story quests and challenges.
 //create passives that stack on actions.
+//you can find tools in the run: fishing rod simple and advanced, bugnet simple and advanced, hunting knife simple and advanced.
+//those tools allow you to interact with certain secret location for loot. or triggers.
+//create a bunch of content for the tools.
+
+
+//IDEAS FOR MAP
+//the map has an underground that you get in a minecart and move to another position.
+//need to find tools: fishing rod, hammer and hunting knife
+//there are places to farm resource. by destroying the crates
+//merchant
+//there are teh turrets.
+//at the city you can do something to change how you play the map. you can turn on the energy perphaps?
+//Things you can trigger: nuclear bomb, set a curse, 
+//can start the generator, which will allow for gun upgrades: the generator is triggered in the city, but you need to repair the upgrader.
+//instead of repairing you can improve the upgradesr with secrets which are gained with tools
+//eletricity improves turrets, allows generator, allows to call boss, 
+//activate a curse can be done by a ritual where you gather certain secrets and use
+//curses are done to change teh game to get easier.
+//you can also get abilities from it. with the merchant you will have random npcs that appear and offer these things as long as you have the secrets.
+
+//how to get a tool? you either have to find it through chests or npcs, or you have to get a perma one.
+
+
+//FISHING ROD Simple
+//allows to fish in certain spots. it rolls for a chance to get a fish. each map has its chances.
+//Trout : 100 Points
+//Carp: 300 Points 
+//Catfish: get a key for something
+//Pike: 1 bless,
+//Ghostfish: get a random passive from a list.
+
+//FISHING ROD Magical
+//Sunfish: 300 points
+//Sandfish: 700 points
+//Tilapia: get a random passive from a list.
+//Lionfish: grant a perma buff 
+//Squid:  its a rare ingredient.
+
+//BUG NET
+//sun bettle
+//odd Larvae
+//Smithbug
+//PhantonFly
+//Snow butterfly
+
+//BUG NET ADVANCED
+//Mudprincess
+//Rainbow Insect
+//Killer Beetle
+//Pillowbug
+//Emperor Bettle
+
+//HUNTING KNIFE - when you have this every kills has a chance to get you an item.
+//Simple enemies: 
+//Eye: tear gland
+//Magical: magical hand
+//Hound: Hound´s tooth
+//Bomber and ranged: magical sac. 
+
+//HUNTING KNIFE ADVANCED - take loot from miniboss and bosses.
+//
+//
+//
+//
+//
+
+
+//each has a chance
+
+//Hammer - is used for liberating certain areas.
+
+//Fly : you need to get from a contract using huntingknife secrets.
+
+
+
+
+
+//SECRET
+//allow to upgrade the upgrader
+//allow to upgrade the turrets.
+//block events from happening
+//gain trinkets
+//gain weapons or 
+//allow secret areas.
+//gain fly.
+
+//there should be at least 3 secret areas.
 
 
 //TRAILER
+
+
+//

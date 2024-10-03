@@ -1,4 +1,5 @@
 using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -471,30 +472,162 @@ public class PlayerInventory : MonoBehaviour
     #endregion
 
     #region BOSS SIGILS
-    public List<BossSigilType> bossSigilList = new();
 
+    public Action<List<BossSigilType>> eventUpdateBossSigilUI;
+
+    public void OnUpdateBossSigilUI(List<BossSigilType> bossSigilType) => eventUpdateBossSigilUI?.Invoke(bossSigilType);
+
+    public List<BossSigilType> bossSigilList { get; private set; } = new();
+    public List<BossSigilType> readyToBeUsedSigilList { get; private set; } = new();
     //when we use i want to sepdn it.
+
+
 
     public void AddBossSigil(BossSigilType bossSigil)
     {
         bossSigilList.Add(bossSigil);
+        readyToBeUsedSigilList = GetBossSigilForPortal();
+        OnUpdateBossSigilUI(readyToBeUsedSigilList);
+        //everytime we do this we update the ui and we are close we simply show it.
+    }
+
+    public bool HasEnoughSigil()
+    {
+        for (int i = 0; i < bossSigilList.Count; i++)
+        {
+            var item = bossSigilList[i];
+            if (item == BossSigilType.Nothing) return false;
+        }
+
+        return true;
+    }
+
+    //first we will check if any of them have three.
+    List<BossSigilType> GetBossSigilForPortal()
+    {
+
+       
+
+
+        //we check if any of them has three.
+        //
+        Dictionary<BossSigilType, int> quantitySigilDictionary = new();
+
+        //we first to detect if there are three fellas. 
+        for (int i = 0; i < bossSigilList.Count; i++)
+        {
+            var item = bossSigilList[i];
+
+            if (!quantitySigilDictionary.ContainsKey(item))
+            {
+                quantitySigilDictionary.Add(item, 1);
+            }
+            else
+            {
+                quantitySigilDictionary[item] += 1;
+            }
+
+            if (quantitySigilDictionary[item] >= 3)
+            {
+                //we will return a list of three of this fella
+                return new List<BossSigilType> { item, item, item };
+
+            }
+      
+        }
+
+        List<BossSigilType> sigilList = new();
+        //otherwise 
+        int safeBreak = 0;
+        int number = 0;
+        while(sigilList.Count < 3)
+        {
+            safeBreak++;
+
+            if(safeBreak > 1000)
+            {
+                break;
+            }
+
+            if(number >= sigilList.Count)
+            {
+                sigilList.Add(BossSigilType.Nothing);
+            }
+            else
+            {
+                sigilList.Add(sigilList[number]);
+                number++;
+            }
+
+
+
+        }
+
+        return sigilList;
+
+
+    }
+    public void SpendSigil()
+    {
+        for (int i = 0; i < readyToBeUsedSigilList.Count; i++)
+        {
+            var item = readyToBeUsedSigilList[i];
+            if (bossSigilList.Contains(item))
+            {
+                bossSigilList.Remove(item);
+            }
+        }
+
+        readyToBeUsedSigilList = GetBossSigilForPortal();
+        OnUpdateBossSigilUI(readyToBeUsedSigilList);
     }
 
 
     #endregion
 
+
+    #region TOOLS
+
+    [Separator("TOOLS")]
+    [SerializeField] ToolData[] initialToolArray;
+    [SerializeField] List<ToolClass> toolList = new();
+
+    void SetTools()
+    {
+        for (int i = 0; i < initialToolArray.Length; i++)
+        {
+            var item = initialToolArray[i];
+
+            AddTool(item);
+
+        }
+    }
+
+    public void AddTool(ToolData data)
+    {
+        for (int i = 0; i < toolList.Count; i++)
+        {
+            var item = toolList[i];
+            if (item._data == data) return;
+        }
+
+        ToolClass toolClass = new ToolClass(data);
+        UIHandler.instance._pauseUI.CreateToolUnit(toolClass);
+        toolList.Add(toolClass);
+    }
+
+    #endregion
+
 }
 
-public class BossSigilClass
-{
-
-}
 public enum BossSigilType 
 { 
     MiniBoss_Knight,
     MiniBoss_Ghost,
     MiniBoss_Mage,
     MiniBoss_Artillery,
+    Nothing,
+    Boss_Devil
 
 }
 

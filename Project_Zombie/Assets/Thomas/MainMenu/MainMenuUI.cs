@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class MainMenuUI : MonoBehaviour
 {
+    //there will be the saveslotscreen
+    //the continue is just direct
+    //then settings.
+    //
+
 
     [SerializeField] GameObject[] screenHolderArray;
     private void Start()

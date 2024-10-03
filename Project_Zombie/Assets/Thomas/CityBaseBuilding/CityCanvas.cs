@@ -197,7 +197,7 @@ public class CityCanvas : MonoBehaviour
         //how can i assign taht value_Level to the player and then remmeber
 
         //maybe at the start of each game we simply get the saved values and assign them to the player.
-        //and it become an invisible bd. that cannot be altered. but should be able to be removed with id.
+        //and it become an invisible bd. that cannot be altered. but should be able to be removed with _id.
         //
 
         nameText.text = "Body Enhancer";

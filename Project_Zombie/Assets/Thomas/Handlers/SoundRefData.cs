@@ -95,7 +95,8 @@ public enum SoundType
     AudioClip_DialogueLetter = 17,
     AudioClip_ResponseChoice = 18,
     AudioClip_OutOfTimeTimer = 19,
-    AudioClip_MeteorExplosion = 20
+    AudioClip_MeteorExplosion = 20,
+    AudioClip_Explosion_01 = 21
 
 }
 

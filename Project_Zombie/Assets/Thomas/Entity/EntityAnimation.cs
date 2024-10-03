@@ -48,7 +48,7 @@ public class EntityAnimation : MonoBehaviour
             numberString = "_" + "0" + numberID.ToString();
         }
 
-
+        //Debug.Log("animation _id " + ANIMATIONFIRSTARGUMENT + animationID + nameID + numberString);
         return ANIMATIONFIRSTARGUMENT + animationID + nameID + numberString;
 
     }
@@ -209,8 +209,8 @@ public class EntityAnimation : MonoBehaviour
         {
            attackID = enemyIDDictionary[ANIMATIONCOMMAND_DEATH].numberID_Current;
         }
-        
 
+        Debug.Log("death id " + GetTotalAnimationId(ANIMATIONCOMMAND_DEATH, attackID));
         CallAnimation(ANIMATIONCOMMAND_DEATH, attackID, 0); //DEATH IS ALWAYS CALLED FROM THE MAIN LAYER
     }
 
@@ -363,7 +363,7 @@ public class EntityAnimation : MonoBehaviour
 
 public class EnemyInfoAnimationClass
 {
-    //we are going to get a id
+    //we are going to get a _id
     //int 
 
     public EnemyInfoAnimationClass(string nameID, int min, int max)

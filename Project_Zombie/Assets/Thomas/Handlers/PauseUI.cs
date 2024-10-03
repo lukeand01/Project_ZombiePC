@@ -209,52 +209,54 @@ public class PauseUI : MonoBehaviour
 
     #endregion
 
+    #region TOOL
+    [Separator("TOOL")]
+    [SerializeField] ToolUnit _toolUnitTemplate;
+    
+    public void CreateToolUnit(ToolClass tool)
+    {
+        ToolUnit newObject = Instantiate(_toolUnitTemplate);
+        newObject.transform.parent = _containerAbilityArray[2]._container;
+        newObject.SetUp(tool);
+    }
+
+    #endregion
 
     #region PASSIVE 
     [Separator("Set Passive")]
-    [SerializeField] AbilityUnit abilityUnitTemplate;
-    [SerializeField] Transform passiveAbilityContainer;
-    [SerializeField] Transform curseAbilityContainer;
-    [SerializeField] GameObject buttonOptionHolder;
-
+    [SerializeField] AbilityUnit _abilityUnitTemplate;
+    [SerializeField] ContainerClass[] _containerAbilityArray;
     //this only shows 
 
 
     public void OpenContainer(int choice)
     {
 
-        if(choice == 0)
+        for (int i = 0; i < _containerAbilityArray.Length; i++)
         {
-            passiveAbilityContainer.gameObject.SetActive(true);
-            curseAbilityContainer.gameObject.SetActive(false);
-        }
-        else
-        {
-            passiveAbilityContainer.gameObject.SetActive(false);
-            curseAbilityContainer.gameObject.SetActive(true);
+            var item = _containerAbilityArray[i];
+            item._holder.SetActive(false);
         }
 
+        _containerAbilityArray[choice]._holder.SetActive(true);
 
     }
 
     void CheckContainers()
     {
-        if(curseAbilityContainer.childCount > 0)
-        {
-            buttonOptionHolder.SetActive(true);
-        }
-        else
-        {
-            buttonOptionHolder.SetActive(false);
-            OpenContainer(0);
-        }
+        //this here has the function of disabling the buttons if there are is nothing on them. i will leave this here for now.
+
+        return;
+
+
+        
     }
     //then we create a list so we can update stuff without changing everything.
     List<AbilityUnit> abilityUnitList = new();   
     public void AddPassive(AbilityClass ability)
     {
-        AbilityUnit newObject = Instantiate(abilityUnitTemplate);
-        newObject.transform.SetParent(passiveAbilityContainer);
+        AbilityUnit newObject = Instantiate(_abilityUnitTemplate);
+        newObject.transform.SetParent(_containerAbilityArray[0]._container);
         newObject.SetUpPassive(ability);
 
         //Debug.Log("added an ability to the passive " + ability._abilityUnit.gameObject.name);
@@ -263,10 +265,13 @@ public class PauseUI : MonoBehaviour
     public void AddCurse(AbilityClass ability)
     {
         //we will put this in another
-        AbilityUnit newObject = Instantiate(abilityUnitTemplate);
-        newObject.transform.SetParent(curseAbilityContainer);
+        AbilityUnit newObject = Instantiate(_abilityUnitTemplate);
+        newObject.transform.SetParent(_containerAbilityArray[0]._container);
         newObject.SetUpPassive(ability);
     }
+
+
+
 
     public void RemovePassive(AbilityClass ability)
     {
@@ -308,6 +313,21 @@ public class PauseUI : MonoBehaviour
     #endregion
 
 
+    [Separator("RIGHT SIDE")]
+    [SerializeField] ContainerClass[] _containerArrayRightSide;
+
+    public void OpenContainer_RightSide(int choice)
+    {
+
+        for (int i = 0; i < _containerArrayRightSide.Length; i++)
+        {
+            var item = _containerArrayRightSide[i];
+            item._holder.SetActive(false);
+        }
+
+        _containerArrayRightSide[choice]._holder.SetActive(true);
+
+    }
 
     Vector3 GetScreenOffset(Vector3 posRef)
     {
@@ -349,4 +369,11 @@ public class PauseUI : MonoBehaviour
     }
 
 
+}
+
+[System.Serializable]
+public class ContainerClass
+{
+    public GameObject _holder;
+    public Transform _container;
 }

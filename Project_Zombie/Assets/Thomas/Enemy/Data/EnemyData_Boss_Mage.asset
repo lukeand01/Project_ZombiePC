@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Mage
   enemyModel: {fileID: 0}
-  bossModel: {fileID: 0}
+  bossModel: {fileID: 4440403104503952507, guid: 4c0a8611e86ab984c8e49c1b31900d7f, type: 3}
   attackRange: 0
   AttackAnimationSpeed: 1
   attackRest: 0

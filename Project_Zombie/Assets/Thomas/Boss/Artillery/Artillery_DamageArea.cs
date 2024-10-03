@@ -28,13 +28,16 @@ public class Artillery_DamageArea : MonoBehaviour
 
     public void Set_Explosion(float damageTimer, float radius)
     {
-        _shellObject.transform.localPosition = new Vector3(0,20,0);
-        _shellObject.transform.DOLocalMove(Vector3.zero, damageTimer).SetEase(Ease.Linear).OnComplete(FirstExplosion);
+        _shellObject.transform.localPosition = new Vector3(0,80,0);
+        _shellObject.transform.DOLocalMove(Vector3.zero, damageTimer * 0.95f).SetEase(Ease.Linear).OnComplete(FirstExplosion);
+
+        _uiTimer_Current = 0;
+        _uiTimer_Total = damageTimer;
 
         _radius = radius;
         _abilityCanvas.StartCircleIndicator(radius);
 
-        _radius_Explosion = radius * 2;
+        _radius_Explosion = 15;
 
 
         _targetLayer |= (1 << 3);
@@ -43,9 +46,10 @@ public class Artillery_DamageArea : MonoBehaviour
 
     void FirstExplosion()
     {
-        PlayerHandler.instance.TryToCallExplosionCameraEffect(transform, 1);
+        PlayerHandler.instance.TryToCallExplosionCameraEffect(transform, 0.8f);
         DealDamage(_radius);
         GameHandler.instance._pool.GetPS(PSType.Explosion_01, transform);
+        GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_MeteorExplosion);
         Invoke(nameof(TriggerSecondExplosion), 1);
     }
 
@@ -53,17 +57,18 @@ public class Artillery_DamageArea : MonoBehaviour
     {
         _isSecondExplosion = true;
         _explosion_Current = 0;
-        _explosion_Total = 5;
-        
+        _explosion_Total = 2;
 
+        _abilityCanvas.StartCircleIndicator(_radius_Explosion);
     }
 
     void SecondExplosion()
     {
         DealDamage(_radius_Explosion);
+        PlayerHandler.instance.TryToCallExplosionCameraEffect(transform, 1.5f);
         GameHandler.instance._pool.GetPS(PSType.Explosion_02, transform);
-
-        Invoke(nameof(Complete), 0.5f);
+        GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Explosion_01);
+        Invoke(nameof(Complete), 0.3f);
     }
 
     //then we start the next timer.

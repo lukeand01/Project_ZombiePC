@@ -15,8 +15,8 @@ public class Behavior_Boss_Artillery_Grenade : Sequence2
     {
         _boss = boss;
 
-        cooldown_Total = 2;
-        cooldown_Current = Random.Range(cooldown_Total * 0.5f, cooldown_Total * 1.3f);
+        cooldown_Total = 1;
+        cooldown_Current = Random.Range(cooldown_Total * 0.3f, cooldown_Total);
     }
 
     public override NodeState Evaluate()
@@ -33,9 +33,16 @@ public class Behavior_Boss_Artillery_Grenade : Sequence2
             //then we pick a random fella from the ones carrying the 
             //we need to trigger a normal damage area.
             //i want something to do the arc
+            _boss.ThrowGrenade();
+            
 
         }
 
         return NodeState.Success;
+    }
+
+    void ShootGrenade()
+    {
+
     }
 }

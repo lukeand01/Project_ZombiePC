@@ -9,7 +9,7 @@ public class EnemyAnimation : MonoBehaviour
 
 
     //everyone has the same controller, but people call different things?
-    //no, it will be easier to have different controls and name them the same thing, i just need the id
+    //no, it will be easier to have different controls and name them the same thing, i just need the _id
 
 
     string nameID;

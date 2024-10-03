@@ -147,6 +147,40 @@ public class EntityStatCanvas : MonoBehaviour
 
     #endregion
 
+    #region TOOL
+    public void CreateToolNameFade(string toolName)
+    {
+        FadeUI newObject = Instantiate(fadeTemplate);
+        newObject.transform.SetParent(recoverHealthPos);
+
+        newObject.ChangeScaleModifier(2);
+
+        float amount = 20;
+        float x = Random.Range(-amount * 3, amount * 3);
+        float z = Random.Range(-amount, amount);
+
+        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 60, 0) + new Vector3(x, z, 0);
+        newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        newObject.SetUp(toolName, Color.yellow);
+    }
+    public void CreateToolHarvestFade(string harvestName)
+    {
+        FadeUI newObject = Instantiate(fadeTemplate);
+        newObject.transform.SetParent(recoverHealthPos);
+
+        newObject.ChangeScaleModifier(2);
+
+        float amount = 20;
+        float x = Random.Range(-amount * 3, amount * 3);
+        float z = Random.Range(-amount, amount);
+
+        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 45, 0) + new Vector3(x, z, 0);
+        newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        newObject.SetUp(harvestName, Color.yellow);
+    }
+
+    #endregion
+
 
     #region NEW FADE UI
 

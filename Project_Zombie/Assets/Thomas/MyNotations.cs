@@ -617,8 +617,8 @@
 //create console command system? need to be the type of system that i can easily comppletely removed from the game
 //can spawn enemy.
 //can kill all enemies
-//can get a passive with id
-//can get gun_Perma with id
+//can get a passive with _id
+//can get gun_Perma with _id
 //can buy all items in the store.
 
 

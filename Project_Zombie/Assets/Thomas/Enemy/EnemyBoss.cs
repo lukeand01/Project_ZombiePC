@@ -14,12 +14,12 @@ public class EnemyBoss : Tree, IDamageable
     
     //
 
-    string id;
+    protected string id;
     protected bool isDead;
 
     [Separator("BOSS")]
     [SerializeField] protected EnemyData _bossData;
-    [SerializeField] BossSigilType _sigilType;
+    [SerializeField] protected BossSigilType _sigilType;
     [SerializeField] protected AttackClass[] attackClassArray;
 
 
@@ -33,7 +33,7 @@ public class EnemyBoss : Tree, IDamageable
     [SerializeField] protected NavMeshAgent _agent;
     [SerializeField] protected Rigidbody _rb;
     [SerializeField] protected BoxCollider _boxCollider;
-    [SerializeField] protected Animator _animator;
+    [SerializeField] public Animator _animator;
 
     [Separator("CANVAS")]
     [SerializeField] protected EnemyCanvas _enemyCanvas;
@@ -50,7 +50,7 @@ public class EnemyBoss : Tree, IDamageable
 
     float _speed_Base;
 
-    const int POINTS_PERKILL = 1500;
+    protected const int POINTS_PERKILL = 1500;
 
     protected bool isLocked;
     protected void ControlIsLocked(bool isLocked)
@@ -119,7 +119,6 @@ public class EnemyBoss : Tree, IDamageable
 
 
         SetActionindexMax(attackClassArray.Length);
-        
 
         InitAnimation();
         id = MyUtils.GetRandomID();
@@ -274,7 +273,9 @@ public class EnemyBoss : Tree, IDamageable
 
     public virtual void TakeDamage(DamageClass damageRef)
     {
-        
+        Debug.Log("take damage ");
+
+
         if (isDead) return;
 
         //this here is checking if the player can damage the shield.
@@ -422,6 +423,12 @@ public class EnemyBoss : Tree, IDamageable
 
     bool _actionShouldFacePlayer;
 
+
+    public void ControlIsActing(bool isActing)
+    {
+        this.IsActing = isActing;
+    }
+
     public bool ShouldChangeAction()
     {
         if(actionCooldon_Current > actionCooldown_Total)
@@ -441,6 +448,8 @@ public class EnemyBoss : Tree, IDamageable
         IsActing = true;
         _actionShouldFacePlayer = shouldFacePlayer;
         StopAgent();
+
+        
         CallAnimation(actionAnimation, animationLayer);
     }
     public void StopAction()
@@ -506,7 +515,6 @@ public class EnemyBoss : Tree, IDamageable
 
         //we need to roll for chance as well.
 
-
         SetActionIndexCurrent(newAction);
     }
 
@@ -524,7 +532,7 @@ public class EnemyBoss : Tree, IDamageable
     float attackDuration_Current;
     bool isChargingAttack;
 
-    public void StartChargingAttack()
+    public virtual void StartChargingAttack()
     {
         if(actionIndex_Current == -1)
         {
@@ -538,9 +546,9 @@ public class EnemyBoss : Tree, IDamageable
         //we have to tthe shaep of attack, the direction and the duration in the attack class.
         //Debug.Log(attackClassArray.Length);
         //Debug.Log(actionIndex_Current);
-
+        Debug.Log(actionIndex_Current + " " + actionIndex_Max);
         attackClassArray[actionIndex_Current].ControlPSAttackCharge(true);
-
+        
         if (attackClassArray[actionIndex_Current].sound_Charge != null)
         {
             GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(attackClassArray[actionIndex_Current].sound_Charge);
@@ -616,7 +624,6 @@ public class EnemyBoss : Tree, IDamageable
 
     public void CallAnimation(string nameID, int layer)
     {
-
         _animator.Play(ANIMATIONID + nameID , layer);
     }
     public bool IsAnimationRunning(string nameID, int layer)
@@ -671,7 +678,7 @@ public class EnemyBoss : Tree, IDamageable
 public class AttackClass
 {
     //damage
-    //animation id
+    //animation _id
     //trigger to call.
     //
     [SerializeField] string attackName; //just for editor.

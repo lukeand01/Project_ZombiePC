@@ -15,14 +15,13 @@ public class AnimationEventHandler : MonoBehaviour
         if (ignoreEnemy) return;
 
          _enemy = transform.parent.parent.GetComponent<EnemyBase>();
-        
-        
-        Debug.Log("here");
+
     }
 
     public void CallAttack()
     {
         _enemy.CallAttack();
+        Debug.Log("called attack");
     }
 
     public void AnimationEnded()

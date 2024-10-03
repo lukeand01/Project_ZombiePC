@@ -38,7 +38,7 @@ public class PlayerCamera : MonoBehaviour
 
     private void Update()
     {
-        DetectWalls();
+        //DetectWalls();
     }
 
     private void FixedUpdate()

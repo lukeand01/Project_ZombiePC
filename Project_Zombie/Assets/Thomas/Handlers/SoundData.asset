@@ -76,6 +76,9 @@ MonoBehaviour:
   - title: Meteor Explosion
     <_soundType>k__BackingField: 20
     <_soundClip>k__BackingField: {fileID: 8300000, guid: 1bc7bf1574344fb41b5837abcf0b96b9, type: 3}
+  - title: Explosion_01
+    <_soundType>k__BackingField: 21
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 3fc44e5b1fe80e84db422832319715d9, type: 3}
   soundList_Bgm:
   - title: 
     <_soundType>k__BackingField: 0

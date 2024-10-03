@@ -18,7 +18,7 @@ public class Story_DialogueData : ScriptableObject
     //so i probly want a list and those lists have conditionals.
     //should have a normal conditional of progress.
 
-    //every list has an id - if you achieved something to get that dialog
+    //every list has an _id - if you achieved something to get that dialog
     //and also every dialog will have a default. what the player will say while it remains in that level.
     //
 
@@ -27,7 +27,7 @@ public class Story_DialogueData : ScriptableObject
 
 
     [Separator("FOR ESPECIAL DIALOGUE")]
-    [SerializeField] string especialID; //this id is used for especial events. like noticing the player
+    [SerializeField] string especialID; //this _id is used for especial events. like noticing the player
     [SerializeField] bool shouldConnectToNormalDialogue; //if we have this then this means that once this dialogue ends then we go to the next dialogue that should be its normal dialogue.
 
 

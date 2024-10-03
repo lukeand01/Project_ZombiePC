@@ -91,7 +91,7 @@ public class BulletScript : MonoBehaviour
     {
         if (!canMove)
         {
-            Debug.Log("stuck");
+
             return;
         }
         //the bullet keeps on moving. 
@@ -210,7 +210,6 @@ public class BulletScript : MonoBehaviour
 
     protected void CalculateDamageable(IDamageable damageable)
     {
-        Debug.Log("collision");
         if (damageable.GetID() == ownedID)
         {
 

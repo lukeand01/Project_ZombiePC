@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4009575288834405444}
   - component: {fileID: 8785122607065095892}
   - component: {fileID: 4580164547944909377}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Smg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1565557337147662310}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GunShootPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}

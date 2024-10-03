@@ -13,7 +13,9 @@ public class PlayerLineOfSight : MonoBehaviour
     PlayerHandler handler;
 
 
+    //we need to fix this thing being stuck
     //
+
     private void Awake()
     {
         handler = GetComponent<PlayerHandler>();    
@@ -27,8 +29,7 @@ public class PlayerLineOfSight : MonoBehaviour
         _mesh = new Mesh();
         _meshFilter.mesh = _mesh;
 
-        
-
+      
 
     }
 

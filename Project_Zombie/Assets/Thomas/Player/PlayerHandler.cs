@@ -343,6 +343,10 @@ public class PlayerHandler : MonoBehaviour
         areaDamage.SetUp_Continuously(playerPosition, 5, 3, 5, newDamage, 3, 1, AreaDamageVSXType.Meteor);
         areaDamage.MakeDelayShowInUI();
     }
+
+
+
+
 }
 
 public enum EspecialConditionType

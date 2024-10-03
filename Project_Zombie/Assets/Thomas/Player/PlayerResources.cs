@@ -22,7 +22,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        //id  =Guid.NewGuid().ToString();
+        //_id  =Guid.NewGuid().ToString();
         id = "Player";
         handler = GetComponent<PlayerHandler>();    
     }
@@ -103,8 +103,8 @@ public class PlayerResources : MonoBehaviour, IDamageable
     public void TakeDamage(DamageClass damage)
     {
 
-        
-        
+
+        Debug.Log("player took damage");
 
         if (debugCannotTakeDamage) return;
 

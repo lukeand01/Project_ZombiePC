@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Knight
   enemyModel: {fileID: 0}
-  bossModel: {fileID: 0}
+  bossModel: {fileID: 2665559311388258686, guid: 915e634f464d58b4a8c02ec87d194724, type: 3}
   attackRange: 50
   AttackAnimationSpeed: 1
   attackRest: 0

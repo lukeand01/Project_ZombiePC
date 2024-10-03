@@ -22,8 +22,8 @@ TagManager:
   - IgnorePlayer
   - GunLayer
   - Shield
-  - 
-  - 
+  - ViewMask
+  - Dark
   - 
   - 
   - 

@@ -19,11 +19,14 @@ public class BehaviorAttack : Sequence2
 
     bool isAttacking;
 
-    public BehaviorAttack(EnemyBase enemy)
+    int _attackLayer;
+
+    public BehaviorAttack(EnemyBase enemy, int attackLayer = 2)
     {
         this.enemy = enemy;
         enemyData = enemy.GetData();
         total = enemy.GetData().attackRest;
+        _attackLayer = attackLayer;
     }
 
     //instead of waiting, we will attack and call it in the end of the animation.
@@ -60,7 +63,7 @@ public class BehaviorAttack : Sequence2
             else
             {
                 current = 0;
-                enemy._entityAnimation.CallAnimation_Attack(2);
+                enemy._entityAnimation.CallAnimation_Attack(_attackLayer);
                 enemy.SetIsAttacking_Animation(true);
                 isAttacking = true;
 

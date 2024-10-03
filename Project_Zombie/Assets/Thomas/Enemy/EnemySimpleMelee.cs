@@ -6,8 +6,7 @@ public class EnemySimpleMelee : EnemyBase
 {
     [SerializeField] bool shouldOnlyMoveWhenFacing;
 
-
-    //
+    [SerializeField] int attackLayer = 2;
 
     protected override void AwakeFunction()
     {
@@ -56,7 +55,7 @@ public class EnemySimpleMelee : EnemyBase
         return new Sequence2(new List<Node>
         {
             new BehaviorChase(this),
-            new BehaviorAttack(this)
+            new BehaviorAttack(this, attackLayer)
 
         });
     }

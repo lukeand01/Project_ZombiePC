@@ -24,7 +24,7 @@ public class Behavior_Boss_Artillery_LongRange : Sequence2
         wallAndPlayerTargetLayer |= (1 << 9);
 
 
-        cooldown_Total = 5;
+        cooldown_Total = 8;
         cooldown_Current = Random.Range(cooldown_Total * 0.6f, cooldown_Total * 1.3f);
     }
 
@@ -53,7 +53,10 @@ public class Behavior_Boss_Artillery_LongRange : Sequence2
 
         }
 
-        if (eyeDetecting >= 2) return NodeState.Success;
+        if (eyeDetecting >= 2)
+        {
+            return NodeState.Success;
+        }
 
         //if it gets here is because we can shoot.
 
@@ -67,8 +70,7 @@ public class Behavior_Boss_Artillery_LongRange : Sequence2
         {
             //we shoot a custom damagearea.
             _boss.ShootProjectil();
-            cooldown_Total = 5;
-            cooldown_Current = Random.Range(cooldown_Total * 0.6f, cooldown_Total * 1.3f);
+            cooldown_Current = Random.Range(cooldown_Total * 0.8f, cooldown_Total * 1.3f);
         }
 
         return NodeState.Success;

@@ -204,6 +204,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Generic_Mountains_Snow_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1040749326958454, guid: afeef269f7c345944a09fa066cfb9657, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4855935332736098, guid: afeef269f7c345944a09fa066cfb9657, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.2
@@ -499,7 +503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1972207730512856, guid: ea4fb55d0227e604386f44f905cfe7c0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4235566955999968, guid: ea4fb55d0227e604386f44f905cfe7c0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -844,6 +848,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 32310074267282001, guid: aee75402f6e39c6409a3ba37a514067a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1819496730457725654, guid: aee75402f6e39c6409a3ba37a514067a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.019628946
@@ -1004,6 +1012,10 @@ PrefabInstance:
     - target: {fileID: 1109315531109580, guid: 978e4e824620a0f40a841eccaf23a994, type: 3}
       propertyPath: m_Name
       value: PlayerModel_MainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1109315531109580, guid: 978e4e824620a0f40a841eccaf23a994, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4002051507879398, guid: 978e4e824620a0f40a841eccaf23a994, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2611,7 +2623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1000010823978654, guid: 3228a22491941734bb83ad691d17fcb9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4000010409153280, guid: 3228a22491941734bb83ad691d17fcb9, type: 3}
       propertyPath: m_LocalScale.x
@@ -3105,7 +3117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1956197547661106, guid: f293a2dcc753a4a489fefe7f8f312d69, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4288416149911810, guid: f293a2dcc753a4a489fefe7f8f312d69, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4418,7 +4430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 163066, guid: 53777b8572d1e7242bc90044f62667ce, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 480312, guid: 53777b8572d1e7242bc90044f62667ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5133,6 +5145,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Wep_Rifle_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1086551582694414, guid: fbe32035b0baf224186c9be363d01250, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4022373424255698, guid: fbe32035b0baf224186c9be363d01250, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.559
@@ -5432,6 +5448,10 @@ PrefabInstance:
     - target: {fileID: 1007556126924062, guid: 0065645c63b01ac439ed494146c20b8c, type: 3}
       propertyPath: m_Name
       value: FX_Smoke_Small_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1007556126924062, guid: 0065645c63b01ac439ed494146c20b8c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4501109767796144, guid: 0065645c63b01ac439ed494146c20b8c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6287,6 +6307,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameHandler
       objectReference: {fileID: 0}
+    - target: {fileID: 869934527877858254, guid: 77c0841a9d25fbb48927e7b3cc0a8ef1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5547617774536556136, guid: 77c0841a9d25fbb48927e7b3cc0a8ef1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.20995
@@ -6681,6 +6705,10 @@ PrefabInstance:
     - target: {fileID: 1082924602782462, guid: 54e8cd42ff115b14a90340ee66d64fa1, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Crate_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1082924602782462, guid: 54e8cd42ff115b14a90340ee66d64fa1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4049832906754302, guid: 54e8cd42ff115b14a90340ee66d64fa1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7141,6 +7169,10 @@ PrefabInstance:
     - target: {fileID: 1105299241195476, guid: 5b2c612ff982504438c401921c6d4f93, type: 3}
       propertyPath: m_Name
       value: SM_Chr_Attach_Backpack_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1105299241195476, guid: 5b2c612ff982504438c401921c6d4f93, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4053506727961160, guid: 5b2c612ff982504438c401921c6d4f93, type: 3}
       propertyPath: m_LocalScale.x
@@ -7915,6 +7947,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c576e1097ef79e64a9f0ab7c3883cf4a, type: 3}
       propertyPath: m_Name
       value: Campfire_anim
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c576e1097ef79e64a9f0ab7c3883cf4a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9039,7 +9075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1886906540461510, guid: 88458a60107da3140a2e173fe916bbfb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4726195141619606, guid: 88458a60107da3140a2e173fe916bbfb, type: 3}
       propertyPath: m_LocalScale.x
@@ -9342,6 +9378,10 @@ PrefabInstance:
     - target: {fileID: 1348256614571836, guid: b5e2f5a059f862f4096b73820f3349ae, type: 3}
       propertyPath: m_Name
       value: SM_Bld_Village_Well_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1348256614571836, guid: b5e2f5a059f862f4096b73820f3349ae, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4249802213056932, guid: b5e2f5a059f862f4096b73820f3349ae, type: 3}
       propertyPath: m_LocalScale.x

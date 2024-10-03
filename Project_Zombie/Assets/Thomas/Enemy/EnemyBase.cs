@@ -71,6 +71,9 @@ public class EnemyBase : Tree, IDamageable
 
     protected override void UpdateFunction()
     {
+
+        if (IsAttacking_Animation) return;
+
         if(isLocked)
         {
             //we force it to play idle animation.
@@ -342,7 +345,6 @@ public class EnemyBase : Tree, IDamageable
 
     public void TakeDamage(DamageClass damageRef)
     {
-        Debug.Log("take damage");
         if (isDead) return;
          
         //this here is checking if the player can damage the shield.
@@ -413,7 +415,6 @@ public class EnemyBase : Tree, IDamageable
     protected virtual void Die(bool wasKilledByPlayer = true)
     {
 
-
         PlayerHandler.instance._entityEvents.OnKillEnemy(this, wasKilledByPlayer);
             
         PlayerHandler.instance._playerResources.GainPoints(POINTS_PERKILL);
@@ -450,21 +451,19 @@ public class EnemyBase : Tree, IDamageable
 
     IEnumerator DeathProcess()
     {
-
         _entityAnimation.ControlWeight(2, 0);
         _entityAnimation.ControlIfAnimatorApplyRootMotion(true);
         _entityAnimation.RerollDeathAnimation();
         _entityAnimation.CallAnimation_Death();
 
         float clipDuration = _entityAnimation.GetDurationForDeath() + 5;
-
+        Debug.Log("1");
         yield return new WaitForSeconds(clipDuration);
-
+        Debug.Log("2");
         transform.DOMove(transform.position + new Vector3(0, -5, 0), 10f);
 
         yield return new WaitForSeconds(9.8f);
-
-
+        Debug.Log("3");
         GameHandler.instance._pool.Enemy_Release(data, this);
     }
 
@@ -587,7 +586,7 @@ public class EnemyBase : Tree, IDamageable
 
     public void SetNewtarget(GameObject target)
     {
-        //the only problem is that its not reliable to use gameobject id.
+        //the only problem is that its not reliable to use gameobject _id.
 
         if(targetObject != null)
         {
@@ -784,7 +783,7 @@ public class EnemyBase : Tree, IDamageable
     //i want to be able to loop.
 
     //the zombie will not react from getting damaged. they will instead show a little red color
-    //the first attack id is random, but then it becomes a loop.
+    //the first attack _id is random, but then it becomes a loop.
     //the zombie should have movement for slow walk and fast walk
     //
 

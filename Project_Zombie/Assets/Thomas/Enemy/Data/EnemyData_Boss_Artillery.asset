@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Artillery
   enemyModel: {fileID: 0}
-  bossModel: {fileID: 0}
+  bossModel: {fileID: 2527220848279923987, guid: da1a732a4f91e53478aff0f87cd94c2a, type: 3}
   attackRange: 0
   AttackAnimationSpeed: 1
   attackRest: 0
