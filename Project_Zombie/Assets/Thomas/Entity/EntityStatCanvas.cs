@@ -153,13 +153,14 @@ public class EntityStatCanvas : MonoBehaviour
         FadeUI newObject = Instantiate(fadeTemplate);
         newObject.transform.SetParent(recoverHealthPos);
 
-        newObject.ChangeScaleModifier(2);
+
+        newObject.ChangeScaleModifier(6);
 
         float amount = 20;
         float x = Random.Range(-amount * 3, amount * 3);
         float z = Random.Range(-amount, amount);
 
-        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 60, 0) + new Vector3(x, z, 0);
+        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 120, 0) + new Vector3(x, z, 0);
         newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
         newObject.SetUp(toolName, Color.yellow);
     }
@@ -168,13 +169,14 @@ public class EntityStatCanvas : MonoBehaviour
         FadeUI newObject = Instantiate(fadeTemplate);
         newObject.transform.SetParent(recoverHealthPos);
 
-        newObject.ChangeScaleModifier(2);
+        newObject.ChangeScaleModifier(4);
+
 
         float amount = 20;
         float x = Random.Range(-amount * 3, amount * 3);
         float z = Random.Range(-amount, amount);
 
-        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 45, 0) + new Vector3(x, z, 0);
+        newObject.transform.localPosition = Vector3.zero + new Vector3(0, 80, 0) + new Vector3(x, z, 0);
         newObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
         newObject.SetUp(harvestName, Color.yellow);
     }

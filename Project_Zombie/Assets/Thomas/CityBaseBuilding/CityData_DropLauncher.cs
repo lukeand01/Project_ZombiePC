@@ -14,8 +14,9 @@ public class CityData_DropLauncher : CityData
 
     List<int> dropIndexList = new();
 
+    [field: SerializeField] public int dropSlot;
     [field: SerializeField] public List<DropData> currentAvailableDropList { get; private set; } = new();
-
+    [field:SerializeField] public List<DropData> currentEquippedDropList { get; private set; } = new();
 
     public void Initalize()
     {
@@ -74,22 +75,50 @@ public class CityData_DropLauncher : CityData
 
     }
 
+    public void GenerateListForEquipContainer()
+    {
+        //we get a list and remove those that are in the currentequipped.
 
-    //we check each to see if any of them was possible.
-    //
+        List<DropData> dropList = currentAvailableDropList;
 
-    //the number of tries are based in the level
+        for (int i = 0; i < dropList.Count; i++)
+        {
+            var item = dropList[i];
+
+            if (currentEquippedDropList.Contains(item))
+            {
+                dropList.RemoveAt(i);   
+            }
+        }
+
+
+        UIHandler.instance._EquipWindowUI.UpdateOptionForDrops(dropList);
+    }
+
+    public DropData GetDropDataFromIndex(int index)
+    {
+        return dropDataRefList[index];
+    }
+
+    public void SetEquippedDropList(List<DropData> dropList)
+    {
+        currentEquippedDropList = dropList;
+    }
+
     public DropData GetDropData()
     {
+
+        //the chance to spawn each should be the same?
+        //
 
         int tries = cityStoreLevel * 2;
 
         for (int i = 0; i < tries; i++)
         {
             int roll = Random.Range(0, 500);
-            int random = Random.Range(0, currentAvailableDropList.Count);
+            int random = Random.Range(0, currentEquippedDropList.Count);
 
-            var item = currentAvailableDropList[random]; 
+            var item = currentEquippedDropList[random]; 
 
             if(item.rollRequired > roll)
             {

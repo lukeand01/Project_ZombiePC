@@ -56,7 +56,13 @@ public class EntityEvents : MonoBehaviour
     {
         eventKilledEnemy?.Invoke(enemy, wasPlayer);
     }
-    
+
+    public Action<EnemyBoss> eventKillBoss;
+    public void OnKillBoss(EnemyBoss boss)
+    {
+        eventKillBoss?.Invoke(boss);
+    }
+
 
     public Action eventCrit; 
     public void OnCrit()

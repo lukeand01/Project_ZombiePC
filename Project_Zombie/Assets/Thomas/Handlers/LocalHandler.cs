@@ -21,7 +21,7 @@ public class LocalHandler : MonoBehaviour
     [SerializeField] bool debug_doNotSpawn;
 
     [SerializeField] Transform spawnPos;
-    //we may give an ability chest with an enemy
+    //we may give an ability chest with an _enemy
 
 
 
@@ -435,7 +435,7 @@ public class LocalHandler : MonoBehaviour
 
     public void EnemyDied(EnemyData data)
     {
-        //we check if the enemy was in the list and we remove it. o
+        //we check if the _enemy was in the list and we remove it. o
         
 
     }

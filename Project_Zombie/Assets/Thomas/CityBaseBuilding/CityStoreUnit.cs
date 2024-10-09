@@ -51,7 +51,7 @@ public class CityStoreUnit : ButtonBase
 
         SetUnknown(gunData.HasBeenFound);
 
-       //if(!gunData.isTemp) Debug.Log("GunUnit " + gunData.name + " hasgun: " + hasGun + "; HasBeenFound: " + gunData.HasBeenFound);
+       //if(!_gunData.isTemp) Debug.Log("GunUnit " + _gunData.name + " hasgun: " + hasGun + "; HasBeenFound: " + _gunData.HasBeenFound);
 
 
     }
@@ -100,7 +100,7 @@ public class CityStoreUnit : ButtonBase
         this.handler = handler;
 
         nameText.text = data.dropName;
-        icon.sprite = data.dropSprite;
+        icon.sprite = data.dropIcon;
 
         isBought.SetActive(false);
 

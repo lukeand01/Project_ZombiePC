@@ -64,7 +64,7 @@ public class CurseAbilityGlassCannon : AbilityPassiveData
 //The Selfish God of healing
 
 //heals after every turn, but all others forms of healing by 50%
-//Feeble but agile, AddIngredient chance of dodging by 50% but every enemy that actually hits teh player has a small chance of stunnng the player
+//Feeble but agile, AddIngredient chance of dodging by 50% but every _enemy that actually hits teh player has a small chance of stunnng the player
 //increase the duration of allies by 50% but 
 //Critical Situation, always crit but the enemies also always crit. critchance is transformed in critdamage.
 //

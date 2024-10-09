@@ -1,9 +1,12 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAbility : MonoBehaviour
 {
+    [SerializeField] int initialAbilitySlot;
+    [SerializeField]int currentAbilitySlot;
     [SerializeField] List<AbilityClass> abilityActiveList = new();
     [SerializeField] List<AbilityClass> abilityPassiveList = new();
     public List<AbilityClass> abilityCurseList { get; private set; } = new();
@@ -24,7 +27,10 @@ public class PlayerAbility : MonoBehaviour
     private void Start()
     {
         //this should only call once,
-        SetAbility();
+
+
+
+
 
 
     }
@@ -47,14 +53,50 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
+
     #region SET ABILITIES
-    void SetAbility()
+
+    [ContextMenu("DEBUG ADD ABILITY SLOW")]
+    public void AddAbilitySlot()
     {
-        for (int i = 0; i < 3; i++)
+        if (currentAbilitySlot >= 3) return;
+
+        currentAbilitySlot++;
+
+        AbilityClass newActiveAbilitySlot = new AbilityClass(currentAbilitySlot - 1);
+
+        Debug.Log("slot index " + currentAbilitySlot);
+
+        abilityActiveList.Add(newActiveAbilitySlot);
+        UIHandler.instance._EquipWindowUI.UpdateAbilitySlot(currentAbilitySlot);
+        UIHandler.instance._EquipWindowUI.GetEquipForAbility(newActiveAbilitySlot);
+
+        GameHandler.instance._saveHandler.CaptureStateUsingCurrentSaveSlot();
+    }
+
+
+
+    public void SetAbility(int startingSlot)
+    {
+        
+        if(startingSlot == 0)
+        {
+            currentAbilitySlot = initialAbilitySlot;
+        }
+        else
+        {
+            currentAbilitySlot = startingSlot;
+        }
+
+
+
+
+        for (int i = 0; i < currentAbilitySlot; i++)
         {
             abilityActiveList.Add(new AbilityClass(i));
         }
 
+        UIHandler.instance._EquipWindowUI.UpdateAbilitySlot(currentAbilitySlot);
         UIHandler.instance._AbilityUI.SetActiveAbilityUnits(abilityActiveList);
 
             
@@ -450,6 +492,73 @@ public class PlayerAbility : MonoBehaviour
     {
         return abilityPassiveList;
     }
+
+    #region DROP
+    [Separator("DROP")]
+    [SerializeField] int initialDropSlot;
+    int currentDropSlot;
+
+    public void AddDropSlot()
+    {
+        if (currentDropSlot >= 5) return;
+
+        currentDropSlot++;
+
+        UIHandler.instance._EquipWindowUI.UpdateDropSlot(currentDropSlot);
+
+    }
+    void SetDropSlot(int dropSlot)
+    {
+        if(dropSlot == 0)
+        {
+            currentDropSlot = initialDropSlot;
+        }
+        else
+        {
+            currentDropSlot = dropSlot;
+        }
+
+        //thenw e do the ui thing.,
+
+        UIHandler.instance._EquipWindowUI.UpdateDropSlot(currentDropSlot);
+
+        for (int i = 0; i < currentDropSlot; i++)
+        {
+            UIHandler.instance._EquipWindowUI.GetEquipForDrop(null, i);
+        }
+
+
+        GameHandler.instance._saveHandler.CaptureStateUsingCurrentSaveSlot();
+    }
+
+    public void SetNewDrop(DropData dropData, int index)
+    {
+        //when you do this we it and we form a new list and we send to the data. 
+
+
+
+
+    }
+
+    #endregion
+
+
+    #region SAVE SYSTEM
+
+    public void RestoreState(SaveClass saveClass)
+    {
+        SetDropSlot(saveClass._dropSlot);
+        SetAbility(saveClass._abilitySlot);
+
+
+    }
+    public void CaptureState(SaveClass saveClass)
+    {
+        saveClass.MakeEquipAbilitySlot(currentAbilitySlot);
+        saveClass.MakeEquipDropSlot(currentDropSlot);
+    }
+
+    #endregion
 }
 
 

@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,12 +13,16 @@ public class MainMenuScene : MonoBehaviour
     [SerializeField] Animator _mainAnimator;
     [SerializeField] MainMenuAnimationClass[] _mainMenuAnimationClassArray;
 
-    List<int> animationList_Cooldown = new(); //
-    List<int> animationList_Forbidden = new(); //no longer can be used
+    [SerializeField]List<int> animationList_Cooldown = new(); //
+    [SerializeField]List<int> animationList_Forbidden = new(); //no longer can be used
 
+    [Separator("DOG")]
     [SerializeField] Animator animator_Dog;
-
-
+    [SerializeField] GameObject dogHolderDebug;
+    [SerializeField] AudioSource _audio_Howl;
+    [SerializeField] AudioSource _audio_Walk;
+    [SerializeField] AudioSource _audio_Run;
+    //
     float cooldown_Total;
     float cooldown_Current;
 
@@ -28,18 +33,27 @@ public class MainMenuScene : MonoBehaviour
     private void Start()
     {
         cooldown_Current = 0;
-        cooldown_Total = Random.Range(25, 35);
+        cooldown_Total = 10;
+
     }
 
+    //
     private void FixedUpdate()
     {
         if (isAnimationRunning) return;
+
+        if (!_mainAnimator.GetCurrentAnimatorStateInfo(0).IsName("Animation_MainMenu_Idle"))
+        {
+            Debug.Log("not idle");
+            return;
+        }
 
         if(cooldown_Current > cooldown_Total)
         {
             CallAnimation();
             cooldown_Current = 0;
-            cooldown_Total = Random.Range(25, 35);
+            cooldown_Total = Random.Range(30, 30);
+            //cooldown_Total = 3;
         }
         else
         {
@@ -72,10 +86,12 @@ public class MainMenuScene : MonoBehaviour
 
             if (animationList_Cooldown.Contains(randomAnimation))
             {
+                Debug.Log("on cooldown");
                 continue;
             }
             if(animationList_Forbidden.Contains(randomAnimation))
             {
+                Debug.Log("forbidden");
                 continue;
             }
 
@@ -87,6 +103,7 @@ public class MainMenuScene : MonoBehaviour
 
             if(item.chanceToActive > roll)
             {
+                Debug.Log("couldnt trigger");
                 continue;
             }
 
@@ -95,7 +112,7 @@ public class MainMenuScene : MonoBehaviour
             {
                 animationList_Forbidden.Add(randomAnimation);
 
-              
+             
             }
             else
             {
@@ -117,26 +134,27 @@ public class MainMenuScene : MonoBehaviour
             }
             else
             {
-                TriggerRightEspecialAnimation(item._controlType);
+                TriggerRightEspecialAnimation(item._controlType, item.animationHolder);
             }
 
-
+            isDone = true;
         }
+
 
     }
 
-    void TriggerRightEspecialAnimation(MainMenuAnimationKeyForEspecialControlType _controlType)
+    void TriggerRightEspecialAnimation(MainMenuAnimationKeyForEspecialControlType _controlType, GameObject holder)
     {
-
+        holder.SetActive(true);
         if (_controlType == MainMenuAnimationKeyForEspecialControlType.Dog_01)
         {
-            StartCoroutine(EspecificControl_Dog_01());
+            StartCoroutine(EspecificControl_Dog_01(holder));
         }
 
     }
 
 
-    IEnumerator EspecificControl_Dog_01()
+    IEnumerator EspecificControl_Dog_01(GameObject holder)
     {
         //we spawn the dog.
         //make the dog walk
@@ -144,10 +162,30 @@ public class MainMenuScene : MonoBehaviour
         //he looks to the forest for a moment
         //then he starts running out of screen.
 
+        animator_Dog.Play("_POLYGON_Dog_Locomotion_Walking");
+        _audio_Walk.Play();
 
+        yield return new WaitForSeconds(10); //then it stops
+        
+        animator_Dog.Play("_POLYGON_Dog_Action_Standing_Sniff");
+        _audio_Walk.Stop();
 
+        yield return new WaitForSeconds(5);
 
-        yield return null;
+        animator_Dog.Play("_POLYGON_Dog_Action_Standing_Howl");
+        _audio_Howl.Play();
+
+        yield return new WaitForSeconds(7);
+
+        _audio_Howl.Stop();
+        _audio_Run.Play();
+        animator_Dog.Play("_POLYGON_Dog_Locomotion_Running");
+
+        yield return new WaitForSeconds(15);
+
+        _audio_Run.Stop();
+        holder.SetActive(false);
+
     }
 
 }

@@ -13,7 +13,18 @@ MonoBehaviour:
   m_Name: ToolData_Fishrod_Simple
   m_EditorClassIdentifier: 
   _toolName: Simple Fishrod
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: adb51e3db54330a4cb7689499f5397e4, type: 3}
   _ingredientArray:
-  - {fileID: 11400000, guid: 49719b0988c2401438ba0adc7e4d9451, type: 2}
-  - {fileID: 11400000, guid: db950fe4565f81c4c9a817422fb7a827, type: 2}
+  - data: {fileID: 11400000, guid: 49719b0988c2401438ba0adc7e4d9451, type: 2}
+    chance: 0
+  - data: {fileID: 11400000, guid: db950fe4565f81c4c9a817422fb7a827, type: 2}
+    chance: 30
+  - data: {fileID: 11400000, guid: 8688547a7f03e2648a9c02382a812c69, type: 2}
+    chance: 60
+  - data: {fileID: 11400000, guid: aec822ae4f28e594c8fcc6e9738047e0, type: 2}
+    chance: 95
+  - data: {fileID: 11400000, guid: aaa1bada452b873409137cc85159af45, type: 2}
+    chance: 99
+  _toolType: 0
+  _description: Fishrod description
+  _harvestAudioClip: {fileID: 8300000, guid: dee4eaed428161a4fadc477e6e3d061e, type: 3}

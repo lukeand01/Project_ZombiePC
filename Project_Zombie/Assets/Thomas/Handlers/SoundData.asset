@@ -79,6 +79,21 @@ MonoBehaviour:
   - title: Explosion_01
     <_soundType>k__BackingField: 21
     <_soundClip>k__BackingField: {fileID: 8300000, guid: 3fc44e5b1fe80e84db422832319715d9, type: 3}
+  - title: Bark_01
+    <_soundType>k__BackingField: 22
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 3ae671c194230124d8f82ee60543bf7f, type: 3}
+  - title: Bark_02
+    <_soundType>k__BackingField: 23
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: aee22e149a4c8e04e82c78c2506acd52, type: 3}
+  - title: Equip Gun
+    <_soundType>k__BackingField: 24
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 5782538930afb90439e7422afb8f5a36, type: 3}
+  - title: Equip Ability
+    <_soundType>k__BackingField: 25
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 9c66b6a5061cdbd4eaee7b46a21ce94f, type: 3}
+  - title: Equip Drop
+    <_soundType>k__BackingField: 26
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: dc77788e0d48a99489a3bee0edc41c74, type: 3}
   soundList_Bgm:
   - title: 
     <_soundType>k__BackingField: 0

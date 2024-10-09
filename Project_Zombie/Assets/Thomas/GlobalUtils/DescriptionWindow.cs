@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class DescriptionWindow : MonoBehaviour
 {
@@ -134,7 +135,6 @@ public class DescriptionWindow : MonoBehaviour
 
     }
 
-
     public void DescribeStat(StatClass stat, Transform posRef)
     {
         descriptionHolder.SetActive(true);
@@ -197,6 +197,22 @@ public class DescriptionWindow : MonoBehaviour
 
 
 
+    }
+
+    public void DescribeDrop(DropData data, Transform posRef)
+    {
+        descriptionHolder.SetActive(true);
+        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
+        CloseStoreDescribe();
+        
+        nameText.text = data.dropName;
+        typeText.text = "Drop";
+        tierText.text = "";
+        descriptionText.text = data.dropDescription;
+
+        //i want to put the reward here.    
+        damageText.text = "";
+        cooldownText.text = data.GetChanceDescription();
     }
 
 
@@ -324,4 +340,35 @@ public class DescriptionWindow : MonoBehaviour
         }
 
     }
-}
+
+
+    //[Separator("DESCRIPTION FOR TOOL")]
+    
+    public void Describe_ToolData(ToolData data, Transform posRef)
+    {
+        descriptionHolder.SetActive(true);
+        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
+        CloseStoreDescribe();
+
+        nameText.text = data._toolName;
+        typeText.text = "Tool";
+        tierText.text = "";
+        descriptionText.text = data._description;
+        damageText.text = "";
+        cooldownText.text = "";
+    }
+    public void Describe_IngredientData(IngredientData data, string quantity , Transform posRef)
+    {
+        descriptionHolder.SetActive(true);
+        descriptionHolder.transform.position = posRef.position + GetScreenOffset(posRef.position);
+        CloseStoreDescribe();
+
+        nameText.text = data._name;
+        typeText.text = "Ingredient";
+        tierText.text = "";
+        descriptionText.text = data._description;
+        damageText.text = "";
+        cooldownText.text = quantity;
+    }
+
+}//

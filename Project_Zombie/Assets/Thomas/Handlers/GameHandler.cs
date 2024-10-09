@@ -13,10 +13,11 @@ public class GameHandler : MonoBehaviour
     public SoundHandler _soundHandler {  get; private set; }
     public SceneLoaderHandler _sceneLoader {  get; private set; }
     public PoolHandler _pool { get; private set; }
+    public SaveHandler _saveHandler { get; private set; }
+
 
     [field:SerializeField] public SettingsData _settingsData { get; private set; }
     [field: SerializeField] public CityDataHandler cityDataHandler { get; private set; }
-
 
 
 
@@ -37,17 +38,19 @@ public class GameHandler : MonoBehaviour
         _soundHandler = GetComponent<SoundHandler>();
         _sceneLoader = GetComponent<SceneLoaderHandler>();
         _pool = GetComponent<PoolHandler>();    
+        _saveHandler = GetComponent<SaveHandler>(); 
 
         _settingsData.Initialize();
 
 
-        cityDataHandler.cityArmory.Initialize();
-        cityDataHandler.cityLab.Initialize();
+        //cityDataHandler.cityArmory.Initialize();
+        //cityDataHandler.cityLab.Initialize();
         cityDataHandler.cityMain.Initialize();
-        cityDataHandler.cityDropLauncher.Initalize();
+        //cityDataHandler.cityDropLauncher.Initalize();
 
         ResumeGame();
     }
+
 
 
     private void Start()
@@ -63,6 +66,7 @@ public class GameHandler : MonoBehaviour
 
 
         cityDataHandler.cityBodyEnhancer.Initalize();
+        cityDataHandler.cityDropLauncher.GenerateListForEquipContainer();
     }
 
     private void Update()
@@ -195,5 +199,20 @@ public class GameHandler : MonoBehaviour
 
     #endregion
 
+    public void RestoreGameState(SaveClass saveClass)
+    {
+
+        cityDataHandler.RestoreState(saveClass);
+
+    }
+
+    public void CaptureGameState(SaveClass saveClass)
+    {
+        //we will get this stuff and passs what we should.
+
+        cityDataHandler.CaptureState(saveClass);
+
+
+    }
 
 }

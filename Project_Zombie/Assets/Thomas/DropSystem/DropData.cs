@@ -8,11 +8,13 @@ public class DropData : ScriptableObject
 
 
     public string dropName;
-    public Sprite dropSprite;
+    public Sprite dropIcon;
 
     public int rollRequired;
 
     public Chest_Drop dropModel;
+
+    [TextArea]public string dropDescription;
 
     public int storeIndex {  get; private set; }
 
@@ -37,6 +39,27 @@ public class DropData : ScriptableObject
     {
 
     }
+
+    public string GetChanceDescription()
+    {
+        if(rollRequired > 90)
+        {
+            return "Change to spawn: Low";
+        }
+
+        if(rollRequired > 50 && rollRequired <= 90)
+        {
+            return "Change to spawn: Medium";
+        }
+
+        if (rollRequired > 0 && rollRequired <= 50)
+        {
+            return "Change to spawn: High";
+        }
+
+        return "Error";
+    }
+
 }
 public class DropClass 
 {

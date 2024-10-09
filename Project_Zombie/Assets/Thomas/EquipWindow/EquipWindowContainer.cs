@@ -47,6 +47,19 @@ public class EquipWindowContainer : MonoBehaviour
         }
     }
 
+    public void UpdateContainerDrop(List<DropData> dropList)
+    {
+        DestroyChildren();
+
+        foreach (var item in dropList)
+        {
+            EquipWindowEquipUnit newObject = Instantiate(equipUnitTemplate);
+            newObject.SetDrop(item, handler);
+            newObject.transform.SetParent(container);
+        }
+    }
+
+
     [Separator("QUEST")]
     [SerializeField] QuestUnit questUnitTemplate;
     

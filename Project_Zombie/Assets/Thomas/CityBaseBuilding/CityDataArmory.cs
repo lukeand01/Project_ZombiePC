@@ -24,7 +24,7 @@ public class CityDataArmory : CityData
     [Separator("Armory_Current owned lists")]
     [SerializeField] bool nothing;
     [field:SerializeField]public List<ItemGunData> currentGunAvailableArmoryList { get; private set; } = new(); //this is the list of all guns that should be avaialble in the store.
-    [field: SerializeField] public List<ItemGunData> currentGunOwnedList { get; private set; } = new();
+    [field: SerializeField] public List<ItemGunData> currentGunOwnedList { get; private set; } = new(); //owned guns are for guns outside of level.
     [field: SerializeField] public List<ItemGunData> currentGunTempList { get; private set; } = new();
 
 
@@ -33,6 +33,7 @@ public class CityDataArmory : CityData
 
     public void Initialize()
     {
+
         SetIndexOfAllGunDataRefs();
         GenerateAvailableGunList();
         GenerateGunPermaList();
@@ -49,6 +50,19 @@ public class CityDataArmory : CityData
 
     //how does luck inlfuence it?
     //each luck should increase the chance of certain things.
+
+
+    public void RestoreState(SaveClass saveClass)
+    {
+        ownedGunIndexList = saveClass._armory_OwnedList;
+        foundPermaGunIndexList = saveClass._armory_FoundList;
+    }
+    public void CaptureState(SaveClass saveClass)
+    {
+        saveClass.MakeOwnedList_Armory(ownedGunIndexList);
+        saveClass.MakeFoundList_Armory(foundPermaGunIndexList);
+    }
+
 
 
 
@@ -90,17 +104,26 @@ public class CityDataArmory : CityData
 
 
 
-        //we need to somehow inform everyone.
-        //we can do so that everytime you open the ui it updates.
-
     }
 
     #region PERMA
     //THIS MUST BE CALLED AT THE START
 
+    public ItemGunData GetGunWithIndex(int index)
+    {
+        for (int i = 0; i < allGunDataRef.Count; i++)
+        {
+            var item = allGunDataRef[i];
+            if (item.storeIndex == index) return item;
+        }
+
+        return null;
+    }
+
     public void GenerateGunPermaList()
     {
-        //we check the int of both those versions and
+        //this we are only checking for those that we gained in other ways. we have to check based on level as well.
+        //the problem is that those things are not bought.
         //
 
         currentGunOwnedList.Clear();
@@ -118,6 +141,7 @@ public class CityDataArmory : CityData
         {
             UIHandler.instance._EquipWindowUI.UpdateOptionForGunContainer(currentGunOwnedList);
         }
+
 
 
     }

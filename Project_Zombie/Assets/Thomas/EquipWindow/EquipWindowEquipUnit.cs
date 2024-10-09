@@ -21,17 +21,17 @@ public class EquipWindowEquipUnit : ButtonBase
     [field: SerializeField] public bool cannotDrag {  get; private set; }
 
 
-    EquipWindowUI handler;
+    EquipWindowUI _handler;
 
     private void Awake()
     {
         
     }
 
-    public ItemGunData gunData { get; private set; }
+    [field: SerializeField] public ItemGunData _gunData { get; private set; }
     public void SetGun(ItemGunData gunData, EquipWindowUI handler)
     {
-        this.handler = handler;
+        this._handler = handler;
 
         if (gunData == null)
         {
@@ -40,7 +40,7 @@ public class EquipWindowEquipUnit : ButtonBase
         }
         empty.SetActive(false);
 
-        this.gunData = gunData;
+        this._gunData = gunData;
 
 
         icon.sprite = gunData.itemIcon;
@@ -49,22 +49,24 @@ public class EquipWindowEquipUnit : ButtonBase
     }
        
 
-    public AbilityActiveData abilityData { get; private set; }
+    [field:SerializeField]public AbilityActiveData _abilityData { get; private set; }
 
     public int abilityIndex { get; private set; } = -1;
     public void SetAbility(AbilityActiveData abilityData, EquipWindowUI handler)
     {
 
-        this.handler = handler;
+        this._handler = handler;
 
         if (abilityData == null)
         {
             empty.SetActive(true);
+
             return;
         }
 
+        Debug.Log("was this called? " + abilityData.abilityName);
         empty.SetActive(false);
-        this.abilityData = abilityData;
+        this._abilityData = abilityData;
 
 
         icon.sprite = abilityData.abilityIcon;
@@ -81,23 +83,51 @@ public class EquipWindowEquipUnit : ButtonBase
 
     }
 
+
+    [field: SerializeField] public DropData _dropData { get; private set; }
+    public int _dropIndex { get; private set; }  
+    public void SetDrop(DropData dropData, EquipWindowUI handler)
+    {
+        _handler = handler;
+
+        if (dropData == null)
+        {
+            empty.SetActive(true);
+            return;
+        }
+
+        empty.SetActive(false);
+        _dropData = dropData;
+
+
+        icon.sprite = dropData.dropIcon;
+    }
+
+
+
     public void UseRef(EquipWindowEquipUnit equipUnit)
     {
         Sprite rightIcon = null;
         string rightName = "";
-        if(equipUnit.gunData != null)
+        if(equipUnit._gunData != null)
         {
-            rightIcon = equipUnit.gunData.itemIcon;
-            rightName = equipUnit.gunData.itemName;
+            rightIcon = equipUnit._gunData.itemIcon;
+            rightName = equipUnit._gunData.itemName;
         }
 
-        if(equipUnit.abilityData != null)
+        if(equipUnit._abilityData != null)
         {
 
-            rightIcon = equipUnit.abilityData.abilityIcon;
-            rightName = equipUnit.abilityData.abilityName;
+            rightIcon = equipUnit._abilityData.abilityIcon;
+            rightName = equipUnit._abilityData.abilityName;
         }
 
+        if(equipUnit._dropData != null)
+        {
+            rightIcon = equipUnit._dropData.dropIcon;
+            rightName = equipUnit._dropData.dropName;
+        }
+        //
         empty.SetActive(false);
         icon.sprite = rightIcon;
         
@@ -105,10 +135,7 @@ public class EquipWindowEquipUnit : ButtonBase
     }
 
 
-    public void SetDrop(DropData data, EquipWindowUI handler)
-    {
 
-    }
 
 
     public override void OnPointerEnter(PointerEventData eventData)
@@ -118,30 +145,36 @@ public class EquipWindowEquipUnit : ButtonBase
 
         //call pause and the stats 
 
-        if(handler == null)
+        if(_handler == null)
         {
-            Debug.Log("handler was called");
             return;
         }
 
-        if (!handler.isOpen) return;
+        if (!_handler.isOpen) return;
 
 
-        handler.StartHover(this);
+        _handler.StartHover(this);
 
-        if (handler.isDragging) return;
+        if (_handler.isDragging) return;
 
-        if (gunData != null)
+        if (_gunData != null)
         {
-            handler.descriptionWindow.DescribeGunData(gunData, transform);
+            _handler.descriptionWindow.DescribeGunData(_gunData, transform);
             return;
         }
 
-        if(abilityData != null)
+        if(_abilityData != null)
         {
-            handler.descriptionWindow.DescribeAbilityData(abilityData, transform);
+            _handler.descriptionWindow.DescribeAbilityData(_abilityData, transform);
             return;
         }
+
+        if(_dropData != null)
+        {
+            _handler.descriptionWindow.DescribeDrop(_dropData, transform);
+            return;
+        }
+
     }
 
     public override void OnPointerExit(PointerEventData eventData)
@@ -149,16 +182,16 @@ public class EquipWindowEquipUnit : ButtonBase
         base.OnPointerExit(eventData);
         selected.SetActive(false);
 
-        if(handler == null)
+        if(_handler == null)
         {
             return;
         }
 
-        handler.EndHover();
+        _handler.EndHover();
 
-        if (handler.isDragging) return;
+        if (_handler.isDragging) return;
 
-        handler.descriptionWindow.StopDescription();
+        _handler.descriptionWindow.StopDescription();
     }
 
 
@@ -167,33 +200,44 @@ public class EquipWindowEquipUnit : ButtonBase
 
         if (!isPlayer) return;
 
+        //currently its only dealing with gun. it needs to deal with drop aswell.
 
-        if(draggingUnit.gunData != null && gunData != null)
+        if(draggingUnit._gunData != null && _gunData != null)
         {
 
             //when we swap we pass this new information to the player and we tell him to equip this new gun_Perma
-            PlayerHandler.instance._playerCombat.ReceivePermaGun(draggingUnit.gunData);
+            PlayerHandler.instance._playerCombat.ReceivePermaGun(draggingUnit._gunData);
             ItemGunData newPermaGun = PlayerHandler.instance._playerCombat.GetCurrentPermaGun();
-            Debug.Log("this is the new perma gun " + newPermaGun.itemName);
-            SetGun(newPermaGun, handler);
-
+            SetGun(newPermaGun, _handler);
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Equip_Gun);
 
             return;
         }     
 
-        if (draggingUnit.abilityData != null && abilityIndex != -1) 
+        if (draggingUnit._abilityData != null && abilityIndex != -1) 
         {
 
             //this is teh hover unit
             //i want the dragging unit to give stuff to this and then disappear
-            PlayerHandler.instance._playerAbility.ReplaceActiveAbility(draggingUnit.abilityData, abilityIndex);
-            SetAbility(draggingUnit.abilityData, handler);
+            PlayerHandler.instance._playerAbility.ReplaceActiveAbility(draggingUnit._abilityData, abilityIndex);
+            SetAbility(draggingUnit._abilityData, _handler);
             draggingUnit.RemoveAbilityFromPlayer();
-            
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Equip_Ability);
             return;
-
         }
+        if (draggingUnit._dropData != null && _dropIndex != -1)
+        {
 
+            Debug.Log("drop data");
+            //this is teh hover unit
+            //i want the dragging unit to give stuff to this and then disappear
+            //PlayerHandler.instance._playerAbility.ReplaceActiveAbility(draggingUnit._abilityData, abilityIndex);
+            SetDrop(draggingUnit._dropData, _handler);
+            _handler.CreateListForDrop();
+            //draggingUnit.RemoveAbilityFromPlayer();
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Equip_Drop);
+            return;
+        }
 
     }
 
@@ -202,7 +246,7 @@ public class EquipWindowEquipUnit : ButtonBase
     {
         if (!isPlayer) return;
         empty.SetActive(true);
-        abilityData = null;
+        _abilityData = null;
 
         PlayerHandler.instance._playerAbility.ReplaceActiveAbility(null, abilityIndex);
     }

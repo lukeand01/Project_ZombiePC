@@ -96,7 +96,12 @@ public enum SoundType
     AudioClip_ResponseChoice = 18,
     AudioClip_OutOfTimeTimer = 19,
     AudioClip_MeteorExplosion = 20,
-    AudioClip_Explosion_01 = 21
+    AudioClip_Explosion_01 = 21,
+    AudioClip_Bark_01 = 22,
+    AudioClip_Bark_02 = 23,
+    AudioClip_Equip_Gun = 24,
+    AudioClip_Equip_Ability = 25,
+    AudioClip_Equip_Drop = 26
 
 }
 

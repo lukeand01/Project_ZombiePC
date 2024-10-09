@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CityData_Drop
   m_EditorClassIdentifier: 
   <cityStoreName>k__BackingField: Drop Launcher
-  <cityStoreLevel>k__BackingField: 0
+  <cityStoreLevel>k__BackingField: 1
   <popRequirement>k__BackingField: 5
   <resourcePopRef>k__BackingField: {fileID: 11400000, guid: 5557f4efc84e59844861b35c4006e011, type: 2}
   <requirementToIncreaseLevelList>k__BackingField:
@@ -35,4 +35,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3a6de5c1936e0c3428846f735e28a891, type: 2}
   - {fileID: 11400000, guid: 2a1a426caafa0a34e8a5bb9c1d90e60a, type: 2}
   - {fileID: 11400000, guid: d27596038a34e1e4280a5b1fa7f84061, type: 2}
+  dropSlot: 0
   <currentAvailableDropList>k__BackingField: []
+  <currentEquippedDropList>k__BackingField:
+  - {fileID: 11400000, guid: 3a6de5c1936e0c3428846f735e28a891, type: 2}
+  - {fileID: 11400000, guid: 176c8e552b21f6943969abaf6def01cf, type: 2}

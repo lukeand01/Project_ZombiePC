@@ -22,7 +22,7 @@ public class AbilityActiveDataFireball : AbilityActiveData
     public override bool Call(AbilityClass ability)
     {
         //get the mouise position and shoot a projectile.
-        //the projectile explode in contact with wall or enemy.
+        //the projectile explode in contact with wall or _enemy.
         //it deals damage to the target and then a lower amount to all around. apply burning to all.
 
         Vector3 mousePos = getMouseDirection();

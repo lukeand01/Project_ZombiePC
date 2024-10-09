@@ -51,6 +51,8 @@ public class BehaviorChase : Sequence2
     public override NodeState Evaluate()
     {
 
+        Debug.Log("chase");
+
         enemy.CallAbilityIndicator(0, 0); //we disable it.
 
         if(enemy.IsStunned())
@@ -108,7 +110,7 @@ public class BehaviorChase : Sequence2
         if(enemyData.attackRange - distanceReduction >= distanceFromCurrentTarget )
         {
             //then we call this and apss to the next
-            //then we force right at way for the enemy to stop
+            //then we force right at way for the _enemy to stop
             //we dont play
            
             return NodeState.Success;

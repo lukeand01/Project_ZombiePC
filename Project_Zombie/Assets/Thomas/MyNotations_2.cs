@@ -48,10 +48,10 @@
 //round type where 
 //create a new map: there is an energe generator. there is a cart you can use to go to other places. 
 //create a better fade ui for misc messages
-//create enemy lancer, it has a shield and a lancer. it show an ability indcator for the lance attack, which is middle range.
+//create _enemy lancer, it has a shield and a lancer. it show an ability indcator for the lance attack, which is middle range.
 //each ability has one out of three Coins. which are gained when obtaining an original ability. three of those can be traded in the 
 //can talk with the merchant and use bless to reroll the abilities, or to show the especial abilities, which are bought with those especial coins.
-//enemy spawned should be improved. because currently as long as you keep killing the enemy it will keep spawning the same especial. make a limit per round instead.
+//_enemy spawned should be improved. because currently as long as you keep killing the _enemy it will keep spawning the same especial. make a limit per round instead.
 //Buy UI. need to be improved. also all the things should have a description.
 //pressing escape when the settings in on the screen makes only the settings close
 //power ups appear in the screen in some especial way
@@ -106,7 +106,7 @@
 
 
 //GOAL
-//place the 3dmodels. enemy.
+//place the 3dmodels. _enemy.
 //3d models can use the gun_Perma, the hands will move to 
 //animation for walking, dying, swapping guns, abilities.
 //the player should be aiming at roughly the center and never shooting at further than the aim
@@ -143,7 +143,7 @@
 //the gun_Perma is too big
 //
 
-//then the next step will be creating the enemy prefabs and animations
+//then the next step will be creating the _enemy prefabs and animations
 //certain non-especial enemies have a pool of prefabs they can spawn.
 //i want a difference between running, and walking
 
@@ -173,10 +173,10 @@
 //
 
 
-//enemy has animations
+//_enemy has animations
 //if the player has not being spotted
 //WHAT THE FUCK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//there is a problem where enemy animation have numbers after them 
+//there is a problem where _enemy animation have numbers after them 
 
 //now to do a blood effect 
 //
@@ -185,7 +185,7 @@
 ///the dash effect. <=can be improve but for now it will do.
 ///the enemy animation dealing damage.
 ///a red effect when enemies are hit
-//blood particles from being damaged, both player and enemy
+//blood particles from being damaged, both player and _enemy
 //blood also land in the ground and the walls.
 ///ranged animation
 
@@ -194,22 +194,22 @@
 ///enemies have weakness and strenght against the different elements: Physical, Magical, Plasma, Corrupt and True
 ///only the player has armor, which is a value that blocks everything. but the player suffer something unique for each damage
 //then we improve the damage popup.
-//take this moment to improve the damage code for enemy and player.
+//take this moment to improve the damage code for _enemy and player.
 //i want the different damages be ligned.
 ///how damage scaling works
 //the damage per bullet should work with events
 //spawn some blood 
 //player death animation
-//enemy death animation
+//_enemy death animation
 
 
 //the fade needs to move and be visible from all angles.
-//i need to place fade in the player´s thing, but before removing the enemy from the game the fade ui needs to return to the right container.
+//i need to place fade in the player´s thing, but before removing the _enemy from the game the fade ui needs to return to the right container.
 //
 
 
 //think the player not rotating correctly. especially when you aim  atht ehe nemy
-//its working when aiming at the enemy, but now need to fix it being a bit wrong when not aiming at anything
+//its working when aiming at the _enemy, but now need to fix it being a bit wrong when not aiming at anything
 //
 
 
@@ -299,10 +299,10 @@
 
 //MY GOAL
 //we need a system for closing all doors, they cannot be bought, and then opening only those that were already open.
-//improve enemy spawn system
+//improve _enemy spawn system
 //create teh challenge that you must stay in the area. it might move and change places.
 //damage someting enough in a duration, otherwise it explodes. or you fail.
-//there are enemies that will run away from you. killing them will grant a unique resource, but in enough time the enemy disappears. <= teste
+//there are enemies that will run away from you. killing them will grant a unique resource, but in enough time the _enemy disappears. <= teste
 //we need to stop regular spawning 
 //we need to create ui in tteh top that represents the amount to complete, also reprent a boss health. <= teste
 //create little squares in the ground that are traps. if you press it you take damage.
@@ -482,7 +482,7 @@
 
 //LIST OF THINGS LKEFT TO DO
 //area challenge
-//test the enemy system spawn
+//test the _enemy system spawn
 //the knight is bugging
 //the bd are not stacking correctly. found with ghost
 //have to check the ghost death.
@@ -610,7 +610,7 @@
 
 //
 //THE GOAL TOMORROW
-//do the sound handler and get bgm working
+//do the sound _handler and get bgm working
 ///fix the aim again. it seems to be a rotation problem rather than position
 //fix the final parts about ghost
 //return working on the mage
@@ -750,7 +750,7 @@
 //ARTILLERY
 //it stands still.
 //shoot at teh player from anywhere in the amap
-//the player is supposed to find the enemy from teh sound.
+//the player is supposed to find the _enemy from teh sound.
 //when the player gets close the artillery changes from single big shells to small ones.
 
 
@@ -842,12 +842,12 @@
 //THINGS TO CHANGE
 ///the enemy must rotate to always face the player
 //the animation must dictate when the attack deals damage and when the zombie can continue walking
-//the attack from the enemy must only be where the enemy is attacking, so cannot be based on range
+//the attack from the _enemy must only be where the _enemy is attacking, so cannot be based on range
 //create hit animation
 //also when the zombie is stunned it plays idle animation
 //the enemies can ragdoll depending on the damage.
 
-//blood particles, make enemy deaths fancy
+//blood particles, make _enemy deaths fancy
 
 //GOAL
 ///need a dash animation. i wont do a roll, the player will disappear then reapear, create some effect for appearing and disappearing
@@ -931,7 +931,7 @@
 
 //GOAL
 ///the dog attack animation is not playing
-//create the graphics for enemy with shield
+//create the graphics for _enemy with shield
 //create the effect for the ranged
 //create the graphic for the giant
 //create the graphic for the mage
@@ -1035,7 +1035,7 @@
 //
 //TO DO
 //create teh devil
-//then we will create teh boss room. it must be able to stop the round, every enemy inside is killed.
+//then we will create teh boss room. it must be able to stop the round, every _enemy inside is killed.
 //
 
 
@@ -1047,7 +1047,7 @@
 //then i need to create the wave attack.
 //then i need to create the system for spawning the hounds
 //then i need to create death
-//then i need the mechanic for entering a room, locking it, and when the enemy is dead the doors open once again.
+//then i need the mechanic for entering a room, locking it, and when the _enemy is dead the doors open once again.
 
 //one is called by the devil, which he stops and summon a bunch of fireballs
 //and the other it idly summon one fireball.
@@ -1091,18 +1091,213 @@
 //guns are in the same icon, and also the current currently.
 
 //TO DO
-//add tool to the player
-//the tool appears in the pause ui
-//the tool allows to interact with other places.
-//there is a random value to get things. and when you get them it appears in the inventory.
+///add tool to the player
+///the tool appears in the pause ui
+///the tool allows to interact with other places.
+///there is a random value to get things. and when you get them it appears in the inventory.
+///also the hunting knife that triggers when kill an enemy
+///the chance to spawn certain loot is universal. so the tool defines the chance.
+
+
+//TODAY
+///save system => i have it but i will wait to advanced it with the city.
+//
+
+//THINGS LEFT
+//_enemy boss
+//also a system for miniboss spawning
+//the renderer, decide on how to handle the visiblity.
+///the settings for the graphic and just improve the ui. should control the quality of the graphic <= wont be doing that, just the audio and 
+//finish the first map. get the terrain place, and its things.
+///get all the _enemy models fixed. 
+//sound system. the sound changes on battle and other things
+///finish the main menu. the main menu animations msut be completed they are still not.
+//get the city completed
+//able to save data
+//i need to actually start the game in the base then load the new map and actually get to play
+
+
+//GOAL
+///get the models for _enemy fixed
+///the dogs bark on cooldown.
+///get the materials for teh effects fixed as well.
+
+
+//we do animation for death
+//for locking on the player
+//and for when it starts dealing damage
+
+
+//the mage is not moving its lowerbody
+
+
+//GOAL
+//fix the renderer and decided on that 
+//then we work in the settings to change the graphics./
+
+//the problem now is the wall. it needs to be transparent, but now all material can be changed.
+//changing the material of wall is not viable. need to find a way to do it as opaque or not at all. maybe do both.
+
+
+//the dark looks awful
+//perpahs the room is not have their own things in the top and we can also put 
+
+
+//the room has a protection veil if its closed and if the player is far away enough. and the far away we only check in relation to teh door.
+//and a script that checks if its in the line of sight of the player. and either takes away the grpahic holder or gives it back.
+
+
+
+//define if you want shadows or not
+//other stuff as well.
+
 //
 
 
+//what can i save
+//time playedr
+//hq level
+//
 
-//(02/10)
-//Days passed: 20
-//days left for target: 30
-//Days left for project: 141
+
+//TOMORROW
+//main menu animation
+//improve the city. check if you can normally run it
+//then we are going to create teh save system
+
+
+//GOAL
+//we first will save the state of the main building.
+//then we are going to load the city resources.
+//then we are going to load the player equipment.
+//then we are going to load building aftrer building
+
+
+//so the idea is that we can load and tell if the building shoiuld be builded or not.
+//
+
+//GOAL FOR IMPROVING THE CITY
+//ground texture
+//when its not built it has the 
+
+
+
+//each requires an especial item that is called blueprint for that especific building
+//which is gained only through story quests
+//upgrading it costs nothing
+//when you upgrade there should be a fade to black. i need a nice way to present a building being built. it needs to be complete.
+//
+
+
+//how can i improve the city?
+//need different textures. grass and a dirt path.
+//then high level will have another type of ground.
+//the camera is a bit different, a bit farther away 
+//
+
+//the ui for buying is really ugly.
+//it needs to be improved cons
+//also the interact ui is not working
+
+
+//07/10
+//create one more terrain for teh map
+///we first will save the state of the main building.
+///then we are going to load the city resources.
+///then we are going to load the player equipment.
+///then we are going to load building aftrer building
+
+
+//08/10
+///finish the improved equip UI
+///can save the equip ui state.
+//i want a system where i can control how many slots there are for drop and for ability. 3 max for ability, 5 max for drop.
+//the systems work with drop, and the game actually only drops the drops selected. remmeber to make the drops appear as options.
+///create the base for the unique blueprints. it should use the normal inventory system but its not show.
+
+//now the ui is not updating.
+//not restoring the state of drop units 
+
+
+
+//09/10
+//the units are not updating the ui
+//the drops is just not receicving info
+//nothing is actually being updated
+//the ability slot number isnt being updated.
+//improve the city ui.
+//check for the mainblueprints
+//create one more terrain for teh map
+//every building requires blueprints
+//Iron is used for all purchases.
+
+
+
+//09/10
+//create one more terrain for teh map
+//when you build it there is an animation or something. it needs to feel good building.
+//improve the dialogue system and create some content for teh main npc
+//create some story questws
+
+//10/10
+//create one more terrain for teh map
+//create more npcs with more dialogue
+//get the house system working
+//get the generic npcs walking around and talking.
+
+//13/10
+//return to make the devil boss
+
+//14/10
+//system for spawning minboss
+//sound system
+
+//15/10
+//Spread around the harvest spots, and make them semi-random
+//put places for resources
+//start playing the game
+
+
+
+//
+
+
+//data to save:
+//stuff the player is equipped
+//each building level
+//characters dialogue.
+//quests
+
+//the only info i need here is info 
+
+
+
+
+//i want three more animations
+//the treasure fairy.
+//
+//
+
+//we have to organize everything
+
+//more animations
+//i need audio for the animations
+
+//Meteor - sound for explosion
+//sound for zombie
+//sound for dog walking and barking
+//sound for portal opening
+///sound for soldier walking
+///sound for the ghost whispering something
+///sound for airplane to go throug fast.
+//
+
+
+//by the end of this i want to put it all together and just play the game.
+//(08/10)
+//Days passed: 26
+//days left for target: 26
+//Days left for project: 136
 
 //RECORDING
 //BOSS -> 13/09 - 
@@ -1117,6 +1312,11 @@
 //you can find tools in the run: fishing rod simple and advanced, bugnet simple and advanced, hunting knife simple and advanced.
 //those tools allow you to interact with certain secret location for loot. or triggers.
 //create a bunch of content for the tools.
+//make the bullets look better coming out of the gun
+//the dashing material has problem. maybe it should better just to set it off and on rather than change the material
+
+
+
 
 
 //IDEAS FOR MAP
@@ -1141,8 +1341,8 @@
 //allows to fish in certain spots. it rolls for a chance to get a fish. each map has its chances.
 //Trout : 100 Points
 //Carp: 300 Points 
-//Catfish: get a key for something
-//Pike: 1 bless,
+//Catfish: ingredient.
+//WhiteFish: 3 bless, ingredient
 //Ghostfish: get a random passive from a list.
 
 //FISHING ROD Magical
@@ -1150,7 +1350,7 @@
 //Sandfish: 700 points
 //Tilapia: get a random passive from a list.
 //Lionfish: grant a perma buff 
-//Squid:  its a rare ingredient.
+//PiousCrab: 2 blesss  its a rare ingredient.
 
 //BUG NET
 //sun bettle

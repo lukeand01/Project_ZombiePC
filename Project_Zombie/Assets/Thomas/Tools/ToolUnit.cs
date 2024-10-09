@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ToolUnit : ButtonBase
+public class ToolUnit : MonoBehaviour
 {
     //
 
 
-    ToolClass _tool;
+    public ToolClass _tool {  get; private set; }
 
     [SerializeField] Image _iconImage;
     [SerializeField] IngredientUnit _ingredientUnitTemplate;
     [SerializeField] Transform _container;
+    [SerializeField] ToolUnit_Hover _hover;
     List<IngredientUnit> _ingredientList = new();
     public void SetUp(ToolClass tool)
     {
@@ -23,6 +25,8 @@ public class ToolUnit : ButtonBase
 
         SetIngredients();
         UpdateUnit();
+
+        _hover.SetUp(this);
     }
 
     void SetIngredients()
@@ -42,6 +46,12 @@ public class ToolUnit : ButtonBase
             IngredientUnit newObject = Instantiate(_ingredientUnitTemplate);
             newObject.transform.SetParent(_container);
             newObject.Set(item.data);
+
+            if(item.data == null)
+            {
+                Debug.Log("1");
+            }
+
             newObject.UpdateValue((int)_tool.GetIngredientValue(item.data));
             _ingredientList.Add(newObject);
         }
@@ -54,8 +64,18 @@ public class ToolUnit : ButtonBase
         for (int i = 0; i < _ingredientList.Count; i++)
         {
             var item = _ingredientList[i];
-
+            if(item._data == null)
+            {
+                Debug.Log("2");
+            }
             item.UpdateValue((int)_tool.GetIngredientValue(item._data));
         }
     }
+
+    private void OnDisable()
+    {
+        UIHandler.instance._DescriptionWindow.StopDescription();
+    }
+
+ 
 }

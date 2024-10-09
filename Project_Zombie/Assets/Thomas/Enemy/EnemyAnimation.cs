@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyAnimation : MonoBehaviour
 {
     //i will have another stuff.
-    //this will just be for enemy
+    //this will just be for _enemy
 
 
     //everyone has the same controller, but people call different things?

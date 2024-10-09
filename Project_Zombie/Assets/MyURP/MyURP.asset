@@ -20,7 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8bebc60439aa7324c868cf7baccee4e5, type: 2}
   - {fileID: 11400000, guid: 1022eb718562b1043a671bed00b3faea, type: 2}
   - {fileID: 11400000, guid: 8216fdd0d3331de42b54228dfb97f537, type: 2}
-  m_DefaultRendererIndex: 0
+  m_DefaultRendererIndex: 2
   m_RequireDepthTexture: 0
   m_RequireOpaqueTexture: 0
   m_OpaqueDownsampling: 1
@@ -28,7 +28,7 @@ MonoBehaviour:
   m_SupportsHDR: 1
   m_HDRColorBufferPrecision: 0
   m_MSAA: 1
-  m_RenderScale: 1
+  m_RenderScale: 2
   m_UpscalingFilter: 0
   m_FsrOverrideSharpness: 0
   m_FsrSharpness: 0.92

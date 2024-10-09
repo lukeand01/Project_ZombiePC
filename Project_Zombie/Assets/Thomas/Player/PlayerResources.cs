@@ -104,9 +104,11 @@ public class PlayerResources : MonoBehaviour, IDamageable
     {
 
 
-        Debug.Log("player took damage");
-
-        if (debugCannotTakeDamage) return;
+        if (debugCannotTakeDamage)
+        {
+            Debug.Log("took damage in debug immunity");
+            return;
+        }
 
         if(handler._entityStat.IsImmune)
         {
@@ -132,7 +134,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
         DamageClass newDamage = new DamageClass(damage);
 
         float reduction = handler._entityStat.GetTotalValue(StatType.DamageReduction);
-        //float totalHealth = handler._entityStat.GetTotalValue(StatType.Health);
+        //float totalHealth = _handler._entityStat.GetTotalValue(StatType.Health);
 
         float pureDamage = newDamage.GetTotalDamage_Especific(DamageType.Pure);
         float damageValue = newDamage.GetTotalDamage(true);

@@ -10,8 +10,13 @@ public class EnemyGiant : EnemyBase
     LayerMask targetLayer;
 
     const float ICE_STORM_VALUE = 12;
-    
+    [SerializeField] ParticleSystem _blizzardPS;
 
+    private void OnEnable()
+    {
+        _blizzardPS.gameObject.SetActive(true);
+        _blizzardPS.Play();
+    }
 
     protected override void StartFunction()
     {
@@ -90,6 +95,12 @@ public class EnemyGiant : EnemyBase
     }
 
 
+    protected override void Die(bool wasKilledByPlayer = true)
+    {
+        base.Die(wasKilledByPlayer);
+
+        _blizzardPS.gameObject.SetActive(false);
+    }
 
     Sequence2 GetBehavior()
     {

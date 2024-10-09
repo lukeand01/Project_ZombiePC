@@ -52,7 +52,7 @@ public class MouseUI : MonoBehaviour
 
     private void Awake()
     {
-        _cam = Camera.main;
+        _cam = PlayerHandler.instance._cam;
 
         holder = transform.GetChild(0).gameObject;
 
@@ -168,8 +168,6 @@ public class MouseUI : MonoBehaviour
 
         state = MouseStatType.Free;
     }
-
-
 
 
     public void ControlMouseUI(bool isMouseUI)

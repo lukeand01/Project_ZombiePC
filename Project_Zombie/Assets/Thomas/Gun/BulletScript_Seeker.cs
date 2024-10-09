@@ -68,7 +68,7 @@ public class BulletScript_Seeker : BulletScript
 
         if (other.gameObject.layer == 10)
         {
-            GameHandler.instance._pool.Bullet_Release(1, this); //its index one because its enemy
+            GameHandler.instance._pool.Bullet_Release(1, this); //its index one because its _enemy
             return;
         }
         if (other.gameObject.layer == 9)

@@ -12,11 +12,12 @@ public class EquipWindowUI : MonoBehaviour
 
     [SerializeField] Transform equipWindowPosRef_Open;
     [SerializeField] Transform equipWindowPosRef_Close;
+    [SerializeField] PlayerEquipmentData _playerEquipmentData;
 
     [Separator("Player Part")]
     [SerializeField] EquipWindowEquipUnit equipUnit_Gun_Player;
-    [SerializeField] List<EquipWindowEquipUnit> equipUnit_Ability_List = new();
-    [SerializeField] List<EquipWindowEquipUnit> equipUnit_Drop_List = new(); 
+    [SerializeField] List<EquipWindowEquipUnit> _equipUnit_Ability_List = new();
+    [SerializeField] List<EquipWindowEquipUnit> _equipUnit_Drop_List = new(); 
 
 
     //i also need to update this fella.
@@ -44,6 +45,9 @@ public class EquipWindowUI : MonoBehaviour
     private void Update()
     {
         HandleDrag();
+
+
+
     }
 
     #region SET UP
@@ -57,6 +61,37 @@ public class EquipWindowUI : MonoBehaviour
         //the player will call for these ui parts.
 
     }
+
+    public void UpdateAbilitySlot(int abilitySlot)
+    {
+        //if we are checking 
+
+        for (int i = 0; i < _equipUnit_Ability_List.Count; i++)
+        {
+            var item = _equipUnit_Ability_List[i];
+
+
+
+            item.gameObject.SetActive(abilitySlot > i);
+
+
+
+        }
+
+    }
+    public void UpdateDropSlot(int dropSlot)
+    {
+
+        for (int i = 0; i < _equipUnit_Drop_List.Count; i++)
+        {
+            var item = _equipUnit_Drop_List[i];
+
+            item.gameObject.SetActive(dropSlot > i);
+
+
+        }
+    }
+
 
     #endregion
 
@@ -118,7 +153,7 @@ public class EquipWindowUI : MonoBehaviour
 
     #region PLAYER
 
-    //
+    //so we do this. when we create a new one we come here 
 
     public EquipWindowEquipUnit GetEquipForPermaGun(GunClass gun)
     {
@@ -131,16 +166,30 @@ public class EquipWindowUI : MonoBehaviour
     public EquipWindowEquipUnit GetEquipForAbility(AbilityClass ability)
     {
         //i need the currentBulletIndex for the thing which will not change
+        EquipWindowEquipUnit equipUnit = _equipUnit_Ability_List[ability.slotIndex];
 
-        EquipWindowEquipUnit equipUnit = equipUnit_Ability_List[ability.slotIndex];
-
+       
         equipUnit.SetAbility(ability.dataActive, this);
         equipUnit.SetAbilitySlotIndex(ability.slotIndex);
         
         return equipUnit;
     }
 
+    public EquipWindowEquipUnit GetEquipForDrop(DropData dropData, int slotIndex)
+    {
+        //i need the currentBulletIndex for the thing which will not change
+
+        EquipWindowEquipUnit equipUnit = _equipUnit_Drop_List[slotIndex];
+
+        equipUnit.SetDrop(dropData, this);
+
+        return equipUnit;
+    }
+
+
+
     #endregion
+
     #region OPTION AND CONTAINERS
     [Separator("OPTIONS")]
     [SerializeField] EquipWindowOptionButton equipWindowOptionButtonTemplate;
@@ -228,6 +277,7 @@ public class EquipWindowUI : MonoBehaviour
 
     public void UpdateOptionForGunContainer(List<ItemGunData> gunDataList)
     {
+
         optionContainerList[(int)EquipWindowType.Gun].UpdateContainerGun(gunDataList);   
     }
     public void UpdateOptionForAbilityContainer(List<AbilityActiveData> abilityList)
@@ -242,9 +292,9 @@ public class EquipWindowUI : MonoBehaviour
     {
         //optionContainerList[(int)EquipWindowType.Ability].UpdateContainerAbility(abilityList);
     }
-    public void UpdateOptionForDrops()
+    public void UpdateOptionForDrops(List<DropData> dropList)
     {
-        //optionContainerList[(int)EquipWindowType.Ability].UpdateContainerAbility(abilityList);
+        optionContainerList[(int)EquipWindowType.Drop].UpdateContainerDrop(dropList);
     }
 
     //i need the thing to be different
@@ -317,7 +367,7 @@ public class EquipWindowUI : MonoBehaviour
         if (currentUnitHover == null)
         {
             
-            if (currentDraggingUnit.abilityData != null)
+            if (currentDraggingUnit._abilityData != null)
             {
                 //then we will use this remove it.
                 currentDraggingUnit.RemoveAbilityFromPlayer();
@@ -348,8 +398,9 @@ public class EquipWindowUI : MonoBehaviour
 
         //we should be able to swap information between two abilities
 
+        
         currentUnitHover.ReceiveInfo(currentDraggingUnit);
-
+        CaptureState();
     }
 
 
@@ -374,6 +425,156 @@ public class EquipWindowUI : MonoBehaviour
 
 
     #endregion
+
+
+    public void CreateListForDrop()
+    {
+        List<DropData> dropList = new();
+
+        for (int i = 0; i < _equipUnit_Drop_List.Count; i++)
+        {
+            var item = _equipUnit_Drop_List[i];
+            var data = item._dropData;
+
+            if (data == null) continue;
+
+            if (dropList.Contains(data))
+            {
+                //then we need to remove this thing because we cant have duplicates.
+                item.SetDrop(null, this);
+            }
+            else
+            {
+                dropList.Add(data);
+            }
+
+
+        }
+
+
+        GameHandler.instance.cityDataHandler.cityDropLauncher.SetEquippedDropList(dropList);
+        GameHandler.instance.cityDataHandler.cityDropLauncher.GenerateListForEquipContainer();
+
+    }
+
+
+    void CaptureState()
+    {
+        //we get every fella and store that in the saveclass.
+
+        int gunIndex = -1;
+
+        if(equipUnit_Gun_Player._gunData != null)
+        {
+            gunIndex = equipUnit_Gun_Player._gunData.storeIndex;
+        }
+        
+        _playerEquipmentData.MakeGunStored(gunIndex);
+
+
+        List<int> abilityList = new();
+
+        for (int i = 0; i < _equipUnit_Ability_List.Count; i++)
+        {
+            var item = _equipUnit_Ability_List[i];
+
+            int abilityIndex = -1;
+
+            if(item._abilityData != null)
+            {
+                abilityIndex = item.abilityIndex;
+            }
+
+            abilityList.Add(abilityIndex);
+
+        }
+
+        _playerEquipmentData.MakeAbilitiesStoredList(abilityList);
+
+
+        List<int> dropList = new();
+        for (int i = 0; i < _equipUnit_Drop_List.Count; i++)
+        {
+            var item = _equipUnit_Drop_List[i];
+
+            int dropIndex = -1;
+
+            if (item._dropData != null)
+            {
+                dropIndex = item._dropData.storeIndex;
+            }
+
+            dropList.Add(dropIndex);
+
+        }
+
+        _playerEquipmentData.MakeDropStoredList(dropList);
+
+        //everytime we capture the state we have to inform to save this information.
+        GameHandler.instance._saveHandler.CaptureStateUsingCurrentSaveSlot();
+    }
+    public void RestoreState()
+    {
+
+        int gunIndex = _playerEquipmentData._gunStored;
+
+
+
+        ItemGunData gunData = GameHandler.instance.cityDataHandler.cityArmory.GetGunWithIndex(gunIndex);
+
+        if(gunData != null)
+        {
+            PlayerHandler.instance._playerCombat.ReceivePermaGun(gunData);
+            ItemGunData newPermaGun = PlayerHandler.instance._playerCombat.GetCurrentPermaGun();
+            equipUnit_Gun_Player.SetGun(newPermaGun, this);
+        }
+        
+
+        List<int> abilityList = _playerEquipmentData._abilitiesStoredList;
+
+        if(abilityList.Count > 0)
+        {
+            for (int i = 0; i < abilityList.Count; i++)
+            {
+                var value = abilityList[i];
+                var item = _equipUnit_Ability_List[i];
+
+                if (value == -1) continue;
+
+                AbilityActiveData abilityData = GameHandler.instance.cityDataHandler.cityLab.GetActiveAbilityWithIndex(value);
+
+                if (abilityData == null)
+                {
+                    Debug.Log("this ability data was null");
+                }
+
+                PlayerHandler.instance._playerAbility.ReplaceActiveAbility(abilityData, i);
+                item.SetAbility(abilityData, this);
+                //draggingUnit.RemoveAbilityFromPlayer();
+
+            }
+        }
+
+        List<int> dropList = _playerEquipmentData._dropStoredList;
+        Debug.Log("droplist is the value stored " + dropList.Count);
+        if (dropList.Count > 0)
+        {
+            for (int i = 0; i < dropList.Count; i++)
+            {
+                var value = dropList[i];
+                var item = _equipUnit_Drop_List[i];
+
+                if (value == -1) continue;
+
+                DropData dropData = GameHandler.instance.cityDataHandler.cityDropLauncher.GetDropDataFromIndex(value);
+                item.SetDrop(dropData, this);
+                CreateListForDrop();
+                GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Equip_Drop);
+
+            }
+        }
+
+    }
 
     private void OnDisable()
     {

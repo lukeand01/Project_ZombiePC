@@ -44,10 +44,12 @@ public class BehaviorAttack : Sequence2
 
         enemy.CallAbilityIndicator(current, total);
 
+        Debug.Log("attack");
+
         if (enemy._entityAnimation.IsAttacking(0))
         {
             Debug.Log("attacking");
-            //enemy._entityAnimation.CallAnimation_Idle(0, 1);
+            //_enemy._entityAnimation.CallAnimation_Idle(0, 1);
             enemy._entityAnimation.CallAnimation_Idle(0, 0);
             return NodeState.Running;
         }
@@ -58,6 +60,7 @@ public class BehaviorAttack : Sequence2
             if (isAttacking)
             {
                 isAttacking = false;
+                Debug.Log("1");
                 return NodeState.Success;
             }
             else
@@ -66,7 +69,7 @@ public class BehaviorAttack : Sequence2
                 enemy._entityAnimation.CallAnimation_Attack(_attackLayer);
                 enemy.SetIsAttacking_Animation(true);
                 isAttacking = true;
-
+                Debug.Log("yo");
                 
             }
 
@@ -74,7 +77,7 @@ public class BehaviorAttack : Sequence2
         }
 
 
-        return NodeState.Running;
+        return NodeState.Success;
     }
 
 

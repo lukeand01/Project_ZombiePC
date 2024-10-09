@@ -37,7 +37,7 @@ public class ChallengeComponent_StayArea : ChallengeComponent
     //i need to base off the current round somehow, because the difficulty needs to adjust to the round
     //we will have a spawn system here. wewill use the stage data to get its stuff.
     //cannot have certain enemies?
-    //i need to spawn basic enemies, and then maybe have one really strong enemy in the end.
+    //i need to spawn basic enemies, and then maybe have one really strong _enemy in the end.
     //
 
 
@@ -144,5 +144,5 @@ public class ChallengeComponent_StayArea : ChallengeComponent
 }
 
 
-//how do we deal with the portals enemy spawning
+//how do we deal with the portals _enemy spawning
 //

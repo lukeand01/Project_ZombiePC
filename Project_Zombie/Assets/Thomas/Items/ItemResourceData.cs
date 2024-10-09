@@ -18,5 +18,6 @@ public enum ItemResourceType
     Eletrical_Component,
     Population,
     Crystals,
-    Body_Enhancer //this is usedd for improving your body.
+    Body_Enhancer, //this is usedd for improving your body.
+    Blueprint
 }

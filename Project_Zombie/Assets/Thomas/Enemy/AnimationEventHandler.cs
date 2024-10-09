@@ -21,13 +21,13 @@ public class AnimationEventHandler : MonoBehaviour
     public void CallAttack()
     {
         _enemy.CallAttack();
-        Debug.Log("called attack");
     }
 
     public void AnimationEnded()
     {
 
         _enemy.SetIsAttacking_Animation(false);
+        
     }
 
     public void StartAttackCharge_Boss()

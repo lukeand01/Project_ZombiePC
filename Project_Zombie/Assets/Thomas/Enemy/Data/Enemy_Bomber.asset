@@ -14,13 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Bomber
   enemyModel: {fileID: 3437534248162931273, guid: 05fd108f8dd8c3f4382b37670f391545, type: 3}
-  attackRange: 5
-  attackSpeed: 1.8
+  bossModel: {fileID: 0}
+  attackRange: 7
+  AttackAnimationSpeed: 1
+  attackRest: 0
+  <damageType>k__BackingField: 0
   initialStatList:
   - stat: 0
     initialValue: 250
   - stat: 1
-    initialValue: 3
+    initialValue: 7
   - stat: 2
     initialValue: 100
   - stat: 5
@@ -30,10 +33,20 @@ MonoBehaviour:
     initialValue: 30
   - stat: 2
     initialValue: 30
+  enemyResistanceList:
+  - <_damageType>k__BackingField: 0
+    <_value>k__BackingField: 1
+  - <_damageType>k__BackingField: 1
+    <_value>k__BackingField: 1
+  - <_damageType>k__BackingField: 2
+    <_value>k__BackingField: 1
+  - <_damageType>k__BackingField: 3
+    <_value>k__BackingField: 1
   audio_Hit: {fileID: 8300000, guid: 8e4851963e3ebde4b948020b48d7cd78, type: 3}
   audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
   audio_Spawned: {fileID: 0}
   audio_Attack: {fileID: 8300000, guid: ef852f4dba9f9e34285d4227eb3883d0, type: 3}
+  audio_footstepArray: []
   shouldNotDespawnBecauseOfDistance: 0
   canIgnoreAlly: 0
   canTurnAlly: 0

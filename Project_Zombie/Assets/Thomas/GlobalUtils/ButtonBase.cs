@@ -28,6 +28,8 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         if (mouseHover != null) mouseHover.SetActive(false);
     }
 
+    public bool IsHovering { get { return mouseHover.activeInHierarchy; } }
+
     private void OnDisable()
     {
         if(mouseHover != null) mouseHover.SetActive(false);
@@ -47,7 +49,6 @@ public class ButtonBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
         if (clickClip != null && GameHandler.instance != null)
         {
-            Debug.Log("click this");
             GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_ButtonClick);
         }
 

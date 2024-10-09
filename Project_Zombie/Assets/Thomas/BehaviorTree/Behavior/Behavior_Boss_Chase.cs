@@ -52,7 +52,7 @@ public class Behavior_Boss_Chase : Sequence2
 
     public override NodeState Evaluate()
     {
-        //enemy.CallAbilityIndicator(0, 0); //we disable it.
+        //_enemy.CallAbilityIndicator(0, 0); //we disable it.
 
         if (_boss.IsStunned)
         {

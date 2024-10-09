@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3461700481542142714}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ball_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 6095926853203652834}
   - component: {fileID: 6853861585122001786}
   - component: {fileID: 8955630233749439924}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -124,7 +124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5021241956862396404}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 2427966569942547981}
   - component: {fileID: 1057118869387935798}
   - component: {fileID: 7552635998232560621}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Hobo_Male_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -313,7 +313,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2190494531095333575}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LowerLeg_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3656001959846321966}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Toes_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 8875737386708698221}
   - component: {fileID: 6739364612264598959}
   - component: {fileID: 7012082357655029224}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Son_Male_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +421,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -533,7 +533,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4434679295962852936}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spine_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -569,7 +569,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8852717098630601450}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Finger_04 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,7 +662,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9073984396599380096}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Thumb_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -694,7 +694,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 769782777647159355}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Elbow_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -728,7 +728,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2140207738671757502}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -762,7 +762,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7433276368689197008}
   - component: {fileID: 5501469784677024198}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Jacket_Male_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -897,7 +897,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2314752357151874389}
   - component: {fileID: 6526717660084879285}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Father_Male_02_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1031,7 +1031,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8405332834331481041}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Thumb_02 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1064,7 +1064,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5613936946780344070}
   - component: {fileID: 8271369251997217290}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_ShopKeeper_Female_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1274,7 +1274,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7380929612481402603}
   - component: {fileID: 8365820004176522385}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Hobo_Male_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1410,7 +1410,7 @@ GameObject:
   - component: {fileID: 7611113784485850316}
   - component: {fileID: 1049614938698360117}
   - component: {fileID: 3286241581730293757}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1460,7 +1460,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1493,7 +1493,7 @@ GameObject:
   - component: {fileID: 3506168400760220948}
   - component: {fileID: 3552449954829929290}
   - component: {fileID: 8424755930538333925}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Grandma_Female_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1536,7 +1536,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1648,7 +1648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8875126660549053803}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spine_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1680,7 +1680,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1249844108159557148}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: UpperLeg_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1712,7 +1712,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5606115941160862295}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Thumb_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1745,7 +1745,7 @@ GameObject:
   - component: {fileID: 7574358741175001100}
   - component: {fileID: 2753407341773567019}
   - component: {fileID: 2737101857594424080}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Grandpa_Male_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1788,7 +1788,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1902,7 +1902,7 @@ GameObject:
   - component: {fileID: 7784848493386554630}
   - component: {fileID: 7367439926155555387}
   - component: {fileID: 3500550772831186200}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1952,7 +1952,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1983,7 +1983,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6993263677815789840}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Finger_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2015,7 +2015,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7416312298050586874}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Finger_02 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2049,7 +2049,7 @@ GameObject:
   - component: {fileID: 8071842813323574194}
   - component: {fileID: 7153026545681065571}
   - component: {fileID: 7170641504218343133}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_ShopKeeper_Female_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2092,7 +2092,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2206,7 +2206,7 @@ GameObject:
   - component: {fileID: 282089963103255791}
   - component: {fileID: 6534983489419300720}
   - component: {fileID: 5270174633731455399}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2256,7 +2256,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2287,7 +2287,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3935864055275930151}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ankle_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2319,7 +2319,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 716315202792810621}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Finger_03 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2352,7 +2352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2361376508163507935}
   - component: {fileID: 7762369828917260793}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Grandpa_Male_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2486,7 +2486,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3392496631123684645}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: UpperLeg_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2518,7 +2518,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2195420809001886614}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: IndexFinger_02 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2552,7 +2552,7 @@ GameObject:
   - component: {fileID: 563512521069093267}
   - component: {fileID: 5915387181313275519}
   - component: {fileID: 7761753249136181224}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Father_Male_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2595,7 +2595,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2709,7 +2709,7 @@ GameObject:
   - component: {fileID: 6794779214938540811}
   - component: {fileID: 3549365680428091767}
   - component: {fileID: 7932551220613156180}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Business_Female_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2752,7 +2752,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2864,7 +2864,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8703344074881315716}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: IndexFinger_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2896,7 +2896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8439974187896495956}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spine_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2929,7 +2929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4610007698089575430}
   - component: {fileID: 7530884253060840267}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_ShopKeeper_Male_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3063,7 +3063,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8197120862499163396}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3100,7 +3100,7 @@ GameObject:
   - component: {fileID: 8124152821000505213}
   - component: {fileID: 8116060203443763404}
   - component: {fileID: 2235073328282533163}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EyeGraphic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3183,7 +3183,7 @@ GameObject:
   - component: {fileID: 6042100451622059416}
   - component: {fileID: 8397515000745515969}
   - component: {fileID: 3090969508828588189}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3233,7 +3233,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3265,7 +3265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2788702910517034300}
   - component: {fileID: 3597515683173944597}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Biker_Male_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3399,7 +3399,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5300397376642140521}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Thumb_01 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3431,7 +3431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 807832794054418112}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Finger_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3575,6 +3575,8 @@ MonoBehaviour:
   soundUnitTemplate: {fileID: 0}
   container: {fileID: 0}
   shouldOnlyMoveWhenFacing: 0
+  attackLayer: 2
+  isHound: 0
 --- !u!114 &8436667942268502463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3697,7 +3699,7 @@ GameObject:
   - component: {fileID: 852874524193966233}
   - component: {fileID: 5912015962697945863}
   - component: {fileID: 6361294196709399503}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Father_Male_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3808,7 +3810,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8233407290071465373}
   - component: {fileID: 7358427919502998384}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Grandma_Female_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4018,7 +4020,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6804180829835099449}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: IndexFinger_04 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4051,7 +4053,7 @@ GameObject:
   - component: {fileID: 1416709341642934469}
   - component: {fileID: 8196942517084860629}
   - component: {fileID: 7322117022760129077}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4101,7 +4103,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4133,7 +4135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 317312089059998684}
   - component: {fileID: 1627897872164519678}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Business_Female_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4269,7 +4271,7 @@ GameObject:
   - component: {fileID: 5804291134755080057}
   - component: {fileID: 4680160263462511155}
   - component: {fileID: 4345731704176662090}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Jacket_Male_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4312,7 +4314,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4424,7 +4426,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8693842890612393366}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Jaw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4455,7 +4457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4489781822998471815}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Finger_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4486,7 +4488,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9198486751413015019}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4520,7 +4522,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 187168701438814614}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: IndexFinger_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4552,7 +4554,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2767851943791642060}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4709,7 +4711,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5667135239849601824}
   - component: {fileID: 3088188834408672279}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Businessman_Male_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4843,7 +4845,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1063916388862779753}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: IndexFinger_01 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4875,7 +4877,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 505080532925864146}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Finger_01 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4907,7 +4909,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2898147038272968813}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Thumb_03 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4939,7 +4941,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6763106362800607153}
   - component: {fileID: 3809277592963853639}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Son_Male_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5073,7 +5075,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8350201994722986811}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shoulder_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5140,7 +5142,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 10422193050545233}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shoulder_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5172,7 +5174,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6026391099743555959}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: IndexFinger_03 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5204,7 +5206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6760771848292938505}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Finger_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5420,7 +5422,7 @@ GameObject:
   - component: {fileID: 8279573675588808783}
   - component: {fileID: 2756400579133098157}
   - component: {fileID: 4929287790408363754}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5470,7 +5472,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5503,7 +5505,7 @@ GameObject:
   - component: {fileID: 8494888528393255634}
   - component: {fileID: 3271942915337007939}
   - component: {fileID: 1174664521402854105}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Hoodie_Male_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5546,7 +5548,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5659,7 +5661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6222995089277515868}
   - component: {fileID: 3256272530411041631}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Daughter_Female_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5892,7 +5894,7 @@ GameObject:
   - component: {fileID: 6610395611657245576}
   - component: {fileID: 385910694098403169}
   - component: {fileID: 8213980434071882699}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EyeGraphic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5973,7 +5975,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2037503347318424995}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Clavicle_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6007,7 +6009,7 @@ GameObject:
   - component: {fileID: 4719897075041073825}
   - component: {fileID: 6354660156662064999}
   - component: {fileID: 4063049756982132965}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Businessman_Male_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6050,7 +6052,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6164,7 +6166,7 @@ GameObject:
   - component: {fileID: 7465743911411182035}
   - component: {fileID: 1361799422727724753}
   - component: {fileID: 2707178357891882319}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_ShopKeeper_Male_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6207,7 +6209,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6319,7 +6321,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6709156409872617805}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: IndexFinger_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6351,7 +6353,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5404866527720333381}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ball_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6460,7 +6462,7 @@ GameObject:
   - component: {fileID: 5004396517913873437}
   - component: {fileID: 1559075885799922495}
   - component: {fileID: 2473733204942967501}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6510,7 +6512,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6543,7 +6545,7 @@ GameObject:
   - component: {fileID: 6515042328947479957}
   - component: {fileID: 6008449736390543681}
   - component: {fileID: 8546155839847258319}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Biker_Male_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6586,7 +6588,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6729,7 +6731,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 448244923627214151}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LowerLeg_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6764,7 +6766,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3754779975290118128}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Toes_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6797,7 +6799,7 @@ GameObject:
   - component: {fileID: 2462234618897476625}
   - component: {fileID: 3088608348059324959}
   - component: {fileID: 5971249607814639759}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Daughter_Female_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6840,7 +6842,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  - {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6952,7 +6954,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2380836060755069889}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Elbow_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7106,7 +7108,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8849213065897670059}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: IndexFinger_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7137,7 +7139,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7486053154615669648}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hand_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7171,7 +7173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6860869205114828164}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Eyebrows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21634,7 +21636,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8065928468782075904}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Thumb_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21666,7 +21668,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7694284983394448147}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Clavicle_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21699,7 +21701,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5892598961712525578}
   - component: {fileID: 3011939347193323399}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie_Hoodie_Male_01_Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21868,7 +21870,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5902282479122427891}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ankle_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21902,7 +21904,7 @@ GameObject:
   - component: {fileID: 6306618545654454282}
   - component: {fileID: 2527863618708175840}
   - component: {fileID: 1343258326209061762}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21952,7 +21954,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21983,7 +21985,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 383652583289425900}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hand_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22019,7 +22021,7 @@ GameObject:
   - component: {fileID: 4429474127609588233}
   - component: {fileID: 4469195313254521465}
   - component: {fileID: 2187257736701129010}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22069,7 +22071,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22102,7 +22104,7 @@ GameObject:
   - component: {fileID: 7654758563722854399}
   - component: {fileID: 1593649477924457139}
   - component: {fileID: 573654385454115609}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Horn_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22152,7 +22154,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

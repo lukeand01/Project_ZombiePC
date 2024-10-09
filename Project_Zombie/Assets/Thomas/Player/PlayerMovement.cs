@@ -109,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movement = new Vector3(dirVector.x, 0, dirVector.y) * this.currentSpeed;
         Vector3 fallSpeed = new Vector3(0, handler._rb.velocity.y , 0);
         handler._rb.velocity = movement + fallSpeed;
-        //handler._rb.AddForce((movement + fallSpeed) * 200, ForceMode.Force);
+        //_handler._rb.AddForce((movement + fallSpeed) * 200, ForceMode.Force);
 
         //Debug.Log("current speed " + currentSpeed);
 
@@ -353,7 +353,7 @@ public class PlayerMovement : MonoBehaviour
             dashSpeedDir *= 0.5f;
         }
 
-        //handler.GetGraphicHolder.SetActive(false);
+        //_handler.GetGraphicHolder.SetActive(false);
 
         PSScript ps_Start = GameHandler.instance._pool.GetPS(PSType.Dash_01, transform);
         ps_Start.StartPS();
@@ -369,7 +369,7 @@ public class PlayerMovement : MonoBehaviour
 
         handler._entityMeshRend.ApplyMaterial_EntireBody_Original();
 
-        //handler.GetGraphicHolder.SetActive(true);
+        //_handler.GetGraphicHolder.SetActive(true);
         PSScript ps_End = GameHandler.instance._pool.GetPS(PSType.Dash_01, transform);
         ps_End.StartPS();
 

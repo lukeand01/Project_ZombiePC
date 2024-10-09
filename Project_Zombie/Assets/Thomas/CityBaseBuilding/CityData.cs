@@ -14,10 +14,17 @@ public class CityData : ScriptableObject
     {
         cityStoreLevel = 0;
     }
+    [ContextMenu("DBEUG INCREASE LEVEL BY ONE")]
     public void IncreaseCityStoreLevel()
     {
         cityStoreLevel += 1;
     }
+
+    public void SetCityStoreLevel(int level)
+    {
+        cityStoreLevel = level;
+    }
+
     [field: SerializeField] public string cityStoreName { get; private set; }
     [field: SerializeField] public int cityStoreLevel { get; private set; }
     [field:SerializeField] public int popRequirement { get; private set; }

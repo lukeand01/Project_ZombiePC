@@ -1,4 +1,5 @@
 using DG.Tweening;
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -147,6 +148,10 @@ public class Room : MonoBehaviour
 
         }
     }
+
+
+    //if any enemy touch the mist it starts a process of fading away.
+    //
 
 }
 

@@ -19,7 +19,7 @@ public class AbilityPassiveDataReloadSpeed : AbilityPassiveData
 
         if(level >= 5)
         {
-            //killing an enemy refunds current ammo.
+            //killing an _enemy refunds current ammo.
             PlayerHandler.instance._entityEvents.eventKilledEnemy += RefundReload;
         }
 

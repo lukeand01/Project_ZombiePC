@@ -72,12 +72,17 @@ public class EnemyBase : Tree, IDamageable
     protected override void UpdateFunction()
     {
 
-        if (IsAttacking_Animation) return;
+        if (IsAttacking_Animation)
+        {
+
+            return;
+        }
 
         if(isLocked)
         {
             //we force it to play idle animation.
             StopAgent();
+
             return;
         }
         if (isDead) return;
@@ -212,7 +217,7 @@ public class EnemyBase : Tree, IDamageable
 
 
     bool alreadySetStat;
-    public void SetStats(int round)
+    public virtual void SetStats(int round)
     {
         //so we need to set the stats of each felal here.
         //we will use the data already inside.
@@ -457,9 +462,9 @@ public class EnemyBase : Tree, IDamageable
         _entityAnimation.CallAnimation_Death();
 
         float clipDuration = _entityAnimation.GetDurationForDeath() + 5;
-        Debug.Log("1");
+
         yield return new WaitForSeconds(clipDuration);
-        Debug.Log("2");
+
         transform.DOMove(transform.position + new Vector3(0, -5, 0), 10f);
 
         yield return new WaitForSeconds(9.8f);
@@ -470,7 +475,7 @@ public class EnemyBase : Tree, IDamageable
 
     void HandleWhatDeathShouldDrop()
     {
-
+        //drop data is the last one. maybe we should do it like this we should 
         //
 
         ChestAbility _chestAbility = LocalHandler.instance.GetChestAbility();
@@ -552,7 +557,7 @@ public class EnemyBase : Tree, IDamageable
     protected Vector3 currentAgentTargetPosition;
     protected bool isMoving;
 
-    void SetSpeed(float value)
+    protected void SetSpeed(float value)
     {
         //we update this if we slowed.
         _agent.speed = value;    
@@ -569,6 +574,7 @@ public class EnemyBase : Tree, IDamageable
 
     public void StopAgent()
     {
+        _agent.enabled = true;
         _agent.isStopped = true;
         _agent.velocity = Vector3.zero;
 
@@ -580,7 +586,6 @@ public class EnemyBase : Tree, IDamageable
 
     #region TARGETTING AND ATTACKING
 
-    //
     public IDamageable targetIdamageable { get; private set; }
     public GameObject targetObject {  get; private set; }
 
@@ -604,7 +609,7 @@ public class EnemyBase : Tree, IDamageable
     public virtual void CallAttack()
     {
         _entityAnimation.RerollAttackAnimation();
-
+        Debug.Log("yo");
 
         if(targetObject == null)
         {
@@ -621,6 +626,7 @@ public class EnemyBase : Tree, IDamageable
             return;
         }
 
+        Debug.Log("here");
 
         float distanceForAttack = Vector3.Distance(targetObject.transform.position, transform.position);
         GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(data.audio_Attack, transform);
@@ -794,6 +800,8 @@ public class EnemyBase : Tree, IDamageable
     public void SetIsAttacking_Animation(bool IsAttacking_Animation)
     {
         this.IsAttacking_Animation = IsAttacking_Animation;
+
+        Debug.Log("control attack animation " + IsAttacking_Animation);
     }
 
     protected virtual void CreateKeyForAnimation_Attack()
@@ -854,7 +862,7 @@ public class EnemyBase : Tree, IDamageable
 }
 
 //how should i go about doing this?
-//we will have a script for each enemy. its easier to do stuff like that.
+//we will have a script for each _enemy. its easier to do stuff like that.
 //each fella will choose their behaviors for the behavior tree.
 
 //ENEMIES
@@ -862,11 +870,11 @@ public class EnemyBase : Tree, IDamageable
 //Tanker. big and slow.
 //charger. aims and charges forward. can only hit from behind. infront requires a certain amount of pen to go through.
 //Mage. creates spell damages. so you need to keep moving.
-//Hound. just a faster enemy that will try to flank the player.
+//Hound. just a faster _enemy that will try to flank the player.
 
 
 //all these spells should be shows as lines in the floor.
-//just create an image that is placed in the floor. cannot go through wall and is affected by spell range. alos will have a fill function to show when the enemy will attack.
+//just create an image that is placed in the floor. cannot go through wall and is affected by spell range. alos will have a fill function to show when the _enemy will attack.
 
 
 

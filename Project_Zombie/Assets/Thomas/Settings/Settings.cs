@@ -119,7 +119,6 @@ public class Settings : MonoBehaviour
 
     void OpenCategory()
     {
-        Debug.Log("Current index " + index);
         //i wont move the thing. i will just make the right one appear.
 
         ResetCategoryAndHolders();

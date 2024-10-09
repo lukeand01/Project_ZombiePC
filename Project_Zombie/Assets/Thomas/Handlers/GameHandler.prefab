@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 6997610093423266852}
   - component: {fileID: 574221070290019042}
   - component: {fileID: 5455472546093622237}
+  - component: {fileID: -278682267466187447}
   m_Layer: 0
   m_Name: GameHandler
   m_TagString: Untagged
@@ -167,7 +168,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4df895293f0867243b14d8ae52cb3f84, type: 2}
   - {fileID: 11400000, guid: be14677f5840eb24aa2ae958e77196a8, type: 2}
   enemyContainer: {fileID: 4446140761936752323}
-  bossData_array: []
+  bossData_array:
+  - {fileID: 11400000, guid: 633d79b371f38434a9abb08ff29f783c, type: 2}
+  - {fileID: 11400000, guid: da62ffb625a37304c99b477d8f5fe100, type: 2}
+  - {fileID: 11400000, guid: 5c3ac7b4698ed754684f0c8ff882db98, type: 2}
+  - {fileID: 11400000, guid: 5e2bfe6a895663c4c850836b3debf06e, type: 2}
   bossContainer: {fileID: 4613861917157169694}
   soundTemplate: {fileID: 2449499032341904556, guid: 3ec3acd4177245647895eb194dfc4ecd, type: 3}
   soundContainer: {fileID: 4319551225558476991}
@@ -192,6 +197,22 @@ MonoBehaviour:
   trapTemplateArray:
   - {fileID: 8622486196170213945, guid: ef6944cf1e53dc042afcae3810d68e3b, type: 3}
   trapContainer: {fileID: 425540394674752059}
+--- !u!114 &-278682267466187447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869934527877858254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dabbf4ec2be7364585deec03952b831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <_saveSlotArray>k__BackingField:
+  - {fileID: 11400000, guid: a7cb3c86b413bd84ea71279d4d2185b9, type: 2}
+  - {fileID: 11400000, guid: f790646efb0084c4bbf432351d07c4ac, type: 2}
+  - {fileID: 11400000, guid: 8e527a88992a935498d4781edb1cbf7d, type: 2}
 --- !u!1 &889410821237730313
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CityData_Main
   m_EditorClassIdentifier: 
   <cityStoreName>k__BackingField: Main
-  <cityStoreLevel>k__BackingField: 1
+  <cityStoreLevel>k__BackingField: 5
   <popRequirement>k__BackingField: 0
   <resourcePopRef>k__BackingField: {fileID: 11400000, guid: 5557f4efc84e59844861b35c4006e011, type: 2}
   <requirementToIncreaseLevelList>k__BackingField:

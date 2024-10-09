@@ -83,5 +83,5 @@ public class Shield : MonoBehaviour, IDamageable
 }
 
 
-//but how the shield enemy works?
+//but how the shield _enemy works?
 //but they have very slow turning speed. and you can easilçy shoot them. can the shoot break?

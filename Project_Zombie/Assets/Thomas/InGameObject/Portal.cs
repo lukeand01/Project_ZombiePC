@@ -146,7 +146,7 @@ public class Portal : MonoBehaviour
         //we dont spawn this if it has passed hte cpa.
 
         int round = LocalHandler.instance.round;
-        // EnemyBase newObject = Instantiate(enemy.enemyModel, spawnPoint.transform.position + Vector3.forward, Quaternion.identity);
+        // EnemyBase newObject = Instantiate(_enemy.enemyModel, spawnPoint.transform.position + Vector3.forward, Quaternion.identity);
         EnemyBase newObject = GameHandler.instance._pool.GetEnemy(enemy, spawnPoint.transform.position + Vector3.forward);
         newObject.transform.position = spawnPoint.transform.position;
         newObject.gameObject.name = enemy.name;

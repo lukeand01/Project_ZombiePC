@@ -278,7 +278,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
             EnemyChanceSpawnClass enemyChance = null;
 
 
-            //for especial lists we ignore stack enemy.
+            //for especial lists we ignore stack _enemy.
             //how to do this? maybe we can add an additional fella.
 
             int especialRandom = Random.Range(0, 101);
@@ -297,7 +297,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
                 enemyChance = _handler.enemyChanceList[random];
             }
 
-            //Debug.Log("enemy chance list " + _handler.enemyChanceList.Count);
+            //Debug.Log("_enemy chance list " + _handler.enemyChanceList.Count);
             triedEspecialList = false;
 
 
@@ -509,7 +509,7 @@ public class LocalHandler_RoundHandler : MonoBehaviour
         currentTurnEnemySpawnedList.RemoveAt(0);
     }
 
-    //i can make every enemy check how far it is. if there are perfoamcen problems then we will change
+    //i can make every _enemy check how far it is. if there are perfoamcen problems then we will change
 
     #region GETTING VALUES FOR SPAWN
 

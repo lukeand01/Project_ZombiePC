@@ -22,7 +22,7 @@ public class EnemyBoss : Tree, IDamageable
     [SerializeField] protected BossSigilType _sigilType;
     [SerializeField] protected AttackClass[] attackClassArray;
 
-
+    public EnemyData GetBossData { get { return _bossData; }  }
 
     [Separator("SCRIPTS")]
     [SerializeField] protected EntityEvents _entityEvent;

@@ -20,6 +20,56 @@ public class CityDataHandler : ScriptableObject
     public CityDataStage cityStage;
     public List<StageData> ownedStageList = new(); //stages we can actually go
 
+    List<CityData> cityDataList = new();
+    private void OnEnable()
+    {
+        cityDataList = new (){ cityMain, cityArmory, cityLab, cityDropLauncher, cityBodyEnhancer};
+    }
+
+    public void RestoreState(SaveClass saveClass)
+    {
+        List<int> cityLevelList = saveClass._cityLevelList;
+
+        if(cityLevelList.Count != cityDataList.Count)
+        {
+            Debug.Log("something wrong here. the citydatalist is not matching");
+        }
+
+        for (int i = 0; i < cityLevelList.Count; i++)
+        {
+            var value = cityLevelList[i];
+            var item = cityDataList[i];
+
+            item.SetCityStoreLevel(value);
+
+        }
+
+        //ARMORY
+        cityArmory.RestoreState(saveClass);
+        cityArmory.Initialize();
+
+        //LAB
+        cityLab.RestoreState(saveClass);
+        cityLab.Initialize();
+
+
+        Debug.Log("restore state");
+    }
+
+    public void CaptureState(SaveClass saveClass)
+    {
+        List<int> cityLevelList = new()
+        { cityMain.cityStoreLevel, cityArmory.cityStoreLevel,cityLab.cityStoreLevel, cityDropLauncher.cityStoreLevel, cityBodyEnhancer.cityStoreLevel};
+
+        saveClass.MakeCityLevelList(cityLevelList);
+
+        //ARMORY
+        cityArmory.CaptureState(saveClass);
+
+        //LAB
+        cityLab.CaptureState(saveClass);
+
+    }
 
     public void ResetAllCityStores()
     {

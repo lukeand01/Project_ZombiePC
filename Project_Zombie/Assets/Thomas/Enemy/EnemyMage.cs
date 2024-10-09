@@ -10,6 +10,10 @@ public class EnemyMage : EnemyBase
     [SerializeField] AreaDamage areaDamageTemplate;
     [SerializeField] float damageRadius;
     [SerializeField] float damageTimer;
+    [SerializeField] Animator _animator;
+
+    //i can just create my own system here. its bad but fuck it.
+
 
     protected override void StartFunction()
     {
@@ -19,7 +23,21 @@ public class EnemyMage : EnemyBase
 
     protected override void UpdateFunction()
     {
-        RotateTarget(PlayerHandler.instance.transform.position);
+
+        
+
+        if (!IsDead())
+        {
+            RotateTarget(PlayerHandler.instance.transform.position);
+
+
+            if (_agent.velocity == Vector3.zero)
+            {
+                _animator.Play("Animation_Enemy_Idle_03", 0);
+            }
+        }
+
+        
 
         base.UpdateFunction();
     }
@@ -32,16 +50,6 @@ public class EnemyMage : EnemyBase
         StopAllCoroutines();
     }
 
-    Sequence2 GetBehavior()
-    {
-        return new Sequence2(new List<Node>
-        {
-            new BehaviorChase(this),
-            new BehaviorCheckSight(this, eyeArray),
-            new BehaviorAttack_WaitForAttackToComplete(this)
-        });
-    }
-
 
 
 
@@ -50,6 +58,7 @@ public class EnemyMage : EnemyBase
         //select an area.
         //in time it deals damage to area.
         //also create a warning for the player to see.
+       
 
         StartCoroutine(AttackProcess());
         //base.CallAttack();
@@ -60,16 +69,16 @@ public class EnemyMage : EnemyBase
         SetIsAttack(true);
         StopAgent();
 
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
 
         //call the attack
 
         for (int i = 0; i < 6; i++)
         {
-            GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(data.audio_Attack, transform);
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_MeteorExplosion, transform);
             Vector3 playerPosition = PlayerHandler.instance.transform.position;
 
-            float value = 1.8f;
+            float value = 5;
             float x = Random.Range(-value, value);
             float z = Random.Range(-value, value);
             Vector3 offset = new Vector3(x, 0, z);
@@ -78,22 +87,35 @@ public class EnemyMage : EnemyBase
 
             
             AreaDamageVSXType type = AreaDamageVSXType.Fireball_Explosion;
-            Debug.Log("here " + type);
-            newObject.SetUp_Regular(playerPosition + offset, damageRadius, damageTimer, GetDamage(), 3, 0.1f,type);
 
-            float timerRandom = Random.Range(1, 1.5f);
+            newObject.SetUp_Regular(playerPosition + offset, damageRadius, damageTimer, GetDamage(), 3, 0.1f,type);
+            
+            float timerRandom = Random.Range(0.4f, 0.6f);
 
             yield return new WaitForSeconds(timerRandom);
         }
 
         float cooldownRandom = Random.Range(3, 4);
 
+
+        _animator.Play("Animation_Enemy_Idle_03", 2);
+
         yield return new WaitForSeconds(cooldownRandom);
 
-        SetIsAttack(false);
 
+        Debug.Log("truly done");
+        SetIsAttack(false);
+        SetIsAttacking_Animation(false);
     }
 
-    //the animation needs to fade. otherwise it looks weird.
+    Sequence2 GetBehavior()
+    {
+        return new Sequence2(new List<Node>
+        {
+            new BehaviorChase(this),
+            new BehaviorCheckSight(this, eyeArray),
+            new BehaviorAttack(this)
 
+        });
+    }
 }

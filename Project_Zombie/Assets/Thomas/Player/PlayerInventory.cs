@@ -31,6 +31,8 @@ public class PlayerInventory : MonoBehaviour
             AddItemForStage(item);
         }
 
+
+        SetTools();
     }
     private void Update()
     {
@@ -92,8 +94,7 @@ public class PlayerInventory : MonoBehaviour
     }
 
    
-    
-
+   
     public void AddItemForStage(ItemClass item, bool appearInUI = true)
     {
         //no slots no nothing. just stack it.
@@ -219,6 +220,8 @@ public class PlayerInventory : MonoBehaviour
         {
             AddItemForCity(item, false);
         }
+
+        GameHandler.instance._saveHandler.CaptureStateUsingCurrentSaveSlot();
 
         stageInventoryList.Clear();
     }
@@ -585,18 +588,17 @@ public class PlayerInventory : MonoBehaviour
 
     #endregion
 
-
     #region TOOLS
 
     [Separator("TOOLS")]
-    [SerializeField] ToolData[] initialToolArray;
-    [SerializeField] List<ToolClass> toolList = new();
-
+    [SerializeField] ToolData[] _initialToolArray;
+    [SerializeField] List<ToolClass> _toolList = new();
+    Dictionary<ToolType, List<ToolClass>> _toolDictionary = new();
     void SetTools()
     {
-        for (int i = 0; i < initialToolArray.Length; i++)
+        for (int i = 0; i < _initialToolArray.Length; i++)
         {
-            var item = initialToolArray[i];
+            var item = _initialToolArray[i];
 
             AddTool(item);
 
@@ -605,20 +607,171 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddTool(ToolData data)
     {
-        for (int i = 0; i < toolList.Count; i++)
+        for (int i = 0; i < _toolList.Count; i++)
         {
-            var item = toolList[i];
+            var item = _toolList[i];
             if (item._data == data) return;
         }
 
         ToolClass toolClass = new ToolClass(data);
         UIHandler.instance._pauseUI.CreateToolUnit(toolClass);
-        toolList.Add(toolClass);
+        _toolList.Add(toolClass);
+        data.OnAdded();
+
+        if (_toolDictionary.ContainsKey(data._toolType))
+        {
+            _toolDictionary[data._toolType].Add(toolClass);
+        }
+        else
+        {
+            _toolDictionary.Add(data._toolType, new List<ToolClass>() { toolClass});
+        }
+
+
+    }
+
+    //but we need to get a random one.
+    public bool HasTool(ToolType _toolType)
+    {
+        return _toolDictionary.ContainsKey(_toolType);
+    }
+
+    public ToolData GetRandomTool(ToolType _toolType)
+    {
+        if (!_toolDictionary.ContainsKey(_toolType)) return null;
+
+
+        List<ToolClass> toolList = _toolDictionary[_toolType];
+
+        if(toolList.Count <= 0)
+        {
+            Debug.Log("the list has nothing");
+            return null;
+        }
+
+        int random = UnityEngine.Random.Range(0,toolList.Count);
+        return toolList[random]._data;
+
+
+    }
+
+
+    public void AddIngredient(ToolData toolData, IngredientData ingredientData, int quantity = 1)
+    {
+        for (int i = 0; i < _toolList.Count; i++)
+        {
+            var item = _toolList[i];
+
+            if (item._data != toolData) continue;
+
+            
+            item.AddIngredient(ingredientData, quantity);
+
+            GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(item._data._harvestAudioClip);
+            return;
+        }
+    }
+    public void ConsumeIngredient(ToolData toolData, IngredientData ingredientData, int quantity = 1)
+    {
+        for (int i = 0; i < _toolList.Count; i++)
+        {
+            var item = _toolList[i];
+
+            if (item._data != toolData) continue;
+
+            item.RemoveIngredient(ingredientData, quantity);
+
+            return;
+        }
+    }
+    public void ResetToolList()
+    {
+        for (int i = 0; i < _toolList.Count; i++)
+        {
+            var item = _toolList[i];
+            item._data.OnRemoved();
+        }
+
+        _toolList.Clear();
+        _toolDictionary.Clear();
     }
 
     #endregion
 
+
+    #region SAVE DATA
+
+    public void CaptureState(SaveClass saveClass)
+    {
+        List<int> inventoryList = new();
+
+        for (int i = 0; i < cityInventoryList.Count; i++)
+        {
+            var item = cityInventoryList[i];
+            inventoryList.Add(item.quantity);
+        }
+
+        saveClass.MakePlayerInventory(inventoryList);
+    }
+
+    public void RestoreState(SaveClass saveClass)
+    {
+        List<int> inventoryList = saveClass._playerInventoryList;
+
+        //Debug.Log("restore the state " + inventoryList.Count);
+        //we start at 0 because we dont need to save pop.
+        //
+
+        if(cityInventoryList.Count <= 0)
+        {
+            SetCityInventoryList();
+        }
+
+        for (int i = 1; i < inventoryList.Count; i++)
+        {
+            var value = inventoryList[i];
+            var item = cityInventoryList[i];
+
+
+
+            item.quantity = value;
+            item.UpdateUI();
+        }
+
+    }
+
+    #endregion
+
+
+    #region MAIN BLUEPRINTS
+
+    List<MainBlueprintType> _mainBlueprintList = new();
+
+    public void AddMainBlueprint(MainBlueprintType newBlueprint)
+    {
+        if (!_mainBlueprintList.Contains(newBlueprint)) return;
+
+        _mainBlueprintList.Add(newBlueprint);   
+    }
+
+    public bool HasMainBlueprint(MainBlueprintType newBlueprint)
+    {
+        return _mainBlueprintList.Contains(newBlueprint);
+    }
+
+
+    #endregion
+
 }
+
+public enum MainBlueprintType
+{
+    Armory,
+    Lab,
+    Drop_Launcher,
+    Body_Enhancer
+}
+
 
 public enum BossSigilType 
 { 

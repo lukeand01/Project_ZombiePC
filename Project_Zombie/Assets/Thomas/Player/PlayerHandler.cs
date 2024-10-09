@@ -31,7 +31,7 @@ public class PlayerHandler : MonoBehaviour
     public EntityAnimation _entityAnimation { get; private set; }
     public EntityMeshRend _entityMeshRend { get; private set; }
 
-    public Camera _cam { get; private set; }
+    [field:SerializeField]public Camera _cam { get; private set; }
 
     [Separator("BODY PARTS REF")]
     [SerializeField] GameObject graphicHolder;
@@ -44,6 +44,7 @@ public class PlayerHandler : MonoBehaviour
 
 
     [SerializeField] DropData _dropData;
+    [SerializeField] PlayerEquipmentData _playerEquipmentData;
 
     private void FixedUpdate()
     {
@@ -83,12 +84,6 @@ public class PlayerHandler : MonoBehaviour
     private void Update()
     {
 
-        if(_cam == null)
-        {
-            _cam = Camera.main;
-        }
-
-
 
         if (Input.GetKeyDown(KeyCode.U))
         {
@@ -125,7 +120,6 @@ public class PlayerHandler : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        _cam = Camera.main;
 
         _playerController = GetComponent<PlayerController>();
         _playerMovement = GetComponent<PlayerMovement>();
@@ -344,9 +338,32 @@ public class PlayerHandler : MonoBehaviour
         areaDamage.MakeDelayShowInUI();
     }
 
+    #region SAVE PLAYER DATA
 
+    //so what happens here 
+    //i want all the information to always
+    //i am always going to save everyhting at the start.
+    //because 
 
+    //
 
+    public void CaptureState(SaveClass saveClass)
+    {
+        //we get the playerinventory.
+        _playerInventory.CaptureState(saveClass);
+        _playerEquipmentData.CaptureState(saveClass);
+        _playerAbility.CaptureState(saveClass);
+    }
+
+    public void RestoreState(SaveClass saveClass)
+    {
+        //we pass this to the playerinventory.
+        _playerInventory.RestoreState(saveClass);
+        _playerEquipmentData.RestoreState(saveClass);
+        _playerAbility.RestoreState(saveClass);
+    }
+
+    #endregion
 }
 
 public enum EspecialConditionType

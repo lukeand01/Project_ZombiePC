@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyRunAway : EnemyBase
 {
-    //this enemy runs away from the player
+    //this _enemy runs away from the player
     //on death it grants a especial resource.
 
     [SerializeField] Transform[] eyeArray;

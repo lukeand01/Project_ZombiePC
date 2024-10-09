@@ -19,7 +19,6 @@ public class City_House : MonoBehaviour
         int mainLevel = GameHandler.instance.cityDataHandler.cityMain.cityStoreLevel / 2;
         int cappedLevel = Mathf.Clamp(mainLevel, 1, 5) - 1;
 
-        Debug.Log("capped level " + cappedLevel);
 
         for (int i = 0; i < graphicArray.Length; i++)
         {

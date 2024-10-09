@@ -7,6 +7,10 @@ public class EnemySimpleMelee : EnemyBase
     [SerializeField] bool shouldOnlyMoveWhenFacing;
 
     [SerializeField] int attackLayer = 2;
+    [SerializeField] bool isHound;
+
+    float _cooldown_Bark;
+
 
     protected override void AwakeFunction()
     {
@@ -17,6 +21,31 @@ public class EnemySimpleMelee : EnemyBase
     protected override void UpdateFunction()
     {
         base.UpdateFunction();
+
+        if (isHound)
+        {
+            if(_cooldown_Bark > 0)
+            {
+                _cooldown_Bark -= Time.deltaTime;
+            }
+            else
+            {
+                int random = Random.Range(0, 2);
+
+                if(random == 0)
+                {
+                    GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Bark_01, transform);
+                }
+                if(random >= 1)
+                {
+                    GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Bark_02, transform);
+                }
+
+                Debug.Log("called it " + random);
+                _cooldown_Bark = Random.Range(10, 15);
+            }
+        }
+
 
         if(shouldOnlyMoveWhenFacing && isMoving)
         {
@@ -41,6 +70,8 @@ public class EnemySimpleMelee : EnemyBase
     {
         base.ResetEnemyForPool();
         _enemyGraphicHandler.SelectRandomGraphic();
+
+        _cooldown_Bark = 0;
     }
 
     protected override void StartFunction()

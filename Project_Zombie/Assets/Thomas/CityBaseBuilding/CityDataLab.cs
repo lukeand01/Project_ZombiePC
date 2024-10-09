@@ -33,6 +33,25 @@ public class CityDataLab : CityData
 
     [field: SerializeField] public List<AbilityPassiveData> currentPassiveAbilityList { get; private set; } = new();
 
+
+    public void RestoreState(SaveClass saveClass)
+    {
+        ownedAbilityIndexList_Active = saveClass._lab_OwnedList_Active;
+        ownedAbilityIndexList_Passive = saveClass._lab_OwnedList_Passive;
+
+        foundPassiveAbilityIndexList = saveClass._lab_FoundList;
+    }
+    public void CaptureState(SaveClass saveClass)
+    {
+        saveClass.MakeOwnedList_Active_Lab(ownedAbilityIndexList_Active);
+        saveClass.MakeOwnedList_Passive_Lab(ownedAbilityIndexList_Passive);
+
+        saveClass.MakeFoundList_Lab(foundPassiveAbilityIndexList);
+
+    }
+
+
+
     public void Initialize()
     {
         
@@ -209,7 +228,6 @@ public class CityDataLab : CityData
 
     }
 
-
     public void FoundNewGun(int foundIndex)
     {
         if (foundPassiveAbilityIndexList.Contains(foundIndex))
@@ -223,9 +241,15 @@ public class CityDataLab : CityData
     }
 
 
-
+    
 
     #endregion
+
+    public AbilityActiveData GetActiveAbilityWithIndex(int index)
+    {
+        return abilityRefList_Active[index];
+    }
+
 
     #region GETTING PASSIVE FOR STAGE
     //as we progress the game we should have a higher chance to get better passives rather than the same for all.

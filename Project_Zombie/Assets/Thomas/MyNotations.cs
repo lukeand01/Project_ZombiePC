@@ -27,11 +27,11 @@
 
 
 //GOAL 
-///create stat handler for entity.
+///create stat _handler for entity.
 ///the player has stats
 ///the enemy has stats that can be scaled.
 ///first i needd to be able to change stats in a non-heavy manner
-//i need to make every gun_Perma, enemy and etc assign to the right event. and remove said events if they are killed.
+//i need to make every gun_Perma, _enemy and etc assign to the right event. and remove said events if they are killed.
 ///can crit. and it is influenced by player critchance and critdamage. guns also have modifierse.
 ///handle penetration.
 ///stat reload speed affect reload speed.
@@ -134,8 +134,8 @@
 //create simple ranged.
 //create heavy
 //create bomber.
-//enemy can be shot and can be killed. show the damage pop
-//enemy spawn from portals that can oepn in the world. but they also can be closed.
+//_enemy can be shot and can be killed. show the damage pop
+//_enemy spawn from portals that can oepn in the world. but they also can be closed.
 
 
 //GOAL
@@ -209,7 +209,7 @@
 //can summon a sentry.
 //enemies can attack turrets.
 ///can become invisible for a short duration. meaning that enemies will ignore the target. no visual stuff, just a bd and make it invisible
-//the turret is losing aim of the enemy.
+//the turret is losing aim of the _enemy.
 //turrets can be damaged and destroyed.
 //turrets have a cooldown timer.
 ///can become immune for a short duration
@@ -283,8 +283,8 @@
 //passive if the player has this item then he will revive once dead. but only once. cannot stack.
 //passive deals 20% damage to bosses . at 3 deals 15% more damage to enemies with 80% health <= UNSURE
 //passive enemies that have a debuff receive 3% more damage. at 5 they explode when killed.
-//passive killing an enemy grants you 1 additional health. up to 100 per stack, can stack 5 times.
-//heal one by every enemy you damage. the value_Level increase one by every stack. up to 5.
+//passive killing an _enemy grants you 1 additional health. up to 100 per stack, can stack 5 times.
+//heal one by every _enemy you damage. the value_Level increase one by every stack. up to 5.
 //Does nothing till stack 3 - enemies that you hit that are below 15% of health instantly die.
 //passive enemies around you are randomly struck by lioghting. every stack grants an additional lighting and 1% to the damage. the damage is based off the player´s damage.
 //passive dashing deal damage. every stack increases the damage. at stack 4 you get a an additioanl dash ammo.
@@ -343,8 +343,8 @@
 //reduce skill cooldown. at 3 skills do more damage.
 //increase regen when outside of combat (not takig damage for a while). at 3 greatly increase regen while standing still for long enough
 //reduce incoming damage. at 3 it deals a portion of the damage back.
-//increase reload speed. at 3 it refreshes the ammo by 10% per killed enemy.
-//slows the enemy by %. at 3 chance to stun the enemies.
+//increase reload speed. at 3 it refreshes the ammo by 10% per killed _enemy.
+//slows the _enemy by %. at 3 chance to stun the enemies.
 //any damage has a chance to cause bleeding.
 //increase max health. at 3 gain a shield based in maxhealth that regens when havent taken damage for a duration.
 //shoots faster. at 3 
@@ -444,7 +444,7 @@
 
 //GOAL
 //create the round system. and create the periods of rest between rounds.
-//add a ranged enemy
+//add a ranged _enemy
 ///add resources that take time to gather.
 //add a special stage resource for doing something.
 
@@ -512,7 +512,7 @@
 ///add that you can see your gun at the pause
 ///you should not start with the shield on
 ///the health stacking passive didnt work; the problem is that its not calling for update.
-//health bar in top of the enemy head is not working properly.
+//health bar in top of the _enemy head is not working properly.
 ///the armor passive also not working?
 ///the portals are not working when you oepn teh area. they are not spawning enemies.
 ///the ability unit should start without selected_ForShow active.
@@ -528,7 +528,7 @@
 //MY GOAL
 //need to make enemies more interesting to fight.
 //enemies can have a cap about how many there should be.
-//ranged enemy shouldnt just follow the player. he should always try to keep a distance
+//ranged _enemy shouldnt just follow the player. he should always try to keep a distance
 //Hound just charge straight ahead. but asssassins try to flank.
 //artillery will station somewhere and will shoot at the player. the shoot is always accompanied by a sound that should be in the map to help the player find it.
 //Rooms might have traps at any moment. everytime the player gets inside we can check to see if there is a trap and close the door. then do something inside.
@@ -552,7 +552,7 @@
 //The hound should be way faster.
 //enemies are getting strong too fast.
 //bullets are not being destroy by wall.
-//the aim should be more free. it should only attack if you hover an enemy. or maybe we should have a false arm but the bullet should go to the object.
+//the aim should be more free. it should only attack if you hover an _enemy. or maybe we should have a false arm but the bullet should go to the object.
 
 
 //maybe round should be slow. it always charge at the same time. the difference is that killing advances it further.
@@ -565,7 +565,7 @@
 ///create a limit for enemies in the stage.
 ///bullets are not being destroy by wall.
 ///the aim should be more free. it should only attack if you hover an enemy. or maybe we should have a false arm but the bullet should go to the object.
-//we will look at where the mouse is and shoot where the mouse is unless we hover at an enemy. 
+//we will look at where the mouse is and shoot where the mouse is unless we hover at an _enemy. 
 
 //MY GOAL
 //cgheck active abilities
@@ -615,7 +615,7 @@
 
 //MYGOAl TOMORROW
 //create console command system? need to be the type of system that i can easily comppletely removed from the game
-//can spawn enemy.
+//can spawn _enemy.
 //can kill all enemies
 //can get a passive with _id
 //can get gun_Perma with _id
@@ -653,7 +653,7 @@
 
 
 //WHAT TO ADD IN THIS VERSION?
-//shield enemy that only takes damage behind. or if you have enough penetration
+//shield _enemy that only takes damage behind. or if you have enough penetration
 //enemies that are ranged and they shoot at you, so the player can never just stand still. 
 //enemies that sit still, but if you damage them they will go after them.
 
@@ -710,7 +710,7 @@
 //blueprint computer where you must activate them and protect the area. once you do that you gain intel. (dont need to worry about the resource for the meantime)
 //can use the shrine for some kind of power. it will consume the shrine and cost bless.
 //create the upgrade system for temp guns.
-//create teh artilery enemy. it will spawn at a random position. it argets the player aywhere. can only spawn in opehnj area. create sound for the player to find it.
+//create teh artilery _enemy. it will spawn at a random position. it argets the player aywhere. can only spawn in opehnj area. create sound for the player to find it.
 //create ranged. it will just shoot projectiles. slwo projectiles.
 //create mage that will damage teh area. but it moves.
 //probably i will have to revise the spawn system
@@ -738,7 +738,7 @@
 
 
 //GOAL OF TODAY
-//the charge enemy
+//the charge _enemy
 //make sure the shield is working
 //apply effects to teh gun_Perma once the process is done
 //create a bd system for the gun_Perma.
@@ -753,7 +753,7 @@ using static System.Collections.Specialized.BitVector32;
 ///create ammo system. perma always has infiite ammo
 ///can reload. 
 ///can change the behavior of bullets. we carry the bullet behavior in the player because this will be universal now.
-///create stat handler for entity.
+///create stat _handler for entity.
 ///the player has stats
 ///the enemy has stats that can be scaled.
 ///first i needd to be able to change stats in a non-heavy manner
@@ -978,7 +978,7 @@ using static System.Collections.Specialized.BitVector32;
 
 //GOAL OF TODAY
 ///the upgrade weapon also costs money to start.
-//the charge enemy
+//the charge _enemy
 //make sure the shield is working
 //apply effects to teh gun_Perma once the process is done
 //create a bd system for the gun_Perma.
@@ -1029,7 +1029,7 @@ using static System.Collections.Specialized.BitVector32;
 ///the machine also cost stuff.
 ///create mage enemy
 ///create artillery enemy. create sound tips foar the player to find the artuillery.
-//create a charger enemy. use the same behavior of the dash.
+//create a charger _enemy. use the same behavior of the dash.
 //create a bridge
 //need to create a way to replenish ammo.
 //have to check that the calculation of bullets is working
@@ -1071,7 +1071,7 @@ using static System.Collections.Specialized.BitVector32;
 
 
 //MY GOAL
-//mouse ui is not turning red when hovering enemy
+//mouse ui is not turning red when hovering _enemy
 ///mouse ui is not showing when you open and pause and close
 ///mouse ui should have other shapes in main menu, city and pause
 ///spawning behind the portal. whatever rotation is not working.
@@ -1090,7 +1090,7 @@ using static System.Collections.Specialized.BitVector32;
 
 
 //MY GOAL
-//i want enemy to shoot faster on sight but less faster in next shot
+//i want _enemy to shoot faster on sight but less faster in next shot
 ///the enemy projectile is hitting own enemies.
 //i want more enemies in the third round.
 //when going right there is an inivislb ecollider.
@@ -1300,7 +1300,7 @@ using static System.Collections.Specialized.BitVector32;
 //the abilities are black
 
 
-//projectile pooling and enemy pooling
+//projectile pooling and _enemy pooling
 //that means that when i want to instantiate something i should use a reference instead. i need to get every place that ever shot a bullet
 
 
@@ -1361,12 +1361,12 @@ using static System.Collections.Specialized.BitVector32;
 //i need to create ways to get the store contacts
 //and i need to create story quests. so i need to create a screen for when you return from the city.
 //i need more enemies. and i need them to be more vicious.
-//i need the enemy projectiles be faster, but there is less of them
-//i need an enemy that jumps at the player. need to keep player always guessing. i want the player to always keep moving.
+//i need the _enemy projectiles be faster, but there is less of them
+//i need an _enemy that jumps at the player. need to keep player always guessing. i want the player to always keep moving.
 //i need to create 
 //need to make sure the abilities are fun. especially their interactions.
 //create a melee system. perphaps incentivizing melee will do wonder for the game. to spare ammo and do some cool attacks
-//i need to increase the speed of every enemy at later stages but to a cap.
+//i need to increase the speed of every _enemy at later stages but to a cap.
 //make a way so they cant dash through the gaps to areas where they havent opened it yet.
 
 
@@ -1382,7 +1382,7 @@ using static System.Collections.Specialized.BitVector32;
 //the way to achieve this:
 //the player has to behave in ways to get what they want. melee for conversing ammo and more points. certain enemies have weak spots. 
 //certains enemies spawn in different places so the player has to keep an eye.
-//currently the base enemy offer no danger. too slow. increase speed, reduce attack. if they are near you they should deal damage.
+//currently the base _enemy offer no danger. too slow. increase speed, reduce attack. if they are near you they should deal damage.
 //then the map will be another thing because the player will need to do things aruond the map. every map will have a gimmick.
 //the game never lets the player just rest. 
 
@@ -1398,7 +1398,7 @@ using static System.Collections.Specialized.BitVector32;
 //i need the mage to be more interesting. 
 //you have weaker mage. is the same but it also fires the projectile.
 //and the strong mage. is the same but the projectile is stronger and faster. and the artillery creates many 
-//a shield enemy. it bounches everything you shoot slowly but its very slow to rotate.
+//a shield _enemy. it bounches everything you shoot slowly but its very slow to rotate.
 //
 //
 
@@ -1482,7 +1482,7 @@ using static System.Collections.Specialized.BitVector32;
 
 //Melee mechanic
 //create a melee attack.
-//it works as following: has ammo that can be restored, does damage but doesnt stagger, if the enemy already is staggered then it pushed them back and dealms more damage.
+//it works as following: has ammo that can be restored, does damage but doesnt stagger, if the _enemy already is staggered then it pushed them back and dealms more damage.
 //you can deflect projectiles
 
 //REPORTS AFTER PLAYING
@@ -1535,19 +1535,19 @@ using static System.Collections.Specialized.BitVector32;
 //perphaps i want movement to be weaker at the start. so that it feels more precise.
 
 
-//what would be the new enemy?
-//i want a shielded enemy
-//i want a enemy that jumps
-//i want a hive enemy. enemy that spawns others.
+//what would be the new _enemy?
+//i want a shielded _enemy
+//i want a _enemy that jumps
+//i want a hive _enemy. _enemy that spawns others.
 //i want a better mage.
-//i want an enemy that causes areas to be not accessible for a short duration.
+//i want an _enemy that causes areas to be not accessible for a short duration.
 //
 
 //currently we have:
 //simple - which will be the masses.
 //ranged - which throw simple projectiles
 //bomber - explodes. deals a lot of damage but should be easy to deal with.
-//Hound - fast enemy with low health.
+//Hound - fast _enemy with low health.
 //Giant - offers crowd control against the player. big and tanky.
 //Mage - hard to deal with as they keep creating many speels to kill you. i want different mages.
 //Artillery - Create a reason for the player to keep moving
@@ -1559,7 +1559,7 @@ using static System.Collections.Specialized.BitVector32;
 //trapper: it hides in a spot. if the player passes gets damaged and stunned
 //
 
-//the shielded enemy cannot be just tanking stuff.
+//the shielded _enemy cannot be just tanking stuff.
 //
 
 
@@ -1583,7 +1583,7 @@ using static System.Collections.Specialized.BitVector32;
 //we will focus in the next step before charger just to ge4t me some time.
 
 //GOAL STEPS
-//get the shield enemy working well. <= it needs improvement but i will go to something else now.
+//get the shield _enemy working well. <= it needs improvement but i will go to something else now.
 ///improve the mage: it will spam a bunch of attacks.
 ///a big eye that looks at the player. causing burning damage while the eye has line of sight.
 
@@ -1613,12 +1613,12 @@ using static System.Collections.Specialized.BitVector32;
 //second its not feeling good for some reason.
 //why the thing is spawning.;
 //sometimes the bullets are stuck in the air, waiting for - if the bullet is not moving then we destroy it.
-//the cap for enemy spawn is not working?
+//the cap for _enemy spawn is not working?
 //also cant spawn giant? problem with pooling
 
 
 //Passive ideas:
-//killing an enemy has a chance of converting that enemy as an ally
+//killing an _enemy has a chance of converting that _enemy as an ally
 //Summon an ally after every ability use.
 //damage bd can crit.
 //can fly for certain durations.
@@ -1643,7 +1643,7 @@ using static System.Collections.Specialized.BitVector32;
 //you could dash through walls
 //decided what to do with the gaps
 //and fix the player falling and dying.
-//create an effect for the portal spawning enemy.
+//create an effect for the portal spawning _enemy.
 
 //foir now the perfomance seems alright. i need to focus in the other parts till i get in troulb ewith it
 
@@ -1695,7 +1695,7 @@ using static System.Collections.Specialized.BitVector32;
 //you cant keep changing targets.
 
 
-//need to do a bit of a rewriting for the enemy targer dewtection
+//need to do a bit of a rewriting for the _enemy targer dewtection
 //make sure that it can deal with ally and players.
 
 //so i want to change how they target
@@ -1704,7 +1704,7 @@ using static System.Collections.Specialized.BitVector32;
 //add effect for explosions (mage, artillery, bomber, and fireball)
 ///also add shake effect from them as well.
 ///not show the flyholder if you dont have it.
-//get different projectiles in the poolhandler. enemy and fireball
+//get different projectiles in the poolhandler. _enemy and fireball
 ///need to test if the cap is working for spawning
 ///also reduce the amount of roll reducec per failed spawn
 ///make so that a spawn with 0 chance cannot be spawned.
@@ -1735,7 +1735,7 @@ using static System.Collections.Specialized.BitVector32;
 
 
 //now thgat i am back what was i doing?
-//creat ethe shield enemy and charge enemy.
+//creat ethe shield _enemy and charge _enemy.
 //turn on the drop system
 ///now the enemies are not being cleared after reseting the thing. i dont know why. but it should be an easy fix.
 ///try to spread the enemies a bit, just a bit. the rule is that you cannot choose the same in a row.
@@ -1761,7 +1761,7 @@ using static System.Collections.Specialized.BitVector32;
 ///in this area you have a seller that sells you a abilities or weapons upgrades. they cost points and are extremely expensives.
 ///they can also sell Curses, which are powerful passives that also have drawbacks.
 ///create the enemy that has a shield, and biggest functions is to try and annoy you by blocking your hits.
-//create teh charge enemy, that i will jump at where the player is at and try to disrupt the player somehow.
+//create teh charge _enemy, that i will jump at where the player is at and try to disrupt the player somehow.
 ///i need a system for spawning the random fountain, random guns, random sentries, random abilities
 ///the ability boxes need to be able to respawn, the sentries as well.
 ///fix the problem about the money not correctly updating.
@@ -1782,8 +1782,8 @@ using static System.Collections.Specialized.BitVector32;
 
 
 
-//shield enemy will be just a regular enemy with a shield.
-//the charge enemy might spawn with shield and might now.
+//shield _enemy will be just a regular _enemy with a shield.
+//the charge _enemy might spawn with shield and might now.
 //i will focus in the charge.
 //this guy will be a knight. he has a shield and he shows his charge, then he quickly charge.
 //and the basic enemies might gain a shield as well, but they wont charge.
@@ -1864,7 +1864,7 @@ using static System.Collections.Specialized.BitVector32;
 //TESTING REPORT #3
 ///Fix the player shooting enemy projectiles <= 
 ///find a way to warn the player has been shot <= 
-//the fly turret is not targetting the simple enemy 1
+//the fly turret is not targetting the simple _enemy 1
 ///sometimes the roudn text is invisible. <= 
 ///respawning after too far from the player is causing problems. this is causing to break the rounds because the enemies are not respawning <=
 //maybe shift the camera to see below better.  <= 
@@ -1882,12 +1882,12 @@ using static System.Collections.Specialized.BitVector32;
 
 //TESTING REPORT 4#
 //i think the damage ui should be a bit higher
-//the enemy projectile stopped? why?
+//the _enemy projectile stopped? why?
 ///i want the shield attack to still throw the player
 ///the shield enemy is throwing the player but it should not yet
-//the enemy mage stopped attacking? i think its because i destroyed an enemy for some reason. 
+//the _enemy mage stopped attacking? i think its because i destroyed an _enemy for some reason. 
 ///the damage flash. maybe the mage caused it? nope. 
-//the enemy projectile should haev shadow to help dodging it.
+//the _enemy projectile should haev shadow to help dodging it.
 ///the round text is turning invisible once again.
 ///the round is not passing? at least not showing that its passing.
 
@@ -2072,7 +2072,7 @@ using static System.Collections.Specialized.BitVector32;
 //thick bullet - each bullet goes through one additional target.
 //blood consumer - this weapons has 15% vampirism.
 //Light weight - gives movespeed when holding this weapon.
-//Fragmentation Bullet - every bullet in contact with an enemy breaks off into three other pieces that deal 20% of the damage. they do apply status
+//Fragmentation Bullet - every bullet in contact with an _enemy breaks off into three other pieces that deal 20% of the damage. they do apply status
 //Possessed - start a quest that after completing it grants this gun_Perma higher damage.
 //Sharp Projectile - grants this gun_Perma 25% pen.
 //Reload Protector - when you reload this gun_Perma you recover 50 % of your shield. you get a shield of 50;

@@ -144,11 +144,11 @@ public class PauseUI : MonoBehaviour
 
     public void DescribeStat(StatClass stat, Transform posRef)
     {
-        descriptionWindow.DescribeStat(stat, posRef);
-
-
-
+        descriptionWindow.DescribeStat(stat, posRef);        
     }
+
+
+
 
     public void DescribeDash(Transform posRef)
     {
@@ -218,6 +218,7 @@ public class PauseUI : MonoBehaviour
         ToolUnit newObject = Instantiate(_toolUnitTemplate);
         newObject.transform.parent = _containerAbilityArray[2]._container;
         newObject.SetUp(tool);
+
     }
 
     #endregion

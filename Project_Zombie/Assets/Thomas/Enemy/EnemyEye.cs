@@ -1,3 +1,4 @@
+using DG.Tweening;
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,10 @@ public class EnemyEye : EnemyBase
     [SerializeField] Transform[] eyeArray;
     [SerializeField] LineRenderer _lineRend;
     [SerializeField] LineRenderer _lineRend2;
+    [SerializeField] GameObject _graphicHolder;
+    [SerializeField] Animator _animator;
+    [SerializeField] AudioSource _audioSource_Aim;
+    [SerializeField] AudioSource _audioSource_Shoot;
     LayerMask wallAndPlayerLayer;
 
     protected override void StartFunction()
@@ -50,7 +55,7 @@ public class EnemyEye : EnemyBase
         SetIsAttack(true);
         //while its staring at the player i want it to stare at the player. 
         //starts doing damage to the player. cause debuff?
-
+        
     }
 
 
@@ -83,9 +88,14 @@ public class EnemyEye : EnemyBase
     public override void ResetEnemyForPool()
     {
         base.ResetEnemyForPool();
-
+        
         timeToStartDealingDamage_Current = 0;
         intervalBetweenDamage_Current = 0;
+
+        _graphicHolder.transform.localPosition = new Vector3(0, 2, 0);
+
+        _animator.SetLayerWeight(1, 0);
+        _animator.Play("Animation_Eye_Idle", 1);
     }
 
     DamageClass damage;
@@ -98,18 +108,32 @@ public class EnemyEye : EnemyBase
 
     protected override void UpdateFunction()
     {
+
+        if(timeToStartDealingDamage_Current > 0 && timeToStartDealingDamage_Current < timeToStartDealingDamage_Total)
+        {
+            _audioSource_Aim.gameObject.SetActive(true);
+        }
+        else
+        {
+            _audioSource_Aim.gameObject.SetActive(false);
+        }
+
+        if(timeToStartDealingDamage_Current >= timeToStartDealingDamage_Total)
+        {
+            _audioSource_Shoot.gameObject.SetActive(true);
+        }
+        else
+        {
+            _audioSource_Shoot.gameObject.SetActive(false);
+        }
+
+
         base.UpdateFunction();
-
-        //if its attacking then we check the sight to the player.
-        //we should also create a line to the player that becomes more intense with time
-
-
-        //
 
         if(isAttacking)
         {
 
-            //rotate the enemy to the player
+            //rotate the _enemy to the player
             Vector3 direction = PlayerHandler.instance.transform.position - transform.position;
             Vector3 directionNormalized = direction.normalized;
             Quaternion targetRotation = Quaternion.LookRotation(directionNormalized);
@@ -165,12 +189,22 @@ public class EnemyEye : EnemyBase
 
     }
 
+    protected override void Die(bool wasKilledByPlayer = true)
+    {
+        
+        base.Die(wasKilledByPlayer);
+        _animator.SetLayerWeight(1, 1);
+        _animator.Play("Animation_Eye_Death_00", 1);
+        _graphicHolder.transform.DOLocalMove(new Vector3(0,-0.25f,0), 0.5f);
+    }
     void StopEyeAttack()
     {
         timeToStartDealingDamage_Current = 0;
         intervalBetweenDamage_Current = 0;
         SetIsAttack(false);
         _lineRend.gameObject.SetActive(false);
+
+
     }
 
     //we slowly move 
@@ -182,7 +216,7 @@ public class EnemyEye : EnemyBase
 
         Vector3 newPos = Vector3.Lerp(eyeArray[1].position, PlayerHandler.instance.transform.position, value); 
 
-        Debug.Log("this is the value " + value);
+
 
         _lineRend2.SetPosition(0, eyeArray[1].position);
         _lineRend2.SetPosition(1, newPos);

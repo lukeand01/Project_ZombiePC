@@ -73,9 +73,9 @@ MonoBehaviour:
   graphicHolder: {fileID: 9204036135248983588}
   graphicArray:
   - {fileID: 286677947276567174}
-  - {fileID: 4753216961833461470}
-  - {fileID: 199852845068821610}
   - {fileID: 8575002007973386073}
+  - {fileID: 199852845068821610}
+  - {fileID: 4753216961833461470}
   - {fileID: 6688424311952254211}
   especialNpcPosition: {fileID: 606620149865253542}
 --- !u!1 &1995897503369404199
@@ -755,10 +755,14 @@ MonoBehaviour:
   interactButtonText: {fileID: 3440749926422933272}
   priceHolder: {fileID: 4784327913956554220}
   priceText: {fileID: 568600067667134743}
+  titleHolder: {fileID: 0}
+  titleText: {fileID: 0}
+  _cannotHolder: {fileID: 0}
   merchantHolder: {fileID: 0}
   nameText: {fileID: 0}
   descriptionText: {fileID: 0}
   iconImage: {fileID: 0}
+  interactButtonArray: []
 --- !u!1 &9204036135248983588
 GameObject:
   m_ObjectHideFlags: 0

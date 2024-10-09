@@ -168,8 +168,16 @@ public class EntityAnimation : MonoBehaviour
 
 
     public void CallAnimation_Attack(int layer = 2)
-    {       
-        int attackID = enemyIDDictionary[ANIMATIONCOMMAND_ATTACK].numberID_Current;        
+    {
+        int attackID = 0;
+        if (enemyIDDictionary.ContainsKey(ANIMATIONCOMMAND_ATTACK))
+        {
+            attackID = enemyIDDictionary[ANIMATIONCOMMAND_ATTACK].numberID_Current;
+        }
+
+
+
+
         CallAnimation(ANIMATIONCOMMAND_ATTACK, attackID, layer);
     }
 
@@ -210,7 +218,7 @@ public class EntityAnimation : MonoBehaviour
            attackID = enemyIDDictionary[ANIMATIONCOMMAND_DEATH].numberID_Current;
         }
 
-        Debug.Log("death id " + GetTotalAnimationId(ANIMATIONCOMMAND_DEATH, attackID));
+
         CallAnimation(ANIMATIONCOMMAND_DEATH, attackID, 0); //DEATH IS ALWAYS CALLED FROM THE MAIN LAYER
     }
 
@@ -237,7 +245,6 @@ public class EntityAnimation : MonoBehaviour
 
 
     Dictionary<string, EnemyInfoAnimationClass> enemyIDDictionary = new();
-
 
 
     public void AddEnemyID(string nameID, int min, int max)

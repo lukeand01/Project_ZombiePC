@@ -14,20 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Giant
   enemyModel: {fileID: 4825173832297872710, guid: 1aa0ca1f4928fd94ab3595953bb91366, type: 3}
+  bossModel: {fileID: 0}
   attackRange: 5
-  attackSpeed: 1.5
+  AttackAnimationSpeed: 1
+  attackRest: 0
+  <damageType>k__BackingField: 0
   initialStatList:
   - stat: 0
     initialValue: 1000
   - stat: 1
-    initialValue: 3
+    initialValue: 0
   - stat: 2
     initialValue: 30
   scaleStatList: []
+  enemyResistanceList:
+  - <_damageType>k__BackingField: 0
+    <_value>k__BackingField: 1
+  - <_damageType>k__BackingField: 1
+    <_value>k__BackingField: 1
+  - <_damageType>k__BackingField: 2
+    <_value>k__BackingField: 1
+  - <_damageType>k__BackingField: 3
+    <_value>k__BackingField: 1
   audio_Hit: {fileID: 8300000, guid: 8e4851963e3ebde4b948020b48d7cd78, type: 3}
   audio_Dead: {fileID: 8300000, guid: a577c2325268be54488591a486be171a, type: 3}
   audio_Spawned: {fileID: 0}
   audio_Attack: {fileID: 8300000, guid: ef852f4dba9f9e34285d4227eb3883d0, type: 3}
+  audio_footstepArray: []
   shouldNotDespawnBecauseOfDistance: 0
   canIgnoreAlly: 0
   canTurnAlly: 0

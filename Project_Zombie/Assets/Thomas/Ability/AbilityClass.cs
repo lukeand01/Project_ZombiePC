@@ -80,7 +80,7 @@ public class AbilityClass
 
     public AbilityClass(AbilityActiveData data)
     {
-        Debug.Log("this was called");
+
 
         dataActive = data;
         debugName = data.abilityName;
@@ -90,7 +90,7 @@ public class AbilityClass
         chargeTotal = data.chargeDuration;
         chargeCurrent = 0;
 
-        Debug.Log("this is the charge total " + chargeTotal);
+
         //Debug.Log("normal cooldown " + activeCooldownTotal);
         //Debug.Log("round cooldown " + activeRoundCooldownTotal);
 

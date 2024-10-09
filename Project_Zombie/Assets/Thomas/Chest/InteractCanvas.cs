@@ -16,6 +16,7 @@ public class InteractCanvas : MonoBehaviour
     [SerializeField] TextMeshProUGUI priceText;
     [SerializeField] protected GameObject titleHolder;
     [SerializeField] TextMeshProUGUI titleText;
+    [SerializeField] GameObject _cannotHolder;
     //while the thing is showing i want the  interact button if it has a border to keep slowly rotating
 
 
@@ -36,6 +37,9 @@ public class InteractCanvas : MonoBehaviour
         rotation.eulerAngles = new Vector3(cappedX * -1, rotation.y, 0);
         transform.localRotation = rotation;
     }
+
+    public void ControlCannotHolder(bool isVisible) => _cannotHolder.SetActive(isVisible);
+
 
     public virtual void ControlInteractButton(bool isVisible)
     {

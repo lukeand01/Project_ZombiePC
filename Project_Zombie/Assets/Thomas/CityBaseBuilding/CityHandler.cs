@@ -30,13 +30,26 @@ public class CityHandler : MonoBehaviour
             Destroy(gameObject);
         }
 
+
+        //we need to get data here.
+        //so to get the 
+
+       
+
+
     }
+
 
     private void Start()
     {
 
+
+        //this calls the savedata to do everything.
+        GameHandler.instance._saveHandler.RestoreStateUsingCurrentSaveSlot();
+
         UIHandler.instance.ControlUI(true); //
         UIHandler.instance._MouseUI.ControlAppear(true); //
+        UIHandler.instance._MouseUI.ControlMouseUI(true);
         PlayerHandler.instance._playerInventory.PassStageInventoryToCityInventory(); //we get the inventory from teh player to teh city
         PlayerHandler.instance.transform.position = spawnPos.position; //we put the player in the right position
         PlayerHandler.instance._playerController.block.AddBlock("City", BlockClass.BlockType.Combat); //and we block combat
@@ -46,7 +59,6 @@ public class CityHandler : MonoBehaviour
 
         UpdateAbilityListUsingCurrentAbilities();
         UpdateGunListUsingCurrentPermaGun(); 
-
 
         Invoke(nameof(ThingsToStartWithADelay), 0.1f);
     }
@@ -62,7 +74,7 @@ public class CityHandler : MonoBehaviour
 
     public void StartCity()
     {
-        
+
 
         //ready the equip here and i get ref from the player
 
@@ -75,11 +87,6 @@ public class CityHandler : MonoBehaviour
 
     }
 
-    //cant i call this directly from somewhere else?
-
-
-    
-
 
     public void UpdateGunListUsingCurrentPermaGun()
     {
@@ -87,7 +94,6 @@ public class CityHandler : MonoBehaviour
         ItemGunData currentPermaGun = PlayerHandler.instance._playerCombat.GetCurrentPermaGun();
 
         
-
 
         List<ItemGunData> ownedGunList = cityDataHandler.cityArmory.currentGunOwnedList;
 
@@ -158,8 +164,6 @@ public class CityHandler : MonoBehaviour
         return false;
     }
 
-
-
     public void BuyAndUpdateAbility(AbilityActiveData data)
     {
         
@@ -204,6 +208,11 @@ public class CityHandler : MonoBehaviour
 
     #endregion
 
+
+
+    #region SAVE DATA
+
+    #endregion
 }
 
 public class CityHandler_NpcHandler

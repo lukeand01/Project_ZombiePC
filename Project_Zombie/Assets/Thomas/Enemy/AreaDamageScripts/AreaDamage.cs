@@ -253,7 +253,7 @@ public class AreaDamage : MonoBehaviour
     void ApplyBD(IDamageable damageable)
     {
         if (_bdList == null) return;
-        Debug.Log("lenght for this " + _bdList.Count);
+
         for (int i = 0; i < _bdList.Count; i++)
         {
             var item = _bdList[i];
