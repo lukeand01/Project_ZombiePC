@@ -180,15 +180,20 @@ public class DamageClass
     {
         float damage = 0;
 
-        foreach (var item in damageList)
+        for (int i = 0; i < damageList.Count; i++)
         {
-            if(onlyNotPure && item._damageType == DamageType.Pure)
+            var item = damageList[i];
+
+
+            if (onlyNotPure && item._damageType == DamageType.Pure)
             {
                 continue;
             }
 
             damage += item._value;
+
         }
+
         return damage;
     }
 

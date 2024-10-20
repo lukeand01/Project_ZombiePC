@@ -32,10 +32,10 @@ public class SaveSlotData : ScriptableObject
     public void RestoreGameState()
     {
         //we will get information here and send to the right places.
-        //we send to cityhandler and another to player. the cityhandler goes first.
-
-        GameHandler.instance.RestoreGameState(_saveClass);
+        //we send to cityhandler and another to player. the player goes first.
         PlayerHandler.instance.RestoreState(_saveClass);
+        GameHandler.instance.RestoreGameState(_saveClass);
+
     }
 
 
@@ -46,9 +46,8 @@ public class SaveSlotData : ScriptableObject
         //
         _saveClass.MakeHasSaveData(true);
 
-
-        GameHandler.instance.CaptureGameState(_saveClass);
         PlayerHandler.instance.CaptureState(_saveClass);
+        GameHandler.instance.CaptureGameState(_saveClass);
 
 
         GameHandler.instance._saveHandler.CaptureSaveSlots();

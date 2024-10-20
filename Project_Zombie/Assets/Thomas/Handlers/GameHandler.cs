@@ -19,6 +19,7 @@ public class GameHandler : MonoBehaviour
     [field:SerializeField] public SettingsData _settingsData { get; private set; }
     [field: SerializeField] public CityDataHandler cityDataHandler { get; private set; }
 
+    
 
 
     private void Awake()
@@ -66,7 +67,7 @@ public class GameHandler : MonoBehaviour
 
 
         cityDataHandler.cityBodyEnhancer.Initalize();
-        cityDataHandler.cityDropLauncher.GenerateListForEquipContainer();
+        
     }
 
     private void Update()

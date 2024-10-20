@@ -95,7 +95,7 @@ public class EnemyGiant : EnemyBase
     }
 
 
-    protected override void Die(bool wasKilledByPlayer = true)
+    public override void Die(bool wasKilledByPlayer = true)
     {
         base.Die(wasKilledByPlayer);
 

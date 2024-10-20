@@ -10,6 +10,7 @@ public class SaveClass
     {
         //if i have to create a new one then we will do the following
 
+
         _hasSaveData = true;
 
         _cityLevelList = new() { 0, 0, 0, 0, 0 };
@@ -27,7 +28,7 @@ public class SaveClass
     }
 
     #region DATA FOR CITY
-    public List<int> _cityLevelList { get; private set; } = new();
+    [field:SerializeField]public List<int> _cityLevelList { get; private set; } = new();
     public void MakeCityLevelList(List<int> citylevelList)
     {
         _cityLevelList = citylevelList;
@@ -109,13 +110,26 @@ public class SaveClass
         _abilitySlot = abilitySlot;
     }
 
-    public int _dropSlot { get; private set; }
+    [field: SerializeField] public int _dropSlot { get; private set; }
     public void MakeEquipDropSlot(int dropSlot)
     {
         _dropSlot = dropSlot;
     }
 
     #endregion
+
+    #region BLUEPRINT
+    //this int works 
+    [field: SerializeField] public List<int> _mainBlueprintList { get; private set; }  = new();
+
+    public void MakeMainBlueprintList(List<int> mainBlueprintList)
+    {
+        _mainBlueprintList = mainBlueprintList;
+    }
+
+
+    #endregion
+
 
     //but for now we will be testing just the level stuff.
 

@@ -351,16 +351,18 @@ public class PlayerHandler : MonoBehaviour
     {
         //we get the playerinventory.
         _playerInventory.CaptureState(saveClass);
-        _playerEquipmentData.CaptureState(saveClass);
         _playerAbility.CaptureState(saveClass);
+        _playerEquipmentData.CaptureState(saveClass);
+        
     }
 
     public void RestoreState(SaveClass saveClass)
     {
         //we pass this to the playerinventory.
         _playerInventory.RestoreState(saveClass);
-        _playerEquipmentData.RestoreState(saveClass);
         _playerAbility.RestoreState(saveClass);
+        _playerEquipmentData.RestoreState(saveClass);
+        
     }
 
     #endregion

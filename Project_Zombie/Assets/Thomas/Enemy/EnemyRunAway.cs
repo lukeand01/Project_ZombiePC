@@ -16,7 +16,7 @@ public class EnemyRunAway : EnemyBase
         base.StartFunction();
     }
 
-    protected override void Die(bool wasKilledByPlayer = true)
+    public override void Die(bool wasKilledByPlayer = true)
     {
         base.Die(wasKilledByPlayer);
 

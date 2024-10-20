@@ -14,7 +14,7 @@ public class MouseUI : MonoBehaviour
 
     //we need to keep checking with
 
-    GameObject holder;
+    [SerializeField]GameObject holder;
 
     Camera _cam;
 
@@ -52,13 +52,16 @@ public class MouseUI : MonoBehaviour
 
     private void Awake()
     {
-        _cam = PlayerHandler.instance._cam;
+        
 
-        holder = transform.GetChild(0).gameObject;
 
         layer_Enemy |= (1 << 6);
         layer_Interactable |= (1 << 7);
 
+    }
+    private void Start()
+    {
+        _cam = PlayerHandler.instance._cam;
     }
 
     public void UpdateMouseUI(MouseUIType _type)

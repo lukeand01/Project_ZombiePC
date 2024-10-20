@@ -101,7 +101,9 @@ public enum SoundType
     AudioClip_Bark_02 = 23,
     AudioClip_Equip_Gun = 24,
     AudioClip_Equip_Ability = 25,
-    AudioClip_Equip_Drop = 26
+    AudioClip_Equip_Drop = 26,
+    AudioClip_Boss_Start = 27,
+    AudioClip_Boss_End = 28,
 
 }
 

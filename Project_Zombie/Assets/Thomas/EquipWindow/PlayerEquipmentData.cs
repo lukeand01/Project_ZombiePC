@@ -33,6 +33,7 @@ public class PlayerEquipmentData : ScriptableObject
     public void CaptureState(SaveClass saveClass)
     {
 
+
         saveClass.MakeEquipGunIndex(_gunStored);
 
         saveClass.MakeEquipAbilityList(_abilitiesStoredList);

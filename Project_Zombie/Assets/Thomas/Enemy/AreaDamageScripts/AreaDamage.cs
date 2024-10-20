@@ -12,6 +12,7 @@ using UnityEngine;
 //lets just use the animator. this is no time to bother about perfections
 //
 
+//
 
 public class AreaDamage : MonoBehaviour
 {
@@ -159,7 +160,7 @@ public class AreaDamage : MonoBehaviour
         {
             //i am doing like this because its better than creating a new system
             //we check for thick.
-            Debug.Log("continuous");
+
             if (isDone)
             {
                 if (!IsAnimationPlaying())
@@ -248,6 +249,11 @@ public class AreaDamage : MonoBehaviour
 
         PlayerHandler.instance.TryToCallExplosionCameraEffect(transform, shakeModifier);
 
+        if (_callSound)
+        {
+            GameHandler.instance._soundHandler.CreateSfx(_soundType, transform, 0.3f);
+        }
+
     }
 
     void ApplyBD(IDamageable damageable)
@@ -265,6 +271,14 @@ public class AreaDamage : MonoBehaviour
         }
     }
 
+    bool _callSound;
+    SoundType _soundType;
+
+    public void CallSoundOnDamaged(SoundType soundType)
+    {
+        _soundType = soundType; 
+        _callSound = true;
+    }
 
     float tick_current;
     float tick_Total;
@@ -393,7 +407,8 @@ public enum AreaDamageVSXType
     Nothing = -1,
     Fireball_Explosion = 0,
     Ghost_Orb = 1 ,
-    Meteor = 2
+    Meteor = 2,
+    Fire = 3
 }
 
 

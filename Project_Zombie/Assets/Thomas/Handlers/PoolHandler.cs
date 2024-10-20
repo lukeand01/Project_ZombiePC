@@ -260,7 +260,6 @@ public class PoolHandler : MonoBehaviour
 
     }
 
-
     void Boss_Reset()
     {
         for (int i = 0; i < bossContainer.childCount; i++)
@@ -276,11 +275,12 @@ public class PoolHandler : MonoBehaviour
 
         EnemyBoss newBoss = pool_Boss_Dictionary[data].Get();
 
-        newBoss.transform.position = pos;
+        newBoss.transform.localPosition = Vector3.zero;
         newBoss.gameObject.SetActive(true);
 
         return newBoss;
     }
+
 
     EnemyBoss Boss_Create()
     {
@@ -716,7 +716,7 @@ public class PoolHandler : MonoBehaviour
     TrapBase Trap_Create()
     {
         var trap = Instantiate(trapTarget);
-        trap.transform.SetParent(chestContainer);
+        trap.transform.SetParent(trapContainer);
         trapContainer.gameObject.name = "TrapContainer " + trapContainer.childCount.ToString();
         return trap;
     }
@@ -765,5 +765,6 @@ public enum ProjectilType
     FlyingSwords = 2,
     DarkOrb = 3,
     Skull_Seeker = 4,
-    ArtillerySlow =  5
+    ArtillerySlow =  5,
+    TreeGas = 6
 }

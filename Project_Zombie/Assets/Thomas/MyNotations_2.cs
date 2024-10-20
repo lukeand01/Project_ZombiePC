@@ -1147,24 +1147,17 @@
 //and a script that checks if its in the line of sight of the player. and either takes away the grpahic holder or gives it back.
 
 
-
 //define if you want shadows or not
 //other stuff as well.
-
-//
-
 
 //what can i save
 //time playedr
 //hq level
-//
-
 
 //TOMORROW
 //main menu animation
 //improve the city. check if you can normally run it
 //then we are going to create teh save system
-
 
 //GOAL
 //we first will save the state of the main building.
@@ -1221,10 +1214,14 @@
 
 
 //09/10
-//the units are not updating the ui
-//the drops is just not receicving info
-//nothing is actually being updated
+///the units are not updating the ui
+///the drops is just not receicving info
+///nothing is actually being updated
 //the ability slot number isnt being updated.
+
+
+
+//STILL DO THIS TODAY
 //improve the city ui.
 //check for the mainblueprints
 //create one more terrain for teh map
@@ -1233,17 +1230,126 @@
 
 
 
-//09/10
-//create one more terrain for teh map
+//11/10
+///able to do the things from before but with a better looking ui
+///then we will add the blueprint system, which means that if you dont have the right blueprint it will show, if you have it then show in as green
+///then we will create the save system for the blueprint
+///then we have the minor blueprint, which is always based on the level of the building. level 1 does not cost minor resources.
+///now the ability are duplicating!!!!!!
 //when you build it there is an animation or something. it needs to feel good building.
-//improve the dialogue system and create some content for teh main npc
-//create some story questws
 
-//10/10
-//create one more terrain for teh map
-//create more npcs with more dialogue
+
+//the thing must show every fella.
+//the weapons are not being shown.
+
+
+//12/10
+//any weapon or ability owned must be showed in the menu
+//create a little fill image for the level holder.
+//improve the buy menu
+//improve the item icons.
+//need something better for the upgrade.
+
+
+//thye problem is that i dont have those abilities from where those abilities are coming from?
+//its not deleting data.
+
+
+
+//14/10
+///the portal boss can spawn the devil
+///it can check for the boss sigils and show that its complete. does not need an icon for each boss just use colors.
+//finish the devil
+//
+
+
+///the health bar is too low
+//the fireballs are instant. they need to take some time 
+//we need an audio queu. for starting a boss battle. the same for everyone.
+//the dog spawning all of a sudden felt really bad.
+
+//the devil is not playing death animation
+//the devil did not disabled it
+//too many dogs? too fast?
+//it refuses to play the animation?
+//need to control the sound of especifc fellas. too loud the thing
+//
+
+//15/10
+//get the devil feeling better.
+//control the sound especifc sound.
+//create the sound system.
+
+//what i need to finish Devil?
+//the slash has a sound
+//the slash has an effect.
+//the fireball need a sound
+//sound for every wave.
+//sound for the scream
+//need to get the rotating blade fixed. its not bouncing.
+//all enemies spawned in the boss should be killed.
+
+
+
+//TREE
+///the tree is always rotating to face the player
+///get the plant working. it works exaclty liked the simpleranged, actually i can just reuse its script
+///the plant on death is not stopping to act.
+///create the seed. it works like a grenade and spawn either the beartrap or the plant.
+///there is a death sound fo plant.
+///dust should appear and then the things are spawned.
+///the plant should rise from teh ground
+///then we create teh gas.
+///at first it only shoots where its looking, but then we can make that it shoots from anywhere and intervals.
+//then we create teh logs where it s
+//we need a timer of death for the trap, otheriwse we will keep stacking on it.
+//we need some animations
+///we need the state where it shoots around.
+//i need a scream for when it dies.
+//we are trying to release a trap that was already released.
+//the plants deal damage to player on touching.
+//make the plant projectil a bit faster.
+
+
+//TWIN
+//get the meteors working
+//get the seeking working
+//get the healorbs working. this must not stop phases.
+//when the minion dies there is a small dust storm.
+//its dust attack also has a dust wave.
+//the big constantly check if it has enough fellas.
+//need attacks for phase 2 and phase 3
+//reset all minions at the start.
+//create missiles from both sides of the player.
+//
+
+
+//SOUND
+//
+
+
+
+
+
+
+
+//12/10
+//more improvement to the city.
+//Improve the buy menu for the itens
+//put iron in all stuff
+//make so that the player doesnt rotate when using the equip menu
+//make so that teh animation changes when in teh city, no aiming just regular walk.
+
+//12/10
 //get the house system working
 //get the generic npcs walking around and talking.
+
+//13/10
+//create the npcs and some dialogue for them.
+//at least one npc per thing.
+//create another 3 npcs to be found and stored and then delivered to a house
+//save system for the npc.
+
 
 //13/10
 //return to make the devil boss
@@ -1271,6 +1377,27 @@
 //the only info i need here is info 
 
 
+//THINGS LEFT TO DO - 12/10
+//create devil boss
+//create tree boss
+//create twins boss
+//improve the city with a new terrain
+//create the houses as the main hub is improved.
+//defeat ui
+//need to check loading the new map
+//need to check loading the city from the map
+//any owned item is showed in respective store
+//improved when the store is upgraded.
+//basic dialogue for 5 base characters and characters ou can find and recruit to your base
+//harvest spots. and something to do with the harvests
+//finish the treasure fairy.
+
+
+
+//what does the treasure fairy give?
+//always give resources and plenty.
+//and unique resources.
+
 
 
 //i want three more animations
@@ -1294,10 +1421,10 @@
 
 
 //by the end of this i want to put it all together and just play the game.
-//(08/10)
-//Days passed: 26
-//days left for target: 26
-//Days left for project: 136
+//(19/10)
+//Days passed: 27
+//days left for target: 15
+//Days left for project: 125
 
 //RECORDING
 //BOSS -> 13/09 - 

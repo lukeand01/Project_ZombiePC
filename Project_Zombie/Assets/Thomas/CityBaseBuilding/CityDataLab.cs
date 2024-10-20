@@ -43,6 +43,7 @@ public class CityDataLab : CityData
     }
     public void CaptureState(SaveClass saveClass)
     {
+
         saveClass.MakeOwnedList_Active_Lab(ownedAbilityIndexList_Active);
         saveClass.MakeOwnedList_Passive_Lab(ownedAbilityIndexList_Passive);
 
@@ -71,9 +72,7 @@ public class CityDataLab : CityData
     }
 
     public void GenerateOwnedActiveAbilityList()
-    {
-       
-
+    {    
         currentActiveAbilityOwnedList.Clear();
         foreach (var item in ownedAbilityIndexList_Active)
         {
@@ -177,6 +176,7 @@ public class CityDataLab : CityData
     }
     public bool HasAbility_Active(int index) => ownedAbilityIndexList_Active.Contains(index);
     public bool HasAbility_Passive(int index) => ownedAbilityIndexList_Passive.Contains(index);
+
     #region PASSIVE
 
     //we can receive new items.
@@ -253,10 +253,14 @@ public class CityDataLab : CityData
 
     #region GETTING PASSIVE FOR STAGE
     //as we progress the game we should have a higher chance to get better passives rather than the same for all.
-    //
-    public List<AbilityPassiveData> GetPassiveAbilityList(int amountRequired = 3)
+    
+    public List<AbilityPassiveData> GetPassiveAbilityList(int amountRequired, string fromwhere)
     {
         //       
+        Debug.Log("get passive ability list " + fromwhere);
+
+
+
         int luck = (int)PlayerHandler.instance._entityStat.GetTotalValue(StatType.Luck);
         List<AbilityPassiveData> abilityList_CannotStack = PlayerHandler.instance._playerAbility.abilityList_CannotStack;
         List<AbilityPassiveData> abilityList_HigherChance = PlayerHandler.instance._playerAbility.abilityList_HigherChance;
@@ -270,6 +274,7 @@ public class CityDataLab : CityData
         //we need to give a higher chance for abilities that already exist.
         //that we get from the player
         //and also. i dont want to spawn any fella with the same nanme. because they might be
+
 
 
         while (amountRequired > abilityList.Count )
@@ -330,7 +335,7 @@ public class CityDataLab : CityData
     {
         debug_PassiveList.Clear();
 
-        debug_PassiveList = GetPassiveAbilityList(3);
+        debug_PassiveList = GetPassiveAbilityList(3, "Debug");
     }
 
     #endregion

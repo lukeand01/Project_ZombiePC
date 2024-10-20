@@ -185,12 +185,12 @@ public class EnemyBoss_Ghost : EnemyBoss
         //UI
         _enemyCanvas.CreateDamagePopUp(damage);
 
-        healt_Current -= totalDamage;
-        _enemyCanvas.UpdateHealth(healt_Current, health_Total);
+        health_Current -= totalDamage;
+        _enemyCanvas.UpdateHealth(health_Current, health_Total);
 
 
 
-        if (healt_Current <= 0)
+        if (health_Current <= 0)
         {
 
             //death

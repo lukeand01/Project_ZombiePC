@@ -27,7 +27,7 @@ public class SoundUnit : MonoBehaviour
         _source.clip = clip;
         _source.Play();
 
-        float volume = GameHandler.instance._settingsData.Get_Audio(Setting_AudioType.Sfx);
+        float volume = GameHandler.instance._settingsData.Get_Audio(Setting_AudioType.Sfx) * 0.01f;
         _source.volume = volume * modifier;
 
     }

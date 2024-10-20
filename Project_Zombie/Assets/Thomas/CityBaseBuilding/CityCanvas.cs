@@ -23,6 +23,9 @@ public class CityCanvas : MonoBehaviour
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] CityStoreUnit cityStoreUnitTemplate;
     [SerializeField] CityStoreLevelButton levelButton;
+    [SerializeField] GameObject requiredHolder;
+    [SerializeField] TextMeshProUGUI requiredText;
+    
     CityDataArmory armoryData;
     CityDataLab labData;
 
@@ -34,6 +37,7 @@ public class CityCanvas : MonoBehaviour
     [SerializeField] Story_NpcUnit npcUnitTemplate;
     [SerializeField] TextMeshProUGUI especialNpcLimitText;
     [SerializeField] GameObject especialNpcHolder;
+    bool hasEspecialNpcHolder;
 
     [Separator("Quest")]
     [SerializeField] QuestUnit questUnitTemplate;
@@ -51,14 +55,18 @@ public class CityCanvas : MonoBehaviour
         {
             cityStoreOwner = transform.parent.GetComponent<CityStore>();
         }
+
+
+        _originalUpgradeFailureTextPosition = _upgradeFailureText.transform.localPosition;
+
+        hasEspecialNpcHolder = especialNpcHolder.activeInHierarchy;
     }
 
     public bool IsTurnedOn() => holder.activeInHierarchy;
 
     #region SETTERS
 
-
-   
+  
     public void SetGun(CityDataArmory armoryData)
     {
         //set gun_Perma in teh start based in the 
@@ -243,9 +251,6 @@ public class CityCanvas : MonoBehaviour
         UIHandler.instance._EquipWindowUI.ForceCloseUI();
         UIHandler.instance._MouseUI.ControlAppear(false);
 
-
-
-
         UpdateLevelButtonText();
     }
 
@@ -278,6 +283,27 @@ public class CityCanvas : MonoBehaviour
         PlayerHandler.instance._playerController.block.RemoveBlock("CityCanvas");
     }
 
+    public void UpdateRequiredHolder(bool hasRequired, MainBlueprintType requiredBlueprint)
+    {
+        requiredHolder.SetActive(hasRequired);
+
+        bool hasBlueprint = PlayerHandler.instance._playerInventory.HasMainBlueprint(requiredBlueprint);
+
+        requiredText.text = requiredBlueprint.ToString();
+
+        if (hasBlueprint)
+        {
+            requiredText.color = Color.green;
+        }
+        else
+        {
+            requiredText.color = Color.red;
+        }
+        
+
+
+
+    }
 
     CityStoreUnit currentStoreUnit;
 
@@ -580,7 +606,9 @@ public class CityCanvas : MonoBehaviour
     [SerializeField] Image buttonImage;
     [SerializeField] Transform upgradeContainer;
     [SerializeField] ResourceUnit resourceUnitTemplate;
+    [SerializeField] TextMeshProUGUI _upgradeFailureText;
     Vector3 originalUpgradeHolderLocalPosition;
+    Vector3 _originalUpgradeFailureTextPosition;
 
     bool isUpgradeOpen;
 
@@ -702,6 +730,18 @@ public class CityCanvas : MonoBehaviour
     {
         //
 
+        bool hasMainUpgrade = cityStoreOwner.GetCityData.HasMainBlueprint();
+
+        if (!hasMainUpgrade)
+        {
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Failure);
+            CallUpgradeFailure("No Main blueprint. Try completing some quests.");
+            Debug.Log("main upgrade ");
+            return;
+        }
+
+        
+
 
         bool canBuy = CanBuyUpgrade();
 
@@ -720,9 +760,10 @@ public class CityCanvas : MonoBehaviour
         else
         {
             Debug.Log("cannot buy it");
+            CallUpgradeFailure("Not enough resources.");
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Failure);
         }
     }
-
 
     public bool CanBuyUpgrade()
     {
@@ -735,17 +776,56 @@ public class CityCanvas : MonoBehaviour
 
         List<ResourceClass> costList = cityStoreOwner.GetCityData.GetCurrentResourceListBasedInLevel();
 
+
         if (costList == null) return false;
 
         return PlayerHandler.instance._playerInventory.HasEnoughResourceToBuy(costList);
     }
+
+
+
+
+    void CallUpgradeFailure(string failureText)
+    {
+        _upgradeFailureText.text = failureText;
+        
+        StopCoroutine(nameof(UpgradeFailureProcess));
+        StartCoroutine(UpgradeFailureProcess());
+
+    }
+    IEnumerator UpgradeFailureProcess()
+    {
+        _upgradeFailureText.DOKill();
+
+        _upgradeFailureText.transform.localPosition = _originalUpgradeFailureTextPosition;
+        _upgradeFailureText.DOFade(0, 0);
+
+        _upgradeFailureText.DOFade(1, 0.5f).SetEase(Ease.Linear).SetUpdate(true).OnComplete(FadeAway);
+
+        float value = 0.3f;
+
+        for (int i = 0; i < 15; i++)
+        {
+            float randomX = Random.Range(-value, value);
+            float randomY = Random.Range(-value, value);
+
+            _upgradeFailureText.transform.localPosition = _originalUpgradeFailureTextPosition + new Vector3(randomX, randomY);
+
+            yield return new WaitForSeconds(0.03f);
+        }
+    }
+
+    void FadeAway()
+    {
+        _upgradeFailureText.DOFade(0, 0.8f).SetEase(Ease.Linear).SetUpdate(true);
+    }
+
     #endregion
 
     #region MAIN BUILDING
 
 
     #endregion
-
 
     #region CONTAINERS
     //for now i will just create the same 
@@ -912,7 +992,7 @@ public class CityCanvas : MonoBehaviour
     public void SelectNewCategory(CityStore_ButtonCategory button, int index)
     {
 
-        if(especialNpcLimitText != null)
+        if(especialNpcLimitText != null && hasEspecialNpcHolder)
         {
             especialNpcHolder.SetActive(index == 0);
         }

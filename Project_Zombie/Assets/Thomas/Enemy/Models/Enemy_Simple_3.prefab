@@ -3799,7 +3799,7 @@ MonoBehaviour:
   - {fileID: 7012082357655029224}
   material_Damaged: {fileID: 2100000, guid: dad681bcf0fafa2458614904139e3806, type: 2}
   material_Ally: {fileID: 2100000, guid: 95303f6493022bc4585f301aac3289ba, type: 2}
-  material_Original: {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  material_Original: {fileID: 2100000, guid: c2bb515bb51da9d4c80338f5db9ab2e0, type: 2}
 --- !u!1 &4085375030102212982
 GameObject:
   m_ObjectHideFlags: 0

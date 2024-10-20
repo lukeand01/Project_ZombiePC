@@ -21,7 +21,7 @@ public class ChestAbility : ChestBase
             if (!PlayerHandler.instance._playerResources.HasEnoughPoints(price)) return;
 
             PlayerHandler.instance._playerResources.SpendPoints(price);
-            List<AbilityPassiveData> dataList = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList(1);
+            List<AbilityPassiveData> dataList = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList(1, "chestability");
             PlayerHandler.instance._playerAbility.AddAbility(dataList[0]);
             gameObject.SetActive(false);
             return;
@@ -49,7 +49,7 @@ public class ChestAbility : ChestBase
     IEnumerator OpenProcess(ChestUI _chestUI)
     {
 
-        List<AbilityPassiveData> passiveList = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList();
+        List<AbilityPassiveData> passiveList = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList(3, "OpenProcess");
         //GameHandler.instance._soundHandler.CreateSfx(openChestClip, transform);
 
         //it jumps in the air and o

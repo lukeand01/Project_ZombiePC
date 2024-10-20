@@ -28,6 +28,11 @@ public class EnemyBase : Tree, IDamageable
     [Separator("CONTAINERS")]
     [SerializeField] Transform psContainer;
 
+    //
+    [Separator("booleanas")]
+    [SerializeField] bool _shouldAwardPoints;
+    [SerializeField] bool _shouldNOTAwardDrops;
+
     bool isLocked;
 
     float healthCurrent;
@@ -57,6 +62,7 @@ public class EnemyBase : Tree, IDamageable
         _rb = GetComponent<Rigidbody>();
         _entityAnimation = GetComponent<EntityAnimation>();
 
+        
 
         if(_entityAnimation != null )
         {
@@ -87,16 +93,22 @@ public class EnemyBase : Tree, IDamageable
         }
         if (isDead) return;
 
-        if (PlayerHandler.instance._playerResources.isDead)
+
+        if(_entityAnimation != null)
         {
-            _entityAnimation.CallAnimation_Idle();
-            _entityAnimation.ControlWeight(2, 0);
-            return;
+            if (PlayerHandler.instance._playerResources.isDead)
+            {
+                _entityAnimation.CallAnimation_Idle();
+                _entityAnimation.ControlWeight(2, 0);
+                return;
+            }
+            else
+            {
+                _entityAnimation.ControlWeight(2, 1); //THIS MIGHT CREATE PROBLEMS
+            }
         }
-        else
-        {
-            _entityAnimation.ControlWeight(2, 1); //THIS MIGHT CREATE PROBLEMS
-        }
+
+       
 
 
         if (_entityStat.isStunned)
@@ -177,8 +189,12 @@ public class EnemyBase : Tree, IDamageable
 
     private void Start()
     {
-        CreateKeyForAnimation_Attack();
-        _entityAnimation.UpdateAttackAnimationSpeed(data.AttackAnimationSpeed);
+        if(_entityAnimation != null)
+        {
+            CreateKeyForAnimation_Attack();
+            _entityAnimation.UpdateAttackAnimationSpeed(data.AttackAnimationSpeed);
+        }
+
         StartFunction();
     }
 
@@ -187,7 +203,11 @@ public class EnemyBase : Tree, IDamageable
         gameObject.SetActive(false);
         isDead = false;
         gameObject.layer = 6;
-        _entityAnimation.ControlIfAnimatorApplyRootMotion(false);
+        if(_entityAnimation != null)
+        {
+            _entityAnimation.ControlIfAnimatorApplyRootMotion(false);
+        }
+        
         _myCollider.enabled = true;
         _agent.enabled = true;
         _enemyCanvas.UpdateDuration(0, 0);
@@ -417,8 +437,9 @@ public class EnemyBase : Tree, IDamageable
         _enemyCanvas.CreateShieldPopUp();
     }
 
-    protected virtual void Die(bool wasKilledByPlayer = true)
+    public virtual void Die(bool wasKilledByPlayer = true)
     {
+
 
         PlayerHandler.instance._entityEvents.OnKillEnemy(this, wasKilledByPlayer);
             
@@ -440,7 +461,7 @@ public class EnemyBase : Tree, IDamageable
 
         LocalHandler.instance.RemoveEnemyFromSpawnList(data);
 
-        HandleWhatDeathShouldDrop();
+       if(!_shouldNOTAwardDrops) HandleWhatDeathShouldDrop();
 
         PlayerHandler.instance._playerStatTracker.ChangeStatTracker(StatTrackerType.EnemiesKilled, 1);
         
@@ -456,12 +477,19 @@ public class EnemyBase : Tree, IDamageable
 
     IEnumerator DeathProcess()
     {
-        _entityAnimation.ControlWeight(2, 0);
-        _entityAnimation.ControlIfAnimatorApplyRootMotion(true);
-        _entityAnimation.RerollDeathAnimation();
-        _entityAnimation.CallAnimation_Death();
+        float clipDuration = 0;
+        if (_entityAnimation != null)
+        {
+            _entityAnimation.ControlWeight(2, 0);
+            _entityAnimation.ControlIfAnimatorApplyRootMotion(true);
+            _entityAnimation.RerollDeathAnimation();
+            _entityAnimation.CallAnimation_Death();
 
-        float clipDuration = _entityAnimation.GetDurationForDeath() + 5;
+            clipDuration = _entityAnimation.GetDurationForDeath() + 5;
+        }
+
+
+        
 
         yield return new WaitForSeconds(clipDuration);
 
@@ -801,7 +829,6 @@ public class EnemyBase : Tree, IDamageable
     {
         this.IsAttacking_Animation = IsAttacking_Animation;
 
-        Debug.Log("control attack animation " + IsAttacking_Animation);
     }
 
     protected virtual void CreateKeyForAnimation_Attack()

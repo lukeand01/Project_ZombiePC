@@ -74,7 +74,7 @@ public class CityStoreLevelButton : ButtonBase
         float timer = 0.35f;
         current = 0;
         fillImage.fillAmount = current / total;
-        transform.DOScale(2, timer).SetEase(Ease.Linear).SetUpdate(true);
+        transform.DOScale(1.25f, timer).SetEase(Ease.Linear).SetUpdate(true);
         yield return new WaitForSecondsRealtime(timer);
         transform.DOScale(1.1f, timer).SetEase(Ease.Linear).SetUpdate(true);
         yield return new WaitForSecondsRealtime(timer);

@@ -6,9 +6,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "CityData / Basic")]
 public class CityData : ScriptableObject
 {
-    
+
     //reset this only means that the citystore level is reduced to 0;
 
+    [field: SerializeField] public bool _requireMainBlueprint { get; private set; }
+    [field: SerializeField] public MainBlueprintType _mainBlueprint { get; private set; }
 
     public void ResetCityStoreLevel()
     {
@@ -40,6 +42,16 @@ public class CityData : ScriptableObject
         }
 
         return requirementToIncreaseLevelList[cityStoreLevel].requiredResourceList;
+    }
+
+
+    public bool HasMainBlueprint()
+    {
+        if (!_requireMainBlueprint) return true;
+
+        bool hasBlueprint = PlayerHandler.instance._playerInventory.HasMainBlueprint(_mainBlueprint);
+
+        return hasBlueprint;
     }
 }
 

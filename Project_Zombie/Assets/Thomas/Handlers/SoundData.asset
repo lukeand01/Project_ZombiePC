@@ -94,6 +94,12 @@ MonoBehaviour:
   - title: Equip Drop
     <_soundType>k__BackingField: 26
     <_soundClip>k__BackingField: {fileID: 8300000, guid: dc77788e0d48a99489a3bee0edc41c74, type: 3}
+  - title: Boss Start
+    <_soundType>k__BackingField: 27
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: fa1a894216202e244a6f02bd5b765223, type: 3}
+  - title: Boss End
+    <_soundType>k__BackingField: 28
+    <_soundClip>k__BackingField: {fileID: 8300000, guid: 08ed798c16fece141991f8ca8d86f72a, type: 3}
   soundList_Bgm:
   - title: 
     <_soundType>k__BackingField: 0

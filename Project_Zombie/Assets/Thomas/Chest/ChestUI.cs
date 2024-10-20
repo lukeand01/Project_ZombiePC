@@ -409,7 +409,7 @@ public class ChestUI : MonoBehaviour
 
         PlayerHandler.instance._playerResources.Bless_Lose(blessQuantity);
 
-        List<AbilityPassiveData> passiveListForReroll = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList();
+        List<AbilityPassiveData> passiveListForReroll = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList(3, "Abilityreroll");
         CallChestAbility(passiveListForReroll);
 
         PlayerHandler.instance.AbilityRoll_Add();

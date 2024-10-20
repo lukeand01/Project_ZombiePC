@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CityData_Lab
   m_EditorClassIdentifier: 
   <cityStoreName>k__BackingField: Lab
-  <cityStoreLevel>k__BackingField: 1
+  <cityStoreLevel>k__BackingField: 0
   <popRequirement>k__BackingField: 5
   <resourcePopRef>k__BackingField: {fileID: 11400000, guid: 5557f4efc84e59844861b35c4006e011, type: 2}
   <requirementToIncreaseLevelList>k__BackingField:
@@ -104,33 +104,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 65222d3ed8a51ea4e9bd5e90953583b2, type: 2}
   - {fileID: 11400000, guid: 158664e987d7d51458ffae337760d3e4, type: 2}
   - {fileID: 11400000, guid: 89d13ad9f8ea4e742aad1e588be11115, type: 2}
-  ownedAbilityIndexList_Active: 
+  ownedAbilityIndexList_Active: 0000000001000000
   ownedAbilityIndexList_Passive: 
   foundPassiveAbilityIndexList: 
   sdf: 0
   <currentActiveAbilityOwnedList>k__BackingField: []
-  <currentActiveAbilityAvailableList>k__BackingField:
-  - {fileID: 11400000, guid: 772f29228f01cf94ab0f438ca47aba43, type: 2}
-  - {fileID: 11400000, guid: caf9a583f7d888345b60cac04df8711d, type: 2}
-  - {fileID: 11400000, guid: 15dd682237666ef49a621cf38355ac13, type: 2}
-  <currentPassiveAbilityList>k__BackingField:
-  - {fileID: 11400000, guid: cb265cecf598dc1409693006eaa700b5, type: 2}
-  - {fileID: 11400000, guid: 7b6c1cdd76637854a8119a8d1f98fa5b, type: 2}
-  - {fileID: 11400000, guid: f3b69092cb0e8e34dae288d923371fde, type: 2}
-  - {fileID: 11400000, guid: a308dac11e476d94691128a209bedc29, type: 2}
-  - {fileID: 11400000, guid: 3b6feb5fa5369804d938fe09dcb10e89, type: 2}
-  - {fileID: 11400000, guid: b36c1a9cf68a3874c884ad3c8b1bb828, type: 2}
-  - {fileID: 11400000, guid: 385ce600010ea174db241b0f45e58783, type: 2}
-  - {fileID: 11400000, guid: 5d2e6a0bce92858469ca4ecf77b941a6, type: 2}
-  - {fileID: 11400000, guid: 0de5fdae2fcc6864ca1264754152a598, type: 2}
-  - {fileID: 11400000, guid: c1385859ab0eb114cb4cbc0e39455596, type: 2}
-  - {fileID: 11400000, guid: 2531698c1140aa2448f6e8786c683bc8, type: 2}
-  - {fileID: 11400000, guid: a152edb9983451d4b933670a6ed7c656, type: 2}
-  - {fileID: 11400000, guid: d31147661b6d64f428cdc36eed5336df, type: 2}
-  - {fileID: 11400000, guid: 977a40cda55429143adac0b57a22137f, type: 2}
-  - {fileID: 11400000, guid: 958f978de04d66641b78a361ff76cfe2, type: 2}
-  - {fileID: 11400000, guid: 864f0c6b826e6034eaf947f81340d8b3, type: 2}
-  - {fileID: 11400000, guid: 6f7e2f5c5f6cefa4ea4b3b8a6ccdad0b, type: 2}
+  <currentActiveAbilityAvailableList>k__BackingField: []
+  <currentPassiveAbilityList>k__BackingField: []
   debug_PassiveList:
   - {fileID: 11400000, guid: d31147661b6d64f428cdc36eed5336df, type: 2}
   - {fileID: 11400000, guid: cb265cecf598dc1409693006eaa700b5, type: 2}

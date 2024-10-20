@@ -341,11 +341,6 @@ public class PlayerMovement : MonoBehaviour
         float dashSpeed = 60;
 
 
-        //if this touches a wall then we call it to force it end.
-
-
-        //if its side ways then we need to reduce it
-
         Vector3 dashSpeedDir = new Vector3(lastDir.x, 0, lastDir.z) * dashSpeed;
 
         if(lastDir.x != 0 && lastDir.z != 0)

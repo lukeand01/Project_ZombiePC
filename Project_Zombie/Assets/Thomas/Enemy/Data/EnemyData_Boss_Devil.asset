@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Devil
   enemyModel: {fileID: 0}
-  bossModel: {fileID: 0}
+  bossModel: {fileID: 956747527138498587, guid: 1034aea8d78735f47b9c06cc83fc464a, type: 3}
   attackRange: 0
   AttackAnimationSpeed: 1
   attackRest: 0
   <damageType>k__BackingField: 0
   initialStatList:
   - stat: 0
-    initialValue: 100
-  - stat: 0
+    initialValue: 500
+  - stat: 1
     initialValue: 3
   scaleStatList: []
   enemyResistanceList:

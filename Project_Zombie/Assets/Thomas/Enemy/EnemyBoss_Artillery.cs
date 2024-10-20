@@ -295,7 +295,6 @@ public class EnemyBoss_Artillery : EnemyBoss
 
         while (timeElapsed < duration)
         {
-
             safeBreak++;
 
             if(safeBreak > 1000)

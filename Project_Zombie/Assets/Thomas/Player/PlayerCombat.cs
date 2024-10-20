@@ -51,12 +51,23 @@ public class PlayerCombat : MonoBehaviour
 
         //the problem is because this is starting somewhere else where there is no cityhandler. i simply must call it from the cityhandler.
 
-        
 
-        SetUp();
+
+        SetUp(debugGunDataPerma);
         _gunUI = UIHandler.instance.gunUI;
-        
-        
+
+        if(gunList.Length <= 0)
+        {
+            Debug.Log("no lenght");
+        }
+        if (gunList[0].data == null)
+        {
+            Debug.Log("data is null");
+        }
+
+        UIHandler.instance._EquipWindowUI.GetEquipForPermaGun(gunList[0]);
+        UIHandler.instance._MouseUI.UpdateMouseUI(gunList[0].data.mouseImageType);
+
     }
 
     private void Update()
@@ -106,24 +117,19 @@ public class PlayerCombat : MonoBehaviour
         debugLineRenderer.SetPosition(1, fixedDir * 100 * -1);
     }
 
-    void SetUp()
+    public void SetUp(ItemGunData initialWeapon)
     {
         //we can never change this stuff so its an array.
+
+        if (gunList.Length > 0) return;
+
         gunList = new GunClass[] { new GunClass(), new GunClass(), new GunClass() };
         currentGunIndex = 0;
 
-        //when we do this we should add any fella who might the starting 
-        //
 
-        //Debug.Log("store index " + debugGunDataPerma.storeIndex);
+        GameHandler.instance.cityDataHandler.cityArmory.AddGunWithIndex(initialWeapon.storeIndex);
+        ReceivePermaGun(initialWeapon);
 
-        if(debugGunDataPerma != null)
-        {
-            //i will info the citydatahandler.
-
-            GameHandler.instance.cityDataHandler.cityArmory.AddGunWithIndex(debugGunDataPerma.storeIndex);
-            ReceivePermaGun(debugGunDataPerma);
-        }
         if(debugGunDataTemp1 != null)
         {
             ReceiveTempGunIfEmptySlot(debugGunDataTemp1);
@@ -133,16 +139,7 @@ public class PlayerCombat : MonoBehaviour
             ReceiveTempGunIfEmptySlot(debugGunDataTemp2);
         }
 
-
-        UIHandler.instance._EquipWindowUI.GetEquipForPermaGun(gunList[0]);
-        UIHandler.instance._MouseUI.UpdateMouseUI(gunList[0].data.mouseImageType);
-
-
-
-
-        //StartCoroutine(CallThisLater());
-
-        //we could call this when we open the thing as well, to make sure it opens at the right momet
+       
 
     }
 
@@ -218,8 +215,9 @@ public class PlayerCombat : MonoBehaviour
     public void ReceivePermaGun(ItemGunData gun)
     {
 
-
         //we replace the first one.
+       
+
         if (gunList[0].data != null)
         {
             //then we just adad the data to the first

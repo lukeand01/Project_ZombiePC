@@ -45,8 +45,6 @@ public class CityHandler : MonoBehaviour
 
 
         //this calls the savedata to do everything.
-        GameHandler.instance._saveHandler.RestoreStateUsingCurrentSaveSlot();
-
         UIHandler.instance.ControlUI(true); //
         UIHandler.instance._MouseUI.ControlAppear(true); //
         UIHandler.instance._MouseUI.ControlMouseUI(true);
@@ -99,9 +97,11 @@ public class CityHandler : MonoBehaviour
 
         //this update is updating only the owned gun_Perma.
 
-        foreach (var item in ownedGunList)
+
+        for (int i = 0; i < ownedGunList.Count; i++)
         {
-            if(item.name != currentPermaGun.name)
+            var item = ownedGunList[i];
+            if (item.name != currentPermaGun.name)
             {
                 withoutCurrentList.Add(item);
             }
@@ -136,6 +136,7 @@ public class CityHandler : MonoBehaviour
 
         List<AbilityClass> currentList = PlayerHandler.instance._playerAbility.GetActiveAbiltiyList();
         List<AbilityActiveData> abilityActiveList = GameHandler.instance.cityDataHandler.cityLab.currentActiveAbilityOwnedList;
+
 
         for (int i = 0; i < abilityActiveList.Count; i++)
         {

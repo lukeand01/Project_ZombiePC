@@ -52,8 +52,12 @@ public class CityDataHandler : ScriptableObject
         cityLab.RestoreState(saveClass);
         cityLab.Initialize();
 
+        //DROP LAUNCHER
+        cityDropLauncher.RestoreState(saveClass);
+        cityDropLauncher.Initalize();
 
-        Debug.Log("restore state");
+
+
     }
 
     public void CaptureState(SaveClass saveClass)
@@ -68,6 +72,9 @@ public class CityDataHandler : ScriptableObject
 
         //LAB
         cityLab.CaptureState(saveClass);
+
+        //DROP LAUNCHER
+        cityDropLauncher.CaptureState(saveClass);
 
     }
 

@@ -39,6 +39,7 @@ public class BulletScript : MonoBehaviour
             _trailRenderer2.Clear();
         }
 
+        transform.localScale = Vector3.one;
 
     }
 
@@ -106,37 +107,6 @@ public class BulletScript : MonoBehaviour
     }
 
 
-    void TEST()
-    {
-        RaycastHit hit;
-        bool isWall = Physics.Raycast(transform.position, dir.normalized, out hit, 500, _layer);
-
-
-
-        if (isWall && hit.collider != null)
-        {
-
-            //we check the distance and if its low enough we assume its going to hit anyway
-            if (hit.distance <= 0.2f) //if we are at this distance we will assume hit already.
-            {
-                //so what we must do instead  because if its a shield then we should stop.
-                canMove = false;
-
-                //have to check 
-
-                IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-
-                if (damageable != null)
-                {
-                    CalculateDamageable(damageable);
-                }
-
-
-                return;
-            }
-
-        }
-    }
 
     #region DAMAGE
 
@@ -150,6 +120,7 @@ public class BulletScript : MonoBehaviour
 
     public void MakeDamage(DamageClass damage, float damageChangeAfterCollision, float damageChangeAfterBounce)
     {
+
         this.damage = damage;
         this.damage.Make_Projectil(transform);
 
@@ -243,7 +214,6 @@ public class BulletScript : MonoBehaviour
     {
 
 
-        canMove = false;
         //then we apply everything and check if this fella can continue.
         if (other.gameObject.tag == "Wall")
         {

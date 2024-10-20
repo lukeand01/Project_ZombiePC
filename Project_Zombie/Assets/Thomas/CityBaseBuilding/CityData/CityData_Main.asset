@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f4f525fee86b5745a9e40a442066eab, type: 3}
   m_Name: CityData_Main
   m_EditorClassIdentifier: 
+  <_requireMainBlueprint>k__BackingField: 1
+  <_mainBlueprint>k__BackingField: 0
   <cityStoreName>k__BackingField: Main
   <cityStoreLevel>k__BackingField: 5
   <popRequirement>k__BackingField: 0
@@ -19,12 +21,6 @@ MonoBehaviour:
   <requirementToIncreaseLevelList>k__BackingField:
   - requiredResourceList:
     - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
-      <quantity>k__BackingField: 150
-    - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
-      <quantity>k__BackingField: 200
-    requiredCityStoreLevelList: []
-  - requiredResourceList:
-    - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
       <quantity>k__BackingField: 500
     - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
       <quantity>k__BackingField: 500
@@ -34,30 +30,64 @@ MonoBehaviour:
       <quantity>k__BackingField: 500
     - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
       <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 1
     requiredCityStoreLevelList: []
   - requiredResourceList:
     - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
       <quantity>k__BackingField: 500
     - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
       <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 1
     requiredCityStoreLevelList: []
   - requiredResourceList:
     - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
       <quantity>k__BackingField: 500
     - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
       <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 1
     requiredCityStoreLevelList: []
   - requiredResourceList:
     - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
       <quantity>k__BackingField: 500
     - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
       <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 1
     requiredCityStoreLevelList: []
   - requiredResourceList:
     - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
       <quantity>k__BackingField: 500
     - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
       <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 1
+    requiredCityStoreLevelList: []
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 1
+    requiredCityStoreLevelList: []
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 1
+    requiredCityStoreLevelList: []
+  - requiredResourceList:
+    - <data>k__BackingField: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
+      <quantity>k__BackingField: 500
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 1
     requiredCityStoreLevelList: []
   especialNpcList_Ref: []
   storyQuestList_Ref:

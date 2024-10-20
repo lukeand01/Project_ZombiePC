@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
         debugMousePos = mousePos;
         Vector3 dir = (mousePos - transform.position).normalized;
         debugDir = dir;
-        _handler._playerMovement.RotatePlayer(dir);
+        _handler._playerMovement.RotatePlant(dir);
         mouseDir = dir;
         */
 

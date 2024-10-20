@@ -25,8 +25,14 @@ public class Behavior_Boss_Devil_HellSummon : Sequence2
         if (_boss.currentPhase <= 2) return NodeState.Success;
         if(_boss.IsActing) return NodeState.Success;
 
+        if(_cooldown_Current > 0)
+        {
+            _cooldown_Current -= Time.deltaTime;
+            return NodeState.Success;
+        }
 
-
+        _boss.CallHellSummon();
+        _cooldown_Current = _cooldown_Total;
 
         return NodeState.Success;
     }

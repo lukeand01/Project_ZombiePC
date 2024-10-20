@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class PlayerInventory : MonoBehaviour
 
 
         SetTools();
+        DebugAddSigil();
+
     }
     private void Update()
     {
@@ -67,7 +70,6 @@ public class PlayerInventory : MonoBehaviour
 
         if(cityInventoryList.Count > 0)
         {
-            Debug.Log("city inventory list is already set");
             return;
         }
 
@@ -480,11 +482,18 @@ public class PlayerInventory : MonoBehaviour
 
     public void OnUpdateBossSigilUI(List<BossSigilType> bossSigilType) => eventUpdateBossSigilUI?.Invoke(bossSigilType);
 
-    public List<BossSigilType> bossSigilList { get; private set; } = new();
+    [field:SerializeField] public List<BossSigilType> bossSigilList { get; private set; } = new();
+    
     public List<BossSigilType> readyToBeUsedSigilList { get; private set; } = new();
     //when we use i want to sepdn it.
 
-
+    [ContextMenu("ADD KNIGHT")]
+    public void DebugAddSigil()
+    {
+        AddBossSigil(BossSigilType.MiniBoss_Knight);
+        AddBossSigil(BossSigilType.MiniBoss_Ghost);
+        AddBossSigil(BossSigilType.MiniBoss_Mage);
+    }
 
     public void AddBossSigil(BossSigilType bossSigil)
     {
@@ -509,66 +518,60 @@ public class PlayerInventory : MonoBehaviour
     List<BossSigilType> GetBossSigilForPortal()
     {
 
-       
+       //we first try to get them into three unique
+       //then we try to build them into three of the same
+       //then we just take what we can.
 
-
-        //we check if any of them has three.
-        //
+    
         Dictionary<BossSigilType, int> quantitySigilDictionary = new();
+        List<BossSigilType> uniqueList = new();
+        List<BossSigilType> defaultList = new();
+        BossSigilType bossWithThreeCopies = BossSigilType.Nothing;
 
         //we first to detect if there are three fellas. 
         for (int i = 0; i < bossSigilList.Count; i++)
         {
             var item = bossSigilList[i];
 
+            if(defaultList.Count < 3)
+            {
+                defaultList.Add(item);
+            }
+
             if (!quantitySigilDictionary.ContainsKey(item))
             {
                 quantitySigilDictionary.Add(item, 1);
+                uniqueList.Add(item);
             }
             else
             {
                 quantitySigilDictionary[item] += 1;
             }
-
-            if (quantitySigilDictionary[item] >= 3)
-            {
-                //we will return a list of three of this fella
-                return new List<BossSigilType> { item, item, item };
-
-            }
       
         }
 
-        List<BossSigilType> sigilList = new();
+
         //otherwise 
         int safeBreak = 0;
-        int number = 0;
-        while(sigilList.Count < 3)
+
+        if(uniqueList.Count >= 3)
         {
-            safeBreak++;
-
-            if(safeBreak > 1000)
-            {
-                break;
-            }
-
-            if(number >= sigilList.Count)
-            {
-                sigilList.Add(BossSigilType.Nothing);
-            }
-            else
-            {
-                sigilList.Add(sigilList[number]);
-                number++;
-            }
-
-
-
+            return new List<BossSigilType>() { uniqueList[0], uniqueList[1], uniqueList[2] };
         }
 
-        return sigilList;
+        if(bossWithThreeCopies != BossSigilType.Nothing)
+        {
+            new List<BossSigilType>() { bossWithThreeCopies, bossWithThreeCopies, bossWithThreeCopies };
+        }
 
+        //then we get random fellas.
 
+        while(defaultList.Count < 3)
+        {
+            defaultList.Add(BossSigilType.Nothing);
+        }
+
+        return defaultList;
     }
     public void SpendSigil()
     {
@@ -698,7 +701,6 @@ public class PlayerInventory : MonoBehaviour
 
     #endregion
 
-
     #region SAVE DATA
 
     public void CaptureState(SaveClass saveClass)
@@ -712,6 +714,21 @@ public class PlayerInventory : MonoBehaviour
         }
 
         saveClass.MakePlayerInventory(inventoryList);
+
+
+        //MAIN BLUEPRINT
+
+        List<int> mainBlueprintNewList = new();
+
+        for (int i = 0; i < _mainBlueprintList.Count; i++)
+        {
+            var item = _mainBlueprintList[i];
+
+            mainBlueprintNewList.Add((int)item);
+        }
+
+        saveClass.MakeMainBlueprintList(mainBlueprintNewList);
+
     }
 
     public void RestoreState(SaveClass saveClass)
@@ -738,20 +755,64 @@ public class PlayerInventory : MonoBehaviour
             item.UpdateUI();
         }
 
+
+        //MAIN BLUEPRINT
+
+        List<int> mainBlueprintList = saveClass._mainBlueprintList;
+
+
+        if(mainBlueprintList != null)
+        {
+            List<MainBlueprintType> refList = new()
+        {
+                MainBlueprintType.Main_Blueprint,
+            MainBlueprintType.Armory_Blueprint,
+            MainBlueprintType.Lab_Blueprint,
+            MainBlueprintType.Drop_Launcher_Blueprint,
+            MainBlueprintType.Body_Enhancer_Blueprint
+        };
+
+            _mainBlueprintList.Clear();
+
+            for (int i = 0; i < mainBlueprintList.Count; i++)
+            {
+                var item = mainBlueprintList[i];
+
+                _mainBlueprintList.Add(refList[item]);
+            }
+        }
+
+        
+
+
     }
+
 
     #endregion
 
 
     #region MAIN BLUEPRINTS
 
-    List<MainBlueprintType> _mainBlueprintList = new();
+    [SerializeField] List<MainBlueprintType> _mainBlueprintList = new();
+
+
+    [ContextMenu("DEBUG ADD BLUEPRINT")]
+    public void DebugAddBlueprint()
+    {
+        AddMainBlueprint(MainBlueprintType.Main_Blueprint);
+    }
 
     public void AddMainBlueprint(MainBlueprintType newBlueprint)
     {
-        if (!_mainBlueprintList.Contains(newBlueprint)) return;
+        if (_mainBlueprintList.Contains(newBlueprint))
+        {
+            Debug.Log("it contains");
+            return;
+        }
+        Debug.Log("yo");
 
-        _mainBlueprintList.Add(newBlueprint);   
+        _mainBlueprintList.Add(newBlueprint);
+        GameHandler.instance._saveHandler.CaptureStateUsingCurrentSaveSlot();
     }
 
     public bool HasMainBlueprint(MainBlueprintType newBlueprint)
@@ -766,10 +827,11 @@ public class PlayerInventory : MonoBehaviour
 
 public enum MainBlueprintType
 {
-    Armory,
-    Lab,
-    Drop_Launcher,
-    Body_Enhancer
+    Main_Blueprint = 0,
+    Armory_Blueprint = 1,
+    Lab_Blueprint = 2,
+    Drop_Launcher_Blueprint = 3,
+    Body_Enhancer_Blueprint = 4
 }
 
 
@@ -780,7 +842,9 @@ public enum BossSigilType
     MiniBoss_Mage,
     MiniBoss_Artillery,
     Nothing,
-    Boss_Devil
+    Boss_Devil,
+    Boss_Tree,
+    Boss_Twin
 
 }
 

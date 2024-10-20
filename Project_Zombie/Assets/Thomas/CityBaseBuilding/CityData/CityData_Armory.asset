@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e3eebfb483b07459ffad681e975672, type: 3}
   m_Name: CityData_Armory
   m_EditorClassIdentifier: 
+  <_requireMainBlueprint>k__BackingField: 1
+  <_mainBlueprint>k__BackingField: 1
   <cityStoreName>k__BackingField: Armory
-  <cityStoreLevel>k__BackingField: 1
+  <cityStoreLevel>k__BackingField: 0
   <popRequirement>k__BackingField: 5
   <resourcePopRef>k__BackingField: {fileID: 11400000, guid: 5557f4efc84e59844861b35c4006e011, type: 2}
   <requirementToIncreaseLevelList>k__BackingField:
@@ -22,18 +24,24 @@ MonoBehaviour:
       <quantity>k__BackingField: 150
     - <data>k__BackingField: {fileID: 11400000, guid: 72ff5784abfaebb4e8b84b138d780341, type: 2}
       <quantity>k__BackingField: 10
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 1
     requiredCityStoreLevelList: []
   - requiredResourceList:
     - <data>k__BackingField: {fileID: 11400000, guid: c4fa8ed7843d9d4459af738f0eeb4eb1, type: 2}
       <quantity>k__BackingField: 150
     - <data>k__BackingField: {fileID: 11400000, guid: 72ff5784abfaebb4e8b84b138d780341, type: 2}
       <quantity>k__BackingField: 10
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 2
     requiredCityStoreLevelList: []
   - requiredResourceList:
     - <data>k__BackingField: {fileID: 11400000, guid: c4fa8ed7843d9d4459af738f0eeb4eb1, type: 2}
       <quantity>k__BackingField: 150
     - <data>k__BackingField: {fileID: 11400000, guid: 72ff5784abfaebb4e8b84b138d780341, type: 2}
       <quantity>k__BackingField: 10
+    - <data>k__BackingField: {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
+      <quantity>k__BackingField: 3
     requiredCityStoreLevelList: []
   cityArmoryList_DividedByLevel_Perma:
   - gunList:
@@ -75,12 +83,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7b1a459b35bd35a40b2561aae96569cc, type: 2}
   - {fileID: 11400000, guid: 4dbc885a69fc6b3499ecf29545399fb7, type: 2}
   - {fileID: 11400000, guid: 03d21dd65e235db4eaa8be7289a68581, type: 2}
-  ownedGunIndexList: 
+  ownedGunIndexList: 0300000000000000
   foundPermaGunIndexList: 
   nothing: 0
-  <currentGunAvailableArmoryList>k__BackingField: []
-  <currentGunOwnedList>k__BackingField: []
-  <currentGunTempList>k__BackingField: []
+  <currentGunAvailableArmoryList>k__BackingField:
+  - {fileID: 11400000, guid: 13aa1538999aba942a2f1a5764b302b5, type: 2}
+  - {fileID: 11400000, guid: e4f36989caa466d448692e11cf5f651b, type: 2}
+  - {fileID: 11400000, guid: 03d21dd65e235db4eaa8be7289a68581, type: 2}
+  - {fileID: 11400000, guid: b5ce0634117da2145bff94c8137aff90, type: 2}
+  <currentGunOwnedList>k__BackingField:
+  - {fileID: 11400000, guid: b5ce0634117da2145bff94c8137aff90, type: 2}
+  - {fileID: 11400000, guid: 13aa1538999aba942a2f1a5764b302b5, type: 2}
+  <currentGunTempList>k__BackingField:
+  - {fileID: 11400000, guid: 175ac004bae164d4d94e189ba599b0fc, type: 2}
+  - {fileID: 11400000, guid: a03601f2da05203458d93520948ee0c7, type: 2}
+  - {fileID: 11400000, guid: dcf2f6a0e2ecb294795f5d7d84302122, type: 2}
+  - {fileID: 11400000, guid: 7b1a459b35bd35a40b2561aae96569cc, type: 2}
+  - {fileID: 11400000, guid: aeec2fcead747d541b16c14375ab067f, type: 2}
   debug_ItemList:
   - data: {fileID: 11400000, guid: dcf2f6a0e2ecb294795f5d7d84302122, type: 2}
     chance: 52

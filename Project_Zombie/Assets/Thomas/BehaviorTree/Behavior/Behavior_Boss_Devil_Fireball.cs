@@ -20,8 +20,8 @@ public class Behavior_Boss_Devil_Fireball : Sequence2
         _playerTransform = PlayerHandler.instance.transform;
 
 
-        _cooldown_Total = 3;
-        _cooldown_Current = 0;
+        _cooldown_Total = 10;
+        _cooldown_Current = Random.Range(_cooldown_Total * 0.6f, _cooldown_Total * 1.3f) / 2;
 
         _damage = new DamageClass(60, DamageType.Magical, 0);
 
@@ -29,14 +29,16 @@ public class Behavior_Boss_Devil_Fireball : Sequence2
 
     public override NodeState Evaluate()
     {
-
-        if (_boss.IsActing) return NodeState.Success;
-        if(_cooldown_Current > 0)
+        if (_cooldown_Current > 0)
         {
             _cooldown_Current -= Time.deltaTime;
             return NodeState.Success;
         }
 
+        if (_boss.IsActing) return NodeState.Success;
+        
+
+        Debug.Log("yo thissds");
         //float radius = AttackRadius;
         //int quantity = FireballQuantity;
         //i need to call animation first 

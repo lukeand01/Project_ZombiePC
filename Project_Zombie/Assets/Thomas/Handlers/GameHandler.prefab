@@ -213,6 +213,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a7cb3c86b413bd84ea71279d4d2185b9, type: 2}
   - {fileID: 11400000, guid: f790646efb0084c4bbf432351d07c4ac, type: 2}
   - {fileID: 11400000, guid: 8e527a88992a935498d4781edb1cbf7d, type: 2}
+  <currentSaveSlotData>k__BackingField: {fileID: 11400000, guid: a7cb3c86b413bd84ea71279d4d2185b9, type: 2}
 --- !u!1 &889410821237730313
 GameObject:
   m_ObjectHideFlags: 0

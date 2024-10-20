@@ -61,8 +61,6 @@ public class CityData_Main : CityData
         }
     }
 
-
-
     public void AddQuestWithIndex(int index)
     {
         //we add to the list

@@ -64,7 +64,7 @@ public class EquipWindowEquipUnit : ButtonBase
             return;
         }
 
-        Debug.Log("was this called? " + abilityData.abilityName);
+
         empty.SetActive(false);
         this._abilityData = abilityData;
 
@@ -89,15 +89,16 @@ public class EquipWindowEquipUnit : ButtonBase
     public void SetDrop(DropData dropData, EquipWindowUI handler)
     {
         _handler = handler;
-
+        _dropData = dropData;
         if (dropData == null)
         {
+
             empty.SetActive(true);
             return;
         }
 
         empty.SetActive(false);
-        _dropData = dropData;
+
 
 
         icon.sprite = dropData.dropIcon;
@@ -244,11 +245,13 @@ public class EquipWindowEquipUnit : ButtonBase
 
     public void RemoveAbilityFromPlayer()
     {
+        Debug.Log("this was called 1 ");
         if (!isPlayer) return;
         empty.SetActive(true);
         _abilityData = null;
-
+        Debug.Log("this was called");
         PlayerHandler.instance._playerAbility.ReplaceActiveAbility(null, abilityIndex);
+        GameHandler.instance._saveHandler.CaptureStateUsingCurrentSaveSlot();
     }
 
 }

@@ -89,7 +89,7 @@ public class Merchant : Story_EspecialNpc
 
     void CreateAbilityMerchant()
     {
-        List<AbilityPassiveData> abilityList = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList();
+        List<AbilityPassiveData> abilityList = GameHandler.instance.cityDataHandler.cityLab.GetPassiveAbilityList(3, "Merchant");
         //actually dont create it, just send the information.
 
 

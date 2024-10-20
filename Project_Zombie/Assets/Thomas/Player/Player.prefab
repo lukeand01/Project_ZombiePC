@@ -125,6 +125,7 @@ MonoBehaviour:
   - {fileID: 6355524891751077174}
   - {fileID: 2185946976884774448}
   _dropData: {fileID: 11400000, guid: 176c8e552b21f6943969abaf6def01cf, type: 2}
+  _playerEquipmentData: {fileID: 11400000, guid: 91157fa402941c34789b436cc155096b, type: 2}
   turretFlyList: []
   color_Physical: {r: 0.7735849, g: 0.2827249, b: 0.09852261, a: 1}
   color_Magical: {r: 0.05918475, g: 0.18066932, b: 0.6603774, a: 1}
@@ -242,21 +243,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c4fa8ed7843d9d4459af738f0eeb4eb1, type: 2}
   - {fileID: 11400000, guid: 72ff5784abfaebb4e8b84b138d780341, type: 2}
   - {fileID: 11400000, guid: e71b5bbc901d99b42a861707f47ffb64, type: 2}
+  - {fileID: 11400000, guid: 2f9c56da8e985304bb229c8aa2ffb44d, type: 2}
   stageInventoryList: []
   cityInventoryList: []
   initialCityInventoryList:
-  - data: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
-    quantity: 15
+  - data: {fileID: 11400000, guid: a70dfdc067978544c8da3748996d4890, type: 2}
+    quantity: 1000
     popUsage: 0
-  initialStageInventoryList:
   - data: {fileID: 11400000, guid: 5b91ea8cc2045bb48925fef0dcb1543a, type: 2}
-    quantity: 15
+    quantity: 100
     popUsage: 0
+  initialStageInventoryList: []
   interactMask:
     serializedVersion: 2
     m_Bits: 0
   _initialToolArray:
   - {fileID: 11400000, guid: c7638e435d3030d4cafef6632c22d37f, type: 2}
+  _mainBlueprintList: 
 --- !u!114 &7549553643621730913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,12 +272,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ed17794097bc04b95619e1b155d446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialAbilitySlot: 2
+  currentAbilitySlot: 0
   abilityActiveList: []
   abilityPassiveList: []
   debugAbilityActiveStartingList: []
   debugPassiveStartingList: []
   <abilityList_CannotStack>k__BackingField: []
   <abilityList_HigherChance>k__BackingField: []
+  initialDropSlot: 3
 --- !u!114 &2760048031163321034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,7 +651,7 @@ Transform:
   m_GameObject: {fileID: 861377399945751358}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.8660254, z: -0.5, w: 0}
-  m_LocalPosition: {x: 0, y: 25, z: 16}
+  m_LocalPosition: {x: 0, y: 35, z: 25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1515,6 +1521,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3943464296066868325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 146147402322935159}
+  m_Layer: 3
+  m_Name: CameraPosition_City
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &146147402322935159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3943464296066868325}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.8660254, z: -0.5, w: 0}
+  m_LocalPosition: {x: 0, y: 35, z: 25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2636935394525493322}
+  m_LocalEulerAnglesHint: {x: 60, y: 180, z: 0}
 --- !u!1 &3974904858465846947
 GameObject:
   m_ObjectHideFlags: 0
@@ -2561,6 +2598,7 @@ Transform:
   - {fileID: 1137384035005088204}
   - {fileID: 2837541385951473077}
   - {fileID: 1220705208586397677}
+  - {fileID: 146147402322935159}
   m_Father: {fileID: 7547599842594611916}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8894384119612175377

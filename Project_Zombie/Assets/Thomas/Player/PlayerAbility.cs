@@ -61,11 +61,11 @@ public class PlayerAbility : MonoBehaviour
     {
         if (currentAbilitySlot >= 3) return;
 
+
         currentAbilitySlot++;
 
         AbilityClass newActiveAbilitySlot = new AbilityClass(currentAbilitySlot - 1);
 
-        Debug.Log("slot index " + currentAbilitySlot);
 
         abilityActiveList.Add(newActiveAbilitySlot);
         UIHandler.instance._EquipWindowUI.UpdateAbilitySlot(currentAbilitySlot);
@@ -73,7 +73,6 @@ public class PlayerAbility : MonoBehaviour
 
         GameHandler.instance._saveHandler.CaptureStateUsingCurrentSaveSlot();
     }
-
 
 
     public void SetAbility(int startingSlot)
@@ -87,7 +86,6 @@ public class PlayerAbility : MonoBehaviour
         {
             currentAbilitySlot = startingSlot;
         }
-
 
 
 
@@ -272,7 +270,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if(index > abilityActiveList.Count - 1)
         {
-            Debug.Log("this is wrong");
+            Debug.Log("are not calling this");
             return;
         }
         abilityActiveList[index].SetActive(data);
@@ -550,12 +548,12 @@ public class PlayerAbility : MonoBehaviour
         SetDropSlot(saveClass._dropSlot);
         SetAbility(saveClass._abilitySlot);
 
-
     }
     public void CaptureState(SaveClass saveClass)
-    {
+    {      
         saveClass.MakeEquipAbilitySlot(currentAbilitySlot);
         saveClass.MakeEquipDropSlot(currentDropSlot);
+
     }
 
     #endregion

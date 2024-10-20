@@ -101,6 +101,29 @@ public class CityStore : MonoBehaviour, IInteractable
    protected virtual void UpdateGraphic()
     {
         //this get the level of the thing and 
+        //we need to check for the closet thing. it always goes down.
+
+        
+        if(GetCityData.cityStoreLevel >= graphicArray.Length)
+        {
+
+            for (int i = 0; i < graphicArray.Length; i++)
+            {
+                if(i == graphicArray.Length - 1)
+                {
+                    graphicArray[i].SetActive(true);
+                }
+                else
+                {
+                    graphicArray[i].SetActive(false);
+                }
+                
+
+            }
+            return;
+        }
+
+
         int lastIndex = -1;
         for (int i = 0; i < graphicArray.Length; i++)
         {    
@@ -121,8 +144,12 @@ public class CityStore : MonoBehaviour, IInteractable
 
     protected virtual void CallInteract()
     {
-        _cityCanvas.OpenUI();
 
+        bool hasRequired = GetCityData._requireMainBlueprint;
+        MainBlueprintType blueprintType = GetCityData._mainBlueprint;
+
+        _cityCanvas.OpenUI();
+        _cityCanvas.UpdateRequiredHolder(hasRequired, blueprintType);
     }
 
     protected virtual void UpdateInteractUIName(string name)

@@ -16,11 +16,36 @@ public abstract class TrapBase : MonoBehaviour
 
     }
 
+    float _cooldown_Total;
+    float _cooldown_Current;
+
+    private void Update()
+    {
+        if (_cooldown_Total == 0) return;
+
+        if(_cooldown_Total > _cooldown_Current)
+        {
+            _cooldown_Current += Time.deltaTime;
+        }
+        else
+        {
+            ReleaseTrap();
+        }
+    }
+
+    protected abstract void ReleaseTrap();
+
+    public void SetDestroy(float duration)
+    {
+        _cooldown_Total = duration;
+    }
+
     public abstract void ResetForPool();
     
 
 
     public abstract void CallTrap();
+
 
 }
 

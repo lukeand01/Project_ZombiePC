@@ -1133,6 +1133,88 @@ public class LocalHandler : MonoBehaviour
     }
 
     #endregion
+
+
+
+    #region BOSS
+    [SerializeField] EnemyData[] _bossArray;
+    List<EnemyData> _alreadyUsedBossList = new();
+
+    public EnemyData GetRandomBoss()
+    {
+        EnemyData boss = null;
+
+        int safeBreak = 0;
+
+        if (_alreadyUsedBossList.Count == _bossArray.Length)
+        {
+            //we clear this list and we prepare some kind of bonus
+            _alreadyUsedBossList.Clear();
+        }
+
+        while (boss == null)
+        {
+            safeBreak++;
+
+            if (safeBreak > 1000) break;
+
+            int random = Random.Range(0, _bossArray.Length);
+
+            EnemyData newBoss = _bossArray[random];
+
+            if (_alreadyUsedBossList.Contains(newBoss))
+            {
+                continue;
+            }
+
+            boss = newBoss;
+            _alreadyUsedBossList.Add(newBoss);
+
+        }
+
+
+        return boss;
+    }
+
+    [SerializeField] EnemyData[] _bossMiniArray;
+    List<EnemyData> _alreadyUsedBossMiniList = new();
+
+    public EnemyData GetRandomBossMini()
+    {
+        EnemyData boss = null;
+
+        int safeBreak = 0;
+
+        if (_alreadyUsedBossMiniList.Count == _bossMiniArray.Length)
+        {
+            //we clear this list and we prepare some kind of bonus
+            _alreadyUsedBossMiniList.Clear();
+        }
+
+        while (boss == null)
+        {
+            safeBreak++;
+
+            if (safeBreak > 1000) break;
+
+            int random = Random.Range(0, _bossMiniArray.Length);
+
+            EnemyData newBoss = _bossMiniArray[random];
+
+            if (_alreadyUsedBossMiniList.Contains(newBoss))
+            {
+                continue;
+            }
+
+            boss = newBoss;
+            _alreadyUsedBossMiniList.Add(newBoss);
+
+        }
+
+
+        return boss;
+    }
+    #endregion
 }
 
 

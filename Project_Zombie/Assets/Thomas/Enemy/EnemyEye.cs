@@ -189,7 +189,7 @@ public class EnemyEye : EnemyBase
 
     }
 
-    protected override void Die(bool wasKilledByPlayer = true)
+    public override void Die(bool wasKilledByPlayer = true)
     {
         
         base.Die(wasKilledByPlayer);

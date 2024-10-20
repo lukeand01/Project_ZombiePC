@@ -1,3 +1,4 @@
+using DG.Tweening;
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,18 @@ using UnityEngine;
 
 public class EnemyBoss_Devil : EnemyBoss
 {
+
+    [Separator("DEVIL")]
+    [SerializeField] GameObject _fireFlyingHolder;
+    [SerializeField] FireFlyingBlade[] _fireFlyingBladeArray; //we wont be spawning them
+    [SerializeField] Transform[] _hellWaveArray;
+    [SerializeField] EnemyData _enemySimple;
+    [SerializeField] EnemyData _enemyHound;
+
+    [Separator("AUDIO")]
+    [SerializeField] AudioClip _devilSlashSound;
+    [SerializeField] AudioClip _devilScream;
+    [SerializeField] AudioClip _devilWaveShout;
 
     float healthRequired_Phase1 = 0;
     float healthRequired_Phase2 = 0;
@@ -21,10 +34,22 @@ public class EnemyBoss_Devil : EnemyBoss
 
         currentPhase = 1;
         healthRequired_Phase1 = health_Total;
-        healthRequired_Phase2 = health_Total * 0.5f;
-        healthRequired_Phase3 = health_Total * 0.2f;
+        healthRequired_Phase2 = health_Total * 0.6f;
+        healthRequired_Phase3 = health_Total * 0.25f;
+
+
+        for (int i = 0; i < _fireFlyingBladeArray.Length; i++)
+        {
+            var item = _fireFlyingBladeArray[i];
+
+            item.gameObject.SetActive(false);
+        }
+
+        //StartCoroutine(HellWaveProcess());
+        //StartBoss();
     }
 
+    
 
     public override void TakeDamage(DamageClass damageRef)
     {
@@ -36,17 +61,18 @@ public class EnemyBoss_Devil : EnemyBoss
     void CheckForBossPhase()
     {
 
-        if (healt_Current <= healthRequired_Phase2 && currentPhase != 2)
+        if (health_Current <= healthRequired_Phase2 && currentPhase != 2)
         {
             //then we start the second phase.
             StartPhase2();
             return;
         }
 
-        if (healt_Current <= healthRequired_Phase3 && currentPhase != 3)
+        if (health_Current <= healthRequired_Phase3 && currentPhase != 3)
         {
             //then we start the third phase.
             StartPhase3();
+
             return;
         }
 
@@ -57,10 +83,11 @@ public class EnemyBoss_Devil : EnemyBoss
     {
         return new Sequence2(new List<Node>
         {
-            new Behavior_Boss_CheckAction(this),
+            //new Behavior_Boss_CheckAction(this),
+            new Behavior_BossSpawnEnemy(this, 2.3f, new List<EnemyData>() {_enemySimple, _enemySimple}),
             new Behavior_Boss_Devil_Slash(this),
             new Behavior_Boss_Devil_Fireball(this),
-
+            new Behavior_Boss_Devil_HellSummon(this),
         });
     }
 
@@ -96,7 +123,7 @@ public class EnemyBoss_Devil : EnemyBoss
         _animator.Play("Animation_Devil_Idle", 2);
         
 
-        float duration_Total = 1;
+        float duration_Total = 0.8f;
         float duration_Current = 0;
 
         _abilityCanvas.gameObject.SetActive(true);
@@ -110,7 +137,9 @@ public class EnemyBoss_Devil : EnemyBoss
         }
 
         _animator.SetFloat("AttackSpeed", 1);
-        
+
+        GameHandler.instance._soundHandler.CreateSfx_WithAudioClip(_devilSlashSound, transform);
+
         yield return new WaitForSeconds(0.1f);
 
         _abilityCanvas.gameObject.SetActive(false);
@@ -130,8 +159,6 @@ public class EnemyBoss_Devil : EnemyBoss
         targetLayer |= (1 << 3);
         RaycastHit[] foundArray = Physics.SphereCastAll(transform.position, 10, Vector2.up, 50, targetLayer);
 
-
-
         DamageClass damage = new DamageClass(50, DamageType.Physical, 0);
 
         for (int i = 0; i < foundArray.Length; i++)
@@ -147,6 +174,9 @@ public class EnemyBoss_Devil : EnemyBoss
 
         }
 
+
+
+
     }
 
     public override void StartChargingAttack()
@@ -155,6 +185,43 @@ public class EnemyBoss_Devil : EnemyBoss
     }
 
 
+    protected override void UpdateFunction()
+    {
+        base.UpdateFunction();
+
+
+
+        if (_agent.velocity == Vector3.zero)
+        {
+            _animator.Play("Animation_Devil_Idle", 2);
+        }
+        else
+        {
+            _animator.Play("Animation_Devil_Run", 2);
+        }
+    }
+
+    public override void ResetForPool()
+    {
+        base.ResetForPool();
+
+
+        for (int i = 0; i < _fireFlyingBladeArray.Length; i++)
+        {
+            var item = _fireFlyingBladeArray[i];
+
+            item.gameObject.SetActive(false);
+            item.transform.SetParent(_fireFlyingHolder.transform);
+            item.transform.localPosition = Vector3.zero;
+        }
+
+        for (int i = 0; i < _hellWaveArray.Length; i++)
+        {
+            var item = _hellWaveArray[i];
+
+            item.gameObject.SetActive(false);
+        }
+    }
     protected override void CallUI(float current, float total)
     {
         base.CallUI(current, total);
@@ -175,7 +242,8 @@ public class EnemyBoss_Devil : EnemyBoss
             //call attack in the area. do the same thing as the knife.
             //create damagearea in the target.
             DamageSlash();
-
+            DamageFireball(2);
+            
         }
         if(actionIndex_Current == 1)
         {
@@ -196,10 +264,36 @@ public class EnemyBoss_Devil : EnemyBoss
 
     IEnumerator Phase2Process()
     {
+        //stop and call the thing
+
         SummonFlyingBlades();
         currentPhase = 2;
 
-        yield return null;
+        ControlIsActing(true);
+
+        StopAgent();
+        _animator.Play("Animation_Devil_Summon", 1);
+
+        Vector3 originalDir = Vector3.right;
+        DamageClass damage = new DamageClass(50, DamageType.Physical, 0);
+        for (int i = 0; i < _fireFlyingBladeArray.Length; i++)
+        {
+            var item = _fireFlyingBladeArray[i];
+
+            item.gameObject.SetActive(true);
+            originalDir *= -1;
+            item.SetUp(originalDir, damage, 5);
+            item.transform.SetParent(null);
+        }
+
+
+        yield return new WaitForSeconds(3);
+
+
+
+
+        ControlIsActing(false);
+
     }
 
     void SummonFlyingBlades()
@@ -225,58 +319,95 @@ public class EnemyBoss_Devil : EnemyBoss
     //
     public void CallHellSummon()
     {
+        
+
         StartCoroutine(HellSummonProcess());
+        StartCoroutine(HellWaveProcess());
     }
 
+  
+    //how can i apply the damage?
+    //
     IEnumerator HellSummonProcess()
     {
-        int rounds = 5;
 
-        //get portals in the boss room and spawn hellhounds.
+        yield return new WaitForSeconds(1f);
 
-        for (int i = 0; i < rounds; i++)
+        for (int i = 0; i < 3; i++)
         {
-            //stay idle. 
-            //
+            _bossPortal.SendEnemyToSpawn(new List<EnemyData>() { _enemyHound, _enemyHound });
+            yield return new WaitForSeconds(2f);
+        }
+
+    }
+    IEnumerator HellWaveProcess(int value = 0)
+    {
+        ControlIsActing(true);
+        int valueTotal = 10;
+
+        Transform targetWave = GetReadyWave();
+
+        targetWave.gameObject.SetActive(true);
+        targetWave.DOKill();
+        targetWave.DOScale(1, 0);
+        targetWave.DOScale(100, 6).SetEase(Ease.Linear);
+        
+        _animator.Play("Animation_Devil_Summon", 1);
+
+        yield return new WaitForSeconds(1.8f);
+
+        if(value < valueTotal)
+        {
+            StartCoroutine(HellWaveProcess(value + 1));
+        }
+        else
+        {
+            ControlIsActing(false);
+        }
+
+        yield return new WaitForSeconds(5f);
+
+        targetWave.DOScale(0, 0);
+        targetWave.gameObject.SetActive(false);
+         //in the end we completely reset the
+     
+    }
 
 
+
+    Transform GetReadyWave()
+    {
+        for (int i = 0; i < _hellWaveArray.Length; i++)
+        {
+            var item = _hellWaveArray[i];
+
+            if (!item.gameObject.activeInHierarchy) return item;
 
         }
 
-
-
-
-        yield return null;
-
+        return null;
     }
 
 
     public void CallFireball()
     {
-        StartCoroutine(FireballProcess());
+        DamageFireball();
     }
 
-    IEnumerator FireballProcess()
+   
+
+    void DamageFireball(int forceQuantity = -1)
     {
-        ControlIsActing(true);
-        SetActionIndexCurrent(1);
-        _animator.Play("Animation_Devil_Ranged_01", 1);
-        _animator.Play("Animation_Devil_Idle", 2);
-
-
-        yield return new WaitForSeconds(2);
-
-        ControlIsActing(false);
-    }
-
-    void DamageFireball()
-    {
-        float value = 3;
+        float value = 15;
 
 
         float radius = Fireball_AttackRadius;
         int quantity = FireballQuantity;
-
+        if (forceQuantity != -1)
+        {
+            quantity = forceQuantity;
+        }
+      
 
         DamageClass damage = new DamageClass(60, DamageType.Magical, 0);
 
@@ -295,9 +426,10 @@ public class EnemyBoss_Devil : EnemyBoss
             AreaDamage areaDamage_Regular = GameHandler.instance._pool.GetAreaDamage(transform);
 
             areaDamage_Regular.SetUp_Regular(attackPos, radius, 1, damage, 3, 0.5f, AreaDamageVSXType.Fireball_Explosion);
+            areaDamage_Regular.CallSoundOnDamaged(SoundType.AudioClip_MeteorExplosion);
 
             AreaDamage areaDamage_Const = GameHandler.instance._pool.GetAreaDamage(transform);
-            areaDamage_Const.SetUp_Continuously(attackPos, radius, 2, 1.3f, damage, 3, 0, AreaDamageVSXType.Nothing); //we need a fireburning.
+            areaDamage_Const.SetUp_Continuously(attackPos, radius, 2, 0.8f, damage, 3, 0, AreaDamageVSXType.Fire); //we need a fireburning.
 
         }
 
@@ -317,7 +449,7 @@ public class EnemyBoss_Devil : EnemyBoss
             }
             if (currentPhase > 1)
             {
-                radius = 5.5f;
+                radius = 3.2f;
             }
 
             return radius;
@@ -335,9 +467,13 @@ public class EnemyBoss_Devil : EnemyBoss
             {
                 quantity = 4;
             }
-            if (currentPhase > 1)
+            if (currentPhase == 1)
             {
-                quantity = 8;
+                quantity = 6;
+            }
+            if(currentPhase == 2)
+            {
+                quantity = 7;
             }
 
             return quantity;
@@ -345,6 +481,22 @@ public class EnemyBoss_Devil : EnemyBoss
     }
 
 }
+
+
+//every slash will call the fireballs.
+
+
+//WHATS LEFT
+//death animation
+///fireball fire when it lands.
+//the distance between each fireball should be way bigger. but it should still land in the area.
+//create the hell spawns. 
+///should enter a room, and be able to trigger the devil
+//once the devil is dead the room opens once again
+//the blade need to change direction but always opposite to the wall
+///the boss´s health should always appear in the top.
+//fix the boss health
+
 
 
 //first we check if it can slash.

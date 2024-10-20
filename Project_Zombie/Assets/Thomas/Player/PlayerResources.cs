@@ -106,7 +106,7 @@ public class PlayerResources : MonoBehaviour, IDamageable
 
         if (debugCannotTakeDamage)
         {
-            Debug.Log("took damage in debug immunity");
+            Debug.Log("PLAYER - took damage in debug immunity");
             return;
         }
 

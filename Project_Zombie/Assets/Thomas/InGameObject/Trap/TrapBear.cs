@@ -29,6 +29,10 @@ public class TrapBear : TrapBase
         StartCoroutine(TrapProcess());
     }
 
+    protected override void ReleaseTrap()
+    {
+        GameHandler.instance._pool.Trap_Release(TrapType.BearTrap, this);
+    }
 
     IEnumerator TrapProcess()
     {

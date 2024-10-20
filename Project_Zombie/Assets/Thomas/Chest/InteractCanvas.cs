@@ -26,16 +26,17 @@ public class InteractCanvas : MonoBehaviour
 
         if (priceHolder != null) priceHolder.SetActive(false);
 
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     private void Update()
     {
+        return;
        // float entityRotation = transform.parent.parent.parent.rotation.eulerAngles.y;
-        Quaternion rotation = Quaternion.LookRotation(mainCam.transform.position);
-        float cappedX = Mathf.Clamp(rotation.eulerAngles.x, 0, 30);
-        rotation.eulerAngles = new Vector3(cappedX * -1, rotation.y, 0);
-        transform.localRotation = rotation;
+        //Quaternion rotation = Quaternion.LookRotation(mainCam.transform.position);
+        //float cappedX = Mathf.Clamp(rotation.eulerAngles.x, 0, 30);
+        //rotation.eulerAngles = new Vector3(cappedX * -1, rotation.y, 0);
+        //transform.localRotation = rotation;
     }
 
     public void ControlCannotHolder(bool isVisible) => _cannotHolder.SetActive(isVisible);

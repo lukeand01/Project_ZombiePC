@@ -63,6 +63,11 @@ public class Portal : MonoBehaviour
 
     }
 
+    public void ClearPortal()
+    {
+        spawnQueueList.Clear();
+    }
+
     private void Awake()
     {
         spawnTotal = Random.Range(0.5f, 3.5f);
@@ -78,10 +83,7 @@ public class Portal : MonoBehaviour
             return;
         }
         if (isSpawning) return;
-
-        
-
-
+       
 
         if (spawnCurrent > 0)
         {
@@ -140,20 +142,40 @@ public class Portal : MonoBehaviour
 
     }
 
+    BossPortal _bossPortal;
+    public void SetBossPortal(BossPortal bossPortal)
+    {
+        _bossPortal = bossPortal;
+    }
+
     public void Spawn(EnemyData enemy)
     {
-
         //we dont spawn this if it has passed hte cpa.
+
+        if(enemy == null)
+        {
+            Debug.Log("there simply was no data here");
+        }
 
         int round = LocalHandler.instance.round;
         // EnemyBase newObject = Instantiate(_enemy.enemyModel, spawnPoint.transform.position + Vector3.forward, Quaternion.identity);
         EnemyBase newObject = GameHandler.instance._pool.GetEnemy(enemy, spawnPoint.transform.position + Vector3.forward);
+
+        //Debug.Log(newObject.name);
+
+
         newObject.transform.position = spawnPoint.transform.position;
         newObject.gameObject.name = enemy.name;
         newObject.SetStats(round);
 
         spawnTotal = Random.Range(1, 3);
         spawnCurrent = spawnTotal;
+
+
+        if(_bossPortal != null)
+        {
+            _bossPortal.eventBossEnded = () => newObject.Die(false);
+        }
 
         newObject.eventDied += handler.EnemyDied;
     }
@@ -250,6 +272,9 @@ public class Portal : MonoBehaviour
         return spawnQueueList.Count > 0;    
     }
 }
+
+
+
 
 
 //how do i know what room the player is currently in?

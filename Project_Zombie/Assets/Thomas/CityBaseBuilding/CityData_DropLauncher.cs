@@ -12,16 +12,22 @@ public class CityData_DropLauncher : CityData
     [Separator("Drop_AllRef")]
     [SerializeField] List<DropData> dropDataRefList = new(); //these are all items. how toel perma from temp?
 
-    List<int> dropIndexList = new();
+    List<int> dropIndexList = new(); //what is this for?
+    [SerializeField]List<int> equippedDropIndexList = new(); //this is the list for saving the drops you have.
+
 
     [field: SerializeField] public int dropSlot;
     [field: SerializeField] public List<DropData> currentAvailableDropList { get; private set; } = new();
     [field:SerializeField] public List<DropData> currentEquippedDropList { get; private set; } = new();
 
+
+
     public void Initalize()
     {
         SetIndexForRefList();
         GenerateAvailableList();
+        GenerateListForEquipContainer();
+        SendEquippedDropForEquipUnits();
     }
 
     void SetIndexForRefList()
@@ -79,21 +85,37 @@ public class CityData_DropLauncher : CityData
     {
         //we get a list and remove those that are in the currentequipped.
 
-        List<DropData> dropList = currentAvailableDropList;
+        List<DropData> dropRefList = new();
 
-        for (int i = 0; i < dropList.Count; i++)
+
+        for (int i = 0; i < currentAvailableDropList.Count; i++)
         {
-            var item = dropList[i];
+            var item = currentAvailableDropList[i];
 
             if (currentEquippedDropList.Contains(item))
             {
-                dropList.RemoveAt(i);   
+
+            }
+            else
+            {
+                dropRefList.Add(item);
             }
         }
 
 
-        UIHandler.instance._EquipWindowUI.UpdateOptionForDrops(dropList);
+        
+
+
+        UIHandler.instance._EquipWindowUI.UpdateOptionForDrops(dropRefList);
     }
+
+    public void SendEquippedDropForEquipUnits()
+    {
+        //we are going to send the information there.
+        UIHandler.instance._EquipWindowUI.ReceiveDropList(currentEquippedDropList);
+    }
+
+
 
     public DropData GetDropDataFromIndex(int index)
     {
@@ -102,7 +124,11 @@ public class CityData_DropLauncher : CityData
 
     public void SetEquippedDropList(List<DropData> dropList)
     {
+        //we will get this list to create a new indexlist
         currentEquippedDropList = dropList;
+
+
+
     }
 
     public DropData GetDropData()
@@ -110,6 +136,8 @@ public class CityData_DropLauncher : CityData
 
         //the chance to spawn each should be the same?
         //
+
+        if (currentEquippedDropList.Count == 0) return null;
 
         int tries = cityStoreLevel * 2;
 
@@ -127,6 +155,37 @@ public class CityData_DropLauncher : CityData
         }
 
         return null;
+    }
+
+
+
+    public void RestoreState(SaveClass saveClass)
+    {
+        equippedDropIndexList = saveClass._equip_DropList;
+
+        //and we will use this 
+        currentEquippedDropList.Clear();
+
+        for (int i = 0; i < equippedDropIndexList.Count; i++)
+        {
+            var item = equippedDropIndexList[i];
+            currentEquippedDropList.Add(dropDataRefList[item]);
+        }
+
+    }
+    public void CaptureState(SaveClass saveClass)
+    {
+        equippedDropIndexList.Clear();
+
+        for (int i = 0; i < currentEquippedDropList.Count; i++)
+        {
+            var item = currentEquippedDropList[i];
+
+            equippedDropIndexList.Add(item.storeIndex);
+        }
+
+        saveClass.MakeEquipDropList(equippedDropIndexList);
+
     }
 
 

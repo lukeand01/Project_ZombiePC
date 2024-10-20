@@ -21,7 +21,7 @@ public class EnemyBoss : Tree, IDamageable
     [SerializeField] protected EnemyData _bossData;
     [SerializeField] protected BossSigilType _sigilType;
     [SerializeField] protected AttackClass[] attackClassArray;
-
+    [SerializeField] bool _healthShouldUpdateBossUI;
     public EnemyData GetBossData { get { return _bossData; }  }
 
     [Separator("SCRIPTS")]
@@ -46,7 +46,7 @@ public class EnemyBoss : Tree, IDamageable
     [SerializeField] ParticleSystem _deathPS;
     [SerializeField] public Transform _graphicHolder;
     protected float health_Total;
-    protected float healt_Current;
+    protected float health_Current;
 
     float _speed_Base;
 
@@ -58,6 +58,7 @@ public class EnemyBoss : Tree, IDamageable
         this.isLocked = isLocked;
     }
 
+    bool _bossHasStarted;
 
     private void Awake()
     {
@@ -117,7 +118,6 @@ public class EnemyBoss : Tree, IDamageable
     protected virtual void AwakeFunction()
     {       
 
-
         SetActionindexMax(attackClassArray.Length);
 
         InitAnimation();
@@ -131,7 +131,7 @@ public class EnemyBoss : Tree, IDamageable
     protected virtual void StartFunction()
     {
         health_Total = GetHealthFromStat();
-        healt_Current = health_Total;
+        health_Current = health_Total;
 
 
         _agent.speed = GetSpeedFromStat();
@@ -143,6 +143,8 @@ public class EnemyBoss : Tree, IDamageable
 
     public virtual void ResetForPool()
     {
+        gameObject.SetActive(false);
+
         isChargingAttack = false;
         IsActing = false;
 
@@ -159,15 +161,21 @@ public class EnemyBoss : Tree, IDamageable
 
         ControlWeight(1, 1);
         ControlWeight(2, 1);
+
+        _bossHasStarted = false;
     }
 
     protected override void UpdateFunction()
     {
+
+
+        if (_healthShouldUpdateBossUI && !_bossHasStarted) return;
         if (isLocked) return;
 
 
+
         if (PlayerHandler.instance._playerResources.isDead)
-        {
+        {           
             StopAgent();
             ControlWeight(1, 0);
             ControlWeight(2, 0);
@@ -194,17 +202,54 @@ public class EnemyBoss : Tree, IDamageable
         base.UpdateFunction();
     }
 
+    public virtual void StartBossUI()
+    {
+
+        health_Total = GetHealthFromStat();
+        health_Current = health_Total;
+
+        UIHandler.instance._BossUI.OpenBossHealth(_bossData.enemyName);
+        UIHandler.instance._BossUI.UpdateHealth(health_Current, health_Total);
+    }
+
+    public virtual void StartBoss()
+    {
+        //we increase its stats if necessary.
+
+        _bossHasStarted = true;
+
+    }
+
+    public BossPortal _bossPortal { get; private set; }
+    public void SetBossPortal(BossPortal bossPortal)
+    {
+        _bossPortal = bossPortal;
+    }
+
+    public void EndBoss()
+    {
+        UIHandler.instance._BossUI.CloseBossHealth();
+    }
+
 
     #region PATHING
     bool isMoving;
     protected Vector3 currentAgentTargetPosition;
 
 
-
     public void SetDestinationForPathfind(Vector3 targetPos)
     {
+        if(_agent == null)
+        {
+            Debug.Log("no agent found");
+            return;
+        }
+        if (isDead) return;
 
-       
+        if (_healthShouldUpdateBossUI && !_bossHasStarted) return;
+
+
+        _agent.enabled = true;
 
         _agent.isStopped = false;
         _agent.destination = targetPos;
@@ -273,8 +318,6 @@ public class EnemyBoss : Tree, IDamageable
 
     public virtual void TakeDamage(DamageClass damageRef)
     {
-        Debug.Log("take damage ");
-
 
         if (isDead) return;
 
@@ -283,6 +326,7 @@ public class EnemyBoss : Tree, IDamageable
 
         if (hasShieldBlocked)
         {
+            Debug.Log("shield?");
             _enemyCanvas.CreateShieldPopUp();
 
             if(_shieldClip != null)
@@ -306,7 +350,7 @@ public class EnemyBoss : Tree, IDamageable
         _entityEvent.CallDelegate_DealDamageToEntity(ref damage);
         float totalDamage = damage.GetTotalDamage();
 
-
+        
         //GRAPHICAL 
         _enemyGraphicHandler.MakeDamaged();
 
@@ -323,14 +367,16 @@ public class EnemyBoss : Tree, IDamageable
         //UI
         _enemyCanvas.CreateDamagePopUp(damage);
 
-        healt_Current -= totalDamage;
-        _enemyCanvas.UpdateHealth(healt_Current, health_Total);
+        health_Current -= totalDamage;
+        _enemyCanvas.UpdateHealth(health_Current, health_Total);
 
-
-
-        if (healt_Current <= 0)
+        if (_healthShouldUpdateBossUI)
         {
+            UIHandler.instance._BossUI.UpdateHealth(health_Current, health_Total);
+        }
 
+        if (health_Current <= 0)
+        {
             //death
             Die();
 
@@ -343,7 +389,7 @@ public class EnemyBoss : Tree, IDamageable
     {
         //you only gain points in the end.
         //PlayerHandler.instance._entityEvents.OnKillEnemy(this, true);
-        Debug.Log("called death");
+
         PlayerHandler.instance._playerResources.GainPoints(POINTS_PERKILL);
         PlayerHandler.instance._playerResources.Bless_Gain(5);
         PlayerHandler.instance._playerInventory.AddBossSigil(_sigilType); //we inform as a new item, and we show this in the pause ui.
@@ -374,6 +420,18 @@ public class EnemyBoss : Tree, IDamageable
         ControlWeight(2, 0);
         ControlWeight(3, 0);
 
+
+
+
+        if(_bossPortal != null)
+        {
+            GameHandler.instance._soundHandler.CreateSfx(SoundType.AudioClip_Boss_End);
+            UIHandler.instance._BossUI.CallBossDefeatedWarn();
+
+            _bossPortal.KillAllEnemies();
+        }
+
+
         yield return new WaitForSeconds(3);
 
        PSScript _ps = GameHandler.instance._pool.GetPS(PSType.BlackWholeForBossCollection_01, transform);
@@ -392,8 +450,9 @@ public class EnemyBoss : Tree, IDamageable
         yield return new WaitForSeconds(8);
 
         //_deathPS.gameObject.SetActive(false);
-        Debug.Log("done");
+        _bossPortal.EndBoss();
 
+        GameHandler.instance._pool.Boss_Release(_bossData, this);
     }
 
 
@@ -624,6 +683,12 @@ public class EnemyBoss : Tree, IDamageable
 
     public void CallAnimation(string nameID, int layer)
     {
+        if(nameID == "Death")
+        {
+            Debug.Log("death was called " + ANIMATIONID + nameID);
+        }
+
+
         _animator.Play(ANIMATIONID + nameID , layer);
     }
     public bool IsAnimationRunning(string nameID, int layer)
